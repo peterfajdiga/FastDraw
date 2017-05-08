@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">Fast Draw</string>
+    <string name="default_category">UNMOVED</string>
+    <string name="default_shortcut_category">SHORTCUTS</string>
+    <string name="new_category">New category</string>
+    <string name="create">Create</string>
+    <string name="rename_category">Rename category</string>
+    <string name="rename">Rename</string>
+    <string name="app_info">App info</string>
+    <string name="wallpaper">Select wallpaper</string>
+    <string name="shortcut">Add shortcut</string>
+    <string name="remove_shortcut">Remove shortcut</string>
+</resources>

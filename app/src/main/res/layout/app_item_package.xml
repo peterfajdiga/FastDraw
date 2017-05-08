@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:padding="10dp">
+
+    <ImageView
+        android:id="@+id/app_item_icon"
+        android:layout_width ="@dimen/app_icon_size"
+        android:layout_height="@dimen/app_icon_size"
+        android:layout_alignParentLeft="true"
+        android:layout_centerVertical="true" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_centerVertical="true"
+        android:layout_toRightOf="@+id/app_item_icon"
+        android:paddingLeft="10dp">
+
+        <TextView
+            android:id="@+id/app_item_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:maxLines="1"
+            style="@android:style/TextAppearance.DeviceDefault.Large"
+            android:shadowColor="@android:color/black"
+            android:shadowDx="0"
+            android:shadowDy="2"
+            android:shadowRadius="3" />
+
+        <TextView
+            android:id="@+id/app_item_package_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:maxLines="2"
+            style="@android:style/TextAppearance.DeviceDefault.Small"
+            android:shadowColor="@android:color/black"
+            android:shadowDx="0"
+            android:shadowDy="2"
+            android:shadowRadius="3" />
+
+    </LinearLayout>
+</RelativeLayout>

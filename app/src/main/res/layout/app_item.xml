@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="@dimen/app_icon_padding">
+
+    <ImageView
+        android:id="@+id/app_item_icon"
+        android:layout_width ="@dimen/app_icon_size"
+        android:layout_height="@dimen/app_icon_size"
+        android:layout_gravity="center"/>
+
+    <TextView
+        android:id="@+id/app_item_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:textAlignment="center"
+        android:ellipsize="end"
+        android:maxLines="1"
+        style="@style/FloatingText" />
+</LinearLayout>
