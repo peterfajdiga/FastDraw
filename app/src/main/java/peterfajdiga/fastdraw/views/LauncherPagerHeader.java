@@ -61,21 +61,28 @@ public class LauncherPagerHeader extends TabLayout {
     }
 
     private void setupTab(@NonNull Tab tab) {
+        if (tab.getTag() == Boolean.TRUE) {
+            // this tab has already been setup
+            return;
+        }
         //assert getContext() instanceof Activity;
         final Activity activity = (Activity)getContext();
         final ColorStateList iconColors = ContextCompat.getColorStateList(getContext(), R.color.tab);
-        final String category = (String)tab.getText();
+        final String category = tab.getText().toString();
         final Drawable icon = getCategoryIcon(getContext(), category);
 
         if (icon != null) {
+            // TODO: Setting to disable
             tab.setIcon(icon);
             tab.setText("");
             DrawableCompat.setTintList(DrawableCompat.wrap(icon), iconColors);
         } else if (category.length() == 1) {
-            SpannableString tabString = new SpannableString(tab.getText());
+            // TODO: Setting to disable
+            SpannableString tabString = new SpannableString(category);
             tabString.setSpan(new AbsoluteSizeSpan(19, true), 0, 1, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
             tab.setText(tabString);
         }
+        tab.setTag(Boolean.TRUE);  // mark as done
 
 
         // TabView

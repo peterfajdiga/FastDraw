@@ -10,6 +10,7 @@ public class DropZoneCategory extends DropZone {
     protected void onDrop(View view) {
         MainActivity activity = ((MainActivity)view.getContext());
         String categoryName = (String)view.getTag();
+        System.out.println(categoryName);
         activity.draggedItem.setCategory(categoryName, activity, true);
     }
 }
