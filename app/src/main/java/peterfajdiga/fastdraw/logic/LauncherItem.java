@@ -8,9 +8,6 @@ import android.support.annotation.NonNull;
 import java.util.ArrayList;
 import java.util.List;
 
-import peterfajdiga.fastdraw.activities.MainActivity;
-import peterfajdiga.fastdraw.views.LauncherPagerAdapter;
-
 public abstract class LauncherItem implements Comparable<LauncherItem> {
 
     public String name;
@@ -36,24 +33,8 @@ public abstract class LauncherItem implements Comparable<LauncherItem> {
         markAsDirty();
         this.category = category;
     }
-    public void setCategory(String category, MainActivity context, boolean followItem) {
-        markAsDirty();
-
-        final LauncherPagerAdapter adapter = context.getPagerAdapter();
-        boolean lastRemoved = false;
-        if (this.category != null) {
-            lastRemoved = adapter.removeLauncherItem(this, this.category);
-        }
-
+    public void setCategoryNoDirty(String category) {
         this.category = category;
-        adapter.addLauncherItem(this, category);
-        if (followItem && lastRemoved) {
-            context.setPagerToCategory(category);
-        }
-    }
-    public void setCategoryNoDirty(String category, MainActivity context) {
-        this.category = category;
-        context.getPagerAdapter().addLauncherItem(this, category);
     }
 
     public abstract void persist(Context context);

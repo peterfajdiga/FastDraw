@@ -95,20 +95,21 @@ public class ShortcutItem extends LauncherItem {
 
         Intent intent = Intent.parseUri(readString(fis), 0);
         String name = readString(fis);
-        String category = readString(fis);
+        String categoryName = readString(fis);
 
         ShortcutItem newItem = new ShortcutItem(
             intent,
             name,
             new BitmapDrawable(context.getResources(), BitmapFactory.decodeFileDescriptor(fis.getFD()))
         );
-        newItem.setCategoryNoDirty(category, context);
+        newItem.setCategoryNoDirty(categoryName);
+        context.getPager().addLauncherItem(newItem);
         fis.close();
         return newItem;
     }
 
     public void remove(MainActivity context) {
-        context.getPagerAdapter().removeLauncherItem(this, category);
+        context.getPager().removeLauncherItem(this, category);
         markedForDeletion = true;
         markAsDirty();
     }

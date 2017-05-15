@@ -25,8 +25,7 @@ import peterfajdiga.fastdraw.listeners.InstallShortcutReceiver;
 import peterfajdiga.fastdraw.logic.AppItem;
 import peterfajdiga.fastdraw.logic.LauncherItem;
 import peterfajdiga.fastdraw.logic.ShortcutItem;
-import peterfajdiga.fastdraw.views.LauncherPager;
-import peterfajdiga.fastdraw.views.LauncherPagerAdapter;
+import peterfajdiga.fastdraw.launcher.LauncherPager;
 import peterfajdiga.fastdraw.views.LauncherPagerHeader;
 
 public class MainActivity extends Activity {
@@ -60,7 +59,6 @@ public class MainActivity extends Activity {
         findViewById(R.id.drop_zone_remove_shortcut).setOnDragListener(new DropZoneRemoveShortcut());
 
         ViewPager appsPager = (ViewPager)findViewById(R.id.apps_pager);
-        appsPager.setAdapter(new LauncherPagerAdapter(this));
 
         LauncherPagerHeader pagerHeader = (LauncherPagerHeader)findViewById(R.id.apps_pager_header);
         pagerHeader.setupWithViewPager(appsPager);
@@ -103,7 +101,7 @@ public class MainActivity extends Activity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == INSTALL_SHORTCUT_REQUEST && resultCode == RESULT_OK) {
             ShortcutItem newShortcut = ShortcutItem.shortcutFromIntent(this, data);
-            newShortcut.setCategory(getCurrentCategoryName(), this, false);
+            getPager().moveLauncherItem(newShortcut, getPager().getCurrentCategoryName(), false);
         }
         super.onActivityResult(requestCode, resultCode, data);
     }
@@ -122,7 +120,9 @@ public class MainActivity extends Activity {
                 resInfo.loadLabel(packageManager).toString(),
                 resInfo.activityInfo.loadIcon(packageManager)
             );
-            newAppItem.setCategoryNoDirty(prefs.getString(newAppItem.getID(), getString(R.string.default_category)), this);
+            String categoryName = prefs.getString(newAppItem.getID(), getString(R.string.default_category));
+            newAppItem.setCategoryNoDirty(categoryName);
+            getPager().addLauncherItem(newAppItem);
         }
 
         // shortcuts
@@ -192,30 +192,16 @@ public class MainActivity extends Activity {
 
     // management
 
-    public LauncherPagerAdapter getPagerAdapter() {
-        return (LauncherPagerAdapter)((ViewPager)findViewById(R.id.apps_pager)).getAdapter();
+    public LauncherPager getPager() {
+        return (LauncherPager)findViewById(R.id.apps_pager);
     }
 
-    public String getCurrentCategoryName() {
-        final LauncherPager pager = (LauncherPager)findViewById(R.id.apps_pager);
-        final LauncherPagerAdapter adapter = (LauncherPagerAdapter)pager.getAdapter();
-        return adapter.getPageTitle(pager.getCurrentItem());
-    }
-
-    public void setPagerToCategory(String category) {
-        final String[] categoryNames = getPagerAdapter().getCategoryNames();
-        for (int i = 0; i < categoryNames.length; i++) {
-            if (categoryNames[i].equals(category)) {
-                ((ViewPager)findViewById(R.id.apps_pager)).setCurrentItem(i);
-                return;
-            }
-        }
-    }
-
+    // TODO: move to LauncherPager
     public void renameCategory(String oldName, String newName) {
-        boolean followItem = oldName.equals(getCurrentCategoryName());
-        for (LauncherItem item : getPagerAdapter().getLauncherItems(oldName)) {
-            item.setCategory(newName, this, followItem);
+        final LauncherPager pager = getPager();
+        boolean followItem = oldName.equals(pager.getCurrentCategoryName());
+        for (LauncherItem item : pager.getLauncherItems(oldName)) {
+            pager.moveLauncherItem(item, newName, followItem);
         }
     }
 }

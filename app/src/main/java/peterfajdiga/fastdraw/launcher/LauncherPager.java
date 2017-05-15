@@ -1,66 +1,60 @@
-package peterfajdiga.fastdraw.views;
+package peterfajdiga.fastdraw.launcher;
 
+import android.app.WallpaperManager;
 import android.content.Context;
-import android.support.v4.view.PagerAdapter;
-import android.view.View;
-import android.view.ViewGroup;
+import android.support.v4.view.ViewPager;
+import android.util.AttributeSet;
 
 import java.util.Map;
-import java.util.TreeMap;
 
 import peterfajdiga.fastdraw.logic.AppItem;
 import peterfajdiga.fastdraw.logic.LauncherItem;
 
-public class LauncherPagerAdapter extends PagerAdapter {
+public class LauncherPager extends ViewPager {
 
-    private Map<String, CategoryView> categories = new TreeMap<>();
-    private Context context;
+    public LauncherPager(Context context) {
+        super(context);
+        initLauncherPager();
+    }
 
-    public LauncherPagerAdapter(Context context) {
-        this.context = context;
+    public LauncherPager(Context context, AttributeSet attrs) {
+        super(context, attrs);
+        initLauncherPager();
+    }
+
+    private void initLauncherPager() {
+        setAdapter(new LauncherPagerAdapter());
+    }
+
+    // TODO: Do differently
+    @Override
+    public LauncherPagerAdapter getAdapter() {
+        return (LauncherPagerAdapter)super.getAdapter();
     }
 
     @Override
-    public Object instantiateItem(ViewGroup container, int position) {
-        final CategoryView layout = (CategoryView)categories.values().toArray()[position];
-        container.addView(layout);
-        return layout;
+    public void onPageScrolled(int position, float offset, int offsetPixels) {
+        super.onPageScrolled(position, offset, offsetPixels);
+        final WallpaperManager wallpaperManager = WallpaperManager.getInstance(getContext());
+        wallpaperManager.setWallpaperOffsets(getWindowToken(), (position + offset) / (getAdapter().getCount() - 1), 0.5f);
     }
 
-    @Override
-    public void destroyItem(ViewGroup container, int position, Object view) {
-        container.removeView((View)view);
-    }
-
-    @Override
-    public int getCount() {
-        return categories.keySet().size();
-    }
-
-    @Override
-    public boolean isViewFromObject(View view, Object object) {
-        return view == object;
-    }
-
-    @Override
-    public String getPageTitle(int position) {
-        return (String)categories.keySet().toArray()[position];
-    }
-
-    @Override
-    public int getItemPosition(Object object) {
-        final Object[] views = categories.values().toArray();
-        for (int i = 0; i < views.length; i++) {
-            if (views[i] == object) {
-                return i;
+    public void showCategory(String categoryName) {
+        final String[] categoryNames = getCategoryNames();
+        for (int i = 0; i < categoryNames.length; i++) {
+            if (categoryNames[i].equals(categoryName)) {
+                setCurrentItem(i);
+                return;
             }
         }
-        return POSITION_NONE;
     }
 
+    public String getCurrentCategoryName() {
+        return getAdapter().getPageTitle(getCurrentItem());
+    }
 
     public String[] getCategoryNames() {
-        final Object[] names = categories.keySet().toArray();
+        final Object[] names = getAdapter().categories.keySet().toArray();
         String[] retval = new String[names.length];
         for (int i = 0; i < names.length; i++) {
             retval[i] = (String)names[i];
@@ -69,7 +63,7 @@ public class LauncherPagerAdapter extends PagerAdapter {
     }
 
     public LauncherItem[] getLauncherItems(String category) {
-        final CategoryArrayAdapter innerAdapter = (CategoryArrayAdapter)categories.get(category).getAdapter();
+        final CategoryArrayAdapter innerAdapter = (CategoryArrayAdapter)getAdapter().categories.get(category).getAdapter();
         LauncherItem[] items = new LauncherItem[innerAdapter.getCount()];
         for (int i = 0; i < items.length; i++) {
             items[i] = innerAdapter.getItem(i);
@@ -77,28 +71,30 @@ public class LauncherPagerAdapter extends PagerAdapter {
         return items;
     }
 
-    public void addLauncherItem(LauncherItem item, String category) {
-        CategoryView categoryView = categories.get(category);
+    public void addLauncherItem(LauncherItem item) {
+        final String categoryName = item.getCategory();
+        item.setCategoryNoDirty(categoryName);
+        CategoryView categoryView = getAdapter().categories.get(categoryName);
         if (categoryView == null) {
-            categoryView = new CategoryView(context);
-            categories.put(category, categoryView);
+            categoryView = new CategoryView(getContext());
+            getAdapter().categories.put(categoryName, categoryView);
         }
         final CategoryArrayAdapter innerAdapter = (CategoryArrayAdapter) categoryView.getAdapter();
         innerAdapter.add(item);
         innerAdapter.sort();
         innerAdapter.notifyDataSetChanged();
-        notifyDataSetChanged();
+        getAdapter().notifyDataSetChanged();
     }
 
     // returns true if the category's last item was removed
     public boolean removeLauncherItem(LauncherItem item, String categoryName) {
-        final CategoryView categoryView = categories.get(categoryName);
+        final CategoryView categoryView = getAdapter().categories.get(categoryName);
         //assert appsView != null;
         final CategoryArrayAdapter innerAdapter = (CategoryArrayAdapter) categoryView.getAdapter();
         if (innerAdapter.getCount() == 1) {
             // remove category from pager, no need to remove the item from category
-            categories.remove(categoryName);
-            notifyDataSetChanged();
+            getAdapter().categories.remove(categoryName);
+            getAdapter().notifyDataSetChanged();
             return true;
         } else {
             // remove item from category
@@ -108,8 +104,23 @@ public class LauncherPagerAdapter extends PagerAdapter {
         }
     }
 
+    public void moveLauncherItem(LauncherItem item, String categoryName, boolean followItem) {
+        String oldCategoryName = item.getCategory();
+
+        boolean lastRemoved = false;
+        if (oldCategoryName != null) {
+            lastRemoved = removeLauncherItem(item, oldCategoryName);
+        }
+
+        item.setCategory(categoryName);
+        addLauncherItem(item);
+        if (followItem && lastRemoved) {
+            showCategory(categoryName);
+        }
+    }
+
     public void removeAppItems(String packageName) {
-        for (Map.Entry categoryEntry : categories.entrySet()) {
+        for (Map.Entry categoryEntry : getAdapter().categories.entrySet()) {
             String categoryName = (String)categoryEntry.getKey();
             CategoryView categoryView = (CategoryView)categoryEntry.getValue();
 
@@ -132,10 +143,10 @@ public class LauncherPagerAdapter extends PagerAdapter {
                 innerAdapter.notifyDataSetChanged();
                 if (innerAdapter.getCount() == 0) {
                     // remove the now empty category from pager
-                    categories.remove(categoryName);
+                    getAdapter().categories.remove(categoryName);
                 }
             }
         }
-        notifyDataSetChanged();
+        getAdapter().notifyDataSetChanged();
     }
 }

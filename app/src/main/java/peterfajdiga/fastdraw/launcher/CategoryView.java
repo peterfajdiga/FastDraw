@@ -1,4 +1,4 @@
-package peterfajdiga.fastdraw.views;
+package peterfajdiga.fastdraw.launcher;
 
 import android.app.ActivityOptions;
 import android.content.Context;
@@ -16,7 +16,7 @@ import peterfajdiga.fastdraw.activities.MainActivity;
 import peterfajdiga.fastdraw.dialogs.CreateShortcutDialog;
 import peterfajdiga.fastdraw.logic.LauncherItem;
 
-public class CategoryView extends GridView {
+class CategoryView extends GridView {
 
     private static final int LONG_CLICK_TIME = ViewConfiguration.getLongPressTimeout();
     private static final float LONG_CLICK_MOUSE_MOVE_TOLERANCE = 50;

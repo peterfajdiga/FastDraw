@@ -1,4 +1,4 @@
-package peterfajdiga.fastdraw.views;
+package peterfajdiga.fastdraw.launcher;
 
 import android.app.Activity;
 import android.content.Context;
@@ -15,7 +15,7 @@ import peterfajdiga.fastdraw.R;
 import peterfajdiga.fastdraw.logic.AppItem;
 import peterfajdiga.fastdraw.logic.LauncherItem;
 
-public class CategoryArrayAdapter extends ArrayAdapter<LauncherItem>{
+class CategoryArrayAdapter extends ArrayAdapter<LauncherItem>{
 
     public static final int APP_ITEM_STYLE = R.layout.app_item;
 
@@ -56,7 +56,7 @@ public class CategoryArrayAdapter extends ArrayAdapter<LauncherItem>{
         return convertView;
     }
 
-    public void sort() {
+    void sort() {
         sort(new Comparator<LauncherItem>() {
             @Override
             public int compare(LauncherItem launcherItem, LauncherItem t1) {

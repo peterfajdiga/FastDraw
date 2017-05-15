@@ -24,11 +24,11 @@ public class InstallAppReceiver extends BroadcastReceiver {
         String packageName = data.getData().getEncodedSchemeSpecificPart();
         switch (data.getAction()) {
             case Intent.ACTION_PACKAGE_REMOVED: {
-                activity.getPagerAdapter().removeAppItems(packageName);
+                activity.getPager().removeAppItems(packageName);
                 break;
             }
             case Intent.ACTION_PACKAGE_CHANGED: {
-                activity.getPagerAdapter().removeAppItems(packageName);
+                activity.getPager().removeAppItems(packageName);
                 // lack of break is intentional
             }
             case Intent.ACTION_PACKAGE_ADDED: {
@@ -43,7 +43,9 @@ public class InstallAppReceiver extends BroadcastReceiver {
                         resInfo.loadLabel(packageManager).toString(),
                         resInfo.activityInfo.loadIcon(packageManager)
                     );
-                    appItem.setCategoryNoDirty(context.getString(R.string.default_category), activity);
+                    String categoryName = context.getString(R.string.default_category);
+                    appItem.setCategoryNoDirty(categoryName);
+                    activity.getPager().addLauncherItem(appItem);
                 }
                 break;
             }

@@ -30,7 +30,7 @@ public class NewCategoryDialog extends DialogFragment {
         builder.setPositiveButton(R.string.create, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-            item.setCategory(input.getText().toString().toUpperCase(), activity, true);
+                activity.getPager().moveLauncherItem(item, input.getText().toString().toUpperCase(), true);
             }
         });
 

@@ -20,6 +20,6 @@ public class InstallShortcutReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent data) {
         ShortcutItem newShortcut = ShortcutItem.shortcutFromIntent(context, data);
-        newShortcut.setCategory(context.getString(R.string.default_shortcut_category), activity, false);
+        activity.getPager().moveLauncherItem(newShortcut, context.getString(R.string.default_shortcut_category), true);
     }
 }
