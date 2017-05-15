@@ -1,15 +1,11 @@
 package peterfajdiga.fastdraw.launcher;
 
-import android.content.Context;
 import android.support.v4.view.PagerAdapter;
 import android.view.View;
 import android.view.ViewGroup;
 
 import java.util.Map;
 import java.util.TreeMap;
-
-import peterfajdiga.fastdraw.logic.AppItem;
-import peterfajdiga.fastdraw.logic.LauncherItem;
 
 class LauncherPagerAdapter extends PagerAdapter {
 

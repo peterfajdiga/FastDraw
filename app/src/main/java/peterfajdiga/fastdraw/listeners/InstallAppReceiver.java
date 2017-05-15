@@ -8,7 +8,7 @@ import android.content.pm.ResolveInfo;
 
 import peterfajdiga.fastdraw.R;
 import peterfajdiga.fastdraw.activities.MainActivity;
-import peterfajdiga.fastdraw.logic.AppItem;
+import peterfajdiga.fastdraw.launcher.item.AppItem;
 
 public class InstallAppReceiver extends BroadcastReceiver {
 

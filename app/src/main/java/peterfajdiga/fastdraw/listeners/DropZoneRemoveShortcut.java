@@ -3,7 +3,7 @@ package peterfajdiga.fastdraw.listeners;
 import android.view.View;
 
 import peterfajdiga.fastdraw.activities.MainActivity;
-import peterfajdiga.fastdraw.logic.ShortcutItem;
+import peterfajdiga.fastdraw.launcher.item.ShortcutItem;
 
 public class DropZoneRemoveShortcut extends DropZone {
 

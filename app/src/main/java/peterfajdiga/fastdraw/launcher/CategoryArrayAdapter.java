@@ -12,8 +12,8 @@ import android.widget.TextView;
 import java.util.Comparator;
 
 import peterfajdiga.fastdraw.R;
-import peterfajdiga.fastdraw.logic.AppItem;
-import peterfajdiga.fastdraw.logic.LauncherItem;
+import peterfajdiga.fastdraw.launcher.item.AppItem;
+import peterfajdiga.fastdraw.launcher.item.LauncherItem;
 
 class CategoryArrayAdapter extends ArrayAdapter<LauncherItem>{
 

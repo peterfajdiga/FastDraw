@@ -14,7 +14,7 @@ import android.widget.GridView;
 import peterfajdiga.fastdraw.R;
 import peterfajdiga.fastdraw.activities.MainActivity;
 import peterfajdiga.fastdraw.dialogs.CreateShortcutDialog;
-import peterfajdiga.fastdraw.logic.LauncherItem;
+import peterfajdiga.fastdraw.launcher.item.LauncherItem;
 
 class CategoryView extends GridView {
 

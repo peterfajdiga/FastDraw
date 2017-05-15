@@ -3,7 +3,7 @@ package peterfajdiga.fastdraw.listeners;
 import android.view.View;
 
 import peterfajdiga.fastdraw.activities.MainActivity;
-import peterfajdiga.fastdraw.logic.AppItem;
+import peterfajdiga.fastdraw.launcher.item.AppItem;
 
 public class DropZoneAppInfo extends DropZone {
 

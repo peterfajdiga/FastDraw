@@ -1,4 +1,4 @@
-package peterfajdiga.fastdraw.logic;
+package peterfajdiga.fastdraw.launcher.item;
 
 import android.content.ComponentName;
 import android.content.Context;

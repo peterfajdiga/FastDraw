@@ -7,8 +7,8 @@ import android.util.AttributeSet;
 
 import java.util.Map;
 
-import peterfajdiga.fastdraw.logic.AppItem;
-import peterfajdiga.fastdraw.logic.LauncherItem;
+import peterfajdiga.fastdraw.launcher.item.AppItem;
+import peterfajdiga.fastdraw.launcher.item.LauncherItem;
 
 public class LauncherPager extends ViewPager {
 

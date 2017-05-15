@@ -11,7 +11,7 @@ import android.widget.EditText;
 
 import peterfajdiga.fastdraw.R;
 import peterfajdiga.fastdraw.activities.MainActivity;
-import peterfajdiga.fastdraw.logic.LauncherItem;
+import peterfajdiga.fastdraw.launcher.item.LauncherItem;
 
 public class NewCategoryDialog extends DialogFragment {
 

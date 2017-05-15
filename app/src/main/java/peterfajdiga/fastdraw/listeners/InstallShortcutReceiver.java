@@ -6,7 +6,7 @@ import android.content.Intent;
 
 import peterfajdiga.fastdraw.R;
 import peterfajdiga.fastdraw.activities.MainActivity;
-import peterfajdiga.fastdraw.logic.ShortcutItem;
+import peterfajdiga.fastdraw.launcher.item.ShortcutItem;
 
 public class InstallShortcutReceiver extends BroadcastReceiver {
 

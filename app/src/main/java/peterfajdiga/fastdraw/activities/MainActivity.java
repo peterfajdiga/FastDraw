@@ -22,9 +22,9 @@ import peterfajdiga.fastdraw.listeners.DropZoneNewCategory;
 import peterfajdiga.fastdraw.listeners.DropZoneRemoveShortcut;
 import peterfajdiga.fastdraw.listeners.InstallAppReceiver;
 import peterfajdiga.fastdraw.listeners.InstallShortcutReceiver;
-import peterfajdiga.fastdraw.logic.AppItem;
-import peterfajdiga.fastdraw.logic.LauncherItem;
-import peterfajdiga.fastdraw.logic.ShortcutItem;
+import peterfajdiga.fastdraw.launcher.item.AppItem;
+import peterfajdiga.fastdraw.launcher.item.LauncherItem;
+import peterfajdiga.fastdraw.launcher.item.ShortcutItem;
 import peterfajdiga.fastdraw.launcher.LauncherPager;
 import peterfajdiga.fastdraw.views.LauncherPagerHeader;
 
