@@ -91,13 +91,13 @@ public class LauncherPagerAdapter extends PagerAdapter {
     }
 
     // returns true if the category's last item was removed
-    public boolean removeLauncherItem(LauncherItem item, String category) {
-        final CategoryView categoryView = categories.get(category);
+    public boolean removeLauncherItem(LauncherItem item, String categoryName) {
+        final CategoryView categoryView = categories.get(categoryName);
         //assert appsView != null;
         final CategoryArrayAdapter innerAdapter = (CategoryArrayAdapter) categoryView.getAdapter();
         if (innerAdapter.getCount() == 1) {
             // remove category from pager, no need to remove the item from category
-            categories.remove(category);
+            categories.remove(categoryName);
             notifyDataSetChanged();
             return true;
         } else {
@@ -109,7 +109,10 @@ public class LauncherPagerAdapter extends PagerAdapter {
     }
 
     public void removeAppItems(String packageName) {
-        for (CategoryView categoryView : categories.values()) {
+        for (Map.Entry categoryEntry : categories.entrySet()) {
+            String categoryName = (String)categoryEntry.getKey();
+            CategoryView categoryView = (CategoryView)categoryEntry.getValue();
+
             CategoryArrayAdapter innerAdapter = (CategoryArrayAdapter)categoryView.getAdapter();
             boolean itemsRemoved = false;
             // iterate through categories' items
@@ -129,7 +132,7 @@ public class LauncherPagerAdapter extends PagerAdapter {
                 innerAdapter.notifyDataSetChanged();
                 if (innerAdapter.getCount() == 0) {
                     // remove the now empty category from pager
-                    categories.remove(categoryView);
+                    categories.remove(categoryName);
                 }
             }
         }
