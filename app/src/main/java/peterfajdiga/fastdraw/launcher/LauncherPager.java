@@ -106,7 +106,7 @@ public class LauncherPager extends ViewPager {
     }
 
     public void moveLauncherItem(LauncherItem item, String categoryName, boolean followItem) {
-        String oldCategoryName = item.getCategory();
+        final String oldCategoryName = item.getCategory();
 
         boolean lastRemoved = false;
         if (oldCategoryName != null) {
@@ -122,10 +122,10 @@ public class LauncherPager extends ViewPager {
 
     public void removeAppItems(String packageName) {
         for (Map.Entry categoryEntry : getAdapter().categories.entrySet()) {
-            String categoryName = (String)categoryEntry.getKey();
-            CategoryView categoryView = (CategoryView)categoryEntry.getValue();
+            final String categoryName = (String)categoryEntry.getKey();
+            final CategoryView categoryView = (CategoryView)categoryEntry.getValue();
+            final CategoryArrayAdapter innerAdapter = (CategoryArrayAdapter)categoryView.getAdapter();
 
-            CategoryArrayAdapter innerAdapter = (CategoryArrayAdapter)categoryView.getAdapter();
             boolean itemsRemoved = false;
             // iterate through categories' items
             for (int i = 0; i < innerAdapter.getCount();) {
