@@ -16,6 +16,7 @@ public class DropZoneRemoveShortcut extends DropZone {
         MainActivity activity = ((MainActivity)view.getContext());
         //assert activity.draggedItem instanceof ShortcutItem;
         ShortcutItem item = (ShortcutItem)activity.draggedItem;
-        item.remove(activity);
+        activity.getPager().removeLauncherItem(item);
+        item.delete();
     }
 }

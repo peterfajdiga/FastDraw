@@ -130,7 +130,7 @@ public class MainActivity extends Activity {
         shortcutsDir.mkdir();
         for (File file : shortcutsDir.listFiles()) {
             try {
-                ShortcutItem.fromFile(this, file);
+                getPager().addLauncherItem(ShortcutItem.fromFile(this, file));
             } catch (Exception e) {
                 e.printStackTrace();
             }

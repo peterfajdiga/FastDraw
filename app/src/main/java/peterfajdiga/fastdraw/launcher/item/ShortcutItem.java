@@ -13,8 +13,6 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.nio.ByteBuffer;
 
-import peterfajdiga.fastdraw.activities.MainActivity;
-
 public class ShortcutItem extends LauncherItem {
 
     private Intent intent;
@@ -90,7 +88,7 @@ public class ShortcutItem extends LauncherItem {
         fos.close();
     }
 
-    public static ShortcutItem fromFile(MainActivity context, File file) throws java.io.IOException, java.net.URISyntaxException {
+    public static ShortcutItem fromFile(Context context, File file) throws java.io.IOException, java.net.URISyntaxException {
         FileInputStream fis = new FileInputStream(file);
 
         Intent intent = Intent.parseUri(readString(fis), 0);
@@ -103,13 +101,11 @@ public class ShortcutItem extends LauncherItem {
             new BitmapDrawable(context.getResources(), BitmapFactory.decodeFileDescriptor(fis.getFD()))
         );
         newItem.setCategoryNoDirty(categoryName);
-        context.getPager().addLauncherItem(newItem);
         fis.close();
         return newItem;
     }
 
-    public void remove(MainActivity context) {
-        context.getPager().removeLauncherItem(this, category);
+    public void delete() {
         markedForDeletion = true;
         markAsDirty();
     }

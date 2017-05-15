@@ -87,7 +87,8 @@ public class LauncherPager extends ViewPager {
     }
 
     // returns true if the category's last item was removed
-    public boolean removeLauncherItem(LauncherItem item, String categoryName) {
+    public boolean removeLauncherItem(LauncherItem item) {
+        final String categoryName = item.getCategory();
         final CategoryView categoryView = getAdapter().categories.get(categoryName);
         //assert appsView != null;
         final CategoryArrayAdapter innerAdapter = (CategoryArrayAdapter) categoryView.getAdapter();
@@ -109,7 +110,7 @@ public class LauncherPager extends ViewPager {
 
         boolean lastRemoved = false;
         if (oldCategoryName != null) {
-            lastRemoved = removeLauncherItem(item, oldCategoryName);
+            lastRemoved = removeLauncherItem(item);
         }
 
         item.setCategory(categoryName);
