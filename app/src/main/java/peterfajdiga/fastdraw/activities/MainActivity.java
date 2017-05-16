@@ -17,6 +17,7 @@ import android.view.WindowManager;
 import java.io.File;
 
 import peterfajdiga.fastdraw.R;
+import peterfajdiga.fastdraw.launcher.AppItemManager;
 import peterfajdiga.fastdraw.listeners.DropZoneAppInfo;
 import peterfajdiga.fastdraw.listeners.DropZoneNewCategory;
 import peterfajdiga.fastdraw.listeners.DropZoneRemoveShortcut;
@@ -109,21 +110,7 @@ public class MainActivity extends Activity {
     private void loadLauncherItems() {
 
         // apps
-        final SharedPreferences prefs = getSharedPreferences("categories", Context.MODE_PRIVATE);
-        final PackageManager packageManager = getPackageManager();
-        Intent launcherIntent = new Intent(Intent.ACTION_MAIN, null);
-        launcherIntent.addCategory(Intent.CATEGORY_LAUNCHER);
-        for (ResolveInfo resInfo : packageManager.queryIntentActivities(launcherIntent, 0)) {
-            AppItem newAppItem = new AppItem(
-                resInfo.activityInfo.packageName,
-                resInfo.activityInfo.name,
-                resInfo.loadLabel(packageManager).toString(),
-                resInfo.activityInfo.loadIcon(packageManager)
-            );
-            String categoryName = prefs.getString(newAppItem.getID(), getString(R.string.default_category));
-            newAppItem.setCategoryNoDirty(categoryName);
-            getPager().addLauncherItem(newAppItem);
-        }
+        AppItemManager.addAppItems(this, getPager());
 
         // shortcuts
         File shortcutsDir = ShortcutItem.getShortcutsDir(this);

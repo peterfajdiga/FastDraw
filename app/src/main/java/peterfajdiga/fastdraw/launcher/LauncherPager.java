@@ -119,35 +119,4 @@ public class LauncherPager extends ViewPager {
             showCategory(categoryName);
         }
     }
-
-    public void removeAppItems(String packageName) {
-        for (Map.Entry categoryEntry : getAdapter().categories.entrySet()) {
-            final String categoryName = (String)categoryEntry.getKey();
-            final CategoryView categoryView = (CategoryView)categoryEntry.getValue();
-            final CategoryArrayAdapter innerAdapter = (CategoryArrayAdapter)categoryView.getAdapter();
-
-            boolean itemsRemoved = false;
-            // iterate through categories' items
-            for (int i = 0; i < innerAdapter.getCount();) {
-                LauncherItem launcherItem = innerAdapter.getItem(i);
-                if (launcherItem instanceof AppItem && ((AppItem)launcherItem).packageName.equals(packageName)) {
-                    // remove matching items
-                    // don't increment i in this case, as item count has decreased
-                    innerAdapter.remove(launcherItem);
-                    itemsRemoved = true;
-                } else {
-                    i++;
-                }
-            }
-            if (itemsRemoved) {
-                // update category adapter
-                innerAdapter.notifyDataSetChanged();
-                if (innerAdapter.getCount() == 0) {
-                    // remove the now empty category from pager
-                    getAdapter().categories.remove(categoryName);
-                }
-            }
-        }
-        getAdapter().notifyDataSetChanged();
-    }
 }
