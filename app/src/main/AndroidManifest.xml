@@ -27,13 +27,13 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <!--<receiver-->
-            <!--android:name=".listeners.InstallShortcutReceiver"-->
-            <!--android:permission="com.android.launcher.permission.INSTALL_SHORTCUT">-->
-            <!--<intent-filter>-->
-                <!--<action android:name="com.android.launcher.action.INSTALL_SHORTCUT" />-->
-            <!--</intent-filter>-->
-        <!--</receiver>-->
+        <receiver
+            android:name=".listeners.InstallShortcutReceiver"
+            android:permission="com.android.launcher.permission.INSTALL_SHORTCUT">
+            <intent-filter>
+                <action android:name="com.android.launcher.action.INSTALL_SHORTCUT" />
+            </intent-filter>
+        </receiver>
     </application>
 
 </manifest>

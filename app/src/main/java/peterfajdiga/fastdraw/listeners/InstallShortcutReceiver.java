@@ -5,21 +5,35 @@ import android.content.Context;
 import android.content.Intent;
 
 import peterfajdiga.fastdraw.R;
-import peterfajdiga.fastdraw.activities.MainActivity;
 import peterfajdiga.fastdraw.launcher.item.ShortcutItem;
 
 public class InstallShortcutReceiver extends BroadcastReceiver {
 
-    private MainActivity activity = null;
+    private Owner owner = null;
 
-    public InstallShortcutReceiver(MainActivity context) {
+    public InstallShortcutReceiver() {
         super();
-        this.activity = context;
+    }
+
+    public InstallShortcutReceiver(Owner context) {
+        super();
+        this.owner = context;
     }
 
     @Override
     public void onReceive(Context context, Intent data) {
-        ShortcutItem newShortcut = ShortcutItem.shortcutFromIntent(context, data);
-        activity.getPager().moveLauncherItem(newShortcut, context.getString(R.string.default_shortcut_category), true);
+        ShortcutItem newShortcutItem = ShortcutItem.shortcutFromIntent(context, data);
+        newShortcutItem.setCategory(context.getString(R.string.default_shortcut_category));
+        if (owner == null) {
+            newShortcutItem.persist(context);
+        } else {
+            owner.onShortcutReceived(newShortcutItem);
+            // TODO: More testing
+        }
+    }
+
+
+    public interface Owner {
+        void onShortcutReceived(ShortcutItem newShortcut);
     }
 }

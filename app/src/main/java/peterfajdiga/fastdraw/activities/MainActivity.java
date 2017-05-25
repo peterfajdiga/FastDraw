@@ -7,7 +7,6 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
-import android.content.pm.ResolveInfo;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.view.View;
@@ -29,8 +28,9 @@ import peterfajdiga.fastdraw.launcher.item.ShortcutItem;
 import peterfajdiga.fastdraw.launcher.LauncherPager;
 import peterfajdiga.fastdraw.views.LauncherPagerHeader;
 
-public class MainActivity extends Activity
-        implements InstallAppReceiver.Owner {
+public class MainActivity extends Activity implements
+        InstallAppReceiver.Owner,
+        InstallShortcutReceiver.Owner {
 
     public static final int INSTALL_SHORTCUT_REQUEST = 2143;
 
@@ -210,5 +210,10 @@ public class MainActivity extends Activity
     @Override
     public void onAppRemove(String packageName) {
         AppItemManager.addAppItems(this, getPager(), packageName);
+    }
+
+    @Override
+    public void onShortcutReceived(ShortcutItem newShortcut) {
+        getPager().addLauncherItem(newShortcut);
     }
 }
