@@ -13,11 +13,11 @@ import peterfajdiga.fastdraw.launcher.item.AppItem;
 
 public class InstallAppReceiver extends BroadcastReceiver {
 
-    private MainActivity activity = null;
+    private Owner owner = null;
 
-    public InstallAppReceiver(MainActivity context) {
+    public InstallAppReceiver(Owner context) {
         super();
-        this.activity = context;
+        this.owner = context;
     }
 
     @Override
@@ -25,18 +25,25 @@ public class InstallAppReceiver extends BroadcastReceiver {
         String packageName = data.getData().getEncodedSchemeSpecificPart();
         switch (data.getAction()) {
             case Intent.ACTION_PACKAGE_REMOVED: {
-                AppItemManager.removeAppItems(activity.getPager(), packageName);
+                owner.onAppRemove(packageName);
                 break;
             }
             case Intent.ACTION_PACKAGE_CHANGED: {
-                AppItemManager.removeAppItems(activity.getPager(), packageName);
-                // lack of break is intentional
+                owner.onAppChange(packageName);
+                break;
             }
             case Intent.ACTION_PACKAGE_ADDED: {
-                AppItemManager.addAppItems(context, activity.getPager(), packageName);
+                owner.onAppInstall(packageName);
                 break;
             }
             //default: assert false;
         }
+    }
+
+
+    public interface Owner {
+        void onAppInstall(String packageName);
+        void onAppChange(String packageName);
+        void onAppRemove(String packageName);
     }
 }

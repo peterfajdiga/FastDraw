@@ -29,7 +29,8 @@ import peterfajdiga.fastdraw.launcher.item.ShortcutItem;
 import peterfajdiga.fastdraw.launcher.LauncherPager;
 import peterfajdiga.fastdraw.views.LauncherPagerHeader;
 
-public class MainActivity extends Activity {
+public class MainActivity extends Activity
+        implements InstallAppReceiver.Owner {
 
     public static final int INSTALL_SHORTCUT_REQUEST = 2143;
 
@@ -190,5 +191,24 @@ public class MainActivity extends Activity {
         for (LauncherItem item : pager.getLauncherItems(oldName)) {
             pager.moveLauncherItem(item, newName, followItem);
         }
+    }
+
+
+
+    // app management
+    @Override
+    public void onAppInstall(String packageName) {
+        AppItemManager.removeAppItems(getPager(), packageName);
+    }
+
+    @Override
+    public void onAppChange(String packageName) {
+        AppItemManager.removeAppItems(getPager(), packageName);
+        AppItemManager.addAppItems(this, getPager(), packageName);
+    }
+
+    @Override
+    public void onAppRemove(String packageName) {
+        AppItemManager.addAppItems(this, getPager(), packageName);
     }
 }
