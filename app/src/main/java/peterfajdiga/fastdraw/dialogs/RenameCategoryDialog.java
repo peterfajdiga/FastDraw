@@ -29,7 +29,7 @@ public class RenameCategoryDialog extends DialogFragment {
         builder.setPositiveButton(R.string.rename, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                castToOwner(getActivity()).onRenameCategoryDialogSuccess(categoryName, input.getText().toString().toUpperCase());
+                getOwner().onRenameCategoryDialogSuccess(categoryName, input.getText().toString().toUpperCase());
             }
         });
 
@@ -41,12 +41,13 @@ public class RenameCategoryDialog extends DialogFragment {
     }
 
 
-    protected Owner castToOwner(final Activity activity) {
+    protected Owner getOwner() {
+        final Activity activity = getActivity();
         if (activity instanceof Owner) {
             return (Owner)activity;
         } else {
             throw new RuntimeException(activity.toString()
-                    + " must implement RenameCategoryDialog.Owner");
+                    + " must implement NewCategoryDialog.Owner");
         }
     }
 

@@ -26,7 +26,7 @@ public class NewCategoryDialog extends DialogFragment {
         builder.setPositiveButton(R.string.create, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                castToOwner(getActivity()).onNewCategoryDialogSuccess(input.getText().toString().toUpperCase());
+                getOwner().onNewCategoryDialogSuccess(input.getText().toString().toUpperCase());
             }
         });
 
@@ -38,7 +38,8 @@ public class NewCategoryDialog extends DialogFragment {
     }
 
 
-    protected Owner castToOwner(final Activity activity) {
+    protected Owner getOwner() {
+        final Activity activity = getActivity();
         if (activity instanceof Owner) {
             return (Owner)activity;
         } else {
