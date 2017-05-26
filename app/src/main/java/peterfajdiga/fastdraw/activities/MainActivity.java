@@ -17,6 +17,7 @@ import java.io.File;
 
 import peterfajdiga.fastdraw.R;
 import peterfajdiga.fastdraw.dialogs.NewCategoryDialog;
+import peterfajdiga.fastdraw.dialogs.RenameCategoryDialog;
 import peterfajdiga.fastdraw.launcher.AppItemManager;
 import peterfajdiga.fastdraw.listeners.DragStartListener;
 import peterfajdiga.fastdraw.listeners.DropZoneAppInfo;
@@ -37,8 +38,9 @@ public class MainActivity extends Activity implements
         DropZoneRemoveShortcut.Owner<LauncherItem>,
         DropZoneCategory.Owner<LauncherItem>,
         DropZoneNewCategory.Owner<LauncherItem>,
+        DragStartListener.Owner<LauncherItem>,
         NewCategoryDialog.Owner,
-        DragStartListener.Owner<LauncherItem> {
+        RenameCategoryDialog.Owner {
 
     public static final int INSTALL_SHORTCUT_REQUEST = 2143;
 
@@ -153,6 +155,10 @@ public class MainActivity extends Activity implements
         return true;
     }
 
+    public LauncherPager getPager() {
+        return (LauncherPager)findViewById(R.id.apps_pager);
+    }
+
 
 
     // actions
@@ -160,23 +166,6 @@ public class MainActivity extends Activity implements
     public void openWallpaperPicker() {
         Intent intent = new Intent(Intent.ACTION_SET_WALLPAPER);
         startActivity(Intent.createChooser(intent, getString(R.string.wallpaper)));
-    }
-
-
-
-    // management
-
-    public LauncherPager getPager() {
-        return (LauncherPager)findViewById(R.id.apps_pager);
-    }
-
-    // TODO: move to LauncherPager
-    public void renameCategory(String oldName, String newName) {
-        final LauncherPager pager = getPager();
-        boolean followItem = oldName.equals(pager.getCurrentCategoryName());
-        for (LauncherItem item : pager.getLauncherItems(oldName)) {
-            pager.moveLauncherItem(item, newName, followItem);
-        }
     }
 
 
@@ -265,5 +254,14 @@ public class MainActivity extends Activity implements
     public void onNewCategoryDialogSuccess(String newCategoryName) {
         getPager().moveLauncherItem(newCategoryDroppedItem, newCategoryName, true);
         newCategoryDroppedItem = null;
+    }
+
+    @Override
+    public void onRenameCategoryDialogSuccess(String oldCategoryName, String newCategoryName) {
+        final LauncherPager pager = getPager();
+        boolean followItem = oldCategoryName.equals(pager.getCurrentCategoryName());
+        for (LauncherItem item : pager.getLauncherItems(oldCategoryName)) {
+            pager.moveLauncherItem(item, newCategoryName, followItem);
+        }
     }
 }

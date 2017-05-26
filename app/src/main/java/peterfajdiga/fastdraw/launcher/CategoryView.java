@@ -38,7 +38,6 @@ class CategoryView extends GridView {
 
         setAdapter(new CategoryArrayAdapter(context));
 
-        final MainActivity activity = (MainActivity)context;
         setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int pos, long id) {
@@ -53,7 +52,7 @@ class CategoryView extends GridView {
                     opts = ActivityOptions.makeScaleUpAnimation(view, 0, 0, view.getWidth(), view.getHeight());
                 }
 
-                activity.startActivity(intent, opts.toBundle());
+                context.startActivity(intent, opts.toBundle());
             }
         });
 

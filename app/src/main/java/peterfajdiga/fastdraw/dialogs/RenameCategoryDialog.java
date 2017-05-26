@@ -1,5 +1,6 @@
 package peterfajdiga.fastdraw.dialogs;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
@@ -10,7 +11,6 @@ import android.view.WindowManager;
 import android.widget.EditText;
 
 import peterfajdiga.fastdraw.R;
-import peterfajdiga.fastdraw.activities.MainActivity;
 
 public class RenameCategoryDialog extends DialogFragment {
 
@@ -29,7 +29,7 @@ public class RenameCategoryDialog extends DialogFragment {
         builder.setPositiveButton(R.string.rename, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                ((MainActivity)getActivity()).renameCategory(categoryName, input.getText().toString().toUpperCase());
+                castToOwner(getActivity()).onRenameCategoryDialogSuccess(categoryName, input.getText().toString().toUpperCase());
             }
         });
 
@@ -38,5 +38,20 @@ public class RenameCategoryDialog extends DialogFragment {
         Dialog d = builder.create();
         d.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
         return d;
+    }
+
+
+    protected Owner castToOwner(final Activity activity) {
+        if (activity instanceof Owner) {
+            return (Owner)activity;
+        } else {
+            throw new RuntimeException(activity.toString()
+                    + " must implement RenameCategoryDialog.Owner");
+        }
+    }
+
+
+    public interface Owner {
+        void onRenameCategoryDialogSuccess(String oldCategoryName, String newCategoryName);
     }
 }
