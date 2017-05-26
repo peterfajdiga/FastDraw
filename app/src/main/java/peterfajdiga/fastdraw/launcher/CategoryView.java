@@ -12,8 +12,6 @@ import android.widget.AdapterView;
 import android.widget.GridView;
 
 import peterfajdiga.fastdraw.R;
-import peterfajdiga.fastdraw.activities.MainActivity;
-import peterfajdiga.fastdraw.dialogs.CreateShortcutDialog;
 import peterfajdiga.fastdraw.launcher.item.LauncherItem;
 import peterfajdiga.fastdraw.listeners.DragStartListener;
 
@@ -63,12 +61,16 @@ class CategoryView extends GridView {
     public boolean onTouchEvent(MotionEvent event) {
         if (System.currentTimeMillis() - interceptTouchTime >= LONG_CLICK_TIME) {
             this.performHapticFeedback(HapticFeedbackConstants.LONG_PRESS);
-            // change wallpaper
-            /*((MainActivity)getContext()).openWallpaperPicker();*/
 
-            // Show shortcut dialog
-            CreateShortcutDialog dialog = new CreateShortcutDialog();
-            dialog.show(((MainActivity)getContext()).getFragmentManager(), "CreateShortcutDialog");
+            final Context context = getContext();
+            final LauncherPager.Owner owner;
+            if (context instanceof LauncherPager.Owner) {
+                owner = (LauncherPager.Owner)context;
+            } else {
+                throw new RuntimeException(context.toString()
+                        + " must implement LauncherPager.Owner");
+            }
+            owner.onPagerLongpress();
 
             interceptTouchTime = Long.MAX_VALUE;
         } else if (mouseMoved(event.getX(), event.getY())) {

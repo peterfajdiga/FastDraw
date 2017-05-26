@@ -16,6 +16,7 @@ import android.view.WindowManager;
 import java.io.File;
 
 import peterfajdiga.fastdraw.R;
+import peterfajdiga.fastdraw.dialogs.CreateShortcutDialog;
 import peterfajdiga.fastdraw.dialogs.NewCategoryDialog;
 import peterfajdiga.fastdraw.dialogs.RenameCategoryDialog;
 import peterfajdiga.fastdraw.launcher.AppItemManager;
@@ -33,6 +34,7 @@ import peterfajdiga.fastdraw.launcher.LauncherPager;
 import peterfajdiga.fastdraw.views.LauncherPagerHeader;
 
 public class MainActivity extends Activity implements
+        LauncherPager.Owner,
         InstallAppReceiver.Owner,
         InstallShortcutReceiver.Owner,
         DropZoneRemoveShortcut.Owner<LauncherItem>,
@@ -166,6 +168,16 @@ public class MainActivity extends Activity implements
     public void openWallpaperPicker() {
         Intent intent = new Intent(Intent.ACTION_SET_WALLPAPER);
         startActivity(Intent.createChooser(intent, getString(R.string.wallpaper)));
+    }
+
+    @Override
+    public void onPagerLongpress() {
+        // change wallpaper
+        /*openWallpaperPicker();*/
+
+        // Show shortcut dialog
+        final CreateShortcutDialog dialog = new CreateShortcutDialog();
+        dialog.show(getFragmentManager(), "CreateShortcutDialog");
     }
 
 

@@ -119,4 +119,9 @@ public class LauncherPager extends ViewPager {
             showCategory(categoryName);
         }
     }
+
+
+    public interface Owner {
+        void onPagerLongpress();
+    }
 }
