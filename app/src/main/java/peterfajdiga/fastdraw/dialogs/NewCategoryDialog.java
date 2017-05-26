@@ -1,5 +1,6 @@
 package peterfajdiga.fastdraw.dialogs;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
@@ -10,17 +11,12 @@ import android.view.WindowManager;
 import android.widget.EditText;
 
 import peterfajdiga.fastdraw.R;
-import peterfajdiga.fastdraw.activities.MainActivity;
-import peterfajdiga.fastdraw.launcher.item.LauncherItem;
 
 public class NewCategoryDialog extends DialogFragment {
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        final MainActivity activity = (MainActivity)getActivity();
-        final LauncherItem item = activity.draggedItem;
-
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setTitle(R.string.new_category);
         final EditText input = new EditText(getActivity());
         input.setSelectAllOnFocus(true);
@@ -30,7 +26,7 @@ public class NewCategoryDialog extends DialogFragment {
         builder.setPositiveButton(R.string.create, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                activity.getPager().moveLauncherItem(item, input.getText().toString().toUpperCase(), true);
+                castToOwner(getActivity()).onNewCategoryDialogSuccess(input.getText().toString().toUpperCase());
             }
         });
 
@@ -39,5 +35,20 @@ public class NewCategoryDialog extends DialogFragment {
         Dialog d = builder.create();
         d.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
         return d;
+    }
+
+
+    protected Owner castToOwner(final Activity activity) {
+        if (activity instanceof Owner) {
+            return (Owner)activity;
+        } else {
+            throw new RuntimeException(activity.toString()
+                    + " must implement NewCategoryDialog.Owner");
+        }
+    }
+
+
+    public interface Owner {
+        void onNewCategoryDialogSuccess(String newCategoryName);
     }
 }

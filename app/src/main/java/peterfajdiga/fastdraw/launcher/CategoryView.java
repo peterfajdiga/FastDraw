@@ -15,6 +15,7 @@ import peterfajdiga.fastdraw.R;
 import peterfajdiga.fastdraw.activities.MainActivity;
 import peterfajdiga.fastdraw.dialogs.CreateShortcutDialog;
 import peterfajdiga.fastdraw.launcher.item.LauncherItem;
+import peterfajdiga.fastdraw.listeners.DragStartListener;
 
 class CategoryView extends GridView {
 
@@ -56,24 +57,7 @@ class CategoryView extends GridView {
             }
         });
 
-        setOnItemLongClickListener(new OnItemLongClickListener() {
-            @Override
-            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int pos, long id) {
-                // show drop zones
-                ((MainActivity)context).showDropZones((LauncherItem)getItemAtPosition(pos));
-
-                view.performHapticFeedback(HapticFeedbackConstants.LONG_PRESS);
-
-                // start drag
-                View.DragShadowBuilder shadow = new View.DragShadowBuilder(view);
-                if (Build.VERSION.SDK_INT < 24) {
-                    view.startDrag(null, shadow, null, 0);
-                } else {
-                    view.startDragAndDrop(null, shadow, null, 0);
-                }
-                return false;
-            }
-        });
+        setOnItemLongClickListener(new DragStartListener());
     }
 
     @Override

@@ -1,9 +1,7 @@
 package peterfajdiga.fastdraw.listeners;
 
+import android.content.Context;
 import android.view.View;
-
-import peterfajdiga.fastdraw.activities.MainActivity;
-import peterfajdiga.fastdraw.launcher.item.ShortcutItem;
 
 public class DropZoneRemoveShortcut extends DropZone {
 
@@ -12,11 +10,23 @@ public class DropZoneRemoveShortcut extends DropZone {
     }
 
     @Override
-    protected void onDrop(View view) {
-        MainActivity activity = ((MainActivity)view.getContext());
-        //assert activity.draggedItem instanceof ShortcutItem;
-        ShortcutItem item = (ShortcutItem)activity.draggedItem;
-        activity.getPager().removeLauncherItem(item);
-        item.delete();
+    protected void onDrop(final View view) {
+        final Owner owner = castToOwner(view.getContext());
+        owner.onDraggedItemRemove();
+    }
+
+    @Override
+    protected Owner castToOwner(final Context context) {
+        if (context instanceof Owner) {
+            return (Owner)context;
+        } else {
+            throw new RuntimeException(context.toString()
+                    + " must implement DropZoneRemoveShortcut.Owner");
+        }
+    }
+
+
+    public interface Owner<T> extends DropZone.Owner<T> {
+        void onDraggedItemRemove();
     }
 }

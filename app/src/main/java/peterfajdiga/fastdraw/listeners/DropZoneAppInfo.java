@@ -1,5 +1,6 @@
 package peterfajdiga.fastdraw.listeners;
 
+import android.content.Context;
 import android.view.View;
 
 import peterfajdiga.fastdraw.activities.MainActivity;
@@ -8,10 +9,11 @@ import peterfajdiga.fastdraw.launcher.item.AppItem;
 public class DropZoneAppInfo extends DropZone {
 
     @Override
-    protected void onDrop(View view) {
-        MainActivity activity = ((MainActivity)view.getContext());
-        //assert activity.draggedItem instanceof AppItem;
-        AppItem app = (AppItem)activity.draggedItem;
-        app.openAppDetails(activity);
+    protected void onDrop(final View view) {
+        final Context context = view.getContext();
+        final Owner owner = castToOwner(context);
+        //assert owner.getDraggedItem() instanceof AppItem;
+        final AppItem appItem = (AppItem)owner.getDraggedItem();
+        appItem.openAppDetails(context);
     }
 }

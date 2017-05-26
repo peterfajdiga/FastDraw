@@ -16,8 +16,11 @@ import android.view.WindowManager;
 import java.io.File;
 
 import peterfajdiga.fastdraw.R;
+import peterfajdiga.fastdraw.dialogs.NewCategoryDialog;
 import peterfajdiga.fastdraw.launcher.AppItemManager;
+import peterfajdiga.fastdraw.listeners.DragStartListener;
 import peterfajdiga.fastdraw.listeners.DropZoneAppInfo;
+import peterfajdiga.fastdraw.listeners.DropZoneCategory;
 import peterfajdiga.fastdraw.listeners.DropZoneNewCategory;
 import peterfajdiga.fastdraw.listeners.DropZoneRemoveShortcut;
 import peterfajdiga.fastdraw.listeners.InstallAppReceiver;
@@ -30,11 +33,14 @@ import peterfajdiga.fastdraw.views.LauncherPagerHeader;
 
 public class MainActivity extends Activity implements
         InstallAppReceiver.Owner,
-        InstallShortcutReceiver.Owner {
+        InstallShortcutReceiver.Owner,
+        DropZoneRemoveShortcut.Owner<LauncherItem>,
+        DropZoneCategory.Owner<LauncherItem>,
+        DropZoneNewCategory.Owner<LauncherItem>,
+        NewCategoryDialog.Owner,
+        DragStartListener.Owner<LauncherItem> {
 
     public static final int INSTALL_SHORTCUT_REQUEST = 2143;
-
-    public LauncherItem draggedItem = null;
 
     private InstallShortcutReceiver installShortcutReceiver;
     private InstallAppReceiver installAppReceiver;
@@ -156,26 +162,6 @@ public class MainActivity extends Activity implements
         startActivity(Intent.createChooser(intent, getString(R.string.wallpaper)));
     }
 
-    public void hideDropZones() {
-        if (draggedItem != null) {
-            getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
-            findViewById(R.id.apps_pager).animate().alpha(1.0f);
-            findViewById(R.id.category_drop_zone_container).setVisibility(View.GONE);
-            draggedItem = null;
-        }
-    }
-
-    public void showDropZones(LauncherItem draggedItem) {
-        this.draggedItem = draggedItem;
-        getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        findViewById(R.id.apps_pager).animate().alpha(0.2f);
-        findViewById(R.id.category_drop_zone_container).setVisibility(View.VISIBLE);
-
-        // type specific drop zones
-        findViewById(R.id.drop_zone_app_info)       .setVisibility(draggedItem instanceof AppItem      ? View.VISIBLE : View.GONE);
-        findViewById(R.id.drop_zone_remove_shortcut).setVisibility(draggedItem instanceof ShortcutItem ? View.VISIBLE : View.GONE);
-    }
-
 
 
     // management
@@ -196,9 +182,10 @@ public class MainActivity extends Activity implements
 
 
     // app management
+
     @Override
     public void onAppInstall(String packageName) {
-        AppItemManager.removeAppItems(getPager(), packageName);
+        AppItemManager.addAppItems(this, getPager(), packageName);
     }
 
     @Override
@@ -209,11 +196,74 @@ public class MainActivity extends Activity implements
 
     @Override
     public void onAppRemove(String packageName) {
-        AppItemManager.addAppItems(this, getPager(), packageName);
+        AppItemManager.removeAppItems(getPager(), packageName);
     }
 
     @Override
     public void onShortcutReceived(ShortcutItem newShortcut) {
         getPager().addLauncherItem(newShortcut);
+    }
+
+
+
+    // LauncherItem dragging
+
+    private LauncherItem draggedItem = null;
+    private LauncherItem newCategoryDroppedItem = null;
+
+    @Override
+    public void onDragEnded() {
+        if (draggedItem != null) {
+            // hide drop zones
+            getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
+            findViewById(R.id.apps_pager).animate().alpha(1.0f);
+            findViewById(R.id.category_drop_zone_container).setVisibility(View.GONE);
+            draggedItem = null;
+        }
+    }
+
+    @Override
+    public void onDragStarted(LauncherItem draggedItem) {
+        this.draggedItem = draggedItem;
+
+        // show drop zones
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        findViewById(R.id.apps_pager).animate().alpha(0.2f);
+        findViewById(R.id.category_drop_zone_container).setVisibility(View.VISIBLE);
+
+        // show type specific drop zones
+        findViewById(R.id.drop_zone_app_info)       .setVisibility(draggedItem instanceof AppItem      ? View.VISIBLE : View.GONE);
+        findViewById(R.id.drop_zone_remove_shortcut).setVisibility(draggedItem instanceof ShortcutItem ? View.VISIBLE : View.GONE);
+    }
+
+    @Override
+    public LauncherItem getDraggedItem() {
+        return draggedItem;
+    }
+
+    @Override
+    public void onDraggedItemRemove() {
+        //assert draggedItem instanceof ShortcutItem;
+        ShortcutItem shortcutItem = (ShortcutItem)draggedItem;
+        getPager().removeLauncherItem(shortcutItem);
+        shortcutItem.delete();
+    }
+
+    @Override
+    public void onDraggedItemChangeCategory(String newCategoryName) {
+        getPager().moveLauncherItem(draggedItem, newCategoryName, true);
+    }
+
+    @Override
+    public void onDraggedItemNewCategory() {
+        newCategoryDroppedItem = draggedItem;
+        NewCategoryDialog dialog = new NewCategoryDialog();
+        dialog.show(getFragmentManager(), "NewCategoryDialog");
+    }
+
+    @Override
+    public void onNewCategoryDialogSuccess(String newCategoryName) {
+        getPager().moveLauncherItem(newCategoryDroppedItem, newCategoryName, true);
+        newCategoryDroppedItem = null;
     }
 }

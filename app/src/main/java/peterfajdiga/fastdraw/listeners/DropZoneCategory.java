@@ -1,5 +1,6 @@
 package peterfajdiga.fastdraw.listeners;
 
+import android.content.Context;
 import android.view.View;
 
 import peterfajdiga.fastdraw.activities.MainActivity;
@@ -8,9 +9,24 @@ public class DropZoneCategory extends DropZone {
 
     @Override
     protected void onDrop(View view) {
-        MainActivity activity = ((MainActivity)view.getContext());
-        String categoryName = (String)view.getTag();
-        System.out.println(categoryName);
-        activity.getPager().moveLauncherItem(activity.draggedItem, categoryName, true);
+        final String newCategoryName = (String)view.getTag();
+        final Owner owner = castToOwner(view.getContext());
+        owner.onDraggedItemChangeCategory(newCategoryName);
+    }
+
+
+    @Override
+    protected Owner castToOwner(final Context context) {
+        if (context instanceof Owner) {
+            return (Owner)context;
+        } else {
+            throw new RuntimeException(context.toString()
+                    + " must implement DropZoneCategory.Owner");
+        }
+    }
+
+
+    public interface Owner<T> extends DropZone.Owner<T> {
+        void onDraggedItemChangeCategory(String newCategoryName);
     }
 }
