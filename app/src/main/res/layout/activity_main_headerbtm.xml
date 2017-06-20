@@ -7,13 +7,15 @@
         android:id="@+id/apps_pager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="@dimen/pager_header_height" />
+        android:layout_marginTop="@dimen/status_bar_height"
+        android:layout_marginBottom="@dimen/pager_header_height" />
 
     <LinearLayout
         android:id="@+id/header"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
+        android:layout_gravity="bottom"
         android:background="@drawable/bg_line_btm">
 
         <peterfajdiga.fastdraw.views.LauncherPagerHeader

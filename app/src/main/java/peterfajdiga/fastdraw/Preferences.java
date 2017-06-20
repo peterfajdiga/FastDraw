@@ -9,4 +9,8 @@ public final class Preferences {
     public static boolean stackFromBottom() {
         return false;
     }
+
+    public static int mainLayoutResource() {
+        return R.layout.activity_main_headertop;
+    }
 }

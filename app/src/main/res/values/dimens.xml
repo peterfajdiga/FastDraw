@@ -2,7 +2,8 @@
     <!-- Default screen margins, per the Android Design guidelines. -->
     <!--<dimen name="activity_horizontal_margin">16dp</dimen>-->
     <!--<dimen name="activity_vertical_margin">16dp</dimen>-->
-    <dimen name="pager_header_height">80dp</dimen>
+    <dimen name="pager_header_height">56dp</dimen>
+    <dimen name="pager_header_height_with_status_bar">80dp</dimen>
     <!--doesn't work with api 25, returns 48dp-->
     <!--TODO: do something better or make sure it's 24dp everywhere-->
     <!--<dimen name="status_bar_height">@*android:dimen/status_bar_height</dimen>-->

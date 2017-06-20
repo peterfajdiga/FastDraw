@@ -17,6 +17,7 @@ import android.view.HapticFeedbackConstants;
 import android.view.View;
 import android.view.ViewGroup;
 
+import peterfajdiga.fastdraw.Preferences;
 import peterfajdiga.fastdraw.R;
 import peterfajdiga.fastdraw.dialogs.RenameCategoryDialog;
 import peterfajdiga.fastdraw.listeners.DropZoneCategory;
@@ -89,7 +90,9 @@ public class LauncherPagerHeader extends TabLayout {
         final ViewGroup tabContainer = (ViewGroup)getChildAt(0);
         final View tabView = tabContainer.getChildAt(tab.getPosition());
 
-        tabView.setPadding(0, getResources().getDimensionPixelSize(R.dimen.status_bar_height), 0, 0);
+        if (Preferences.mainLayoutResource() == R.layout.activity_main_headertop) {
+            tabView.setPadding(0, getResources().getDimensionPixelSize(R.dimen.status_bar_height), 0, 0);
+        }
         tabView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View view) {

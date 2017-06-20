@@ -15,6 +15,7 @@ import android.view.WindowManager;
 
 import java.io.File;
 
+import peterfajdiga.fastdraw.Preferences;
 import peterfajdiga.fastdraw.R;
 import peterfajdiga.fastdraw.dialogs.CreateShortcutDialog;
 import peterfajdiga.fastdraw.dialogs.NewCategoryDialog;
@@ -52,7 +53,7 @@ public class MainActivity extends Activity implements
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(Preferences.mainLayoutResource());
 
         getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
 
