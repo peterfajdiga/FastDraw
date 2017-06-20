@@ -11,6 +11,7 @@ import android.view.ViewConfiguration;
 import android.widget.AdapterView;
 import android.widget.GridView;
 
+import peterfajdiga.fastdraw.Preferences;
 import peterfajdiga.fastdraw.R;
 import peterfajdiga.fastdraw.launcher.item.LauncherItem;
 import peterfajdiga.fastdraw.listeners.DragStartListener;
@@ -26,12 +27,15 @@ class CategoryView extends GridView {
     public CategoryView(final Context context) {
         super(context);
 
-        if (CategoryArrayAdapter.APP_ITEM_STYLE == R.layout.app_item) {
+        if (Preferences.appItemResource() == R.layout.app_item) {
             setNumColumns(GridView.AUTO_FIT);
             setColumnWidth(
                 context.getResources().getDimensionPixelSize(R.dimen.app_icon_size) +
                 context.getResources().getDimensionPixelSize(R.dimen.app_icon_padding) * 2
             );
+        }
+        if (Preferences.stackFromBottom()) {
+            setStackFromBottom(true);
         }
 
         setAdapter(new CategoryArrayAdapter(context));

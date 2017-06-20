@@ -11,22 +11,21 @@ import android.widget.TextView;
 
 import java.util.Comparator;
 
+import peterfajdiga.fastdraw.Preferences;
 import peterfajdiga.fastdraw.R;
 import peterfajdiga.fastdraw.launcher.item.AppItem;
 import peterfajdiga.fastdraw.launcher.item.LauncherItem;
 
 class CategoryArrayAdapter extends ArrayAdapter<LauncherItem>{
 
-    public static final int APP_ITEM_STYLE = R.layout.app_item;
-
     public CategoryArrayAdapter(Context context) {
-        super(context, APP_ITEM_STYLE);
+        super(context, Preferences.appItemResource());
     }
 
     @Override
     public View getView(int position, View convertView, final ViewGroup parent) {
         if (convertView == null) {
-            convertView = ((Activity)getContext()).getLayoutInflater().inflate(CategoryArrayAdapter.APP_ITEM_STYLE, null);
+            convertView = ((Activity)getContext()).getLayoutInflater().inflate(Preferences.appItemResource(), null);
         }
         final LauncherItem item = getItem(position);
 
@@ -40,7 +39,7 @@ class CategoryArrayAdapter extends ArrayAdapter<LauncherItem>{
         TextView appLabel = (TextView)convertView.findViewById(R.id.app_item_name);
         appLabel.setText(item.name);
 
-        if (CategoryArrayAdapter.APP_ITEM_STYLE == R.layout.app_item_package && item instanceof AppItem) {
+        if (Preferences.appItemResource() == R.layout.app_item_package && item instanceof AppItem) {
             TextView appName = (TextView)convertView.findViewById(R.id.app_item_package_name);
             appName.setText(((AppItem)item).packageName);
         }
