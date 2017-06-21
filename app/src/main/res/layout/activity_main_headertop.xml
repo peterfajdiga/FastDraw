@@ -14,7 +14,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:background="@drawable/bg_top">
+        android:background="@drawable/bg_hdr_top">
 
         <peterfajdiga.fastdraw.views.LauncherPagerHeader
             android:id="@+id/apps_pager_header"

@@ -16,7 +16,7 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:layout_gravity="bottom"
-        android:background="@drawable/bg_btm">
+        android:background="@drawable/bg_hdr_btm">
 
         <peterfajdiga.fastdraw.views.LauncherPagerHeader
             android:id="@+id/apps_pager_header"

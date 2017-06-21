@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item>
+        <color android:color="@android:color/transparent"/>
+    </item>
+    <item android:height="@dimen/shadow_size" android:gravity="top">
+        <shape>
+            <gradient
+                android:startColor="@color/darkBg"
+                android:endColor="@android:color/transparent"
+                android:angle="270" >
+            </gradient>
+        </shape>
+    </item>
+    <item android:height="@dimen/shadow_size" android:gravity="bottom">
+        <shape>
+            <gradient
+                android:startColor="@android:color/transparent"
+                android:endColor="@color/darkBg"
+                android:angle="270" >
+            </gradient>
+        </shape>
+    </item>
+    <!--<item>-->
+        <!--<shape>-->
+            <!--<gradient-->
+                <!--android:startColor="@android:color/holo_green_dark"-->
+                <!--android:centerColor="@android:color/transparent"-->
+                <!--android:endColor="@android:color/transparent"-->
+                <!--android:centerY="0.15"-->
+                <!--android:angle="270" >-->
+            <!--</gradient>-->
+        <!--</shape>-->
+    <!--</item>-->
+    <!--<item>-->
+        <!--<shape>-->
+            <!--<gradient-->
+                <!--android:startColor="@android:color/transparent"-->
+                <!--android:centerColor="@android:color/transparent"-->
+                <!--android:endColor="@android:color/holo_green_dark"-->
+                <!--android:centerY="0.85"-->
+                <!--android:angle="270" >-->
+            <!--</gradient>-->
+        <!--</shape>-->
+    <!--</item>-->
+</layer-list>
