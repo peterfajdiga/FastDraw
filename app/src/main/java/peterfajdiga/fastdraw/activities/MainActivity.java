@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.graphics.drawable.TransitionDrawable;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.view.View;
@@ -47,6 +48,8 @@ public class MainActivity extends Activity implements
 
     public static final int INSTALL_SHORTCUT_REQUEST = 2143;
 
+    private static final int DROPZONE_TRANSITION_DURATION = 200;
+
     private InstallShortcutReceiver installShortcutReceiver;
     private InstallAppReceiver installAppReceiver;
 
@@ -61,10 +64,10 @@ public class MainActivity extends Activity implements
         ViewGroup header = (ViewGroup)findViewById(R.id.header);
         LayoutTransition lt = new LayoutTransition();
         lt.setStartDelay(LayoutTransition.APPEARING, 0);
-//        lt.setStartDelay(LayoutTransition.CHANGE_APPEARING, 200);
-        lt.setDuration(LayoutTransition.CHANGE_APPEARING, 200);
+//        lt.setStartDelay(LayoutTransition.CHANGE_APPEARING, DROPZONE_TRANSITION_DURATION);
+        lt.setDuration(LayoutTransition.CHANGE_APPEARING, DROPZONE_TRANSITION_DURATION);
         lt.setStartDelay(LayoutTransition.CHANGE_DISAPPEARING, 0);
-        lt.setDuration(LayoutTransition.CHANGE_DISAPPEARING, 200);
+        lt.setDuration(LayoutTransition.CHANGE_DISAPPEARING, DROPZONE_TRANSITION_DURATION);
         header.setLayoutTransition(lt);
 
         findViewById(R.id.drop_zone_new_category).setOnDragListener(new DropZoneNewCategory());
@@ -217,10 +220,27 @@ public class MainActivity extends Activity implements
     public void onDragEnded() {
         if (draggedItem != null) {
             // hide drop zones
-            getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
             findViewById(R.id.apps_pager).animate().alpha(1.0f);
             findViewById(R.id.category_drop_zone_container).setVisibility(View.GONE);
             draggedItem = null;
+        }
+
+        // remove header background
+        final View header = findViewById(R.id.header);
+        final TransitionDrawable bg = (TransitionDrawable)header.getBackground();
+        bg.reverseTransition(DROPZONE_TRANSITION_DURATION);
+
+        // show status or navigation bar
+        switch (Preferences.mainLayoutResource()) {
+            case R.layout.activity_main_headertop: {
+                getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
+                break;
+            }
+            case R.layout.activity_main_headerbtm: {
+                //getWindow().getDecorView().setSystemUiVisibility(0);
+                getWindow().setNavigationBarColor(getResources().getColor(android.R.color.transparent));  // TODO: animate
+                break;
+            }
         }
     }
 
@@ -229,13 +249,30 @@ public class MainActivity extends Activity implements
         this.draggedItem = draggedItem;
 
         // show drop zones
-        getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
         findViewById(R.id.apps_pager).animate().alpha(0.2f);
         findViewById(R.id.category_drop_zone_container).setVisibility(View.VISIBLE);
 
         // show type specific drop zones
         findViewById(R.id.drop_zone_app_info)       .setVisibility(draggedItem instanceof AppItem      ? View.VISIBLE : View.GONE);
         findViewById(R.id.drop_zone_remove_shortcut).setVisibility(draggedItem instanceof ShortcutItem ? View.VISIBLE : View.GONE);
+
+        // set header background
+        final View header = findViewById(R.id.header);
+        final TransitionDrawable bg = (TransitionDrawable)header.getBackground();
+        bg.startTransition(DROPZONE_TRANSITION_DURATION);
+
+        // hide status or navigation bar
+        switch (Preferences.mainLayoutResource()) {
+            case R.layout.activity_main_headertop: {
+                getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
+                break;
+            }
+            case R.layout.activity_main_headerbtm: {
+                //getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
+                getWindow().setNavigationBarColor(getResources().getColor(R.color.darkBg));  // TODO: animate
+                break;
+            }
+        }
     }
 
     @Override
