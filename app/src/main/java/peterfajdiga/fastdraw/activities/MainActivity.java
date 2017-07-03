@@ -1,13 +1,13 @@
 package peterfajdiga.fastdraw.activities;
 
 import android.animation.LayoutTransition;
+import android.animation.ValueAnimator;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
-import android.graphics.drawable.TransitionDrawable;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.view.View;
@@ -16,8 +16,10 @@ import android.view.WindowManager;
 
 import java.io.File;
 
+import peterfajdiga.fastdraw.NavigationBarAnimator;
 import peterfajdiga.fastdraw.Preferences;
 import peterfajdiga.fastdraw.R;
+import peterfajdiga.fastdraw.ViewBgAnimator;
 import peterfajdiga.fastdraw.dialogs.CreateShortcutDialog;
 import peterfajdiga.fastdraw.dialogs.NewCategoryDialog;
 import peterfajdiga.fastdraw.dialogs.RenameCategoryDialog;
@@ -53,6 +55,8 @@ public class MainActivity extends Activity implements
     private InstallShortcutReceiver installShortcutReceiver;
     private InstallAppReceiver installAppReceiver;
 
+    private ValueAnimator dragBgAnimator;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -80,6 +84,18 @@ public class MainActivity extends Activity implements
         pagerHeader.setupWithViewPager(appsPager);
 
         loadLauncherItems();
+
+
+        // header color animator
+        dragBgAnimator = ValueAnimator.ofArgb(Preferences.headerBgColor(), Preferences.headerBgColorExpanded());
+        dragBgAnimator.setDuration(DROPZONE_TRANSITION_DURATION);
+        dragBgAnimator.addUpdateListener(new ViewBgAnimator(header));
+        if (Preferences.mainLayoutResource() == R.layout.activity_main_headerbtm) {
+            dragBgAnimator.addUpdateListener(new NavigationBarAnimator(getWindow()));
+        } else {
+            getWindow().setNavigationBarColor(Preferences.headerBgColor());
+        }
+        dragBgAnimator.setCurrentPlayTime(0);
 
 
         // BroadcastReceivers
@@ -225,10 +241,8 @@ public class MainActivity extends Activity implements
             draggedItem = null;
         }
 
-        // remove header background
-        final View header = findViewById(R.id.header);
-        final TransitionDrawable bg = (TransitionDrawable)header.getBackground();
-        bg.reverseTransition(DROPZONE_TRANSITION_DURATION);
+        // reset header background
+        dragBgAnimator.reverse();
 
         // show status or navigation bar
         switch (Preferences.mainLayoutResource()) {
@@ -236,11 +250,10 @@ public class MainActivity extends Activity implements
                 getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
                 break;
             }
-            case R.layout.activity_main_headerbtm: {
-                //getWindow().getDecorView().setSystemUiVisibility(0);
-                getWindow().setNavigationBarColor(getResources().getColor(android.R.color.transparent));  // TODO: animate
-                break;
-            }
+//            case R.layout.activity_main_headerbtm: {
+//                getWindow().getDecorView().setSystemUiVisibility(0);
+//                break;
+//            }
         }
     }
 
@@ -257,9 +270,7 @@ public class MainActivity extends Activity implements
         findViewById(R.id.drop_zone_remove_shortcut).setVisibility(draggedItem instanceof ShortcutItem ? View.VISIBLE : View.GONE);
 
         // set header background
-        final View header = findViewById(R.id.header);
-        final TransitionDrawable bg = (TransitionDrawable)header.getBackground();
-        bg.startTransition(DROPZONE_TRANSITION_DURATION);
+        dragBgAnimator.start();
 
         // hide status or navigation bar
         switch (Preferences.mainLayoutResource()) {
@@ -267,11 +278,10 @@ public class MainActivity extends Activity implements
                 getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
                 break;
             }
-            case R.layout.activity_main_headerbtm: {
-                //getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
-                getWindow().setNavigationBarColor(getResources().getColor(R.color.darkBg));  // TODO: animate
-                break;
-            }
+//            case R.layout.activity_main_headerbtm: {
+//                getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
+//                break;
+//            }
         }
     }
 
