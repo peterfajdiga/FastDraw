@@ -34,9 +34,7 @@ class CategoryView extends GridView {
                 context.getResources().getDimensionPixelSize(R.dimen.app_icon_padding) * 2
             );
         }
-        if (Preferences.stackFromBottom()) {
-            setStackFromBottom(true);
-        }
+        setStackFromBottom(Preferences.stackFromBottom());
 
         setAdapter(new CategoryArrayAdapter(context));
 

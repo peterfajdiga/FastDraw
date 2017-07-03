@@ -21,4 +21,8 @@ public final class Preferences {
     public static int headerBgColorExpanded() {
         return 0xB0000000;
     }
+
+    public static boolean statusBarDarker() {
+        return false;
+    }
 }

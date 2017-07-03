@@ -97,6 +97,9 @@ public class MainActivity extends Activity implements
         }
         dragBgAnimator.setCurrentPlayTime(0);
 
+        if (Preferences.statusBarDarker()) {
+            getWindow().setFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS, WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+        }
 
         // BroadcastReceivers
         installShortcutReceiver = new InstallShortcutReceiver(this);
