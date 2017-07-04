@@ -57,9 +57,14 @@ public class MainActivity extends Activity implements
 
     private ValueAnimator dragBgAnimator;
 
+    private static MainActivity instance;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        instance = this;
+        Preferences.loadPreferences(this);
         setContentView(Preferences.mainLayoutResource());
 
         getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
@@ -191,6 +196,13 @@ public class MainActivity extends Activity implements
     public void openWallpaperPicker() {
         Intent intent = new Intent(Intent.ACTION_SET_WALLPAPER);
         startActivity(Intent.createChooser(intent, getString(R.string.wallpaper)));
+    }
+
+    public static void forceFinish() {
+        if (instance != null) {
+            instance.finish();
+            instance = null;
+        }
     }
 
     @Override

@@ -1,17 +1,23 @@
 package peterfajdiga.fastdraw;
 
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
+
 public final class Preferences {
 
     public static int appItemResource() {
         return R.layout.app_item;
     }
 
-    public static boolean stackFromBottom() {
-        return false;
+    private static int mainLayoutResource;
+    public static int mainLayoutResource() {
+        return mainLayoutResource;
     }
 
-    public static int mainLayoutResource() {
-        return R.layout.activity_main_headertop;
+    private static boolean stackFromBottom;
+    public static boolean stackFromBottom() {
+        return stackFromBottom;
     }
 
     public static int headerBgColor() {
@@ -22,7 +28,16 @@ public final class Preferences {
         return 0xB0000000;
     }
 
+    private static boolean statusBarDarker;
     public static boolean statusBarDarker() {
-        return false;
+        return statusBarDarker;
+    }
+
+
+    public static void loadPreferences(final Context context) {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+        mainLayoutResource = prefs.getBoolean("headerbtm", false) ? R.layout.activity_main_headerbtm : R.layout.activity_main_headertop;
+        stackFromBottom = prefs.getBoolean("stackFromBottom", false);
+        statusBarDarker = prefs.getBoolean("statusBarDarker", false);
     }
 }

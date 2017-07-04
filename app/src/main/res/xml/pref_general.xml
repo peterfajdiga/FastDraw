@@ -9,7 +9,7 @@
     <SwitchPreference
         android:defaultValue="false"
         android:key="stackFromBottom"
-        android:title="@string/pref_title_headerbtm"
-        android:summary="@string/pref_description_headerbtm" />
+        android:title="@string/pref_title_stackFromBottom"
+        android:summary="@string/pref_description_stackFromBottom" />
 
 </PreferenceScreen>
