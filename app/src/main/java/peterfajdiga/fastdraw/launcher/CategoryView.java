@@ -20,10 +20,15 @@ class CategoryView extends GridView {
 
     private static final int LONG_CLICK_TIME = ViewConfiguration.getLongPressTimeout();
     private static final int DOUBLE_CLICK_TIME = ViewConfiguration.getDoubleTapTimeout();
-    private static final float LONG_CLICK_MOUSE_MOVE_TOLERANCE = 50;
+    private static final float LONG_CLICK_MOUSE_MOVE_TOLERANCE = 50;  // TODO: separate for DOUBLE_CLICK
+    private static final float PINCH_DISTANCE_TRIGGER_DELTA = 500000;
+
     protected long interceptTouchTime;
     protected float interceptTouchX;
     protected float interceptTouchY;
+
+    protected float pinchStartDistance = 0.0f;
+    protected float pinchPrevDistance = 0.0f;
 
     public CategoryView(final Context context) {
         super(context);
@@ -72,35 +77,79 @@ class CategoryView extends GridView {
         return owner;
     }
 
+    private float distanceSquared(final MotionEvent event) {
+        //assert event.getPointerCount() == 2;
+        final float dx = event.getX(0) - event.getX(1);
+        final float dy = event.getY(0) - event.getY(1);
+        return dx*dx + dy*dy;
+    }
+
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        if (System.currentTimeMillis() - interceptTouchTime >= LONG_CLICK_TIME) {
-            this.performHapticFeedback(HapticFeedbackConstants.LONG_PRESS);
-            getOwner().onPagerLongpress();
-            interceptTouchTime = Long.MAX_VALUE;
-        } else if (mouseMoved(event.getX(), event.getY())) {
-            interceptTouchTime = Long.MAX_VALUE;
+        // perform pinch on liftoff
+        if (event.getAction() == MotionEvent.ACTION_UP && pinchStartDistance - pinchPrevDistance > PINCH_DISTANCE_TRIGGER_DELTA) {
+            getOwner().onPagerPinch();
+            // reset
+            pinchStartDistance = 0.0f;
+            pinchPrevDistance  = 0.0f;
+        }
+
+        switch (event.getPointerCount()) {
+            case 2: {
+                interceptTouchTime = Long.MAX_VALUE;  // disable long click
+
+                // pinch detection
+                final float newDistance = distanceSquared(event);
+                if (pinchStartDistance > 0.0f) {
+                    if (newDistance > pinchPrevDistance) {
+                        // user unpinched, reset
+                        pinchStartDistance = 0.0f;
+                        pinchPrevDistance  = 0.0f;
+                    } else {
+                        // update pinchPrevDistance
+                        pinchPrevDistance = newDistance;
+                    }
+                } else {
+                    // start pinch
+                    pinchStartDistance = newDistance;
+                    pinchPrevDistance  = newDistance;
+                }
+                break;
+            }
+            case 1: {
+                // long click detection
+                if (System.currentTimeMillis() - interceptTouchTime >= LONG_CLICK_TIME) {
+                    this.performHapticFeedback(HapticFeedbackConstants.LONG_PRESS);
+                    getOwner().onPagerLongpress();
+                    interceptTouchTime = Long.MAX_VALUE;
+                } else if (mouseMoved(event.getX(), event.getY())) {
+                    interceptTouchTime = Long.MAX_VALUE;
+                }
+                break;
+            }
         }
         return super.onTouchEvent(event);
     }
 
     @Override
     public boolean onInterceptTouchEvent(MotionEvent event) {
-        // get new values
-        final long newInterceptTouchTime = System.currentTimeMillis();
-        final float newX = event.getX();
-        final float newY = event.getY();
+        if (event.getPointerCount() == 1) {
+            // get new values
+            final long newInterceptTouchTime = System.currentTimeMillis();
+            final float newX = event.getX();
+            final float newY = event.getY();
 
-        // double click detection
-        final long timeSinceLastClick = newInterceptTouchTime - interceptTouchTime;
-        if (timeSinceLastClick <= DOUBLE_CLICK_TIME && !mouseMoved(newX, newY)) {
-            getOwner().onPagerDoubletap();
+            // double click detection
+            final long timeSinceLastClick = newInterceptTouchTime - interceptTouchTime;
+            if (timeSinceLastClick > 0 && timeSinceLastClick <= DOUBLE_CLICK_TIME && !mouseMoved(newX, newY)) {
+                getOwner().onPagerDoubletap();
+            }
+
+            // save new values
+            interceptTouchTime = newInterceptTouchTime;
+            interceptTouchX = newX;
+            interceptTouchY = newY;
         }
-
-        // save new values
-        interceptTouchTime = newInterceptTouchTime;
-        interceptTouchX = newX;
-        interceptTouchY = newY;
 
         return super.onInterceptTouchEvent(event);
     }

@@ -124,5 +124,6 @@ public class LauncherPager extends ViewPager {
     public interface Owner {
         void onPagerLongpress();
         void onPagerDoubletap();
+        void onPagerPinch();
     }
 }

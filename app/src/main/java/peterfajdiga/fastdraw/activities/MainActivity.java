@@ -216,6 +216,11 @@ public class MainActivity extends Activity implements
         dialog.show(getFragmentManager(), "CreateShortcutDialog");
     }
 
+    @Override
+    public void onPagerPinch() {
+        System.err.println("ouch");
+    }
+
 
 
     // app management
