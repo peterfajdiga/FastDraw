@@ -10,4 +10,54 @@
     <string name="wallpaper">Select wallpaper</string>
     <string name="shortcut">Add shortcut</string>
     <string name="remove_shortcut">Remove shortcut</string>
+
+    <!-- Strings related to Settings -->
+    <string name="title_activity_settings">Fast Draw Settings</string>
+
+    <string name="pref_header_general">General</string>
+    <string name="pref_title_headerbtm">Place tabs on bottom</string>
+    <string name="pref_description_headerbtm">Place category tabs on the bottom of the screen instead of on the top</string>
+    <string name="pref_title_stackFromBottom">Stack icons to the bottom</string>
+    <string name="pref_description_stackFromBottom">Stack app icons so that they occupy the bottom part of the screen first</string>
+
+    <string name="pref_header_appearance">Appearance</string>
+    <string name="pref_title_statusBarDarker">Dark status bar</string>
+    <string name="pref_description_statusBarDarker">Darken the status bar</string>
+
+    <!-- Gestures settings -->
+    <string name="pref_header_gestures">Gestures</string>
+
+    <string name="pref_title_sync_frequency">Sync frequency</string>
+    <string-array name="pref_sync_frequency_titles">
+        <item>15 minutes</item>
+        <item>30 minutes</item>
+        <item>1 hour</item>
+        <item>3 hours</item>
+        <item>6 hours</item>
+        <item>Never</item>
+    </string-array>
+    <string-array name="pref_sync_frequency_values">
+        <item>15</item>
+        <item>30</item>
+        <item>60</item>
+        <item>180</item>
+        <item>360</item>
+        <item>-1</item>
+    </string-array>
+
+    <string-array name="list_preference_entries">
+        <item>Entry 1</item>
+        <item>Entry 2</item>
+        <item>Entry 3</item>
+    </string-array>
+
+    <string-array name="list_preference_entry_values">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+    </string-array>
+
+    <string-array name="multi_select_list_preference_default_value" />
+
+    <string name="pref_title_system_sync_settings">System sync settings</string>
 </resources>
