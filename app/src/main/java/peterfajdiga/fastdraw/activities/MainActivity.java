@@ -207,10 +207,11 @@ public class MainActivity extends Activity implements
 
     @Override
     public void onPagerLongpress() {
-        // change wallpaper
-        /*openWallpaperPicker();*/
+        openWallpaperPicker();
+    }
 
-        // Show shortcut dialog
+    @Override
+    public void onPagerDoubletap() {
         final CreateShortcutDialog dialog = new CreateShortcutDialog();
         dialog.show(getFragmentManager(), "CreateShortcutDialog");
     }

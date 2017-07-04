@@ -19,6 +19,7 @@ import peterfajdiga.fastdraw.listeners.DragStartListener;
 class CategoryView extends GridView {
 
     private static final int LONG_CLICK_TIME = ViewConfiguration.getLongPressTimeout();
+    private static final int DOUBLE_CLICK_TIME = ViewConfiguration.getDoubleTapTimeout();
     private static final float LONG_CLICK_MOUSE_MOVE_TOLERANCE = 50;
     protected long interceptTouchTime;
     protected float interceptTouchX;
@@ -59,21 +60,23 @@ class CategoryView extends GridView {
         setOnItemLongClickListener(new DragStartListener());
     }
 
+    private LauncherPager.Owner getOwner() {
+        final Context context = getContext();
+        final LauncherPager.Owner owner;
+        if (context instanceof LauncherPager.Owner) {
+            owner = (LauncherPager.Owner)context;
+        } else {
+            throw new RuntimeException(context.toString()
+                    + " must implement LauncherPager.Owner");
+        }
+        return owner;
+    }
+
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         if (System.currentTimeMillis() - interceptTouchTime >= LONG_CLICK_TIME) {
             this.performHapticFeedback(HapticFeedbackConstants.LONG_PRESS);
-
-            final Context context = getContext();
-            final LauncherPager.Owner owner;
-            if (context instanceof LauncherPager.Owner) {
-                owner = (LauncherPager.Owner)context;
-            } else {
-                throw new RuntimeException(context.toString()
-                        + " must implement LauncherPager.Owner");
-            }
-            owner.onPagerLongpress();
-
+            getOwner().onPagerLongpress();
             interceptTouchTime = Long.MAX_VALUE;
         } else if (mouseMoved(event.getX(), event.getY())) {
             interceptTouchTime = Long.MAX_VALUE;
@@ -83,9 +86,22 @@ class CategoryView extends GridView {
 
     @Override
     public boolean onInterceptTouchEvent(MotionEvent event) {
-        interceptTouchTime = System.currentTimeMillis();
-        interceptTouchX = event.getX();
-        interceptTouchY = event.getY();
+        // get new values
+        final long newInterceptTouchTime = System.currentTimeMillis();
+        final float newX = event.getX();
+        final float newY = event.getY();
+
+        // double click detection
+        final long timeSinceLastClick = newInterceptTouchTime - interceptTouchTime;
+        if (timeSinceLastClick <= DOUBLE_CLICK_TIME && !mouseMoved(newX, newY)) {
+            getOwner().onPagerDoubletap();
+        }
+
+        // save new values
+        interceptTouchTime = newInterceptTouchTime;
+        interceptTouchX = newX;
+        interceptTouchY = newY;
+
         return super.onInterceptTouchEvent(event);
     }
 
