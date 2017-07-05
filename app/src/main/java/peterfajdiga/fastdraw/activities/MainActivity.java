@@ -189,6 +189,13 @@ public class MainActivity extends Activity implements
         return (LauncherPager)findViewById(R.id.apps_pager);
     }
 
+    public static void forceFinish() {
+        if (instance != null) {
+            instance.finish();
+            instance = null;
+        }
+    }
+
 
 
     // actions
@@ -197,28 +204,36 @@ public class MainActivity extends Activity implements
         Intent intent = new Intent(Intent.ACTION_SET_WALLPAPER);
         startActivity(Intent.createChooser(intent, getString(R.string.wallpaper)));
     }
+    public void showCreateShortcutDialog() {
+        final CreateShortcutDialog dialog = new CreateShortcutDialog();
+        dialog.show(getFragmentManager(), "CreateShortcutDialog");
+    }
+    public void openSettings() {
+        final Intent settingsIntent = new Intent(this, SettingsActivity.class);
+        startActivity(settingsIntent);
+    }
 
-    public static void forceFinish() {
-        if (instance != null) {
-            instance.finish();
-            instance = null;
+    public void performAction(final int action) {
+        switch (action) {
+            case Preferences.ACTION_WALLPAPER: openWallpaperPicker(); break;
+            case Preferences.ACTION_SHORTCUT:  showCreateShortcutDialog(); break;
+            case Preferences.ACTION_SETTINGS:  openSettings(); break;
         }
     }
 
     @Override
     public void onPagerLongpress() {
-        openWallpaperPicker();
+        performAction(Preferences.longclickAction());
     }
 
     @Override
     public void onPagerDoubletap() {
-        final CreateShortcutDialog dialog = new CreateShortcutDialog();
-        dialog.show(getFragmentManager(), "CreateShortcutDialog");
+        performAction(Preferences.doubleclickAction());
     }
 
     @Override
     public void onPagerPinch() {
-        System.err.println("ouch");
+        performAction(Preferences.pinchAction());
     }
 
 

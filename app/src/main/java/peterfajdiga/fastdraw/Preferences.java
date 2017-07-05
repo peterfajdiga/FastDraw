@@ -6,6 +6,10 @@ import android.preference.PreferenceManager;
 
 public final class Preferences {
 
+    public static final int ACTION_WALLPAPER = 1;
+    public static final int ACTION_SHORTCUT  = 2;
+    public static final int ACTION_SETTINGS  = 3;
+
     public static int appItemResource() {
         return R.layout.app_item;
     }
@@ -33,11 +37,29 @@ public final class Preferences {
         return statusBarDarker;
     }
 
+    private static int longclickAction;
+    public static int longclickAction() {
+        return longclickAction;
+    }
+
+    private static int doubleclickAction;
+    public static int doubleclickAction() {
+        return doubleclickAction;
+    }
+
+    private static int pinchAction;
+    public static int pinchAction() {
+        return pinchAction;
+    }
+
 
     public static void loadPreferences(final Context context) {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
         mainLayoutResource = prefs.getBoolean("headerbtm", false) ? R.layout.activity_main_headerbtm : R.layout.activity_main_headertop;
         stackFromBottom = prefs.getBoolean("stackFromBottom", false);
         statusBarDarker = prefs.getBoolean("statusBarDarker", false);
+        longclickAction = Integer.parseInt(prefs.getString("action_longclick", "1"));
+        doubleclickAction = Integer.parseInt(prefs.getString("action_doubleclick", "2"));
+        pinchAction = Integer.parseInt(prefs.getString("action_pinch", "0"));
     }
 }

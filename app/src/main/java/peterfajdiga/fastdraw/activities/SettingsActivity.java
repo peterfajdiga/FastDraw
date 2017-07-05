@@ -186,7 +186,9 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
             // to their values. When their values change, their summaries are
             // updated to reflect the new value, per the Android Design
             // guidelines.
-            bindPreferenceSummaryToValue(findPreference("sync_frequency"));
+            bindPreferenceSummaryToValue(findPreference("action_longclick"));
+            bindPreferenceSummaryToValue(findPreference("action_doubleclick"));
+            bindPreferenceSummaryToValue(findPreference("action_pinch"));
         }
     }
 
