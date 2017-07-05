@@ -87,7 +87,7 @@ public class ColorPickerDialog extends AlertDialog implements
         mHexColorInput.setOnFocusChangeListener(this);
 
         setView(layout);
-        setTitle(R.string.edit_light_settings);
+        setTitle(R.string.edit_color);
     }
 
     @Override

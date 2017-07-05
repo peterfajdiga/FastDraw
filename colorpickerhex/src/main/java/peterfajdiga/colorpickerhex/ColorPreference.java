@@ -114,7 +114,7 @@ public class ColorPreference extends DialogPreference {
         final ColorPickerDialog d = new ColorPickerDialog(getContext(), mColorValue);
         d.setAlphaSliderVisible(true);
 
-        d.setButton(AlertDialog.BUTTON_POSITIVE, mResources.getString(R.string.dlg_ok),
+        d.setButton(AlertDialog.BUTTON_POSITIVE, mResources.getString(android.R.string.ok),
                 new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
@@ -122,7 +122,7 @@ public class ColorPreference extends DialogPreference {
                         callChangeListener(this);
                     }
                 });
-        d.setButton(AlertDialog.BUTTON_NEGATIVE, mResources.getString(R.string.cancel), (DialogInterface.OnClickListener)null);
+        d.setButton(AlertDialog.BUTTON_NEGATIVE, mResources.getString(android.R.string.cancel), (DialogInterface.OnClickListener)null);
 
         return d;
     }

@@ -20,16 +20,5 @@
 -->
 
 <resources>
-    <dimen name="device_memory_usage_button_width">16dip</dimen>
-    <dimen name="device_memory_usage_button_height">32dip</dimen>
-
-    <!--  Size of icons in the top-level of settings  -->
-
-    <!-- height of a normal list item in edit playlist mode -->
-    <!-- height of an expanded list item in edit playlist mode -->
-
-    <!-- Light settings dialog -->
-    <dimen name="dialog_light_settings_width">400dip</dimen>
     <dimen name="oval_notification_size">26dp</dimen>
-
 </resources>
