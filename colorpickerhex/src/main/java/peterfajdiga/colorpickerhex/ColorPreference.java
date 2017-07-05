@@ -94,10 +94,21 @@ public class ColorPreference extends DialogPreference {
 
         if (mColorPreview != null) {
             mColorPreview.setEnabled(true);
+
             // adjust if necessary to prevent material whiteout
-            final int imageColor = ((mColorValue & 0xF0F0F0) == 0xF0F0F0) ?
-                    (mColorValue - 0x101010) : mColorValue;
-            mColorPreview.setImageDrawable(createOvalShape(size, mColorValue));
+            int imageColor = mColorValue;
+            if ((imageColor & 0xF0F0F0F0) == 0xF0F0F0F0) {
+                imageColor -= 0x101010;
+            }
+
+            mColorPreview.setImageDrawable(createOvalShape(size, imageColor));
+
+            // display checkered background if translucent
+            if ((imageColor & 0xF0000000) != 0xF0000000) {
+                final float density = getContext().getResources().getDisplayMetrics().density;
+                mColorPreview.setBackground(new AlphaPatternDrawable((int)(5 * density)));
+            }
+
             notifyChanged();
         }
     }
@@ -111,8 +122,8 @@ public class ColorPreference extends DialogPreference {
 
 //    @Override
     protected Dialog createDialog() {
-        final ColorPickerDialog d = new ColorPickerDialog(getContext(), mColorValue);
-        d.setAlphaSliderVisible(true);
+        final ColorPickerDialog d = new ColorPickerDialog(getContext(), mColorValue, true);
+//        d.setAlphaSliderVisible(true);
 
         d.setButton(AlertDialog.BUTTON_POSITIVE, mResources.getString(android.R.string.ok),
                 new DialogInterface.OnClickListener() {

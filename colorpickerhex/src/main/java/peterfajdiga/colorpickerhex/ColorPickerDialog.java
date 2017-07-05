@@ -46,7 +46,6 @@ public class ColorPickerDialog extends AlertDialog implements
 
     private ColorPickerView mColorPicker;
     private LinearLayout mColorPanel;
-    private View mLightsDialogDivider;
 
     private EditText mHexColorInput;
     private ColorPanelView mNewColor;
@@ -54,15 +53,9 @@ public class ColorPickerDialog extends AlertDialog implements
 
     private ColorPickerView.OnColorChangedListener mListener;
 
-    protected ColorPickerDialog(Context context, int initialColor) {
+    protected ColorPickerDialog(Context context, int initialColor, boolean enableAlpha) {
         super(context);
-        init(context, initialColor);
-    }
-
-    private void init(Context context, int color) {
-        // To fight color banding.
-        getWindow().setFormat(PixelFormat.RGBA_8888);
-        setUp(color);
+        init(context, initialColor, enableAlpha);
     }
 
     /**
@@ -70,8 +63,12 @@ public class ColorPickerDialog extends AlertDialog implements
      * has a -1 value disable both spinners
      *
      * @param color - the color to set
+     * @param enableAlpha - show an alpha slider?
      */
-    private void setUp(int color) {
+    private void init(Context context, int color, boolean enableAlpha) {
+        // To fight color banding.
+        getWindow().setFormat(PixelFormat.RGBA_8888);
+
         mInflater = (LayoutInflater) getContext()
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View layout = mInflater.inflate(R.layout.dialog_color_picker, null);
@@ -80,6 +77,8 @@ public class ColorPickerDialog extends AlertDialog implements
         mColorPanel = (LinearLayout) layout.findViewById(R.id.color_panel_view);
         mHexColorInput = (EditText) layout.findViewById(R.id.hex_color_input);
         mNewColor = (ColorPanelView) layout.findViewById(R.id.color_panel);
+
+        setAlphaSliderVisible(enableAlpha);
 
         mColorPicker.setOnColorChangedListener(this);
         mColorPicker.setColor(color, true);

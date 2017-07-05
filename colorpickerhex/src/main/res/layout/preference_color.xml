@@ -71,8 +71,9 @@
 
     <ImageView
         android:id="@+id/light_color"
-        android:layout_width="32dip"
-        android:layout_height="wrap_content"
+        android:layout_width="@dimen/oval_notification_size"
+        android:layout_height="@dimen/oval_notification_size"
+        android:layout_marginRight="12dp"
         android:layout_gravity="center"/>
 
 </LinearLayout>
