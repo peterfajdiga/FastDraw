@@ -24,8 +24,9 @@ public final class Preferences {
         return stackFromBottom;
     }
 
+    private static int headerBgColor;
     public static int headerBgColor() {
-        return 0x80000000;
+        return headerBgColor;
     }
 
     public static int headerBgColorExpanded() {
@@ -67,5 +68,6 @@ public final class Preferences {
         doubleclickAction = Integer.parseInt(prefs.getString("action_doubleclick", "2"));
         pinchAction = Integer.parseInt(prefs.getString("action_pinch", "0"));
         unpinchAction = Integer.parseInt(prefs.getString("action_unpinch", "0"));
+        headerBgColor = prefs.getInt("headerBgColor", 0x80000000);
     }
 }

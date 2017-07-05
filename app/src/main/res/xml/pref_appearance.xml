@@ -1,5 +1,11 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
+    <peterfajdiga.colorpickerhex.ColorPreference
+        android:defaultValue="0xFFFF0000"
+        android:key="headerBgColor"
+        android:title="asdasdf"
+        android:summary="qwer qwoeirj weo rijqw" />
+
     <SwitchPreference
         android:defaultValue="false"
         android:key="statusBarDarker"
