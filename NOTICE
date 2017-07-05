@@ -1,4 +1,4 @@
-colorpickerhex is heavily based on parts of android_packages_apps_Settings by CyanogenMod. This file is the same as android_packages_apps_Settings's NOTICE file (except for this line).
+This project uses colorpickerhex, which is heavily based on parts of android_packages_apps_Settings by CyanogenMod. This file is the same as android_packages_apps_Settings's NOTICE file (except for this line).
 
    Copyright (c) 2005-2008, The Android Open Source Project
 
