@@ -280,21 +280,21 @@ public class MainActivity extends Activity implements
             findViewById(R.id.apps_pager).animate().alpha(1.0f);
             findViewById(R.id.category_drop_zone_container).setVisibility(View.GONE);
             draggedItem = null;
-        }
 
-        // reset header background
-        dragBgAnimator.reverse();
+            // reset header background
+            dragBgAnimator.reverse();
 
-        // show status or navigation bar
-        switch (Preferences.mainLayoutResource()) {
-            case R.layout.activity_main_headertop: {
-                getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
-                break;
+            // show status or navigation bar
+            switch (Preferences.mainLayoutResource()) {
+                case R.layout.activity_main_headertop: {
+                    getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
+                    break;
+                }
+//                case R.layout.activity_main_headerbtm: {
+//                    getWindow().getDecorView().setSystemUiVisibility(0);
+//                    break;
+//                }
             }
-//            case R.layout.activity_main_headerbtm: {
-//                getWindow().getDecorView().setSystemUiVisibility(0);
-//                break;
-//            }
         }
     }
 
