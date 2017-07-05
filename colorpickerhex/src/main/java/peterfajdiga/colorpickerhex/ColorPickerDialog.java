@@ -30,21 +30,19 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.text.InputFilter;
-import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnFocusChangeListener;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 
 import java.util.Locale;
 
-public class LightSettingsDialog extends AlertDialog implements
+public class ColorPickerDialog extends AlertDialog implements
         ColorPickerView.OnColorChangedListener, TextWatcher, OnFocusChangeListener {
 
-    private final static String STATE_KEY_COLOR = "LightSettingsDialog:color";
+    private final static String STATE_KEY_COLOR = "ColorPickerDialog:color";
 
     private ColorPickerView mColorPicker;
     private LinearLayout mColorPanel;
@@ -56,7 +54,7 @@ public class LightSettingsDialog extends AlertDialog implements
 
     private ColorPickerView.OnColorChangedListener mListener;
 
-    protected LightSettingsDialog(Context context, int initialColor) {
+    protected ColorPickerDialog(Context context, int initialColor) {
         super(context);
         init(context, initialColor);
     }
@@ -76,7 +74,7 @@ public class LightSettingsDialog extends AlertDialog implements
     private void setUp(int color) {
         mInflater = (LayoutInflater) getContext()
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View layout = mInflater.inflate(R.layout.dialog_light_settings, null);
+        View layout = mInflater.inflate(R.layout.dialog_color_picker, null);
 
         mColorPicker = (ColorPickerView) layout.findViewById(R.id.color_picker_view);
         mColorPanel = (LinearLayout) layout.findViewById(R.id.color_panel_view);

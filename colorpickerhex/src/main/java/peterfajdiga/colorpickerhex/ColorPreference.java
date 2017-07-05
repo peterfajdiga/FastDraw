@@ -36,11 +36,9 @@ import android.widget.TextView;
 
 public class ColorPreference extends DialogPreference {
 
-    private static String TAG = "AppLightPreference";
-    public static final int DEFAULT_TIME = 1000;
     public static final int DEFAULT_COLOR = 0xffffff;
 
-    private ImageView mLightColorView;
+    private ImageView mColorPreview;
 
     private int mColorValue;
 
@@ -48,7 +46,6 @@ public class ColorPreference extends DialogPreference {
 
     public ColorPreference(Context context, AttributeSet attrs) {
         super(context, attrs);
-        mColorValue = DEFAULT_COLOR;
         init();
     }
 
@@ -59,19 +56,19 @@ public class ColorPreference extends DialogPreference {
     }
 
     private void init() {
-        setLayoutResource(R.layout.preference_application_light);
+        setLayoutResource(R.layout.preference_color);
         mResources = getContext().getResources();
     }
 
 //    public void onStart() {
-//        LightSettingsDialog d = (LightSettingsDialog) getDialog();
+//        ColorPickerDialog d = (ColorPickerDialog) getDialog();
 //        if (d != null) {
 //            d.onStart();
 //        }
 //    }
 //
 //    public void onStop() {
-//        LightSettingsDialog d = (LightSettingsDialog) getDialog();
+//        ColorPickerDialog d = (ColorPickerDialog) getDialog();
 //        if (d != null) {
 //            d.onStop();
 //        }
@@ -81,26 +78,27 @@ public class ColorPreference extends DialogPreference {
     protected void onBindView(View view) {
         super.onBindView(view);
 
-        mLightColorView = (ImageView)view.findViewById(R.id.light_color);
+        mColorPreview = (ImageView)view.findViewById(R.id.light_color);
 
         // Hide the summary text - it takes up too much space on a low res device
         // We use it for storing the package name for the longClickListener
         TextView tView = (TextView)view.findViewById(android.R.id.summary);
         tView.setVisibility(View.GONE);
 
+        mColorValue = getPersistedInt(DEFAULT_COLOR);
         updatePreferenceViews();
     }
 
     private void updatePreferenceViews() {
         final int size = (int) mResources.getDimension(R.dimen.oval_notification_size);
 
-        if (mLightColorView != null) {
-            mLightColorView.setEnabled(true);
+        if (mColorPreview != null) {
+            mColorPreview.setEnabled(true);
             // adjust if necessary to prevent material whiteout
             final int imageColor = ((mColorValue & 0xF0F0F0) == 0xF0F0F0) ?
                     (mColorValue - 0x101010) : mColorValue;
-            mLightColorView.setImageDrawable(createOvalShape(size,
-                    0xFF000000 + imageColor));
+            mColorPreview.setImageDrawable(createOvalShape(size, mColorValue));
+            notifyChanged();
         }
     }
 
@@ -108,12 +106,12 @@ public class ColorPreference extends DialogPreference {
     protected void showDialog(Bundle state) {
         super.showDialog(state);
 
-        final LightSettingsDialog d = (LightSettingsDialog) getDialog();
+        final ColorPickerDialog d = (ColorPickerDialog) getDialog();
     }
 
 //    @Override
     protected Dialog createDialog() {
-        final LightSettingsDialog d = new LightSettingsDialog(getContext(), mColorValue);
+        final ColorPickerDialog d = new ColorPickerDialog(getContext(), mColorValue);
         d.setAlphaSliderVisible(true);
 
         d.setButton(AlertDialog.BUTTON_POSITIVE, mResources.getString(R.string.dlg_ok),
@@ -124,12 +122,7 @@ public class ColorPreference extends DialogPreference {
                         callChangeListener(this);
                     }
                 });
-        d.setButton(AlertDialog.BUTTON_NEGATIVE, mResources.getString(R.string.cancel),
-                new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                    }
-                });
+        d.setButton(AlertDialog.BUTTON_NEGATIVE, mResources.getString(R.string.cancel), (DialogInterface.OnClickListener)null);
 
         return d;
     }

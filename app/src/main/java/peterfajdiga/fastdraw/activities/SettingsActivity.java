@@ -15,6 +15,7 @@ import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
 import android.view.MenuItem;
 
+import peterfajdiga.colorpickerhex.ColorPreference;
 import peterfajdiga.fastdraw.R;
 
 import java.util.List;

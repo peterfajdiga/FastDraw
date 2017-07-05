@@ -97,6 +97,7 @@ public class MainActivity extends Activity implements
         dragBgAnimator.addUpdateListener(new ViewBgAnimator(header));
         if (Preferences.mainLayoutResource() == R.layout.activity_main_headerbtm) {
             dragBgAnimator.addUpdateListener(new NavigationBarAnimator(getWindow()));
+            getWindow().setStatusBarColor(Preferences.headerBgColor());
         } else {
             getWindow().setNavigationBarColor(Preferences.headerBgColor());
         }
