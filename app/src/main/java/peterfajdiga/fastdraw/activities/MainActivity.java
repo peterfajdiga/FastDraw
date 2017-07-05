@@ -236,6 +236,11 @@ public class MainActivity extends Activity implements
         performAction(Preferences.pinchAction());
     }
 
+    @Override
+    public void onPagerUnpinch() {
+        performAction(Preferences.unpinchAction());
+    }
+
 
 
     // app management

@@ -52,6 +52,11 @@ public final class Preferences {
         return pinchAction;
     }
 
+    private static int unpinchAction;
+    public static int unpinchAction() {
+        return unpinchAction;
+    }
+
 
     public static void loadPreferences(final Context context) {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
@@ -61,5 +66,6 @@ public final class Preferences {
         longclickAction = Integer.parseInt(prefs.getString("action_longclick", "1"));
         doubleclickAction = Integer.parseInt(prefs.getString("action_doubleclick", "2"));
         pinchAction = Integer.parseInt(prefs.getString("action_pinch", "0"));
+        unpinchAction = Integer.parseInt(prefs.getString("action_unpinch", "0"));
     }
 }

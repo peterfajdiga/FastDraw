@@ -27,8 +27,9 @@ class CategoryView extends GridView {
     protected float interceptTouchX;
     protected float interceptTouchY;
 
-    protected float pinchStartDistance = 0.0f;
     protected float pinchPrevDistance = 0.0f;
+    protected float pinchStartDistance = 0.0f;
+    protected float unpinchStartDistance = Float.MAX_VALUE;
 
     public CategoryView(final Context context) {
         super(context);
@@ -87,33 +88,44 @@ class CategoryView extends GridView {
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         // perform pinch on liftoff
-        if (event.getAction() == MotionEvent.ACTION_UP && pinchStartDistance - pinchPrevDistance > PINCH_DISTANCE_TRIGGER_DELTA) {
-            getOwner().onPagerPinch();
-            // reset
-            pinchStartDistance = 0.0f;
+        if (event.getAction() == MotionEvent.ACTION_UP) {
+            System.err.println(pinchPrevDistance - unpinchStartDistance);
+            if (pinchStartDistance - pinchPrevDistance > PINCH_DISTANCE_TRIGGER_DELTA) {
+                getOwner().onPagerPinch();
+            } else if (pinchPrevDistance - unpinchStartDistance > PINCH_DISTANCE_TRIGGER_DELTA) {
+                getOwner().onPagerUnpinch();
+            }
+            // reset pinch and unpinch
             pinchPrevDistance  = 0.0f;
+            pinchStartDistance = 0.0f;
+            unpinchStartDistance = Float.MAX_VALUE;
         }
 
         switch (event.getPointerCount()) {
             case 2: {
                 interceptTouchTime = Long.MAX_VALUE;  // disable long click
+                final float newDistance = distanceSquared(event);
 
                 // pinch detection
-                final float newDistance = distanceSquared(event);
-                if (pinchStartDistance > 0.0f) {
-                    if (newDistance > pinchPrevDistance) {
-                        // user unpinched, reset
-                        pinchStartDistance = 0.0f;
-                        pinchPrevDistance  = 0.0f;
-                    } else {
-                        // update pinchPrevDistance
-                        pinchPrevDistance = newDistance;
-                    }
-                } else {
+                if (pinchStartDistance == 0.0f) {
                     // start pinch
                     pinchStartDistance = newDistance;
-                    pinchPrevDistance  = newDistance;
+                } else if (newDistance > pinchPrevDistance) {
+                    // user unpinched, reset pinch
+                    pinchStartDistance = 0.0f;
                 }
+
+                // unpinch detection
+                if (unpinchStartDistance == Float.MAX_VALUE) {
+                    // start pinch
+                    unpinchStartDistance = newDistance;
+                } else if (newDistance < pinchPrevDistance) {
+                    // user pinched, reset unpinch
+                    unpinchStartDistance = Float.MAX_VALUE;
+                }
+
+                // update pinchPrevDistance
+                pinchPrevDistance = newDistance;
                 break;
             }
             case 1: {

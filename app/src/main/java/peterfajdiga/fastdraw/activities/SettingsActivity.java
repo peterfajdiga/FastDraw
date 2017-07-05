@@ -189,6 +189,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
             bindPreferenceSummaryToValue(findPreference("action_longclick"));
             bindPreferenceSummaryToValue(findPreference("action_doubleclick"));
             bindPreferenceSummaryToValue(findPreference("action_pinch"));
+            bindPreferenceSummaryToValue(findPreference("action_unpinch"));
         }
     }
 
