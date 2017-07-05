@@ -89,7 +89,6 @@ class CategoryView extends GridView {
     public boolean onTouchEvent(MotionEvent event) {
         // perform pinch on liftoff
         if (event.getAction() == MotionEvent.ACTION_UP) {
-            System.err.println(pinchPrevDistance - unpinchStartDistance);
             if (pinchStartDistance - pinchPrevDistance > PINCH_DISTANCE_TRIGGER_DELTA) {
                 getOwner().onPagerPinch();
             } else if (pinchPrevDistance - unpinchStartDistance > PINCH_DISTANCE_TRIGGER_DELTA) {
