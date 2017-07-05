@@ -1,15 +1,18 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
     <peterfajdiga.colorpickerhex.ColorPreference
-        android:defaultValue="0xFFFF0000"
+        android:defaultValue="0x80000000"
         android:key="headerBgColor"
-        android:title="asdasdf"
-        android:summary="qwer qwoeirj weo rijqw" />
+        android:title="@string/pref_title_headerBgColor" />
+    <peterfajdiga.colorpickerhex.ColorPreference
+        android:defaultValue="0x80000000"
+        android:key="headerBgColorExpanded"
+        android:title="@string/pref_title_headerBgColorExpanded" />
 
     <SwitchPreference
         android:defaultValue="false"
         android:key="statusBarDarker"
         android:title="@string/pref_title_statusBarDarker"
-        android:summary="@string/pref_description_statusBarDarker"/>
+        android:summary="@string/pref_description_statusBarDarker" />
 
 </PreferenceScreen>

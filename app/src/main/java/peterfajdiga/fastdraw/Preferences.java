@@ -29,8 +29,9 @@ public final class Preferences {
         return headerBgColor;
     }
 
+    private static int headerBgColorExpanded;
     public static int headerBgColorExpanded() {
-        return 0xB0000000;
+        return headerBgColorExpanded;
     }
 
     private static boolean statusBarDarker;
@@ -69,5 +70,6 @@ public final class Preferences {
         pinchAction = Integer.parseInt(prefs.getString("action_pinch", "0"));
         unpinchAction = Integer.parseInt(prefs.getString("action_unpinch", "0"));
         headerBgColor = prefs.getInt("headerBgColor", 0x80000000);
+        headerBgColorExpanded = prefs.getInt("headerBgColorExpanded", 0xB0000000);
     }
 }
