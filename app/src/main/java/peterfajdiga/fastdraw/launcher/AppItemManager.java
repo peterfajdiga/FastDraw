@@ -6,6 +6,8 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import peterfajdiga.fastdraw.R;
@@ -14,22 +16,50 @@ import peterfajdiga.fastdraw.launcher.item.LauncherItem;
 
 public class AppItemManager {
 
+    private static class AsyncItemLoader extends Thread {
+        private List<AppItem> appItems;
+        private List<ResolveInfo> resInfoList;
+        private PackageManager packageManager;
+
+        AsyncItemLoader(final List<AppItem> appItems, final List<ResolveInfo> resInfoList, final PackageManager packageManager) {
+            this.appItems = appItems;
+            this.resInfoList = resInfoList;
+            this.packageManager = packageManager;
+        }
+
+        @Override
+        public void run() {
+            final int n = appItems.size();
+            for (int i = 0; i < n; i++) {
+                final AppItem appItem = appItems.get(i);
+                final ResolveInfo resInfo = resInfoList.get(i);
+                appItem.name = resInfo.activityInfo.loadLabel(packageManager).toString();
+                appItem.icon = resInfo.activityInfo.loadIcon(packageManager);
+            }
+        }
+    }
+
     private static void addAppItems(final Context context, final LauncherPager pager, final Intent launcherIntent) {
         final SharedPreferences prefs = context.getSharedPreferences("categories", Context.MODE_PRIVATE);
         final PackageManager packageManager = context.getPackageManager();
 
         launcherIntent.addCategory(Intent.CATEGORY_LAUNCHER);
-        for (final ResolveInfo resInfo : packageManager.queryIntentActivities(launcherIntent, 0)) {
+        final List<ResolveInfo> resInfoList = packageManager.queryIntentActivities(launcherIntent, 0);
+        final List<AppItem> appItems = new ArrayList<>(resInfoList.size());
+        for (final ResolveInfo resInfo : resInfoList) {
             final AppItem newAppItem = new AppItem(
                     resInfo.activityInfo.packageName,
                     resInfo.activityInfo.name,
-                    resInfo.loadLabel(packageManager).toString(),
-                    resInfo.activityInfo.loadIcon(packageManager)
+                    "Loading...",
+                    null
             );
+            appItems.add(newAppItem);
             final String categoryName = prefs.getString(newAppItem.getID(), context.getString(R.string.default_category));
             newAppItem.setCategoryNoDirty(categoryName);
             pager.addLauncherItem(newAppItem);
         }
+        final AsyncItemLoader itemLoader = new AsyncItemLoader(appItems, resInfoList, packageManager);
+        itemLoader.start();
     }
 
     public static void addAppItems(final Context context, final LauncherPager pager) {
