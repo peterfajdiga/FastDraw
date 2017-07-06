@@ -63,8 +63,6 @@ public class MainActivity extends Activity implements
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        final long startTime = System.currentTimeMillis();
-
         instance = this;
         Preferences.loadPreferences(this);
         setContentView(Preferences.mainLayoutResource());
@@ -90,9 +88,7 @@ public class MainActivity extends Activity implements
         LauncherPagerHeader pagerHeader = (LauncherPagerHeader)findViewById(R.id.apps_pager_header);
         pagerHeader.setupWithViewPager(appsPager);
 
-        System.err.println("main 1: " + (System.currentTimeMillis() - startTime));
         loadLauncherItems();
-        System.err.println("main 2: " + (System.currentTimeMillis() - startTime));
 
 
         // header color animator
@@ -121,7 +117,6 @@ public class MainActivity extends Activity implements
         appChangeFilter.addAction(Intent.ACTION_PACKAGE_CHANGED);
         appChangeFilter.addDataScheme("package");
         registerReceiver(installAppReceiver, appChangeFilter);
-        System.err.println("main 3: " + (System.currentTimeMillis() - startTime));
     }
 
     @Override
