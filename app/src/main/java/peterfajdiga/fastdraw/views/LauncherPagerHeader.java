@@ -67,21 +67,23 @@ public class LauncherPagerHeader extends TabLayout {
             return;
         }
         //assert getContext() instanceof Activity;
-        final Activity activity = (Activity)getContext();
+        final Activity activity = (Activity) getContext();
         final ColorStateList iconColors = ContextCompat.getColorStateList(getContext(), R.color.tab);
         final String category = tab.getText().toString();
         final Drawable icon = getCategoryIcon(getContext(), category);
 
-        if (icon != null) {
-            // TODO: Setting to disable
-            tab.setIcon(icon);
-            tab.setText("");
-            DrawableCompat.setTintList(DrawableCompat.wrap(icon), iconColors);
-        } else if (category.length() == 1) {
-            // TODO: Setting to disable
-            SpannableString tabString = new SpannableString(category);
-            tabString.setSpan(new AbsoluteSizeSpan(19, true), 0, 1, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-            tab.setText(tabString);
+        if (Preferences.showIcons()) {
+            if (icon != null) {
+                // TODO: Setting to disable
+                tab.setIcon(icon);
+                tab.setText("");
+                DrawableCompat.setTintList(DrawableCompat.wrap(icon), iconColors);
+            } else if (category.length() == 1) {
+                // TODO: Setting to disable
+                SpannableString tabString = new SpannableString(category);
+                tabString.setSpan(new AbsoluteSizeSpan(19, true), 0, 1, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+                tab.setText(tabString);
+            }
         }
         tab.setTag(Boolean.TRUE);  // mark as done
 

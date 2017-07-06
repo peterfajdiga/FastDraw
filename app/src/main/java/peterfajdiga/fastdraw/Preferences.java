@@ -25,6 +25,11 @@ public final class Preferences {
         return stackFromBottom;
     }
 
+    private static boolean showIcons;
+    public static boolean showIcons() {
+        return showIcons;
+    }
+
     private static int headerBgColor;
     public static int headerBgColor() {
         return headerBgColor;
@@ -71,6 +76,7 @@ public final class Preferences {
         }
         mainLayoutResource = prefs.getBoolean("headerbtm", false) ? R.layout.activity_main_headerbtm : R.layout.activity_main_headertop;
         stackFromBottom = prefs.getBoolean("stackFromBottom", false);
+        showIcons = prefs.getBoolean("showIcons", true);
         statusBarDarker = prefs.getBoolean("statusBarDarker", false);
         longclickAction = Integer.parseInt(prefs.getString("action_longclick", "1"));
         doubleclickAction = Integer.parseInt(prefs.getString("action_doubleclick", "2"));

@@ -1,5 +1,11 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
+    <SwitchPreference
+        android:defaultValue="true"
+        android:key="showIcons"
+        android:title="@string/pref_title_showIcons"
+        android:summary="@string/pref_description_showIcons" />
+
     <peterfajdiga.colorpickerhex.ColorPreference
         android:defaultValue="0x80000000"
         android:key="headerBgColor"

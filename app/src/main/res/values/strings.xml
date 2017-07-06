@@ -32,9 +32,11 @@
     <string name="pref_description_stackFromBottom">Stack app icons so that they occupy the bottom part of the screen first</string>
 
     <string name="pref_header_appearance">Appearance</string>
+    <string name="pref_title_showIcons">Show icons</string>
+    <string name="pref_description_showIcons">Show icons instead of text in tabs</string>
     <string name="pref_title_headerBgColor">Normal color</string>
     <string name="pref_title_headerBgColorExpanded">Expanded color</string>
-    <string name="pref_title_statusBarDarker">Dark status bar</string>
+    <string name="pref_title_statusBarDarker">Darker status bar</string>
     <string name="pref_description_statusBarDarker">Darken the status bar</string>
 
     <string name="pref_header_gestures">Gestures</string>
