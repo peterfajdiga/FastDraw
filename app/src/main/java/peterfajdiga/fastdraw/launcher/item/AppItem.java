@@ -4,6 +4,9 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.ActivityInfo;
+import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.provider.Settings;
@@ -13,11 +16,11 @@ public class AppItem extends LauncherItem {
     public String packageName;
     private String activityName;
 
-    public AppItem(String packageName, String activityName, String name, Drawable icon) {
-        this.packageName  = packageName;
-        this.activityName = activityName;
-        this.name         = name;
-        this.icon         = icon;
+    public AppItem(final ActivityInfo info, final PackageManager packageManager) {
+        packageName = info.packageName;
+        activityName = info.name;
+        this.info = info;
+        this.packageManager = packageManager;
     }
 
     @Override
@@ -48,5 +51,23 @@ public class AppItem extends LauncherItem {
         intent.setData(uri);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS);
         context.startActivity(intent);
+    }
+
+
+    /* loading */
+
+    private ActivityInfo info;
+    private PackageManager packageManager;
+
+    @Override
+    public void load() {
+        if (info != null) {
+            name = info.loadLabel(packageManager).toString();
+            icon = info.loadIcon(packageManager);
+
+            // forget
+            info = null;
+            packageManager = null;
+        }
     }
 }

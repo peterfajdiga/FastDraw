@@ -2,6 +2,7 @@ package peterfajdiga.fastdraw.launcher;
 
 import android.app.Activity;
 import android.content.Context;
+import android.os.AsyncTask;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -62,5 +63,39 @@ class CategoryArrayAdapter extends ArrayAdapter<LauncherItem>{
                 return launcherItem.compareTo(t1);
             }
         });
+    }
+
+
+    /* loading */
+
+    public void loadItems() {
+        final int n = getCount();
+        for (int i = 0; i < n; i++) {
+            getItem(i).load();
+        }
+        sort();
+        notifyDataSetChanged();
+    }
+
+    private final class ItemLoader extends AsyncTask<Void, Void, Void> {
+        @Override
+        protected Void doInBackground(Void... params) {
+            final int n = getCount();
+            for (int i = 0; i < n; i++) {
+                getItem(i).load();
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void result) {
+            sort();
+            notifyDataSetChanged();
+        }
+    }
+
+    public void loadItemsAsync() {
+        final ItemLoader itemLoader = new ItemLoader();
+        itemLoader.execute();
     }
 }

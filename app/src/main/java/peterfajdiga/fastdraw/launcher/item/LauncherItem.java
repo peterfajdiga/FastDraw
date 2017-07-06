@@ -10,8 +10,8 @@ import java.util.List;
 
 public abstract class LauncherItem implements Comparable<LauncherItem> {
 
-    public String name;
-    public Drawable icon;
+    public String name = "Loading...";
+    public Drawable icon = null;
 
     protected String category;
 
@@ -21,6 +21,8 @@ public abstract class LauncherItem implements Comparable<LauncherItem> {
     public int compareTo(@NonNull LauncherItem other) {
         return this.name.toString().compareToIgnoreCase(other.name.toString());
     }
+
+    public abstract void load();
 
     public abstract String getID();
 

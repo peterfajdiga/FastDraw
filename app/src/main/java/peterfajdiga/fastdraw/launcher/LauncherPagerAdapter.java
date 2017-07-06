@@ -10,6 +10,7 @@ import java.util.TreeMap;
 class LauncherPagerAdapter extends PagerAdapter {
 
     Map<String, CategoryView> categories = new TreeMap<>();
+    private boolean firstCategoryLoaded = false;
 
     public LauncherPagerAdapter() {}
 
@@ -17,6 +18,10 @@ class LauncherPagerAdapter extends PagerAdapter {
     public Object instantiateItem(ViewGroup container, int position) {
         final CategoryView layout = (CategoryView)categories.values().toArray()[position];
         container.addView(layout);
+        if (!firstCategoryLoaded) {
+            loadCategories(layout);
+            firstCategoryLoaded = true;
+        }
         return layout;
     }
 
@@ -49,5 +54,24 @@ class LauncherPagerAdapter extends PagerAdapter {
             }
         }
         return POSITION_NONE;
+    }
+
+
+    /* loading */
+
+    public void loadCategories(final CategoryView firstToLoad) {
+        // load first category
+        final CategoryArrayAdapter firstInnerAdapter = (CategoryArrayAdapter)firstToLoad.getAdapter();
+        firstInnerAdapter.loadItems();
+
+        // load all others
+        for (CategoryView categoryView : categories.values()) {
+            if (categoryView == firstToLoad) {
+                // already loaded
+                continue;
+            }
+            final CategoryArrayAdapter innerAdapter = (CategoryArrayAdapter)categoryView.getAdapter();
+            innerAdapter.loadItemsAsync();
+        }
     }
 }

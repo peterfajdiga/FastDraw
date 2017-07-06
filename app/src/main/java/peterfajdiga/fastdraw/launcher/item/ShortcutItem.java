@@ -25,6 +25,9 @@ public class ShortcutItem extends LauncherItem {
     }
 
     @Override
+    public void load() {}
+
+    @Override
     public Intent getIntent() {
         return intent;
     }

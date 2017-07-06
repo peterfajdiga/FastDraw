@@ -1,15 +1,11 @@
 package peterfajdiga.fastdraw.launcher;
 
-import android.content.AsyncTaskLoader;
 import android.content.Context;
 import android.content.Intent;
-import android.content.Loader;
 import android.content.SharedPreferences;
-import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 
-import java.util.List;
 import java.util.Map;
 
 import peterfajdiga.fastdraw.R;
@@ -18,21 +14,17 @@ import peterfajdiga.fastdraw.launcher.item.LauncherItem;
 
 public class AppItemManager {
 
-    static final int ITEM_LOADER_LISTENER_ID = 0;
-
     private static void addAppItems(final Context context, final LauncherPager pager, final Intent launcherIntent) {
-        final AsyncItemLoader.OnLoadCompleteListener<AppItem[]> itemLoaderListener = new AsyncItemLoader.OnLoadCompleteListener<AppItem[]>() {
-            @Override
-            public void onLoadComplete(Loader<AppItem[]> loader, AppItem[] data) {
-                for (AppItem appItem : data) {
-                    pager.addLauncherItem(appItem);
-                }
-            }
-        };
-        final AsyncItemLoader itemLoader = new AsyncItemLoader(context, launcherIntent);
-        itemLoader.registerListener(ITEM_LOADER_LISTENER_ID, itemLoaderListener);
-        itemLoader.onContentChanged();
-        itemLoader.onStartLoading();
+        final SharedPreferences prefs = context.getSharedPreferences("categories", Context.MODE_PRIVATE);
+        final PackageManager packageManager = context.getPackageManager();
+
+        launcherIntent.addCategory(Intent.CATEGORY_LAUNCHER);
+        for (final ResolveInfo resInfo : packageManager.queryIntentActivities(launcherIntent, 0)) {
+            final AppItem newAppItem = new AppItem(resInfo.activityInfo, packageManager);
+            final String categoryName = prefs.getString(newAppItem.getID(), context.getString(R.string.default_category));
+            newAppItem.setCategoryNoDirty(categoryName);
+            pager.addLauncherItem(newAppItem);
+        }
     }
 
     public static void addAppItems(final Context context, final LauncherPager pager) {
