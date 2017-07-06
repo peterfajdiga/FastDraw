@@ -15,6 +15,17 @@
     <string name="title_activity_settings">Fast Draw Settings</string>
 
     <string name="pref_header_general">General</string>
+    <string-array name="pref_appItemResource_titles">
+        <item>Normal block</item>
+        <item>Horizontal</item>
+        <item>Horizontal with package name</item>
+    </string-array>
+    <string-array name="pref_appItemResource_values">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+    </string-array>
+    <string name="pref_title_appItemResource">App item style</string>
     <string name="pref_title_headerbtm">Place tabs on bottom</string>
     <string name="pref_description_headerbtm">Place category tabs on the bottom of the screen instead of on the top</string>
     <string name="pref_title_stackFromBottom">Stack icons to the bottom</string>
