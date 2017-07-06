@@ -38,7 +38,7 @@ public class AppItemManager {
         addAppItems(context, pager, launcherIntent);
     }
 
-    public static void removeAppItems(final LauncherPager pager, final String packageName) {
+    public static void removeAppItems(final Context context, final LauncherPager pager, final String packageName) {
         final LauncherPagerAdapter adapter = pager.getAdapter();
         for (Map.Entry categoryEntry : adapter.categories.entrySet()) {
             final String categoryName = (String)categoryEntry.getKey();
@@ -53,6 +53,7 @@ public class AppItemManager {
                     // remove matching items
                     // don't increment i in this case, as item count has decreased
                     innerAdapter.remove(launcherItem);
+                    launcherItem.persist(context);
                     itemsRemoved = true;
                 } else {
                     i++;

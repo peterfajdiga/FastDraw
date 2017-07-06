@@ -253,13 +253,13 @@ public class MainActivity extends Activity implements
 
     @Override
     public void onAppChange(String packageName) {
-        AppItemManager.removeAppItems(getPager(), packageName);
+        AppItemManager.removeAppItems(this, getPager(), packageName);
         AppItemManager.addAppItems(this, getPager(), packageName);
     }
 
     @Override
     public void onAppRemove(String packageName) {
-        AppItemManager.removeAppItems(getPager(), packageName);
+        AppItemManager.removeAppItems(this, getPager(), packageName);
     }
 
     @Override
