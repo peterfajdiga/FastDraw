@@ -14,28 +14,31 @@ import peterfajdiga.fastdraw.launcher.item.LauncherItem;
 
 public class AppItemManager {
 
-    private static void addAppItems(final Context context, final LauncherPager pager, final Intent launcherIntent) {
+    private static void addAppItems(final Context context, final LauncherPager pager, final Intent launcherIntent, boolean delayLoad) {
         final SharedPreferences prefs = context.getSharedPreferences("categories", Context.MODE_PRIVATE);
         final PackageManager packageManager = context.getPackageManager();
 
         launcherIntent.addCategory(Intent.CATEGORY_LAUNCHER);
         for (final ResolveInfo resInfo : packageManager.queryIntentActivities(launcherIntent, 0)) {
             final AppItem newAppItem = new AppItem(resInfo.activityInfo, packageManager);
+            if (!delayLoad) {
+                newAppItem.load();
+            }
             final String categoryName = prefs.getString(newAppItem.getID(), context.getString(R.string.default_category));
             newAppItem.setCategoryNoDirty(categoryName);
             pager.addLauncherItem(newAppItem);
         }
     }
 
-    public static void addAppItems(final Context context, final LauncherPager pager) {
+    public static void addAppItems(final Context context, final LauncherPager pager, boolean delayLoad) {
         final Intent launcherIntent = new Intent(Intent.ACTION_MAIN, null);
-        addAppItems(context, pager, launcherIntent);
+        addAppItems(context, pager, launcherIntent, delayLoad);
     }
 
-    public static void addAppItems(final Context context, final LauncherPager pager, final String packageName) {
+    public static void addAppItems(final Context context, final LauncherPager pager, final String packageName, boolean delayLoad) {
         final Intent launcherIntent = new Intent(Intent.ACTION_MAIN, null);
         launcherIntent.setPackage(packageName);
-        addAppItems(context, pager, launcherIntent);
+        addAppItems(context, pager, launcherIntent, delayLoad);
     }
 
     public static void removeAppItems(final Context context, final LauncherPager pager, final String packageName) {

@@ -150,7 +150,7 @@ public class MainActivity extends Activity implements
     private void loadLauncherItems() {
 
         // apps
-        AppItemManager.addAppItems(this, getPager());
+        AppItemManager.addAppItems(this, getPager(), true);
 
         // shortcuts
         File shortcutsDir = ShortcutItem.getShortcutsDir(this);
@@ -248,13 +248,13 @@ public class MainActivity extends Activity implements
 
     @Override
     public void onAppInstall(String packageName) {
-        AppItemManager.addAppItems(this, getPager(), packageName);
+        AppItemManager.addAppItems(this, getPager(), packageName, false);
     }
 
     @Override
     public void onAppChange(String packageName) {
         AppItemManager.removeAppItems(this, getPager(), packageName);
-        AppItemManager.addAppItems(this, getPager(), packageName);
+        AppItemManager.addAppItems(this, getPager(), packageName, false);
     }
 
     @Override
