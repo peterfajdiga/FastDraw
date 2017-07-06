@@ -26,8 +26,9 @@ public class AppItemManager {
             }
             final String categoryName = prefs.getString(newAppItem.getID(), context.getString(R.string.default_category));
             newAppItem.setCategoryNoDirty(categoryName);
-            pager.addLauncherItem(newAppItem);
+            pager.addLauncherItemBulk(newAppItem);
         }
+        pager.finishBulk();
     }
 
     public static void addAppItems(final Context context, final LauncherPager pager, boolean delayLoad) {

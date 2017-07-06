@@ -157,11 +157,12 @@ public class MainActivity extends Activity implements
         shortcutsDir.mkdir();
         for (File file : shortcutsDir.listFiles()) {
             try {
-                getPager().addLauncherItem(ShortcutItem.fromFile(this, file));
+                getPager().addLauncherItemBulk(ShortcutItem.fromFile(this, file));
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
+        getPager().finishBulk();
     }
 
     private void forgetDeletedApps() {

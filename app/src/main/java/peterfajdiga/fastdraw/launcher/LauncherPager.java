@@ -71,6 +71,28 @@ public class LauncherPager extends ViewPager {
         return items;
     }
 
+    public void addLauncherItemBulk(LauncherItem item) {
+        final String categoryName = item.getCategory();
+        item.setCategoryNoDirty(categoryName);
+        CategoryView categoryView = getAdapter().categories.get(categoryName);
+        if (categoryView == null) {
+            categoryView = new CategoryView(getContext());
+            getAdapter().categories.put(categoryName, categoryView);
+        }
+        final CategoryArrayAdapter innerAdapter = (CategoryArrayAdapter) categoryView.getAdapter();
+        innerAdapter.add(item);
+    }
+
+    public void finishBulk() {
+        final LauncherPagerAdapter adapter = (LauncherPagerAdapter)getAdapter();
+        for (CategoryView categoryView : adapter.categories.values()) {
+            final CategoryArrayAdapter innerAdapter = (CategoryArrayAdapter)categoryView.getAdapter();
+            innerAdapter.sort();
+            innerAdapter.notifyDataSetChanged();
+        }
+        adapter.notifyDataSetChanged();
+    }
+
     public void addLauncherItem(LauncherItem item) {
         final String categoryName = item.getCategory();
         item.setCategoryNoDirty(categoryName);
