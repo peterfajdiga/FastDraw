@@ -10,6 +10,7 @@ public final class Preferences {
     public static final int ACTION_WALLPAPER = 1;
     public static final int ACTION_SHORTCUT  = 2;
     public static final int ACTION_SETTINGS  = 3;
+    public static final int ACTION_RENAME_CATEGORY = 4;
 
     public static int appItemResource;
 

@@ -221,12 +221,20 @@ public class MainActivity extends Activity implements
         final Intent settingsIntent = new Intent(this, SettingsActivity.class);
         startActivity(settingsIntent);
     }
+    public void renameCurrentCategory() {
+        RenameCategoryDialog dialog = new RenameCategoryDialog();
+        Bundle args = new Bundle();
+        args.putString("categoryName", getPager().getCurrentCategoryName());
+        dialog.setArguments(args);
+        dialog.show(getFragmentManager(), "RenameCategoryDialog");
+    }
 
     public void performAction(final int action) {
         switch (action) {
             case Preferences.ACTION_WALLPAPER: openWallpaperPicker(); break;
             case Preferences.ACTION_SHORTCUT:  showCreateShortcutDialog(); break;
             case Preferences.ACTION_SETTINGS:  openSettings(); break;
+            case Preferences.ACTION_RENAME_CATEGORY: renameCurrentCategory(); break;
         }
     }
 
