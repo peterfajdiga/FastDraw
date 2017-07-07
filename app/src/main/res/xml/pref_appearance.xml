@@ -1,22 +1,22 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
     <SwitchPreference
-        android:defaultValue="true"
+        android:defaultValue="@bool/default_showIcons"
         android:key="showIcons"
         android:title="@string/pref_title_showIcons"
         android:summary="@string/pref_description_showIcons" />
 
     <peterfajdiga.colorpickerhex.ColorPreference
-        android:defaultValue="0x80000000"
+        android:defaultValue="@integer/default_headerBgColor"
         android:key="headerBgColor"
         android:title="@string/pref_title_headerBgColor" />
     <peterfajdiga.colorpickerhex.ColorPreference
-        android:defaultValue="0xB0000000"
+        android:defaultValue="@integer/default_headerBgColorExpanded"
         android:key="headerBgColorExpanded"
         android:title="@string/pref_title_headerBgColorExpanded" />
 
     <SwitchPreference
-        android:defaultValue="false"
+        android:defaultValue="@bool/default_statusBarDarker"
         android:key="statusBarDarker"
         android:title="@string/pref_title_statusBarDarker"
         android:summary="@string/pref_description_statusBarDarker" />

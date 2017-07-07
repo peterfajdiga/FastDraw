@@ -1,7 +1,7 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
     <ListPreference
-        android:defaultValue="0"
+        android:defaultValue="@string/default_appItemResource"
         android:entries="@array/pref_appItemResource_titles"
         android:entryValues="@array/pref_appItemResource_values"
         android:key="appItemResource"
@@ -10,13 +10,13 @@
         android:title="@string/pref_title_appItemResource" />
 
     <SwitchPreference
-        android:defaultValue="false"
+        android:defaultValue="@bool/default_headerbtm"
         android:key="headerbtm"
         android:title="@string/pref_title_headerbtm"
         android:summary="@string/pref_description_headerbtm" />
 
     <SwitchPreference
-        android:defaultValue="false"
+        android:defaultValue="@bool/default_stackFromBottom"
         android:key="stackFromBottom"
         android:title="@string/pref_title_stackFromBottom"
         android:summary="@string/pref_description_stackFromBottom" />

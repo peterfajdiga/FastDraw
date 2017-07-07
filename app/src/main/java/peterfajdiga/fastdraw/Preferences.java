@@ -2,6 +2,7 @@ package peterfajdiga.fastdraw;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.res.Resources;
 import android.preference.PreferenceManager;
 
 public final class Preferences {
@@ -67,22 +68,24 @@ public final class Preferences {
 
 
     public static void loadPreferences(final Context context) {
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
-        switch (prefs.getString("appItemResource", "0")) {
+        final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+        final Resources res = context.getResources();
+
+        switch (prefs.getString("appItemResource", res.getString(R.string.default_appItemResource))) {
             default:
             case "0": appItemResource = R.layout.app_item; break;
             case "1": appItemResource = R.layout.app_item_horizontal; break;
             case "2": appItemResource = R.layout.app_item_package; break;
         }
-        mainLayoutResource = prefs.getBoolean("headerbtm", false) ? R.layout.activity_main_headerbtm : R.layout.activity_main_headertop;
-        stackFromBottom = prefs.getBoolean("stackFromBottom", false);
-        showIcons = prefs.getBoolean("showIcons", true);
-        statusBarDarker = prefs.getBoolean("statusBarDarker", false);
-        longclickAction = Integer.parseInt(prefs.getString("action_longclick", "1"));
-        doubleclickAction = Integer.parseInt(prefs.getString("action_doubleclick", "2"));
-        pinchAction = Integer.parseInt(prefs.getString("action_pinch", "0"));
-        unpinchAction = Integer.parseInt(prefs.getString("action_unpinch", "0"));
-        headerBgColor = prefs.getInt("headerBgColor", 0x80000000);
-        headerBgColorExpanded = prefs.getInt("headerBgColorExpanded", 0xB0000000);
+        mainLayoutResource                 = prefs.getBoolean("headerbtm",         res.getBoolean(R.bool.default_headerbtm)) ? R.layout.activity_main_headerbtm : R.layout.activity_main_headertop;
+        stackFromBottom                    = prefs.getBoolean("stackFromBottom",   res.getBoolean(R.bool.default_stackFromBottom));
+        showIcons                          = prefs.getBoolean("showIcons",         res.getBoolean(R.bool.default_showIcons));
+        statusBarDarker                    = prefs.getBoolean("statusBarDarker",   res.getBoolean(R.bool.default_statusBarDarker));
+        longclickAction   = Integer.parseInt(prefs.getString("action_longclick",   res.getString(R.string.default_action_longclick)));
+        doubleclickAction = Integer.parseInt(prefs.getString("action_doubleclick", res.getString(R.string.default_action_doubleclick)));
+        pinchAction       = Integer.parseInt(prefs.getString("action_pinch",       res.getString(R.string.default_action_pinch)));
+        unpinchAction     = Integer.parseInt(prefs.getString("action_unpinch",     res.getString(R.string.default_action_unpinch)));
+        headerBgColor                      = prefs.getInt("headerBgColor",         res.getInteger(R.integer.default_headerBgColor));
+        headerBgColorExpanded              = prefs.getInt("headerBgColorExpanded", res.getInteger(R.integer.default_headerBgColorExpanded));
     }
 }

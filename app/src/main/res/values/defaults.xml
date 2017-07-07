@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="default_appItemResource">0</string>
+    <bool name="default_headerbtm">false</bool>
+    <bool name="default_stackFromBottom">false</bool>
+    <bool name="default_showIcons">true</bool>
+    <bool name="default_statusBarDarker">false</bool>
+    <integer name="default_headerBgColor">0x80000000</integer>
+    <integer name="default_headerBgColorExpanded">0xB0000000</integer>
+    <string name="default_action_longclick">1</string>
+    <string name="default_action_doubleclick">2</string>
+    <string name="default_action_pinch">0</string>
+    <string name="default_action_unpinch">0</string>
+</resources>

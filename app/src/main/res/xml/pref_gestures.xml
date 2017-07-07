@@ -4,7 +4,7 @@
          dismiss it. -->
     <!-- NOTE: ListPreference's summary should be set to its value by the activity code. -->
     <ListPreference
-        android:defaultValue="1"
+        android:defaultValue="@string/default_action_longclick"
         android:entries="@array/pref_actions_titles"
         android:entryValues="@array/pref_actions_values"
         android:key="action_longclick"
@@ -13,7 +13,7 @@
         android:title="@string/pref_title_action_longclick" />
 
     <ListPreference
-        android:defaultValue="2"
+        android:defaultValue="@string/default_action_doubleclick"
         android:entries="@array/pref_actions_titles"
         android:entryValues="@array/pref_actions_values"
         android:key="action_doubleclick"
@@ -22,7 +22,7 @@
         android:title="@string/pref_title_action_doubleclick" />
 
     <ListPreference
-        android:defaultValue="0"
+        android:defaultValue="@string/default_action_pinch"
         android:entries="@array/pref_actions_titles"
         android:entryValues="@array/pref_actions_values"
         android:key="action_pinch"
@@ -31,7 +31,7 @@
         android:title="@string/pref_title_action_pinch" />
 
     <ListPreference
-        android:defaultValue="0"
+        android:defaultValue="@string/default_action_unpinch"
         android:entries="@array/pref_actions_titles"
         android:entryValues="@array/pref_actions_values"
         android:key="action_unpinch"
