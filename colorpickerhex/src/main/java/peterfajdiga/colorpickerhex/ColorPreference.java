@@ -81,11 +81,6 @@ public class ColorPreference extends DialogPreference {
 
         mColorPreview = (ImageView)view.findViewById(R.id.light_color);
 
-        // Hide the summary text - it takes up too much space on a low res device
-        // We use it for storing the package name for the longClickListener
-        TextView tView = (TextView)view.findViewById(android.R.id.summary);
-        tView.setVisibility(View.GONE);
-
         mColorValue = getPersistedInt(mColorValue);
         updatePreferenceViews();
     }
