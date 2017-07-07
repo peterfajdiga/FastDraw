@@ -36,6 +36,11 @@ public final class Preferences {
         return headerSeparator;
     }
 
+    private static boolean headerShadow;
+    public static boolean headerShadow() {
+        return headerShadow;
+    }
+
     private static int headerBgColor;
     public static int headerBgColor() {
         return headerBgColor;
@@ -86,6 +91,7 @@ public final class Preferences {
         stackFromBottom                    = prefs.getBoolean("stackFromBottom",   res.getBoolean(R.bool.default_stackFromBottom));
         showIcons                          = prefs.getBoolean("showIcons",         res.getBoolean(R.bool.default_showIcons));
         headerSeparator                    = prefs.getBoolean("headerSeparator",   res.getBoolean(R.bool.default_headerSeparator));
+        headerShadow                       = prefs.getBoolean("headerShadow",      res.getBoolean(R.bool.default_headerShadow));
         statusBarDarker                    = prefs.getBoolean("statusBarDarker",   res.getBoolean(R.bool.default_statusBarDarker));
         longclickAction   = Integer.parseInt(prefs.getString("action_longclick",   res.getString(R.string.default_action_longclick)));
         doubleclickAction = Integer.parseInt(prefs.getString("action_doubleclick", res.getString(R.string.default_action_doubleclick)));

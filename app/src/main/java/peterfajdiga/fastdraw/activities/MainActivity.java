@@ -106,6 +106,9 @@ public class MainActivity extends Activity implements
         if (Preferences.statusBarDarker()) {
             getWindow().setFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS, WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         }
+        if (!Preferences.headerShadow()) {
+            header.setElevation(0);
+        }
 
         // header separator
         if (Preferences.headerSeparator()) {
