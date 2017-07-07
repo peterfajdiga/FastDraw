@@ -34,6 +34,8 @@
     <string name="pref_header_appearance">Appearance</string>
     <string name="pref_title_showIcons">Show icons</string>
     <string name="pref_description_showIcons">Show icons instead of text in tabs</string>
+    <string name="pref_title_headerSeparator">Show tabs separator</string>
+    <string name="pref_description_headerSeparator">Show a white line between the tabs and the apps</string>
     <string name="pref_title_headerBgColor">Normal color</string>
     <string name="pref_title_headerBgColorExpanded">Expanded color</string>
     <string name="pref_title_statusBarDarker">Darker status bar</string>

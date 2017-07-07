@@ -47,6 +47,13 @@
                 style="@style/DropZone"/>
         </LinearLayout>
 
+        <View
+            android:id="@+id/header_separator"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@android:color/white"
+            android:visibility="gone" />
+
     </LinearLayout>
 
 </FrameLayout>

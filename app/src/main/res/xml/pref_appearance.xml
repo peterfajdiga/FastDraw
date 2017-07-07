@@ -6,6 +6,12 @@
         android:title="@string/pref_title_showIcons"
         android:summary="@string/pref_description_showIcons" />
 
+    <SwitchPreference
+        android:defaultValue="@bool/default_headerSeparator"
+        android:key="headerSeparator"
+        android:title="@string/pref_title_headerSeparator"
+        android:summary="@string/pref_description_headerSeparator" />
+
     <peterfajdiga.colorpickerhex.ColorPreference
         android:defaultValue="@integer/default_headerBgColor"
         android:key="headerBgColor"

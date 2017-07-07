@@ -107,6 +107,11 @@ public class MainActivity extends Activity implements
             getWindow().setFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS, WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         }
 
+        // header separator
+        if (Preferences.headerSeparator()) {
+            findViewById(R.id.header_separator).setVisibility(View.VISIBLE);
+        }
+
         // BroadcastReceivers
         installShortcutReceiver = new InstallShortcutReceiver(this);
         registerReceiver(installShortcutReceiver, new IntentFilter("com.android.launcher.action.INSTALL_SHORTCUT"));

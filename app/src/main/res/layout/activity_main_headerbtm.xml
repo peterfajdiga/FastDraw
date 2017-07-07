@@ -19,6 +19,13 @@
         android:background="@android:color/transparent"
         android:elevation="4dp">
 
+        <View
+            android:id="@+id/header_separator"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@android:color/white"
+            android:visibility="gone" />
+
         <peterfajdiga.fastdraw.views.LauncherPagerHeader
             android:id="@+id/apps_pager_header"
             android:layout_width="match_parent"
