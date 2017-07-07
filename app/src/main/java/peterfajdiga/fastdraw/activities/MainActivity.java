@@ -103,16 +103,15 @@ public class MainActivity extends Activity implements
         }
         dragBgAnimator.setCurrentPlayTime(0);
 
-        if (Preferences.statusBarDarker()) {
-            getWindow().setFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS, WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+        // header preferences
+        if (Preferences.headerSeparator()) {
+            findViewById(R.id.header_separator).setVisibility(View.VISIBLE);
         }
         if (!Preferences.headerShadow()) {
             header.setElevation(0);
         }
-
-        // header separator
-        if (Preferences.headerSeparator()) {
-            findViewById(R.id.header_separator).setVisibility(View.VISIBLE);
+        if (Preferences.statusBarDarker()) {
+            getWindow().setFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS, WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         }
 
         // BroadcastReceivers
