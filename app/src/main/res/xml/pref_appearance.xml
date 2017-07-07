@@ -11,7 +11,7 @@
         android:key="headerBgColor"
         android:title="@string/pref_title_headerBgColor" />
     <peterfajdiga.colorpickerhex.ColorPreference
-        android:defaultValue="0x80000000"
+        android:defaultValue="0xB0000000"
         android:key="headerBgColorExpanded"
         android:title="@string/pref_title_headerBgColorExpanded" />
 

@@ -36,16 +36,17 @@ import android.widget.TextView;
 
 public class ColorPreference extends DialogPreference {
 
-    public static final int DEFAULT_COLOR = 0xffffff;
+    public static final int DEFAULT_COLOR = 0xff000000;
+
+    private Resources mResources;
 
     private ImageView mColorPreview;
 
     private int mColorValue;
 
-    private Resources mResources;
-
     public ColorPreference(Context context, AttributeSet attrs) {
         super(context, attrs);
+        mColorValue = attrs.getAttributeIntValue("http://schemas.android.com/apk/res/android", "defaultValue", DEFAULT_COLOR);
         init();
     }
 
@@ -85,7 +86,7 @@ public class ColorPreference extends DialogPreference {
         TextView tView = (TextView)view.findViewById(android.R.id.summary);
         tView.setVisibility(View.GONE);
 
-        mColorValue = getPersistedInt(DEFAULT_COLOR);
+        mColorValue = getPersistedInt(mColorValue);
         updatePreferenceViews();
     }
 
