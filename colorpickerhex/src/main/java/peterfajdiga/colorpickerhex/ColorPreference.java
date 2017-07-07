@@ -32,7 +32,6 @@ import android.preference.DialogPreference;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 public class ColorPreference extends DialogPreference {
 
@@ -46,7 +45,7 @@ public class ColorPreference extends DialogPreference {
 
     public ColorPreference(Context context, AttributeSet attrs) {
         super(context, attrs);
-        mColorValue = attrs.getAttributeIntValue("http://schemas.android.com/apk/res/android", "defaultValue", DEFAULT_COLOR);
+        mColorValue = getDefaultColor(context.getResources(), attrs);
         init();
     }
 
@@ -54,6 +53,17 @@ public class ColorPreference extends DialogPreference {
         super(context, null);
         mColorValue = color;
         init();
+    }
+
+    private int getDefaultColor(final Resources res, final AttributeSet attrs) {
+        final int defaultColor;
+        final int defaultValueStr = attrs.getAttributeResourceValue("http://schemas.android.com/apk/res/android", "defaultValue", 0);
+        if (defaultValueStr == 0) {
+            defaultColor = attrs.getAttributeIntValue("http://schemas.android.com/apk/res/android", "defaultValue", DEFAULT_COLOR);
+        } else {
+            defaultColor = res.getInteger(defaultValueStr);
+        }
+        return defaultColor;
     }
 
     private void init() {
