@@ -72,13 +72,13 @@ public class TabContainer extends TabLayout {
         final String category = tab.getText().toString();
         final Drawable icon = getCategoryIcon(getContext(), category);
 
-        if (Preferences.showIcons()) {
+        if (Preferences.showIcons) {
             if (icon != null) {
                 // TODO: Setting to disable
                 tab.setIcon(icon);
                 tab.setText("");
                 DrawableCompat.setTintList(DrawableCompat.wrap(icon), iconColors);
-            } else if (category.length() == 1 && Preferences.largeSingle()) {
+            } else if (category.length() == 1 && Preferences.largeSingle) {
                 // TODO: Setting to disable
                 SpannableString tabString = new SpannableString(category);
                 tabString.setSpan(new AbsoluteSizeSpan(19, true), 0, 1, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
@@ -92,7 +92,7 @@ public class TabContainer extends TabLayout {
         final ViewGroup tabContainer = (ViewGroup)getChildAt(0);
         final View tabView = tabContainer.getChildAt(tab.getPosition());
 
-        if (Preferences.mainLayoutResource() == R.layout.activity_main_headertop) {
+        if (Preferences.mainLayoutResource == R.layout.activity_main_headertop) {
             tabView.setPadding(0, getResources().getDimensionPixelSize(R.dimen.status_bar_height), 0, 0);
         }
         tabView.setOnLongClickListener(new View.OnLongClickListener() {

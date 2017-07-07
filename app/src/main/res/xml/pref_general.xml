@@ -14,7 +14,6 @@
         android:key="headerbtm"
         android:title="@string/pref_title_headerbtm"
         android:summary="@string/pref_description_headerbtm" />
-
     <SwitchPreference
         android:defaultValue="@bool/default_stackFromBottom"
         android:key="stackFromBottom"

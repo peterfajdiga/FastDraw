@@ -20,13 +20,13 @@ import peterfajdiga.fastdraw.launcher.item.LauncherItem;
 class CategoryArrayAdapter extends ArrayAdapter<LauncherItem>{
 
     public CategoryArrayAdapter(Context context) {
-        super(context, Preferences.appItemResource());
+        super(context, Preferences.appItemResource);
     }
 
     @Override
     public View getView(int position, View convertView, final ViewGroup parent) {
         if (convertView == null) {
-            convertView = ((Activity)getContext()).getLayoutInflater().inflate(Preferences.appItemResource(), null);
+            convertView = ((Activity)getContext()).getLayoutInflater().inflate(Preferences.appItemResource, null);
         }
         final LauncherItem item = getItem(position);
 
@@ -40,7 +40,7 @@ class CategoryArrayAdapter extends ArrayAdapter<LauncherItem>{
         TextView appLabel = (TextView)convertView.findViewById(R.id.app_item_name);
         appLabel.setText(item.name);
 
-        if (Preferences.appItemResource() == R.layout.app_item_package && item instanceof AppItem) {
+        if (Preferences.appItemResource == R.layout.app_item_package && item instanceof AppItem) {
             TextView appName = (TextView)convertView.findViewById(R.id.app_item_package_name);
             appName.setText(((AppItem)item).packageName);
         }

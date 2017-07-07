@@ -11,75 +11,26 @@ public final class Preferences {
     public static final int ACTION_SHORTCUT  = 2;
     public static final int ACTION_SETTINGS  = 3;
 
-    private static int appItemResource;
-    public static int appItemResource() {
-        return appItemResource;
-    }
+    public static int appItemResource;
 
-    private static int mainLayoutResource;
-    public static int mainLayoutResource() {
-        return mainLayoutResource;
-    }
+    public static int mainLayoutResource;
+    public static boolean stackFromBottom;
 
-    private static boolean stackFromBottom;
-    public static boolean stackFromBottom() {
-        return stackFromBottom;
-    }
+    public static boolean showIcons;
+    public static boolean largeSingle;
 
-    private static boolean showIcons;
-    public static boolean showIcons() {
-        return showIcons;
-    }
+    public static boolean headerSeparator;
+    public static boolean headerShadow;
 
-    private static boolean largeSingle;
-    public static boolean largeSingle() {
-        return largeSingle;
-    }
+    public static int headerBgColor;
+    public static int headerBgColorExpanded;
 
-    private static boolean headerSeparator;
-    public static boolean headerSeparator() {
-        return headerSeparator;
-    }
+    public static boolean statusBarDarker;
 
-    private static boolean headerShadow;
-    public static boolean headerShadow() {
-        return headerShadow;
-    }
-
-    private static int headerBgColor;
-    public static int headerBgColor() {
-        return headerBgColor;
-    }
-
-    private static int headerBgColorExpanded;
-    public static int headerBgColorExpanded() {
-        return headerBgColorExpanded;
-    }
-
-    private static boolean statusBarDarker;
-    public static boolean statusBarDarker() {
-        return statusBarDarker;
-    }
-
-    private static int longclickAction;
-    public static int longclickAction() {
-        return longclickAction;
-    }
-
-    private static int doubleclickAction;
-    public static int doubleclickAction() {
-        return doubleclickAction;
-    }
-
-    private static int pinchAction;
-    public static int pinchAction() {
-        return pinchAction;
-    }
-
-    private static int unpinchAction;
-    public static int unpinchAction() {
-        return unpinchAction;
-    }
+    public static int longclickAction;
+    public static int doubleclickAction;
+    public static int pinchAction;
+    public static int unpinchAction;
 
 
     public static void loadPreferences(final Context context) {

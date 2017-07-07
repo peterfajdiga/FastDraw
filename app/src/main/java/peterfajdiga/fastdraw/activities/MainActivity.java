@@ -65,7 +65,7 @@ public class MainActivity extends Activity implements
 
         instance = this;
         Preferences.loadPreferences(this);
-        setContentView(Preferences.mainLayoutResource());
+        setContentView(Preferences.mainLayoutResource);
 
         getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
 
@@ -92,25 +92,25 @@ public class MainActivity extends Activity implements
 
 
         // header color animator
-        dragBgAnimator = ValueAnimator.ofArgb(Preferences.headerBgColor(), Preferences.headerBgColorExpanded());
+        dragBgAnimator = ValueAnimator.ofArgb(Preferences.headerBgColor, Preferences.headerBgColorExpanded);
         dragBgAnimator.setDuration(DROPZONE_TRANSITION_DURATION);
         dragBgAnimator.addUpdateListener(new ViewBgAnimator(header));
-        if (Preferences.mainLayoutResource() == R.layout.activity_main_headerbtm) {
+        if (Preferences.mainLayoutResource == R.layout.activity_main_headerbtm) {
             dragBgAnimator.addUpdateListener(new NavigationBarAnimator(getWindow()));
-            getWindow().setStatusBarColor(Preferences.headerBgColor());
+            getWindow().setStatusBarColor(Preferences.headerBgColor);
         } else {
-            getWindow().setNavigationBarColor(Preferences.headerBgColor());
+            getWindow().setNavigationBarColor(Preferences.headerBgColor);
         }
         dragBgAnimator.setCurrentPlayTime(0);
 
         // header preferences
-        if (Preferences.headerSeparator()) {
+        if (Preferences.headerSeparator) {
             findViewById(R.id.header_separator).setVisibility(View.VISIBLE);
         }
-        if (!Preferences.headerShadow()) {
+        if (!Preferences.headerShadow) {
             header.setElevation(0);
         }
-        if (Preferences.statusBarDarker()) {
+        if (Preferences.statusBarDarker) {
             getWindow().setFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS, WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         }
 
@@ -232,22 +232,22 @@ public class MainActivity extends Activity implements
 
     @Override
     public void onPagerLongpress() {
-        performAction(Preferences.longclickAction());
+        performAction(Preferences.longclickAction);
     }
 
     @Override
     public void onPagerDoubletap() {
-        performAction(Preferences.doubleclickAction());
+        performAction(Preferences.doubleclickAction);
     }
 
     @Override
     public void onPagerPinch() {
-        performAction(Preferences.pinchAction());
+        performAction(Preferences.pinchAction);
     }
 
     @Override
     public void onPagerUnpinch() {
-        performAction(Preferences.unpinchAction());
+        performAction(Preferences.unpinchAction);
     }
 
 
@@ -294,7 +294,7 @@ public class MainActivity extends Activity implements
             dragBgAnimator.reverse();
 
             // show status or navigation bar
-            switch (Preferences.mainLayoutResource()) {
+            switch (Preferences.mainLayoutResource) {
                 case R.layout.activity_main_headertop: {
                     getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
                     break;
@@ -323,7 +323,7 @@ public class MainActivity extends Activity implements
         dragBgAnimator.start();
 
         // hide status or navigation bar
-        switch (Preferences.mainLayoutResource()) {
+        switch (Preferences.mainLayoutResource) {
             case R.layout.activity_main_headertop: {
                 getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
                 break;
