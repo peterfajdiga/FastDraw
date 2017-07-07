@@ -31,6 +31,11 @@ public final class Preferences {
         return showIcons;
     }
 
+    private static boolean largeSingle;
+    public static boolean largeSingle() {
+        return largeSingle;
+    }
+
     private static boolean headerSeparator;
     public static boolean headerSeparator() {
         return headerSeparator;
@@ -90,6 +95,7 @@ public final class Preferences {
         mainLayoutResource                 = prefs.getBoolean("headerbtm",         res.getBoolean(R.bool.default_headerbtm)) ? R.layout.activity_main_headerbtm : R.layout.activity_main_headertop;
         stackFromBottom                    = prefs.getBoolean("stackFromBottom",   res.getBoolean(R.bool.default_stackFromBottom));
         showIcons                          = prefs.getBoolean("showIcons",         res.getBoolean(R.bool.default_showIcons));
+        largeSingle                        = prefs.getBoolean("largeSingle",       res.getBoolean(R.bool.default_largeSingle));
         headerSeparator                    = prefs.getBoolean("headerSeparator",   res.getBoolean(R.bool.default_headerSeparator));
         headerShadow                       = prefs.getBoolean("headerShadow",      res.getBoolean(R.bool.default_headerShadow));
         statusBarDarker                    = prefs.getBoolean("statusBarDarker",   res.getBoolean(R.bool.default_statusBarDarker));

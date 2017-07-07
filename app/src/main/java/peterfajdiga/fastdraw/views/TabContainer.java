@@ -78,7 +78,7 @@ public class TabContainer extends TabLayout {
                 tab.setIcon(icon);
                 tab.setText("");
                 DrawableCompat.setTintList(DrawableCompat.wrap(icon), iconColors);
-            } else if (category.length() == 1) {
+            } else if (category.length() == 1 && Preferences.largeSingle()) {
                 // TODO: Setting to disable
                 SpannableString tabString = new SpannableString(category);
                 tabString.setSpan(new AbsoluteSizeSpan(19, true), 0, 1, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
