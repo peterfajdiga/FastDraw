@@ -22,17 +22,17 @@ import peterfajdiga.fastdraw.R;
 import peterfajdiga.fastdraw.dialogs.RenameCategoryDialog;
 import peterfajdiga.fastdraw.listeners.DropZoneCategory;
 
-public class LauncherPagerHeader extends TabLayout {
+public class TabContainer extends TabLayout {
 
-    public LauncherPagerHeader(Context context) {
+    public TabContainer(Context context) {
         this(context, null);
     }
 
-    public LauncherPagerHeader(Context context, AttributeSet attrs) {
+    public TabContainer(Context context, AttributeSet attrs) {
         this(context, attrs, 0);
     }
 
-    public LauncherPagerHeader(Context context, AttributeSet attrs, int defStyleAttr) {
+    public TabContainer(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
     }
 

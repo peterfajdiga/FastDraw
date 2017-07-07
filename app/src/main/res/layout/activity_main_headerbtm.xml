@@ -26,8 +26,8 @@
             android:background="@android:color/white"
             android:visibility="gone" />
 
-        <peterfajdiga.fastdraw.views.LauncherPagerHeader
-            android:id="@+id/apps_pager_header"
+        <peterfajdiga.fastdraw.views.TabContainer
+            android:id="@+id/tab_container"
             android:layout_width="match_parent"
             android:layout_height="@dimen/pager_header_height"
             style="@style/AppsTabLayout" />

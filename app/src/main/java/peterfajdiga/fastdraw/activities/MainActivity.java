@@ -35,7 +35,7 @@ import peterfajdiga.fastdraw.launcher.item.AppItem;
 import peterfajdiga.fastdraw.launcher.item.LauncherItem;
 import peterfajdiga.fastdraw.launcher.item.ShortcutItem;
 import peterfajdiga.fastdraw.launcher.LauncherPager;
-import peterfajdiga.fastdraw.views.LauncherPagerHeader;
+import peterfajdiga.fastdraw.views.TabContainer;
 
 public class MainActivity extends Activity implements
         LauncherPager.Owner,
@@ -85,8 +85,8 @@ public class MainActivity extends Activity implements
 
         ViewPager appsPager = (ViewPager)findViewById(R.id.apps_pager);
 
-        LauncherPagerHeader pagerHeader = (LauncherPagerHeader)findViewById(R.id.apps_pager_header);
-        pagerHeader.setupWithViewPager(appsPager);
+        TabContainer tabContainer = (TabContainer)findViewById(R.id.tab_container);
+        tabContainer.setupWithViewPager(appsPager);
 
         loadLauncherItems();
 
