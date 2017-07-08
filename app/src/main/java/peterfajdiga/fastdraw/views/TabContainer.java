@@ -114,125 +114,125 @@ public class TabContainer extends TabLayout {
 
     private static Drawable getCategoryIcon(Context context, String categoryName) {
         if (categoryName.equals(context.getString(R.string.default_category))) {
-            return context.getDrawable(R.drawable.ic_apps_white_24dp);
+            return context.getDrawable(R.drawable.ic_category_apps);
         }
         if (categoryName.equals(context.getString(R.string.default_shortcut_category))) {
-            return context.getDrawable(R.drawable.ic_link_white_24dp);
+            return context.getDrawable(R.drawable.ic_category_link);
         }
         switch (categoryName) {
             case "ANDROID":
             case "AOSP":
-            case "SYSTEM":      return context.getDrawable(R.drawable.ic_android_white_24dp);
+            case "SYSTEM":      return context.getDrawable(R.drawable.ic_category_android);
             case "CASH":
             case "FINANCE":
             case "FINANCES":
-            case "MONEY":       return context.getDrawable(R.drawable.ic_attach_money_white_24dp);
+            case "MONEY":       return context.getDrawable(R.drawable.ic_category_money);
             case "BOOKS":
             case "LITERATURE":
             case "READ":
-            case "READING":     return context.getDrawable(R.drawable.ic_book_white_24dp);
-            case "TOOLS":       return context.getDrawable(R.drawable.ic_build_white_24dp);
-            case "PHONE":       return context.getDrawable(R.drawable.ic_call_white_24dp);
-            case "PHOTOS":      return context.getDrawable(R.drawable.ic_camera_alt_white_24dp);
-            case "CAMERA":      return context.getDrawable(R.drawable.ic_camera_white_24dp);
-            case "TRAVEL":      return context.getDrawable(R.drawable.ic_card_travel_white_24dp);
+            case "READING":     return context.getDrawable(R.drawable.ic_category_book);
+            case "TOOLS":       return context.getDrawable(R.drawable.ic_category_build);
+            case "PHONE":       return context.getDrawable(R.drawable.ic_category_phone);
+            case "PHOTOS":      return context.getDrawable(R.drawable.ic_category_camera_alt);
+            case "CAMERA":      return context.getDrawable(R.drawable.ic_category_camera);
+            case "TRAVEL":      return context.getDrawable(R.drawable.ic_category_travel);
             case "CHAT":
             case "CHATTING":
             case "COMMUNICATION":
             case "MESSAGING":
-            case "SMS":         return context.getDrawable(R.drawable.ic_chat_white_24dp);
-            case "CLOUD":       return context.getDrawable(R.drawable.ic_cloud_white_24dp);
+            case "SMS":         return context.getDrawable(R.drawable.ic_category_chat);
+            case "CLOUD":       return context.getDrawable(R.drawable.ic_category_cloud);
             case "COMPUTER":
-            case "PC":          return context.getDrawable(R.drawable.ic_computer_white_24dp);
+            case "PC":          return context.getDrawable(R.drawable.ic_category_computer);
             case "BAD":
             case "JUNK":
             case "RUBBISH":
-            case "TRASH":       return context.getDrawable(R.drawable.ic_delete_white_24dp);
+            case "TRASH":       return context.getDrawable(R.drawable.ic_category_delete);
             case "BUS":
-            case "TRANSPORT":   return context.getDrawable(R.drawable.ic_directions_bus_white_24dp);
+            case "TRANSPORT":   return context.getDrawable(R.drawable.ic_category_bus);
             case "CAR":
-            case "CARS":        return context.getDrawable(R.drawable.ic_directions_car_white_24dp);
+            case "CARS":        return context.getDrawable(R.drawable.ic_category_car);
             case "COMPASS":
             case "EXPLORE":
             case "EXPLORATION":
             case "NAVIGATE":
-            case "NAVIGATION":  return context.getDrawable(R.drawable.ic_explore_white_24dp);
+            case "NAVIGATION":  return context.getDrawable(R.drawable.ic_category_explore);
             case "ADDONS":
             case "ADD-ONS":
             case "EXTENSIONS":
             case "PLUGINS":
-            case "PLUG-INS":    return context.getDrawable(R.drawable.ic_extension_white_24dp);
+            case "PLUG-INS":    return context.getDrawable(R.drawable.ic_category_extension);
             case "<3":
             case "FAVES":
             case "FAVORITE":
             case "FAVORITES":
             case "FAVOURITE":
             case "FAVOURITES":
-            case "HEART":       return context.getDrawable(R.drawable.ic_favorite_white_24dp);
+            case "HEART":       return context.getDrawable(R.drawable.ic_category_heart);
             case "FLIGHT":
             case "PLANE":
-            case "PLANES":      return context.getDrawable(R.drawable.ic_flight_white_24dp);
-            case "TRAFFIC":     return context.getDrawable(R.drawable.ic_traffic_white_24dp);
+            case "PLANES":      return context.getDrawable(R.drawable.ic_category_flight);
+            case "TRAFFIC":     return context.getDrawable(R.drawable.ic_category_traffic);
             case "BAR":
-            case "DRINK":       return context.getDrawable(R.drawable.ic_local_bar_white_24dp);
-            case "FOOD":        return context.getDrawable(R.drawable.ic_local_dining_white_24dp);
-            case "COFFEE":      return context.getDrawable(R.drawable.ic_local_cafe_white_24dp);
+            case "DRINK":       return context.getDrawable(R.drawable.ic_category_bar);
+            case "FOOD":        return context.getDrawable(R.drawable.ic_category_food);
+            case "COFFEE":      return context.getDrawable(R.drawable.ic_category_cafe);
             case "FILES":
-            case "FILESYSTEM":  return context.getDrawable(R.drawable.ic_folder_white_24dp);
-            case "GAMES":       return context.getDrawable(R.drawable.ic_games_white_24dp);
+            case "FILESYSTEM":  return context.getDrawable(R.drawable.ic_category_folder);
+            case "GAMES":       return context.getDrawable(R.drawable.ic_category_games);
             case "PEOPLE":
-            case "SOCIAL":      return context.getDrawable(R.drawable.ic_group_white_24dp);
+            case "SOCIAL":      return context.getDrawable(R.drawable.ic_category_group);
             case "HOME":
-            case "HOUSE":       return context.getDrawable(R.drawable.ic_home_white_24dp);
+            case "HOUSE":       return context.getDrawable(R.drawable.ic_category_home);
             case "INFO":
-            case "INFORMATION": return context.getDrawable(R.drawable.ic_info_white_24dp);
+            case "INFORMATION": return context.getDrawable(R.drawable.ic_category_info);
             case "EARTH":
             case "GLOBAL":
             case "GLOBE":
             case "INTERNET":
             case "NET":
             case "WEB":
-            case "WORLD":       return context.getDrawable(R.drawable.ic_language_white_24dp);
+            case "WORLD":       return context.getDrawable(R.drawable.ic_category_language);
             case "BLOCK":
             case "BLOCKED":
             case "LOCK":
             case "LOCKED":
-            case "PROHIBITED":  return context.getDrawable(R.drawable.ic_lock_white_24dp);
+            case "PROHIBITED":  return context.getDrawable(R.drawable.ic_category_lock);
             case "NOTE":
             case "NOTES":
             case "WRITE":
-            case "WRITING":     return context.getDrawable(R.drawable.ic_mode_edit_white_24dp);
-            case "MOVIES":      return context.getDrawable(R.drawable.ic_movie_white_24dp);
+            case "WRITING":     return context.getDrawable(R.drawable.ic_category_edit);
+            case "MOVIES":      return context.getDrawable(R.drawable.ic_category_movie);
             case "AUDIO":
             case "MUSIC":
-            case "SOUND":       return context.getDrawable(R.drawable.ic_music_note_white_24dp);
-            case "IMAGES":      return context.getDrawable(R.drawable.ic_photo_white_24dp);
-            case "MEDIA":       return context.getDrawable(R.drawable.ic_play_arrow_white_24dp);
+            case "SOUND":       return context.getDrawable(R.drawable.ic_category_music);
+            case "IMAGES":      return context.getDrawable(R.drawable.ic_category_photo);
+            case "MEDIA":       return context.getDrawable(R.drawable.ic_category_play);
             case "EDU":
             case "EDUCATION":
             case "KNOWLEDGE":
             case "LEARN":
             case "LEARNING":
-            case "SCHOOL":      return context.getDrawable(R.drawable.ic_school_white_24dp);
+            case "SCHOOL":      return context.getDrawable(R.drawable.ic_category_school);
             case "SEARCH":
-            case "SEARCHING":   return context.getDrawable(R.drawable.ic_search_white_24dp);
-            case "SECURITY":    return context.getDrawable(R.drawable.ic_security_white_24dp);
+            case "SEARCHING":   return context.getDrawable(R.drawable.ic_category_search);
+            case "SECURITY":    return context.getDrawable(R.drawable.ic_category_security);
             case "CONF":
             case "CONFIG":
             case "CONFIGURATION":
-            case "SETTINGS":    return context.getDrawable(R.drawable.ic_settings_white_24dp);
+            case "SETTINGS":    return context.getDrawable(R.drawable.ic_category_settings);
             case "SHOP":
             case "SHOPPING":
-            case "STORE":       return context.getDrawable(R.drawable.ic_shopping_cart_white_24dp);
+            case "STORE":       return context.getDrawable(R.drawable.ic_category_shopping);
             case "DEVICE":
-            case "SMARTPHONE":  return context.getDrawable(R.drawable.ic_smartphone_white_24dp);
+            case "SMARTPHONE":  return context.getDrawable(R.drawable.ic_category_smartphone);
             case "*":
             case "STAR":
-            case "STARRED":     return context.getDrawable(R.drawable.ic_star_white_24dp);
+            case "STARRED":     return context.getDrawable(R.drawable.ic_category_star);
             case "CALENDAR":
-            case "PLANNING":    return context.getDrawable(R.drawable.ic_today_white_24dp);
+            case "PLANNING":    return context.getDrawable(R.drawable.ic_category_calendar);
             case "BUSINESS":
-            case "WORK":        return context.getDrawable(R.drawable.ic_work_white_24dp);
+            case "WORK":        return context.getDrawable(R.drawable.ic_category_work);
             default: return null;
         }
     }

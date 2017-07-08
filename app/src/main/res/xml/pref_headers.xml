@@ -4,17 +4,17 @@
 
     <header
         android:fragment="peterfajdiga.fastdraw.activities.SettingsActivity$GeneralPreferenceFragment"
-        android:icon="@drawable/ic_pref_general_24dp"
+        android:icon="@drawable/ic_pref_general"
         android:title="@string/pref_header_general" />
 
     <header
         android:fragment="peterfajdiga.fastdraw.activities.SettingsActivity$AppearancePreferenceFragment"
-        android:icon="@drawable/ic_pref_appearance_24dp"
+        android:icon="@drawable/ic_pref_appearance"
         android:title="@string/pref_header_appearance" />
 
     <header
         android:fragment="peterfajdiga.fastdraw.activities.SettingsActivity$GesturesPreferenceFragment"
-        android:icon="@drawable/ic_pref_gestures_24dp"
+        android:icon="@drawable/ic_pref_gestures"
         android:title="@string/pref_header_gestures" />
 
 </preference-headers>
