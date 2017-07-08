@@ -11,6 +11,12 @@
     <string name="shortcut">Add shortcut</string>
     <string name="remove_shortcut">Remove shortcut</string>
 
+    <string name="action_wallpaper">Change wallpaper</string>
+    <string name="action_shortcut">Create new shortcut</string>
+    <string name="action_rename_category">Rename current category</string>
+    <string name="action_settings">Open settings</string>
+
+
     <!-- Strings related to Settings -->
     <string name="title_activity_settings">Fast Draw Settings</string>
 
@@ -48,10 +54,11 @@
     <string name="pref_header_gestures">Gestures</string>
     <string-array name="pref_actions_titles">
         <item>Do nothing</item>
-        <item>Change wallpaper</item>
-        <item>Create new shortcut</item>
-        <item>Open settings</item>
-        <item>Rename current category</item>
+        <item>Open actions menu</item>
+        <item>@string/action_wallpaper</item>
+        <item>@string/action_shortcut</item>
+        <item>@string/action_rename_category</item>
+        <item>@string/action_settings</item>
     </string-array>
     <string-array name="pref_actions_values">
         <item>0</item>
@@ -59,6 +66,7 @@
         <item>2</item>
         <item>3</item>
         <item>4</item>
+        <item>5</item>
     </string-array>
     <string name="pref_title_action_longclick">Longpress action</string>
     <string name="pref_title_action_doubleclick">Double tap action</string>

@@ -2,13 +2,13 @@ package peterfajdiga.fastdraw.activities;
 
 import android.animation.LayoutTransition;
 import android.animation.ValueAnimator;
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,6 +20,7 @@ import peterfajdiga.fastdraw.NavigationBarAnimator;
 import peterfajdiga.fastdraw.Preferences;
 import peterfajdiga.fastdraw.R;
 import peterfajdiga.fastdraw.ViewBgAnimator;
+import peterfajdiga.fastdraw.dialogs.ActionsSheet;
 import peterfajdiga.fastdraw.dialogs.NewCategoryDialog;
 import peterfajdiga.fastdraw.dialogs.RenameCategoryDialog;
 import peterfajdiga.fastdraw.launcher.AppItemManager;
@@ -36,7 +37,7 @@ import peterfajdiga.fastdraw.launcher.item.ShortcutItem;
 import peterfajdiga.fastdraw.launcher.LauncherPager;
 import peterfajdiga.fastdraw.views.TabContainer;
 
-public class MainActivity extends Activity implements
+public class MainActivity extends FragmentActivity implements
         LauncherPager.Owner,
         InstallAppReceiver.Owner,
         InstallShortcutReceiver.Owner,
@@ -208,6 +209,10 @@ public class MainActivity extends Activity implements
 
     // actions
 
+    public void openActionsMenu() {
+        final ActionsSheet dialog = new ActionsSheet();
+        dialog.show(getSupportFragmentManager(), "ActionsSheet");
+    }
     public void openWallpaperPicker() {
         final Intent intent = new Intent(Intent.ACTION_SET_WALLPAPER);
         startActivity(Intent.createChooser(intent, getString(R.string.wallpaper)));
@@ -216,24 +221,25 @@ public class MainActivity extends Activity implements
         final Intent intent = new Intent(Intent.ACTION_CREATE_SHORTCUT);
         startActivityForResult(Intent.createChooser(intent, getString(R.string.shortcut)), MainActivity.INSTALL_SHORTCUT_REQUEST);
     }
-    public void openSettings() {
-        final Intent settingsIntent = new Intent(this, SettingsActivity.class);
-        startActivity(settingsIntent);
-    }
     public void renameCurrentCategory() {
-        RenameCategoryDialog dialog = new RenameCategoryDialog();
-        Bundle args = new Bundle();
+        final RenameCategoryDialog dialog = new RenameCategoryDialog();
+        final Bundle args = new Bundle();
         args.putString("categoryName", getPager().getCurrentCategoryName());
         dialog.setArguments(args);
         dialog.show(getFragmentManager(), "RenameCategoryDialog");
     }
+    public void openSettings() {
+        final Intent settingsIntent = new Intent(this, SettingsActivity.class);
+        startActivity(settingsIntent);
+    }
 
     public void performAction(final int action) {
         switch (action) {
+            case Preferences.ACTION_MENU:      openActionsMenu(); break;
             case Preferences.ACTION_WALLPAPER: openWallpaperPicker(); break;
             case Preferences.ACTION_SHORTCUT:  showCreateShortcutDialog(); break;
-            case Preferences.ACTION_SETTINGS:  openSettings(); break;
             case Preferences.ACTION_RENAME_CATEGORY: renameCurrentCategory(); break;
+            case Preferences.ACTION_SETTINGS:  openSettings(); break;
         }
     }
 

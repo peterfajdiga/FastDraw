@@ -6,4 +6,6 @@
     <color name="darkBg">#80000000</color>
     <color name="foregroundActive">#FFFFFFFF</color>
     <color name="foregroundInactive">#80FFFFFF</color>
+    <color name="bottomSheetText">#DE000000</color>
+    <color name="bottomSheetIcon">#8A000000</color>
 </resources>
