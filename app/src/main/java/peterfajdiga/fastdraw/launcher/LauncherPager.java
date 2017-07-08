@@ -5,9 +5,6 @@ import android.content.Context;
 import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
 
-import java.util.Map;
-
-import peterfajdiga.fastdraw.launcher.item.AppItem;
 import peterfajdiga.fastdraw.launcher.item.LauncherItem;
 
 public class LauncherPager extends ViewPager {

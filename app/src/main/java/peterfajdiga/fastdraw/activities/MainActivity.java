@@ -2,13 +2,13 @@ package peterfajdiga.fastdraw.activities;
 
 import android.animation.LayoutTransition;
 import android.animation.ValueAnimator;
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.view.ViewGroup;
@@ -37,7 +37,7 @@ import peterfajdiga.fastdraw.launcher.item.ShortcutItem;
 import peterfajdiga.fastdraw.launcher.LauncherPager;
 import peterfajdiga.fastdraw.views.TabContainer;
 
-public class MainActivity extends Activity implements
+public class MainActivity extends FragmentActivity implements
         LauncherPager.Owner,
         InstallAppReceiver.Owner,
         InstallShortcutReceiver.Owner,
@@ -210,12 +210,12 @@ public class MainActivity extends Activity implements
     // actions
 
     public void openWallpaperPicker() {
-        Intent intent = new Intent(Intent.ACTION_SET_WALLPAPER);
+        final Intent intent = new Intent(Intent.ACTION_SET_WALLPAPER);
         startActivity(Intent.createChooser(intent, getString(R.string.wallpaper)));
     }
     public void showCreateShortcutDialog() {
         final CreateShortcutDialog dialog = new CreateShortcutDialog();
-        dialog.show(getFragmentManager(), "CreateShortcutDialog");
+        dialog.show(getSupportFragmentManager(), "CreateShortcutDialog");
     }
     public void openSettings() {
         final Intent settingsIntent = new Intent(this, SettingsActivity.class);

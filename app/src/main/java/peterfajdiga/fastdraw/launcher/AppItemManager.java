@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
+import android.net.Uri;
+import android.provider.Settings;
 
 import java.util.Map;
 
@@ -73,5 +75,14 @@ public class AppItemManager {
             }
         }
         adapter.notifyDataSetChanged();
+    }
+
+    public static void showPackageDetails(final Context context, final String packageName) {
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+        intent.setAction(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+        Uri uri = Uri.fromParts("package", packageName, null);
+        intent.setData(uri);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS);
+        context.startActivity(intent);
     }
 }

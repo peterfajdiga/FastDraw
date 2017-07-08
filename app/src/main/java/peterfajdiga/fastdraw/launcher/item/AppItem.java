@@ -11,6 +11,8 @@ import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.provider.Settings;
 
+import peterfajdiga.fastdraw.launcher.AppItemManager;
+
 public class AppItem extends LauncherItem {
 
     public String packageName;
@@ -25,7 +27,7 @@ public class AppItem extends LauncherItem {
 
     @Override
     public Intent getIntent() {
-        Intent intent = new Intent(Intent.ACTION_MAIN);
+        final Intent intent = new Intent(Intent.ACTION_MAIN);
         intent.setComponent(new ComponentName(packageName, activityName));
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         return intent;
@@ -37,20 +39,15 @@ public class AppItem extends LauncherItem {
     }
 
     @Override
-    public void persist(Context context) {
-        SharedPreferences prefs = context.getSharedPreferences("categories", Context.MODE_PRIVATE);
-        SharedPreferences.Editor prefsEditor = prefs.edit();
+    public void persist(final Context context) {
+        final SharedPreferences prefs = context.getSharedPreferences("categories", Context.MODE_PRIVATE);
+        final SharedPreferences.Editor prefsEditor = prefs.edit();
         prefsEditor.putString(getID(), category);
         prefsEditor.apply();
     }
 
-    public void openAppDetails(Context context) {
-        Intent intent = new Intent(Intent.ACTION_VIEW);
-        intent.setAction(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
-        Uri uri = Uri.fromParts("package", packageName, null);
-        intent.setData(uri);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS);
-        context.startActivity(intent);
+    public void openAppDetails(final Context context) {
+        AppItemManager.showPackageDetails(context, packageName);
     }
 
 

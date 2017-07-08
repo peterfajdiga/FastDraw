@@ -9,7 +9,7 @@
         android:id="@+id/app_item_icon"
         android:layout_width ="@dimen/app_icon_size"
         android:layout_height="@dimen/app_icon_size"
-        android:layout_gravity="center"/>
+        android:layout_gravity="center" />
 
     <TextView
         android:id="@+id/app_item_name"
