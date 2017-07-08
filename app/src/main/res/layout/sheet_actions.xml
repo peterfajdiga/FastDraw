@@ -1,34 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:paddingTop="8dp"
-    android:paddingBottom="8dp"
-    android:theme="@style/Theme.AppCompat.Light.NoActionBar">
+    android:theme="@style/Theme.AppCompat.Light.NoActionBar"
+    android:scrollbars="vertical">
 
-    <TextView
-        android:id="@+id/action_wallpaper"
-        style="@style/SheetItem"
-        android:text="@string/action_wallpaper"
-        android:drawableStart="@drawable/ic_action_wallpaper" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:paddingTop="8dp"
+        android:paddingBottom="8dp">
 
-    <TextView
-        android:id="@+id/action_shortcut"
-        style="@style/SheetItem"
-        android:text="@string/action_shortcut"
-        android:drawableStart="@drawable/ic_action_shortcut" />
+        <TextView
+            android:id="@+id/action_wallpaper"
+            style="@style/SheetItem"
+            android:text="@string/action_wallpaper"
+            android:drawableStart="@drawable/ic_action_wallpaper" />
 
-    <TextView
-        android:id="@+id/action_rename_category"
-        style="@style/SheetItem"
-        android:text="@string/action_rename_category"
-        android:drawableStart="@drawable/ic_action_rename_category" />
+        <TextView
+            android:id="@+id/action_shortcut"
+            style="@style/SheetItem"
+            android:text="@string/action_shortcut"
+            android:drawableStart="@drawable/ic_action_shortcut" />
 
-    <TextView
-        android:id="@+id/action_settings"
-        style="@style/SheetItem"
-        android:text="@string/action_settings"
-        android:drawableStart="@drawable/ic_action_settings" />
+        <TextView
+            android:id="@+id/action_rename_category"
+            style="@style/SheetItem"
+            android:text="@string/action_rename_category"
+            android:drawableStart="@drawable/ic_action_rename_category" />
 
-</LinearLayout>
+        <TextView
+            android:id="@+id/action_settings"
+            style="@style/SheetItem"
+            android:text="@string/action_settings"
+            android:drawableStart="@drawable/ic_action_settings" />
+
+    </LinearLayout>
+</android.support.v4.widget.NestedScrollView>
