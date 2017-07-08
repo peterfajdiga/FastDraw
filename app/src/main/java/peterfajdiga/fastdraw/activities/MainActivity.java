@@ -2,13 +2,13 @@ package peterfajdiga.fastdraw.activities;
 
 import android.animation.LayoutTransition;
 import android.animation.ValueAnimator;
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,7 +20,6 @@ import peterfajdiga.fastdraw.NavigationBarAnimator;
 import peterfajdiga.fastdraw.Preferences;
 import peterfajdiga.fastdraw.R;
 import peterfajdiga.fastdraw.ViewBgAnimator;
-import peterfajdiga.fastdraw.dialogs.CreateShortcutDialog;
 import peterfajdiga.fastdraw.dialogs.NewCategoryDialog;
 import peterfajdiga.fastdraw.dialogs.RenameCategoryDialog;
 import peterfajdiga.fastdraw.launcher.AppItemManager;
@@ -37,7 +36,7 @@ import peterfajdiga.fastdraw.launcher.item.ShortcutItem;
 import peterfajdiga.fastdraw.launcher.LauncherPager;
 import peterfajdiga.fastdraw.views.TabContainer;
 
-public class MainActivity extends FragmentActivity implements
+public class MainActivity extends Activity implements
         LauncherPager.Owner,
         InstallAppReceiver.Owner,
         InstallShortcutReceiver.Owner,
@@ -214,8 +213,8 @@ public class MainActivity extends FragmentActivity implements
         startActivity(Intent.createChooser(intent, getString(R.string.wallpaper)));
     }
     public void showCreateShortcutDialog() {
-        final CreateShortcutDialog dialog = new CreateShortcutDialog();
-        dialog.show(getSupportFragmentManager(), "CreateShortcutDialog");
+        final Intent intent = new Intent(Intent.ACTION_CREATE_SHORTCUT);
+        startActivityForResult(Intent.createChooser(intent, getString(R.string.shortcut)), MainActivity.INSTALL_SHORTCUT_REQUEST);
     }
     public void openSettings() {
         final Intent settingsIntent = new Intent(this, SettingsActivity.class);
