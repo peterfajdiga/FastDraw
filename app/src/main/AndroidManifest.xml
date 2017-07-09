@@ -46,6 +46,8 @@
             android:configChanges="orientation|screenSize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+                <action android:name="android.intent.action.APPLICATION_PREFERENCES" />
+                <category android:name="android.intent.category.PREFERENCE" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>

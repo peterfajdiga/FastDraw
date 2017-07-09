@@ -6,8 +6,16 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
+import android.net.Uri;
 import android.os.Bundle;
+import android.preference.PreferenceActivity;
+import android.preference.PreferenceManager;
+import android.provider.ContactsContract;
+import android.provider.Settings;
+import android.provider.Telephony;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
@@ -65,6 +73,7 @@ public class MainActivity extends FragmentActivity implements
         super.onCreate(savedInstanceState);
 
         instance = this;
+        onFirstRun();
         Preferences.loadPreferences(this);
         setContentView(Preferences.mainLayoutResource);
 
@@ -130,6 +139,73 @@ public class MainActivity extends FragmentActivity implements
         registerReceiver(installAppReceiver, appChangeFilter);
     }
 
+    private void onFirstRun() {
+        final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        if (prefs.getBoolean("firstRun", true)) {
+            final PackageManager packageManager = getPackageManager();
+
+            // Fast Draw Preferences
+            final ActivityInfo fastdrawPrefsInfo = new ActivityInfo();
+            fastdrawPrefsInfo.packageName = getPackageName();
+            fastdrawPrefsInfo.name = SettingsActivity.class.getName();
+            addAppToHome(new AppItem(fastdrawPrefsInfo, packageManager));
+
+            // phone app
+            addAppToHome(new Intent(Intent.ACTION_DIAL));
+
+            // sms app
+            String smsAppPackage = Telephony.Sms.getDefaultSmsPackage(this);
+            if (smsAppPackage == null) {
+                smsAppPackage = Settings.Secure.getString(getContentResolver(), "sms_default_application");
+            }
+            if (smsAppPackage != null) {
+                addAppToHome(smsAppPackage);
+            } else {
+                final Intent launcherIntent = new Intent(Intent.ACTION_MAIN);
+                launcherIntent.setType("vnd.android-dir/mms-sms");
+                addAppToHome(launcherIntent);
+            }
+
+            // contacts
+            final Intent contactIntent = new Intent(Intent.ACTION_PICK, ContactsContract.Contacts.CONTENT_URI);
+            addDefaultAppToHome(contactIntent);
+
+            // browser
+            final Intent urlIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.example.com"));
+            addDefaultAppToHome(urlIntent);
+
+            // settings
+            addAppToHome(new Intent(Settings.ACTION_SETTINGS));
+
+            prefs.edit().putBoolean("firstRun", false).apply();
+        }
+    }
+
+    private void addDefaultAppToHome(final Intent intent) {
+        final ResolveInfo resolveInfo = getPackageManager().resolveActivity(intent, 0);
+        if (resolveInfo != null) {
+            addAppToHome(resolveInfo.activityInfo.packageName);
+        }
+    }
+    private void addAppToHome(final AppItem appItem) {
+        appItem.setCategory("HOME");
+        appItem.persist(this);
+    }
+    private void addAppToHome(final Intent launcherIntent) {
+        final PackageManager packageManager = getPackageManager();
+        final ResolveInfo resolveInfo = packageManager.resolveActivity(launcherIntent, 0);
+        if (resolveInfo != null) {
+            addAppToHome(new AppItem(resolveInfo.activityInfo, packageManager));
+        }
+    }
+    private void addAppToHome(final String packageName) {
+//        final Intent launcherIntent = new Intent(Intent.ACTION_MAIN, null);
+//        launcherIntent.addCategory(Intent.CATEGORY_LAUNCHER);
+//        launcherIntent.setPackage(packageName);
+        final Intent launcherIntent = getPackageManager().getLaunchIntentForPackage(packageName);
+        addAppToHome(launcherIntent);
+    }
+
     @Override
     public void onPause() {
         super.onPause();
@@ -164,7 +240,7 @@ public class MainActivity extends FragmentActivity implements
         AppItemManager.addAppItems(this, getPager(), true);
 
         // shortcuts
-        File shortcutsDir = ShortcutItem.getShortcutsDir(this);
+        final File shortcutsDir = ShortcutItem.getShortcutsDir(this);
         shortcutsDir.mkdir();
         for (File file : shortcutsDir.listFiles()) {
             try {
@@ -177,8 +253,8 @@ public class MainActivity extends FragmentActivity implements
     }
 
     private void forgetDeletedApps() {
-        SharedPreferences prefs = getSharedPreferences("categories", Context.MODE_PRIVATE);
-        SharedPreferences.Editor prefsEditor = prefs.edit();
+        final SharedPreferences prefs = getSharedPreferences("categories", Context.MODE_PRIVATE);
+        final SharedPreferences.Editor prefsEditor = prefs.edit();
 
         for (String appItemId : prefs.getAll().keySet()) {
             String packageName = appItemId.substring(0, appItemId.indexOf('\0'));
