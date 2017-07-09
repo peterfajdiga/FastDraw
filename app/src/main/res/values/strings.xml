@@ -14,11 +14,11 @@
     <string name="action_wallpaper">Change wallpaper</string>
     <string name="action_shortcut">Create new shortcut</string>
     <string name="action_rename_category">Rename current category</string>
-    <string name="action_settings">Open settings</string>
+    <string name="action_settings">Open preferences</string>
 
 
     <!-- Strings related to Settings -->
-    <string name="title_activity_settings">Fast Draw Settings</string>
+    <string name="title_activity_settings">Fast Draw Preferences</string>
 
     <string name="pref_header_general">General</string>
     <string-array name="pref_appItemResource_titles">
