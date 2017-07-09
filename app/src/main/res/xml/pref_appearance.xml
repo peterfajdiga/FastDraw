@@ -8,6 +8,7 @@
     <SwitchPreference
         android:defaultValue="@bool/default_largeSingle"
         android:key="largeSingle"
+        android:dependency="showIcons"
         android:title="@string/pref_title_largeSingle"
         android:summary="@string/pref_description_largeSingle" />
 
