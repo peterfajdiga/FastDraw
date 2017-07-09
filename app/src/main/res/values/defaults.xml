@@ -3,6 +3,7 @@
     <string name="default_appItemResource">0</string>
     <bool name="default_headerbtm">false</bool>
     <bool name="default_stackFromBottom">false</bool>
+    <bool name="default_scrollableTabs">false</bool>
     <bool name="default_showIcons">true</bool>
     <bool name="default_largeSingle">false</bool>
     <bool name="default_headerSeparator">false</bool>

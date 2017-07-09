@@ -36,6 +36,8 @@
     <string name="pref_description_headerbtm">Place category tabs on the bottom of the screen instead of on the top</string>
     <string name="pref_title_stackFromBottom">Stack icons to the bottom</string>
     <string name="pref_description_stackFromBottom">Stack app icons so that they occupy the bottom part of the screen first</string>
+    <string name="pref_title_scrollableTabs">Scrollable tabs</string>
+    <string name="pref_description_scrollableTabs">If you have a lot of categories (experimental)</string>
 
     <string name="pref_header_appearance">Appearance</string>
     <string name="pref_title_showIcons">Show icons</string>

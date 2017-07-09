@@ -8,6 +8,7 @@ import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
 import android.view.View;
@@ -104,6 +105,9 @@ public class MainActivity extends FragmentActivity implements
         dragBgAnimator.setCurrentPlayTime(0);
 
         // header preferences
+        if (Preferences.scrollableTabs) {
+            tabContainer.setTabMode(TabLayout.MODE_SCROLLABLE);
+        }
         if (Preferences.headerSeparator) {
             findViewById(R.id.header_separator).setVisibility(View.VISIBLE);
         }
