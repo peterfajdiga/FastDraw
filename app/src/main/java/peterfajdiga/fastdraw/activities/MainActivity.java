@@ -19,7 +19,6 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
-import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
@@ -186,16 +185,18 @@ public class MainActivity extends FragmentActivity implements
     protected void onNewIntent(final Intent intent) {
         super.onNewIntent(intent);
 
-        // close actions menu if open
-        final Fragment actionsSheet = getSupportFragmentManager().findFragmentByTag("ActionsSheet");
-        if (actionsSheet != null) {
-            getSupportFragmentManager().beginTransaction().remove(actionsSheet).commit();
-        }
+        if ((intent.getFlags() & Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT) == 0) {
+            // close actions menu if open
+            final Fragment actionsSheet = getSupportFragmentManager().findFragmentByTag("ActionsSheet");
+            if (actionsSheet != null) {
+                getSupportFragmentManager().beginTransaction().remove(actionsSheet).commit();
+            }
 
-        // show home category
-        final LauncherPager pager = getPager();
-        if (!pager.showCategory("HOME")) {
-            pager.setCurrentItem(0);
+            // show home category
+            final LauncherPager pager = getPager();
+            if (!pager.showCategory("HOME")) {
+                pager.setCurrentItem(0);
+            }
         }
     }
 
