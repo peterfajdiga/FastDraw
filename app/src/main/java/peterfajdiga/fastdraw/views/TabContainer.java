@@ -202,7 +202,8 @@ public class TabContainer extends TabLayout {
             case "NOTES":
             case "WRITE":
             case "WRITING":     return context.getDrawable(R.drawable.ic_category_edit);
-            case "MOVIES":      return context.getDrawable(R.drawable.ic_category_movie);
+            case "MOVIES":
+            case "VIDEO":       return context.getDrawable(R.drawable.ic_category_movie);
             case "AUDIO":
             case "MUSIC":
             case "SOUND":       return context.getDrawable(R.drawable.ic_category_music);

@@ -11,14 +11,15 @@ import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.net.Uri;
 import android.os.Bundle;
-import android.preference.PreferenceActivity;
 import android.preference.PreferenceManager;
 import android.provider.ContactsContract;
 import android.provider.Settings;
 import android.provider.Telephony;
 import android.support.design.widget.TabLayout;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
@@ -181,6 +182,68 @@ public class MainActivity extends FragmentActivity implements
         }
     }
 
+    @Override
+    protected void onNewIntent(final Intent intent) {
+        super.onNewIntent(intent);
+
+        // close actions menu if open
+        final Fragment actionsSheet = getSupportFragmentManager().findFragmentByTag("ActionsSheet");
+        if (actionsSheet != null) {
+            getSupportFragmentManager().beginTransaction().remove(actionsSheet).commit();
+        }
+
+        // show home category
+        final LauncherPager pager = getPager();
+        if (!pager.showCategory("HOME")) {
+            pager.setCurrentItem(0);
+        }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        LauncherItem.saveDirty(this);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        forgetDeletedApps();
+
+        // BroadcastReceivers
+        unregisterReceiver(installShortcutReceiver);
+        unregisterReceiver(installAppReceiver);
+    }
+
+    @Override
+    public void onBackPressed() { }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == INSTALL_SHORTCUT_REQUEST && resultCode == RESULT_OK) {
+            ShortcutItem newShortcut = ShortcutItem.shortcutFromIntent(this, data);
+            getPager().moveLauncherItem(newShortcut, getPager().getCurrentCategoryName(), false);
+        }
+        super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    private void loadLauncherItems() {
+        // apps
+        AppItemManager.addAppItems(this, getPager(), true);
+
+        // shortcuts
+        final File shortcutsDir = ShortcutItem.getShortcutsDir(this);
+        shortcutsDir.mkdir();
+        for (File file : shortcutsDir.listFiles()) {
+            try {
+                getPager().addLauncherItemBulk(ShortcutItem.fromFile(this, file));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        getPager().finishBulk();
+    }
+
     private void addDefaultAppToHome(final Intent intent) {
         final ResolveInfo resolveInfo = getPackageManager().resolveActivity(intent, 0);
         if (resolveInfo != null) {
@@ -204,52 +267,6 @@ public class MainActivity extends FragmentActivity implements
 //        launcherIntent.setPackage(packageName);
         final Intent launcherIntent = getPackageManager().getLaunchIntentForPackage(packageName);
         addAppToHome(launcherIntent);
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        LauncherItem.saveDirty(this);
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        forgetDeletedApps();
-
-        // BroadcastReceivers
-        unregisterReceiver(installShortcutReceiver);
-        unregisterReceiver(installAppReceiver);
-    }
-
-    @Override
-    public void onBackPressed() { }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == INSTALL_SHORTCUT_REQUEST && resultCode == RESULT_OK) {
-            ShortcutItem newShortcut = ShortcutItem.shortcutFromIntent(this, data);
-            getPager().moveLauncherItem(newShortcut, getPager().getCurrentCategoryName(), false);
-        }
-        super.onActivityResult(requestCode, resultCode, data);
-    }
-
-    private void loadLauncherItems() {
-
-        // apps
-        AppItemManager.addAppItems(this, getPager(), true);
-
-        // shortcuts
-        final File shortcutsDir = ShortcutItem.getShortcutsDir(this);
-        shortcutsDir.mkdir();
-        for (File file : shortcutsDir.listFiles()) {
-            try {
-                getPager().addLauncherItemBulk(ShortcutItem.fromFile(this, file));
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-        getPager().finishBulk();
     }
 
     private void forgetDeletedApps() {

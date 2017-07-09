@@ -30,14 +30,16 @@ public class LauncherPager extends ViewPager {
         wallpaperManager.setWallpaperOffsets(getWindowToken(), (position + offset) / (getAdapter().getCount() - 1), 0.5f);
     }
 
-    public void showCategory(String categoryName) {
+    // returns true if category exists and was selected
+    public boolean showCategory(String categoryName) {
         final String[] categoryNames = getCategoryNames();
         for (int i = 0; i < categoryNames.length; i++) {
             if (categoryNames[i].equals(categoryName)) {
                 setCurrentItem(i);
-                return;
+                return true;
             }
         }
+        return false;
     }
 
     public String getCurrentCategoryName() {
