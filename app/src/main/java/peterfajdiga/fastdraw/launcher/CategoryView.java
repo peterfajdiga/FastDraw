@@ -78,13 +78,6 @@ class CategoryView extends GridView {
         return owner;
     }
 
-    private float distanceSquared(final MotionEvent event) {
-        //assert event.getPointerCount() == 2;
-        final float dx = event.getX(0) - event.getX(1);
-        final float dy = event.getY(0) - event.getY(1);
-        return dx*dx + dy*dy;
-    }
-
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         // perform pinch on liftoff
@@ -133,7 +126,7 @@ class CategoryView extends GridView {
                     this.performHapticFeedback(HapticFeedbackConstants.LONG_PRESS);
                     getOwner().onPagerLongpress();
                     interceptTouchTime = Long.MAX_VALUE;
-                } else if (mouseMoved(event.getX(), event.getY())) {
+                } else if (hasPointerMoved(event.getX(), event.getY())) {
                     interceptTouchTime = Long.MAX_VALUE;
                 }
                 break;
@@ -152,7 +145,7 @@ class CategoryView extends GridView {
 
             // double click detection
             final long timeSinceLastClick = newInterceptTouchTime - interceptTouchTime;
-            if (timeSinceLastClick > 0 && timeSinceLastClick <= DOUBLE_CLICK_TIME && !mouseMoved(newX, newY)) {
+            if (timeSinceLastClick > 0 && timeSinceLastClick <= DOUBLE_CLICK_TIME && !hasPointerMoved(newX, newY)) {
                 getOwner().onPagerDoubletap();
             }
 
@@ -165,9 +158,16 @@ class CategoryView extends GridView {
         return super.onInterceptTouchEvent(event);
     }
 
-    private boolean mouseMoved(float x, float y) {
+    private boolean hasPointerMoved(float x, float y) {
         boolean movedX = Math.abs(x - interceptTouchX) > LONG_CLICK_MOUSE_MOVE_TOLERANCE;
         boolean movedY = Math.abs(y - interceptTouchY) > LONG_CLICK_MOUSE_MOVE_TOLERANCE;
         return movedX || movedY;
+    }
+
+    private float distanceSquared(final MotionEvent event) {
+        //assert event.getPointerCount() == 2;
+        final float dx = event.getX(0) - event.getX(1);
+        final float dy = event.getY(0) - event.getY(1);
+        return dx*dx + dy*dy;
     }
 }
