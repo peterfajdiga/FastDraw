@@ -13,6 +13,8 @@ public final class Preferences {
     public static final int ACTION_RENAME_CATEGORY = 4;
     public static final int ACTION_SETTINGS  = 5;
 
+    public static boolean allowOrientation;
+
     public static int appItemResource;
 
     public static int mainLayoutResource;
@@ -47,6 +49,7 @@ public final class Preferences {
             case "1": appItemResource = R.layout.app_item_horizontal; break;
             case "2": appItemResource = R.layout.app_item_package; break;
         }
+        allowOrientation                   = prefs.getBoolean("allowOrientation",  res.getBoolean(R.bool.default_allowOrientation));
         mainLayoutResource                 = prefs.getBoolean("headerbtm",         res.getBoolean(R.bool.default_headerbtm)) ? R.layout.activity_main_headerbtm : R.layout.activity_main_headertop;
         stackFromBottom                    = prefs.getBoolean("stackFromBottom",   res.getBoolean(R.bool.default_stackFromBottom));
         scrollableTabs                     = prefs.getBoolean("scrollableTabs",    res.getBoolean(R.bool.default_scrollableTabs));

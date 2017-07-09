@@ -1,5 +1,11 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
+    <SwitchPreference
+        android:defaultValue="@bool/default_allowOrientation"
+        android:key="allowOrientation"
+        android:title="@string/pref_title_allowOrientation"
+        android:summary="@string/pref_description_allowOrientation" />
+
     <ListPreference
         android:defaultValue="@string/default_appItemResource"
         android:entries="@array/pref_appItemResource_titles"

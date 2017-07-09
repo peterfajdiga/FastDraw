@@ -76,6 +76,9 @@ public class MainActivity extends FragmentActivity implements
         onFirstRun();
         Preferences.loadPreferences(this);
         setContentView(Preferences.mainLayoutResource);
+        if (Preferences.allowOrientation) {
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED);
+        }
 
         getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
 
