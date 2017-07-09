@@ -11,22 +11,16 @@ public class LauncherPager extends ViewPager {
 
     public LauncherPager(Context context) {
         super(context);
-        initLauncherPager();
+        init();
     }
 
     public LauncherPager(Context context, AttributeSet attrs) {
         super(context, attrs);
-        initLauncherPager();
+        init();
     }
 
-    private void initLauncherPager() {
+    private void init() {
         setAdapter(new LauncherPagerAdapter());
-    }
-
-    // TODO: Do differently
-    @Override
-    public LauncherPagerAdapter getAdapter() {
-        return (LauncherPagerAdapter)super.getAdapter();
     }
 
     @Override
@@ -47,11 +41,13 @@ public class LauncherPager extends ViewPager {
     }
 
     public String getCurrentCategoryName() {
-        return getAdapter().getPageTitle(getCurrentItem());
+        final LauncherPagerAdapter adapter = (LauncherPagerAdapter)super.getAdapter();
+        return adapter.getPageTitle(getCurrentItem());
     }
 
     public String[] getCategoryNames() {
-        final Object[] names = getAdapter().categories.keySet().toArray();
+        final LauncherPagerAdapter adapter = (LauncherPagerAdapter)super.getAdapter();
+        final Object[] names = adapter.categories.keySet().toArray();
         String[] retval = new String[names.length];
         for (int i = 0; i < names.length; i++) {
             retval[i] = (String)names[i];
@@ -60,7 +56,8 @@ public class LauncherPager extends ViewPager {
     }
 
     public LauncherItem[] getLauncherItems(String category) {
-        final CategoryArrayAdapter innerAdapter = (CategoryArrayAdapter)getAdapter().categories.get(category).getAdapter();
+        final LauncherPagerAdapter adapter = (LauncherPagerAdapter)super.getAdapter();
+        final CategoryArrayAdapter innerAdapter = (CategoryArrayAdapter)adapter.categories.get(category).getAdapter();
         LauncherItem[] items = new LauncherItem[innerAdapter.getCount()];
         for (int i = 0; i < items.length; i++) {
             items[i] = innerAdapter.getItem(i);
@@ -69,12 +66,13 @@ public class LauncherPager extends ViewPager {
     }
 
     public void addLauncherItemBulk(LauncherItem item) {
+        final LauncherPagerAdapter adapter = (LauncherPagerAdapter)super.getAdapter();
         final String categoryName = item.getCategory();
         item.setCategoryNoDirty(categoryName);
-        CategoryView categoryView = getAdapter().categories.get(categoryName);
+        CategoryView categoryView = adapter.categories.get(categoryName);
         if (categoryView == null) {
             categoryView = new CategoryView(getContext());
-            getAdapter().categories.put(categoryName, categoryView);
+            adapter.categories.put(categoryName, categoryView);
         }
         final CategoryArrayAdapter innerAdapter = (CategoryArrayAdapter) categoryView.getAdapter();
         innerAdapter.add(item);
@@ -91,12 +89,13 @@ public class LauncherPager extends ViewPager {
     }
 
     public void addLauncherItem(LauncherItem item) {
+        final LauncherPagerAdapter adapter = (LauncherPagerAdapter)super.getAdapter();
         final String categoryName = item.getCategory();
         item.setCategoryNoDirty(categoryName);
-        CategoryView categoryView = getAdapter().categories.get(categoryName);
+        CategoryView categoryView = adapter.categories.get(categoryName);
         if (categoryView == null) {
             categoryView = new CategoryView(getContext());
-            getAdapter().categories.put(categoryName, categoryView);
+            adapter.categories.put(categoryName, categoryView);
         }
         final CategoryArrayAdapter innerAdapter = (CategoryArrayAdapter) categoryView.getAdapter();
         innerAdapter.add(item);
@@ -107,14 +106,15 @@ public class LauncherPager extends ViewPager {
 
     // returns true if the category's last item was removed
     public boolean removeLauncherItem(LauncherItem item) {
+        final LauncherPagerAdapter adapter = (LauncherPagerAdapter)super.getAdapter();
         final String categoryName = item.getCategory();
-        final CategoryView categoryView = getAdapter().categories.get(categoryName);
+        final CategoryView categoryView = adapter.categories.get(categoryName);
         //assert appsView != null;
         final CategoryArrayAdapter innerAdapter = (CategoryArrayAdapter) categoryView.getAdapter();
         if (innerAdapter.getCount() == 1) {
             // remove category from pager, no need to remove the item from category
-            getAdapter().categories.remove(categoryName);
-            getAdapter().notifyDataSetChanged();
+            adapter.categories.remove(categoryName);
+            adapter.notifyDataSetChanged();
             return true;
         } else {
             // remove item from category
