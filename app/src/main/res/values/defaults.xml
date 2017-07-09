@@ -12,7 +12,7 @@
     <integer name="default_headerBgColor">0x80000000</integer>
     <integer name="default_headerBgColorExpanded">0xB0000000</integer>
     <string name="default_action_longclick">1</string>
-    <string name="default_action_doubleclick">2</string>
+    <string name="default_action_doubleclick">3</string>
     <string name="default_action_pinch">1</string>
     <string name="default_action_unpinch">1</string>
 </resources>
