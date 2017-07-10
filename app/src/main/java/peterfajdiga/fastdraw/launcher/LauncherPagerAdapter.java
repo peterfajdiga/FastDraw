@@ -4,12 +4,12 @@ import android.support.v4.view.PagerAdapter;
 import android.view.View;
 import android.view.ViewGroup;
 
-import java.util.Map;
-import java.util.TreeMap;
+import java.util.SortedMap;
+import java.util.concurrent.ConcurrentSkipListMap;
 
 class LauncherPagerAdapter extends PagerAdapter {
 
-    Map<String, CategoryView> categories = new TreeMap<>();
+    SortedMap<String, CategoryView> categories = new ConcurrentSkipListMap<>();
     private boolean firstCategoryLoaded = false;
 
     public LauncherPagerAdapter() {}
