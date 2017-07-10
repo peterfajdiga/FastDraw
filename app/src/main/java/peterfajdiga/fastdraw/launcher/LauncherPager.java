@@ -2,12 +2,17 @@ package peterfajdiga.fastdraw.launcher;
 
 import android.app.WallpaperManager;
 import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
 
 import peterfajdiga.fastdraw.launcher.item.LauncherItem;
 
 public class LauncherPager extends ViewPager {
+
+    public static final int LAUNCH_PERMISSION = 42;
 
     public LauncherPager(Context context) {
         super(context);
@@ -147,5 +152,6 @@ public class LauncherPager extends ViewPager {
         void onPagerDoubletap();
         void onPagerPinch();
         void onPagerUnpinch();
+        void setDelayedLaunchIntent(@NonNull Intent launchIntent, @NonNull Bundle launchOpts);
     }
 }

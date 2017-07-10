@@ -1,9 +1,12 @@
 package peterfajdiga.fastdraw.launcher;
 
+import android.Manifest;
+import android.app.Activity;
 import android.app.ActivityOptions;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
+import android.support.v4.app.ActivityCompat;
 import android.view.HapticFeedbackConstants;
 import android.view.MotionEvent;
 import android.view.View;
@@ -59,11 +62,21 @@ class CategoryView extends GridView {
                     opts = ActivityOptions.makeScaleUpAnimation(view, 0, 0, view.getWidth(), view.getHeight());
                 }
 
-                context.startActivity(intent, opts.toBundle());
+                switch (intent.getAction()) {
+                    case Intent.ACTION_CALL: launchWithPermission(intent, opts, Manifest.permission.CALL_PHONE); break;
+                    default: context.startActivity(intent, opts.toBundle()); break;
+                }
             }
         });
 
         setOnItemLongClickListener(new DragStartListener());
+    }
+
+    private void launchWithPermission(final Intent launchIntent, final ActivityOptions launchOpts, final String permission) {
+        final LauncherPager.Owner owner = getOwner();
+        //assert owner instanceof Activity;
+        ActivityCompat.requestPermissions((Activity)owner, new String[]{permission}, LauncherPager.LAUNCH_PERMISSION);
+        owner.setDelayedLaunchIntent(launchIntent, launchOpts.toBundle());
     }
 
     private LauncherPager.Owner getOwner() {

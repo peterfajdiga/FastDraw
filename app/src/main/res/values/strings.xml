@@ -16,6 +16,8 @@
     <string name="action_rename_category">Rename current category</string>
     <string name="action_settings">Open preferences</string>
 
+    <string name="no_permission">Fast Draw does not have permission to do that. You can change that in Fast Draw\'s app info.</string>
+
 
     <!-- Strings related to Settings -->
     <string name="title_activity_settings">Fast Draw Preferences</string>

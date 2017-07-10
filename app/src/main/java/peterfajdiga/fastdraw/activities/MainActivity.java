@@ -15,6 +15,7 @@ import android.preference.PreferenceManager;
 import android.provider.ContactsContract;
 import android.provider.Settings;
 import android.provider.Telephony;
+import android.support.annotation.NonNull;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -22,6 +23,7 @@ import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.Toast;
 
 import java.io.File;
 
@@ -67,6 +69,8 @@ public class MainActivity extends FragmentActivity implements
     private ValueAnimator dragBgAnimator;
 
     private static MainActivity instance;
+    private Intent launchIntent = null;
+    private Bundle launchOpts = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -304,6 +308,32 @@ public class MainActivity extends FragmentActivity implements
             instance.finish();
             instance = null;
         }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(final int requestCode, @NonNull final String[] permissions, @NonNull final int[] grantResults) {
+        if (requestCode != LauncherPager.LAUNCH_PERMISSION || launchIntent == null) {
+            return;
+        }
+        // check permissions
+        for (int i = 0; i < permissions.length; i++) {
+            if (grantResults[i] == PackageManager.PERMISSION_DENIED) {
+                final String errMessage = getString(R.string.no_permission);
+                final Toast toast = Toast.makeText(this, errMessage, Toast.LENGTH_LONG);
+                toast.show();
+                return;
+            }
+        }
+        // launch
+        startActivity(launchIntent, launchOpts);
+        this.launchIntent = null;
+        this.launchOpts   = null;
+    }
+
+    @Override
+    public void setDelayedLaunchIntent(@NonNull final Intent launchIntent, @NonNull final Bundle launchOpts) {
+        this.launchIntent = launchIntent;
+        this.launchOpts = launchOpts;
     }
 
 
