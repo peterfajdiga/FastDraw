@@ -22,6 +22,8 @@ public final class Preferences {
 
     public static boolean scrollableTabs;
 
+    public static boolean hideHidden;
+
     public static boolean showIcons;
     public static boolean largeSingle;
 
@@ -53,6 +55,7 @@ public final class Preferences {
         mainLayoutResource                 = prefs.getBoolean("headerbtm",         res.getBoolean(R.bool.default_headerbtm)) ? R.layout.activity_main_headerbtm : R.layout.activity_main_headertop;
         stackFromBottom                    = prefs.getBoolean("stackFromBottom",   res.getBoolean(R.bool.default_stackFromBottom));
         scrollableTabs                     = prefs.getBoolean("scrollableTabs",    res.getBoolean(R.bool.default_scrollableTabs));
+        hideHidden                         = prefs.getBoolean("hideHidden",        res.getBoolean(R.bool.default_hideHidden));
         showIcons                          = prefs.getBoolean("showIcons",         res.getBoolean(R.bool.default_showIcons));
         largeSingle                        = prefs.getBoolean("largeSingle",       res.getBoolean(R.bool.default_largeSingle));
         headerSeparator                    = prefs.getBoolean("headerSeparator",   res.getBoolean(R.bool.default_headerSeparator));

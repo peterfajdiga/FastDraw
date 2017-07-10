@@ -8,6 +8,7 @@ import android.support.annotation.NonNull;
 import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
 
+import peterfajdiga.fastdraw.Preferences;
 import peterfajdiga.fastdraw.launcher.item.LauncherItem;
 
 public class LauncherPager extends ViewPager {
@@ -72,10 +73,12 @@ public class LauncherPager extends ViewPager {
         return items;
     }
 
-    public void addLauncherItemBulk(LauncherItem item) {
-        final LauncherPagerAdapter adapter = (LauncherPagerAdapter)super.getAdapter();
+    private void addLauncherItem(final LauncherItem item, final boolean bulk) {
         final String categoryName = item.getCategory();
-        item.setCategoryNoDirty(categoryName);
+        if (Preferences.hideHidden && categoryName.equals("HIDDEN")) {
+            return;
+        }
+        final LauncherPagerAdapter adapter = (LauncherPagerAdapter)super.getAdapter();
         CategoryView categoryView = adapter.categories.get(categoryName);
         if (categoryView == null) {
             categoryView = new CategoryView(getContext());
@@ -83,8 +86,18 @@ public class LauncherPager extends ViewPager {
         }
         final CategoryArrayAdapter innerAdapter = (CategoryArrayAdapter) categoryView.getAdapter();
         innerAdapter.add(item);
+        if (!bulk) {
+            innerAdapter.sort();
+            innerAdapter.notifyDataSetChanged();
+            getAdapter().notifyDataSetChanged();
+        }
     }
-
+    public void addLauncherItem(final LauncherItem item) {
+        addLauncherItem(item, false);
+    }
+    public void addLauncherItemBulk(final LauncherItem item) {
+        addLauncherItem(item, true);
+    }
     public void finishBulk() {
         final LauncherPagerAdapter adapter = (LauncherPagerAdapter)getAdapter();
         for (CategoryView categoryView : adapter.categories.values()) {
@@ -93,22 +106,6 @@ public class LauncherPager extends ViewPager {
             innerAdapter.notifyDataSetChanged();
         }
         adapter.notifyDataSetChanged();
-    }
-
-    public void addLauncherItem(LauncherItem item) {
-        final LauncherPagerAdapter adapter = (LauncherPagerAdapter)super.getAdapter();
-        final String categoryName = item.getCategory();
-        item.setCategoryNoDirty(categoryName);
-        CategoryView categoryView = adapter.categories.get(categoryName);
-        if (categoryView == null) {
-            categoryView = new CategoryView(getContext());
-            adapter.categories.put(categoryName, categoryView);
-        }
-        final CategoryArrayAdapter innerAdapter = (CategoryArrayAdapter) categoryView.getAdapter();
-        innerAdapter.add(item);
-        innerAdapter.sort();
-        innerAdapter.notifyDataSetChanged();
-        getAdapter().notifyDataSetChanged();
     }
 
     // returns true if the category's last item was removed
