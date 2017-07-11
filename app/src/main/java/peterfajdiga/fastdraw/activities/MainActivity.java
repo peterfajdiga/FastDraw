@@ -19,7 +19,6 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
-import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
@@ -35,6 +34,10 @@ import peterfajdiga.fastdraw.dialogs.ActionsSheet;
 import peterfajdiga.fastdraw.dialogs.NewCategoryDialog;
 import peterfajdiga.fastdraw.dialogs.RenameCategoryDialog;
 import peterfajdiga.fastdraw.launcher.AppItemManager;
+import peterfajdiga.fastdraw.launcher.LauncherPager;
+import peterfajdiga.fastdraw.launcher.item.AppItem;
+import peterfajdiga.fastdraw.launcher.item.LauncherItem;
+import peterfajdiga.fastdraw.launcher.item.ShortcutItem;
 import peterfajdiga.fastdraw.listeners.DragStartListener;
 import peterfajdiga.fastdraw.listeners.DropZoneAppInfo;
 import peterfajdiga.fastdraw.listeners.DropZoneCategory;
@@ -42,10 +45,6 @@ import peterfajdiga.fastdraw.listeners.DropZoneNewCategory;
 import peterfajdiga.fastdraw.listeners.DropZoneRemoveShortcut;
 import peterfajdiga.fastdraw.listeners.InstallAppReceiver;
 import peterfajdiga.fastdraw.listeners.InstallShortcutReceiver;
-import peterfajdiga.fastdraw.launcher.item.AppItem;
-import peterfajdiga.fastdraw.launcher.item.LauncherItem;
-import peterfajdiga.fastdraw.launcher.item.ShortcutItem;
-import peterfajdiga.fastdraw.launcher.LauncherPager;
 import peterfajdiga.fastdraw.views.TabContainer;
 
 public class MainActivity extends FragmentActivity implements
@@ -100,12 +99,13 @@ public class MainActivity extends FragmentActivity implements
         findViewById(R.id.drop_zone_app_info).setOnDragListener(new DropZoneAppInfo());
         findViewById(R.id.drop_zone_remove_shortcut).setOnDragListener(new DropZoneRemoveShortcut());
 
-        ViewPager appsPager = (ViewPager)findViewById(R.id.apps_pager);
+        LauncherPager appsPager = getPager();
 
         TabContainer tabContainer = (TabContainer)findViewById(R.id.tab_container);
         tabContainer.setupWithViewPager(appsPager);
 
         loadLauncherItems();
+        appsPager.showCategory("HOME");
 
 
         // header color animator
@@ -149,7 +149,6 @@ public class MainActivity extends FragmentActivity implements
     private void onFirstRun() {
         final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
         if (prefs.getBoolean("firstRun", true)) {
-            final PackageManager packageManager = getPackageManager();
 
             // Fast Draw Preferences
             final ActivityInfo fastdrawPrefsInfo = new ActivityInfo();

@@ -78,6 +78,11 @@ class CategoryArrayAdapter extends ArrayAdapter<LauncherItem>{
         notifyDataSetChanged();
     }
 
+    public void loadItemsAsync() {
+        final ItemLoader itemLoader = new ItemLoader();
+        itemLoader.execute();
+    }
+
     private final class ItemLoader extends AsyncTask<Void, Void, Void> {
         @Override
         protected Void doInBackground(Void... params) {
@@ -91,13 +96,9 @@ class CategoryArrayAdapter extends ArrayAdapter<LauncherItem>{
 
         @Override
         protected void onPostExecute(Void result) {
+            // this must be done on main thread
             sort();
             notifyDataSetChanged();
         }
-    }
-
-    public void loadItemsAsync() {
-        final ItemLoader itemLoader = new ItemLoader();
-        itemLoader.execute();
     }
 }

@@ -10,15 +10,14 @@ import android.os.Bundle;
 import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceActivity;
-import android.support.v7.app.ActionBar;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
+import android.support.v7.app.ActionBar;
 import android.view.MenuItem;
 
-import peterfajdiga.colorpickerhex.ColorPreference;
-import peterfajdiga.fastdraw.R;
-
 import java.util.List;
+
+import peterfajdiga.fastdraw.R;
 
 /**
  * A {@link PreferenceActivity} that presents a set of application settings. On

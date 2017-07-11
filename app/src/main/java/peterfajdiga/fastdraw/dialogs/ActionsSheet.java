@@ -1,7 +1,6 @@
 package peterfajdiga.fastdraw.dialogs;
 
 import android.app.Dialog;
-import android.content.Context;
 import android.support.design.widget.BottomSheetDialogFragment;
 import android.view.LayoutInflater;
 import android.view.View;

@@ -3,8 +3,6 @@ package peterfajdiga.fastdraw.listeners;
 import android.content.Context;
 import android.view.View;
 
-import peterfajdiga.fastdraw.activities.MainActivity;
-
 public class DropZoneCategory extends DropZone {
 
     @Override
