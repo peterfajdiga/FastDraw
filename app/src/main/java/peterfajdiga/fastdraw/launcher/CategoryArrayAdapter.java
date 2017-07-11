@@ -69,9 +69,10 @@ class CategoryArrayAdapter extends ArrayAdapter<LauncherItem>{
     /* loading */
 
     public void loadItems() {
+        final Context context = getContext();
         final int n = getCount();
         for (int i = 0; i < n; i++) {
-            getItem(i).load();
+            getItem(i).load(context);
         }
         sort();
         notifyDataSetChanged();
@@ -80,9 +81,10 @@ class CategoryArrayAdapter extends ArrayAdapter<LauncherItem>{
     private final class ItemLoader extends AsyncTask<Void, Void, Void> {
         @Override
         protected Void doInBackground(Void... params) {
+            final Context context = getContext();
             final int n = getCount();
             for (int i = 0; i < n; i++) {
-                getItem(i).load();
+                getItem(i).load(context);
             }
             return null;
         }

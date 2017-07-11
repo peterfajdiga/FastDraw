@@ -10,7 +10,7 @@ import java.util.concurrent.ConcurrentSkipListMap;
 class LauncherPagerAdapter extends PagerAdapter {
 
     SortedMap<String, CategoryView> categories = new ConcurrentSkipListMap<>();
-    private boolean firstCategoryLoaded = false;
+    boolean firstCategoryLoaded = false;
 
     public LauncherPagerAdapter() {}
 

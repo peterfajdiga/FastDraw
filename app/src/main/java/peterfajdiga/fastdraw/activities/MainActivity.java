@@ -155,7 +155,7 @@ public class MainActivity extends FragmentActivity implements
             final ActivityInfo fastdrawPrefsInfo = new ActivityInfo();
             fastdrawPrefsInfo.packageName = getPackageName();
             fastdrawPrefsInfo.name = SettingsActivity.class.getName();
-            addAppToHome(new AppItem(fastdrawPrefsInfo, packageManager));
+            addAppToHome(new AppItem(fastdrawPrefsInfo));
 
             // phone app
             addAppToHome(new Intent(Intent.ACTION_DIAL));
@@ -237,7 +237,7 @@ public class MainActivity extends FragmentActivity implements
 
     private void loadLauncherItems() {
         // apps
-        AppItemManager.addAppItems(this, getPager(), true);
+        AppItemManager.addAppItems(this, getPager());
 
         // shortcuts
         final File shortcutsDir = ShortcutItem.getShortcutsDir(this);
@@ -266,7 +266,7 @@ public class MainActivity extends FragmentActivity implements
         final PackageManager packageManager = getPackageManager();
         final ResolveInfo resolveInfo = packageManager.resolveActivity(launcherIntent, 0);
         if (resolveInfo != null) {
-            addAppToHome(new AppItem(resolveInfo.activityInfo, packageManager));
+            addAppToHome(new AppItem(resolveInfo.activityInfo));
         }
     }
     private void addAppToHome(final String packageName) {
@@ -400,13 +400,13 @@ public class MainActivity extends FragmentActivity implements
 
     @Override
     public void onAppInstall(String packageName) {
-        AppItemManager.addAppItems(this, getPager(), packageName, false);
+        AppItemManager.addAppItems(this, getPager(), packageName);
     }
 
     @Override
     public void onAppChange(String packageName) {
         AppItemManager.removeAppItems(this, getPager(), packageName);
-        AppItemManager.addAppItems(this, getPager(), packageName, false);
+        AppItemManager.addAppItems(this, getPager(), packageName);
     }
 
     @Override

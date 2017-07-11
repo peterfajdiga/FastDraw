@@ -28,7 +28,6 @@ public class InstallShortcutReceiver extends BroadcastReceiver {
             newShortcutItem.persist(context);
         } else {
             owner.onShortcutReceived(newShortcutItem);
-            // TODO: More testing
         }
     }
 

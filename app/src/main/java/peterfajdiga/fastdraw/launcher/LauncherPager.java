@@ -86,6 +86,9 @@ public class LauncherPager extends ViewPager {
         }
         final CategoryArrayAdapter innerAdapter = (CategoryArrayAdapter) categoryView.getAdapter();
         innerAdapter.add(item);
+        if (adapter.firstCategoryLoaded) {
+            item.load(getContext());
+        }
         if (!bulk) {
             innerAdapter.sort();
             innerAdapter.notifyDataSetChanged();

@@ -22,7 +22,7 @@ public abstract class LauncherItem implements Comparable<LauncherItem> {
         return this.name.toString().compareToIgnoreCase(other.name.toString());
     }
 
-    public abstract void load();
+    public abstract void load(Context context);
 
     public abstract String getID();
 

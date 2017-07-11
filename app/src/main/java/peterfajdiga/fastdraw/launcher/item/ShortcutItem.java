@@ -26,14 +26,11 @@ public class ShortcutItem extends LauncherItem {
         this.name     = name;
         this.icon     = icon;
     }
-    public ShortcutItem(final Intent intent, final String name, final Context context, final String iconPackageName, final String iconResourceName) throws PackageManager.NameNotFoundException {
-        this(intent, name, iconFromResource(context, iconPackageName, iconResourceName));
+    public ShortcutItem(final Intent intent, final String name, final String iconPackageName, final String iconResourceName) {
+        this(intent, name, null);
         this.iconPackageName = iconPackageName;
         this.iconResourceName = iconResourceName;
     }
-
-    @Override
-    public void load() {}
 
     @Override
     public Intent getIntent() {
@@ -74,12 +71,7 @@ public class ShortcutItem extends LauncherItem {
             return new ShortcutItem(launchIntent, name, icon);
         } else {
             final Intent.ShortcutIconResource iconResource = data.getParcelableExtra(Intent.EXTRA_SHORTCUT_ICON_RESOURCE);
-            try {
-                return new ShortcutItem(launchIntent, name, context, iconResource.packageName, iconResource.resourceName);
-            } catch (Exception e) {
-                e.printStackTrace();
-                return new ShortcutItem(launchIntent, name, null);
-            }
+            return new ShortcutItem(launchIntent, name, iconResource.packageName, iconResource.resourceName);
         }
     }
     private static Drawable iconFromResource(final Context context, final String packageName, final String resourceName) throws PackageManager.NameNotFoundException {
@@ -111,7 +103,7 @@ public class ShortcutItem extends LauncherItem {
         fos.close();
     }
 
-    public static ShortcutItem fromFile(Context context, File file) throws java.io.IOException, java.net.URISyntaxException, PackageManager.NameNotFoundException {
+    public static ShortcutItem fromFile(Context context, File file) throws java.io.IOException, java.net.URISyntaxException {
         final FileInputStream fis = new FileInputStream(file);
 
         final Intent intent = Intent.parseUri(readString(fis), 0);
@@ -121,28 +113,11 @@ public class ShortcutItem extends LauncherItem {
 
         final ShortcutItem newItem;
         switch (iconType) {
-            case ICON_TYPE_BITMAP: {
-                newItem = new ShortcutItem(
-                    intent,
-                    name,
-                    new BitmapDrawable(context.getResources(), BitmapFactory.decodeFileDescriptor(fis.getFD()))
-                );
-                break;
-            }
-            case ICON_TYPE_RES: {
-                newItem = new ShortcutItem(
-                    intent,
-                    name,
-                    context,
-                    readString(fis),
-                    readString(fis)
-                );
-                break;
-            }
-            default: {
-                newItem = new ShortcutItem(intent, name, null);
-                break;
-            }
+            case ICON_TYPE_BITMAP: newItem = new ShortcutItem(intent, name,
+                new BitmapDrawable(context.getResources(), BitmapFactory.decodeFileDescriptor(fis.getFD()))
+            ); break;
+            case ICON_TYPE_RES:    newItem = new ShortcutItem(intent, name, readString(fis), readString(fis)); break;
+            default:               newItem = new ShortcutItem(intent, name, null); break;
         }
         fis.close();
         newItem.setCategoryNoDirty(categoryName);
@@ -169,5 +144,19 @@ public class ShortcutItem extends LauncherItem {
         byte[] stringBytes = new byte[stringLength];
         fis.read(stringBytes);
         return new String(stringBytes);
+    }
+
+
+    /* loading */
+
+    @Override
+    public void load(final Context context) {
+        if (iconResourceName != null) {
+            try {
+                icon = iconFromResource(context, iconPackageName, iconResourceName);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
     }
 }

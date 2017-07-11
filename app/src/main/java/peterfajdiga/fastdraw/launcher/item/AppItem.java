@@ -18,11 +18,10 @@ public class AppItem extends LauncherItem {
     public String packageName;
     private String activityName;
 
-    public AppItem(final ActivityInfo info, final PackageManager packageManager) {
+    public AppItem(final ActivityInfo info) {
         packageName = info.packageName;
         activityName = info.name;
         this.info = info;
-        this.packageManager = packageManager;
     }
 
     @Override
@@ -54,17 +53,16 @@ public class AppItem extends LauncherItem {
     /* loading */
 
     private ActivityInfo info;
-    private PackageManager packageManager;
 
     @Override
-    public void load() {
+    public void load(final Context context) {
         if (info != null) {
+            final PackageManager packageManager = context.getPackageManager();
             name = info.loadLabel(packageManager).toString();
             icon = info.loadIcon(packageManager);
 
             // forget
             info = null;
-            packageManager = null;
         }
     }
 }
