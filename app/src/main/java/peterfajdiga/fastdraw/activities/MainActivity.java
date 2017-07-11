@@ -317,6 +317,8 @@ public class MainActivity extends FragmentActivity implements
         // check permissions
         for (int i = 0; i < permissions.length; i++) {
             if (grantResults[i] == PackageManager.PERMISSION_DENIED) {
+                // only calling requires permission
+                // if this changes, TODO: fix string no_permission
                 final String errMessage = getString(R.string.no_permission);
                 final Toast toast = Toast.makeText(this, errMessage, Toast.LENGTH_LONG);
                 toast.show();

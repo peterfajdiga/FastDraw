@@ -3,6 +3,7 @@ package peterfajdiga.fastdraw.launcher;
 import android.Manifest;
 import android.app.Activity;
 import android.app.ActivityOptions;
+import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
@@ -13,6 +14,7 @@ import android.view.View;
 import android.view.ViewConfiguration;
 import android.widget.AdapterView;
 import android.widget.GridView;
+import android.widget.Toast;
 
 import peterfajdiga.fastdraw.Preferences;
 import peterfajdiga.fastdraw.R;
@@ -64,7 +66,14 @@ class CategoryView extends GridView {
 
                 switch (intent.getAction()) {
                     case Intent.ACTION_CALL: launchWithPermission(intent, opts, Manifest.permission.CALL_PHONE); break;
-                    default: context.startActivity(intent, opts.toBundle()); break;
+                    default: try {
+                        context.startActivity(intent, opts.toBundle());
+                    } catch (ActivityNotFoundException e) {
+                        final String errMessage = context.getString(R.string.no_app);
+                        final Toast toast = Toast.makeText(context, errMessage, Toast.LENGTH_LONG);
+                        toast.show();
+                    }
+                    break;
                 }
             }
         });
