@@ -2,6 +2,7 @@ package peterfajdiga.fastdraw.launcher.item;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -17,11 +18,18 @@ public class ShortcutItem extends LauncherItem {
 
     private Intent intent;
     private boolean markedForDeletion = false;
+    private String iconPackageName = null;
+    private String iconResourceName = null;
 
-    public ShortcutItem(Intent intent, String name, Drawable icon) {
+    public ShortcutItem(final Intent intent, final String name, final Drawable icon) {
         this.intent   = intent;
         this.name     = name;
         this.icon     = icon;
+    }
+    public ShortcutItem(final Intent intent, final String name, final Context context, final String iconPackageName, final String iconResourceName) throws PackageManager.NameNotFoundException {
+        this(intent, name, iconFromResource(context, iconPackageName, iconResourceName));
+        this.iconPackageName = iconPackageName;
+        this.iconResourceName = iconResourceName;
     }
 
     @Override
@@ -57,54 +65,87 @@ public class ShortcutItem extends LauncherItem {
     }
 
     public static ShortcutItem shortcutFromIntent(Context context, Intent data) {
-        Bitmap bmp = data.getParcelableExtra(Intent.EXTRA_SHORTCUT_ICON);
-        Drawable icon = null;
+        final Intent launchIntent = data.getParcelableExtra(Intent.EXTRA_SHORTCUT_INTENT);
+        final String name = data.getStringExtra(Intent.EXTRA_SHORTCUT_NAME);
+        final Bitmap bmp = data.getParcelableExtra(Intent.EXTRA_SHORTCUT_ICON);
+
         if (bmp != null) {
-            icon = new BitmapDrawable(context.getResources(), bmp);
+            final Drawable icon = new BitmapDrawable(context.getResources(), bmp);
+            return new ShortcutItem(launchIntent, name, icon);
         } else {
+            final Intent.ShortcutIconResource iconResource = data.getParcelableExtra(Intent.EXTRA_SHORTCUT_ICON_RESOURCE);
             try {
-                final Intent.ShortcutIconResource iconResource = data.getParcelableExtra(Intent.EXTRA_SHORTCUT_ICON_RESOURCE);
-                final Resources resources = context.getPackageManager().getResourcesForApplication(iconResource.packageName);
-                final int id = resources.getIdentifier(iconResource.resourceName, null, null);
-                icon = resources.getDrawable(id, context.getTheme());
+                return new ShortcutItem(launchIntent, name, context, iconResource.packageName, iconResource.resourceName);
             } catch (Exception e) {
                 e.printStackTrace();
+                return new ShortcutItem(launchIntent, name, null);
             }
         }
-        return new ShortcutItem(
-                (Intent)data.getParcelableExtra(Intent.EXTRA_SHORTCUT_INTENT),
-                data.getStringExtra(Intent.EXTRA_SHORTCUT_NAME),
-                icon
-        );
+    }
+    private static Drawable iconFromResource(final Context context, final String packageName, final String resourceName) throws PackageManager.NameNotFoundException {
+        final Resources resources = context.getPackageManager().getResourcesForApplication(packageName);
+        final int id = resources.getIdentifier(resourceName, null, null);
+        return resources.getDrawable(id, context.getTheme());
     }
 
 
+    private static final String ICON_TYPE_NONE   = "n";
+    private static final String ICON_TYPE_BITMAP = "b";
+    private static final String ICON_TYPE_RES    = "r";
     public void toFile(Context context) throws java.io.IOException {
-        String uri = intent.toUri(0);
-        FileOutputStream fos = new FileOutputStream(new File(getShortcutsDir(context), getID()));
+        final String uri = intent.toUri(0);
+        final FileOutputStream fos = new FileOutputStream(new File(getShortcutsDir(context), getID()));
         writeString(fos, uri);
         writeString(fos, name);
         writeString(fos, category);
-        if (icon != null) {
+        if (iconResourceName != null) {
+            writeString(fos, ICON_TYPE_RES);
+            writeString(fos, iconPackageName);
+            writeString(fos, iconResourceName);
+        } else if (icon != null && icon instanceof BitmapDrawable) {
+            writeString(fos, ICON_TYPE_BITMAP);
             ((BitmapDrawable)icon).getBitmap().compress(Bitmap.CompressFormat.PNG, 100, fos);
+        } else {
+            writeString(fos, ICON_TYPE_NONE);
         }
         fos.close();
     }
 
-    public static ShortcutItem fromFile(Context context, File file) throws java.io.IOException, java.net.URISyntaxException {
-        FileInputStream fis = new FileInputStream(file);
+    public static ShortcutItem fromFile(Context context, File file) throws java.io.IOException, java.net.URISyntaxException, PackageManager.NameNotFoundException {
+        final FileInputStream fis = new FileInputStream(file);
 
-        Intent intent = Intent.parseUri(readString(fis), 0);
-        String name = readString(fis);
-        String categoryName = readString(fis);
+        final Intent intent = Intent.parseUri(readString(fis), 0);
+        final String name = readString(fis);
+        final String categoryName = readString(fis);
+        final String iconType = readString(fis);
 
-        ShortcutItem newItem = new ShortcutItem(
-            intent,
-            name,
-            new BitmapDrawable(context.getResources(), BitmapFactory.decodeFileDescriptor(fis.getFD()))
-        );
-        newItem.setCategoryNoDirty(categoryName);
+        final ShortcutItem newItem;
+        switch (iconType) {
+            case ICON_TYPE_BITMAP: {
+                newItem = new ShortcutItem(
+                    intent,
+                    name,
+                    new BitmapDrawable(context.getResources(), BitmapFactory.decodeFileDescriptor(fis.getFD()))
+                );
+                break;
+            }
+            case ICON_TYPE_RES: {
+                newItem = new ShortcutItem(
+                    intent,
+                    name,
+                    context,
+                    readString(fis),
+                    readString(fis)
+                );
+                break;
+            }
+            default: {
+                newItem = new ShortcutItem(intent, name, null);
+                break;
+            }
+        }
         fis.close();
+        newItem.setCategoryNoDirty(categoryName);
         return newItem;
     }
 
