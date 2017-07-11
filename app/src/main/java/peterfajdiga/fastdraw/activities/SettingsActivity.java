@@ -3,6 +3,7 @@ package peterfajdiga.fastdraw.activities;
 
 import android.annotation.TargetApi;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Build;
@@ -196,6 +197,21 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (isShowingHeaderList()) {
+            final Intent mainActivityIntent = new Intent(this, MainActivity.class);
+            startActivity(mainActivityIntent);
+            finish();
+        } else {
+            super.onBackPressed();
+        }
+    }
+    private boolean isShowingHeaderList() {
+        // TODO: find a better way
+        return getTitle().equals(getString(R.string.title_activity_settings));
     }
 
 
