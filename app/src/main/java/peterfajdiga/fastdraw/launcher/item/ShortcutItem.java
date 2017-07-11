@@ -14,6 +14,8 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.nio.ByteBuffer;
 
+import peterfajdiga.fastdraw.R;
+
 public class ShortcutItem extends LauncherItem {
 
     private Intent intent;
@@ -155,7 +157,7 @@ public class ShortcutItem extends LauncherItem {
             try {
                 icon = iconFromResource(context, iconPackageName, iconResourceName);
             } catch (Exception e) {
-                e.printStackTrace();
+                icon = context.getDrawable(R.drawable.ic_launcher_shortcut_leftover);
             }
         }
     }
