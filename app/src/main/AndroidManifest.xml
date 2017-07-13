@@ -40,6 +40,7 @@
         <activity
             android:name=".activities.SettingsActivity"
             android:label="@string/title_activity_settings"
+            android:icon="@mipmap/ic_launcher_settings"
             android:clearTaskOnLaunch="true"
             android:stateNotNeeded="true"
             android:excludeFromRecents="false"

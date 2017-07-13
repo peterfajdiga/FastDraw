@@ -157,7 +157,7 @@ public class ShortcutItem extends LauncherItem {
             try {
                 icon = iconFromResource(context, iconPackageName, iconResourceName);
             } catch (Exception e) {
-                icon = context.getDrawable(R.drawable.ic_launcher_shortcut_leftover);
+                icon = context.getDrawable(R.drawable.ic_item_shortcut_leftover);
             }
         }
     }
