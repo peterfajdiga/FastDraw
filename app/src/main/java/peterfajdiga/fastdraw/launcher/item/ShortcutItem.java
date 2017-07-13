@@ -95,9 +95,8 @@ public class ShortcutItem extends LauncherItem {
     private static final String ICON_TYPE_RES    = "r";
     public void toFile(Context context) throws java.io.IOException {
         final String uri = intent.toUri(0);
-        final FileOutputStream fos = new FileOutputStream(new File(getShortcutsDir(context), getID()));
+        final FileOutputStream fos = new FileOutputStream(new File(getShortcutsDir(context), getID()));  // ID contains salt
         writeString(fos, uri);
-        writeString(fos, salt);
         writeString(fos, name);
         writeString(fos, category);
         if (iconResourceName != null) {
@@ -116,8 +115,11 @@ public class ShortcutItem extends LauncherItem {
     public static ShortcutItem fromFile(Context context, File file) throws java.io.IOException, java.net.URISyntaxException {
         final FileInputStream fis = new FileInputStream(file);
 
+        final String truncatedFilename = file.getName().substring(1);  // in case it starts with -
+        final int saltIndex = truncatedFilename.indexOf('-') + 1;
+        final String salt = truncatedFilename.substring(saltIndex);  // salt is in filename
+
         final Intent intent = Intent.parseUri(readString(fis), 0);
-        final String salt = readString(fis);
         final String name = readString(fis);
         final String categoryName = readString(fis);
         final String iconType = readString(fis);
