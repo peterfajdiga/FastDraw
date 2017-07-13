@@ -44,7 +44,7 @@ public class ShortcutItem extends LauncherItem {
 
     @Override
     public String getID() {
-        return Integer.toString(intent.toUri(0).hashCode()) + '\0' + salt;
+        return Integer.toString(intent.toUri(0).hashCode()) + '-' + salt;
     }
 
     private static String generateSalt() {
