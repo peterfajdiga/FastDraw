@@ -13,6 +13,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.nio.ByteBuffer;
+import java.util.UUID;
 
 import peterfajdiga.fastdraw.R;
 
@@ -22,14 +23,16 @@ public class ShortcutItem extends LauncherItem {
     private boolean markedForDeletion = false;
     private String iconPackageName = null;
     private String iconResourceName = null;
+    private String salt = null;
 
-    public ShortcutItem(final Intent intent, final String name, final Drawable icon) {
+    public ShortcutItem(final Intent intent, final String salt, final String name, final Drawable icon) {
         this.intent   = intent;
+        this.salt     = salt;
         this.name     = name;
         this.icon     = icon;
     }
-    public ShortcutItem(final Intent intent, final String name, final String iconPackageName, final String iconResourceName) {
-        this(intent, name, null);
+    public ShortcutItem(final Intent intent, final String salt, final String name, final String iconPackageName, final String iconResourceName) {
+        this(intent, salt, name, null);
         this.iconPackageName = iconPackageName;
         this.iconResourceName = iconResourceName;
     }
@@ -41,7 +44,11 @@ public class ShortcutItem extends LauncherItem {
 
     @Override
     public String getID() {
-        return Integer.toString(intent.toUri(0).hashCode());
+        return Integer.toString(intent.toUri(0).hashCode()) + '\0' + salt;
+    }
+
+    private static String generateSalt() {
+        return UUID.randomUUID().toString();
     }
 
     @Override
@@ -70,10 +77,10 @@ public class ShortcutItem extends LauncherItem {
 
         if (bmp != null) {
             final Drawable icon = new BitmapDrawable(context.getResources(), bmp);
-            return new ShortcutItem(launchIntent, name, icon);
+            return new ShortcutItem(launchIntent, generateSalt(), name, icon);
         } else {
             final Intent.ShortcutIconResource iconResource = data.getParcelableExtra(Intent.EXTRA_SHORTCUT_ICON_RESOURCE);
-            return new ShortcutItem(launchIntent, name, iconResource.packageName, iconResource.resourceName);
+            return new ShortcutItem(launchIntent, generateSalt(), name, iconResource.packageName, iconResource.resourceName);
         }
     }
     private static Drawable iconFromResource(final Context context, final String packageName, final String resourceName) throws PackageManager.NameNotFoundException {
@@ -90,6 +97,7 @@ public class ShortcutItem extends LauncherItem {
         final String uri = intent.toUri(0);
         final FileOutputStream fos = new FileOutputStream(new File(getShortcutsDir(context), getID()));
         writeString(fos, uri);
+        writeString(fos, salt);
         writeString(fos, name);
         writeString(fos, category);
         if (iconResourceName != null) {
@@ -109,17 +117,18 @@ public class ShortcutItem extends LauncherItem {
         final FileInputStream fis = new FileInputStream(file);
 
         final Intent intent = Intent.parseUri(readString(fis), 0);
+        final String salt = readString(fis);
         final String name = readString(fis);
         final String categoryName = readString(fis);
         final String iconType = readString(fis);
 
         final ShortcutItem newItem;
         switch (iconType) {
-            case ICON_TYPE_BITMAP: newItem = new ShortcutItem(intent, name,
+            case ICON_TYPE_BITMAP: newItem = new ShortcutItem(intent, salt, name,
                 new BitmapDrawable(context.getResources(), BitmapFactory.decodeFileDescriptor(fis.getFD()))
             ); break;
-            case ICON_TYPE_RES:    newItem = new ShortcutItem(intent, name, readString(fis), readString(fis)); break;
-            default:               newItem = new ShortcutItem(intent, name, null); break;
+            case ICON_TYPE_RES:    newItem = new ShortcutItem(intent, salt, name, readString(fis), readString(fis)); break;
+            default:               newItem = new ShortcutItem(intent, salt, name, null); break;
         }
         fis.close();
         newItem.setCategoryNoDirty(categoryName);
