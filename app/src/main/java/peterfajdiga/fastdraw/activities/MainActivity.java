@@ -164,9 +164,7 @@ public class MainActivity extends FragmentActivity implements
             if (smsAppPackage == null) {
                 smsAppPackage = Settings.Secure.getString(getContentResolver(), "sms_default_application");
             }
-            if (smsAppPackage != null) {
-                addAppToHome(smsAppPackage);
-            } else {
+            if (smsAppPackage == null || !addAppToHome(smsAppPackage)) {
                 final Intent launcherIntent = new Intent(Intent.ACTION_MAIN);
                 launcherIntent.setType("vnd.android-dir/mms-sms");
                 addAppToHome(launcherIntent);
@@ -251,27 +249,29 @@ public class MainActivity extends FragmentActivity implements
         getPager().finishBulk();
     }
 
-    private void addDefaultAppToHome(@NonNull final Intent intent) {
+    private boolean addDefaultAppToHome(@NonNull final Intent intent) {
+        // return true if successful
         final ResolveInfo resolveInfo = getPackageManager().resolveActivity(intent, 0);
-        if (resolveInfo != null) {
-            addAppToHome(resolveInfo.activityInfo.packageName);
-        }
+        return resolveInfo != null && addAppToHome(resolveInfo.activityInfo.packageName);
     }
     private void addAppToHome(@NonNull final AppItem appItem) {
+        // always successful
         appItem.setCategory("HOME");
         appItem.persist(this);
     }
-    private void addAppToHome(@NonNull final Intent launcherIntent) {
+    private boolean addAppToHome(@NonNull final Intent launcherIntent) {
+        // return true if successful
         final ResolveInfo resolveInfo = getPackageManager().resolveActivity(launcherIntent, 0);
-        if (resolveInfo != null) {
-            addAppToHome(new AppItem(resolveInfo.activityInfo));
+        if (resolveInfo == null) {
+            return false;
         }
+        addAppToHome(new AppItem(resolveInfo.activityInfo));
+        return true;
     }
-    private void addAppToHome(@NonNull final String packageName) {
+    private boolean addAppToHome(@NonNull final String packageName) {
+        // return true if successful
         final Intent launcherIntent = getPackageManager().getLaunchIntentForPackage(packageName);
-        if (launcherIntent != null) {
-            addAppToHome(launcherIntent);
-        }
+        return launcherIntent != null && addAppToHome(launcherIntent);
     }
 
     private void forgetDeletedApps() {
