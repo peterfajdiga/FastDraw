@@ -251,29 +251,27 @@ public class MainActivity extends FragmentActivity implements
         getPager().finishBulk();
     }
 
-    private void addDefaultAppToHome(final Intent intent) {
+    private void addDefaultAppToHome(@NonNull final Intent intent) {
         final ResolveInfo resolveInfo = getPackageManager().resolveActivity(intent, 0);
         if (resolveInfo != null) {
             addAppToHome(resolveInfo.activityInfo.packageName);
         }
     }
-    private void addAppToHome(final AppItem appItem) {
+    private void addAppToHome(@NonNull final AppItem appItem) {
         appItem.setCategory("HOME");
         appItem.persist(this);
     }
-    private void addAppToHome(final Intent launcherIntent) {
-        final PackageManager packageManager = getPackageManager();
-        final ResolveInfo resolveInfo = packageManager.resolveActivity(launcherIntent, 0);
+    private void addAppToHome(@NonNull final Intent launcherIntent) {
+        final ResolveInfo resolveInfo = getPackageManager().resolveActivity(launcherIntent, 0);
         if (resolveInfo != null) {
             addAppToHome(new AppItem(resolveInfo.activityInfo));
         }
     }
-    private void addAppToHome(final String packageName) {
-//        final Intent launcherIntent = new Intent(Intent.ACTION_MAIN, null);
-//        launcherIntent.addCategory(Intent.CATEGORY_LAUNCHER);
-//        launcherIntent.setPackage(packageName);
+    private void addAppToHome(@NonNull final String packageName) {
         final Intent launcherIntent = getPackageManager().getLaunchIntentForPackage(packageName);
-        addAppToHome(launcherIntent);
+        if (launcherIntent != null) {
+            addAppToHome(launcherIntent);
+        }
     }
 
     private void forgetDeletedApps() {
