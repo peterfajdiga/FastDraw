@@ -1,1 +1,2 @@
-include ':app', ':colorpickerhex'
+include ':app', ':ColorPickerHex'
+project(':ColorPickerHex').projectDir = new File('app/libs/ColorPickerHex/colorpickerhex')
