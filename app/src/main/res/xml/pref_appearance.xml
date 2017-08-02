@@ -1,4 +1,5 @@
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <SwitchPreference
         android:defaultValue="@bool/default_showIcons"
@@ -26,11 +27,13 @@
     <peterfajdiga.colorpickerhex.ColorPreference
         android:defaultValue="@integer/default_headerBgColor"
         android:key="headerBgColor"
-        android:title="@string/pref_title_headerBgColor" />
+        android:title="@string/pref_title_headerBgColor"
+        app:editAlpha="true" />
     <peterfajdiga.colorpickerhex.ColorPreference
         android:defaultValue="@integer/default_headerBgColorExpanded"
         android:key="headerBgColorExpanded"
-        android:title="@string/pref_title_headerBgColorExpanded" />
+        android:title="@string/pref_title_headerBgColorExpanded"
+        app:editAlpha="true" />
 
     <SwitchPreference
         android:defaultValue="@bool/default_statusBarDarker"
