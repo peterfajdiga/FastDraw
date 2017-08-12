@@ -4,7 +4,6 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/app/libs/ColorPickerHex/colorpickerhex/ColorPickerHex.iml" filepath="$PROJECT_DIR$/app/libs/ColorPickerHex/colorpickerhex/ColorPickerHex.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
-      <module fileurl="file://$PROJECT_DIR$/colorpickerhex/colorpickerhex.iml" filepath="$PROJECT_DIR$/colorpickerhex/colorpickerhex.iml" />
       <module fileurl="file://$PROJECT_DIR$/fastdraw.iml" filepath="$PROJECT_DIR$/fastdraw.iml" />
     </modules>
   </component>
