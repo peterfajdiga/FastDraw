@@ -33,7 +33,7 @@ public class LauncherPager extends ViewPager {
     public void onPageScrolled(int position, float offset, int offsetPixels) {
         super.onPageScrolled(position, offset, offsetPixels);
         final WallpaperManager wallpaperManager = WallpaperManager.getInstance(getContext());
-        wallpaperManager.setWallpaperOffsets(getWindowToken(), (position + offset) / (getChildCount() - 1), 0.5f);
+        wallpaperManager.setWallpaperOffsets(getWindowToken(), (position + offset) / (getAdapter().getCount() - 1), 0.5f);  // don't use getChildCount()
     }
 
     // returns true if category exists and was selected
