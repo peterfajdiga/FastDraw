@@ -201,35 +201,33 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
     public static class CategoryOrderPreferenceFragment extends Fragment {
 
-        private RecyclerView recyclerView;
+        private CategoryOrderAdapter categoryOrderAdapter;
 
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
             final Context context = getActivity();
-            recyclerView = new RecyclerView(context);
+            final RecyclerView recyclerView = new RecyclerView(context);
+
+            categoryOrderAdapter = new CategoryOrderAdapter(new PrefMap(context, "categoryorder"));
+            recyclerView.setAdapter(categoryOrderAdapter);
+            new ItemTouchHelper(new ReorderHelperCallback(categoryOrderAdapter)).attachToRecyclerView(recyclerView);
+
+            recyclerView.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false));
             return recyclerView;
         }
 
         @Override
         public void onResume() {
             super.onResume();
-            final Context context = getActivity();
-
-            final CategoryOrderAdapter adapter = new CategoryOrderAdapter(new PrefMap(context, "categoryorder"));
-            recyclerView.setAdapter(adapter);
-
-            recyclerView.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false));
-
-            new ItemTouchHelper(new ReorderHelperCallback(adapter)).attachToRecyclerView(recyclerView);
+            categoryOrderAdapter.reloadOrder();
         }
 
         @Override
         public void onPause() {
             super.onPause();
-            final CategoryOrderAdapter adapter = (CategoryOrderAdapter)recyclerView.getAdapter();
-            if (adapter != null) {
-                adapter.persistOrder(getActivity());
+            if (categoryOrderAdapter != null) {
+                categoryOrderAdapter.persistOrder(getActivity());
             }
         }
     }

@@ -21,9 +21,14 @@ public class CategoryOrderAdapter extends RecyclerView.Adapter<CategoryOrderAdap
 
     public CategoryOrderAdapter(final PrefMap categoryOrderMap) {
         this.categoryOrderMap = categoryOrderMap;
+        reloadOrder();
+    }
+
+    public void reloadOrder() {
         Set<String> categorySet = categoryOrderMap.getKeys();
         categories = categorySet.toArray(new String[categorySet.size()]);
         Arrays.sort(categories, new CategoryComparator(categoryOrderMap));
+        notifyDataSetChanged();
     }
 
     @Override
@@ -77,6 +82,7 @@ public class CategoryOrderAdapter extends RecyclerView.Adapter<CategoryOrderAdap
         if (!changesMade) {
             return false;
         }
+        final PrefMap categoryOrder = new PrefMap(context, "categoryorder");
         for (int i = 0; i < categories.length; i++) {
             categoryOrderMap.putInt(categories[i], i);
         }
