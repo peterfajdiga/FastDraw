@@ -2,6 +2,7 @@ package peterfajdiga.fastdraw.activities;
 
 
 import android.annotation.TargetApi;
+import android.app.Fragment;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -14,11 +15,20 @@ import android.preference.PreferenceActivity;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
 import android.support.v7.app.ActionBar;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.helper.ItemTouchHelper;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
 
 import java.util.List;
 
+import peterfajdiga.fastdraw.PrefMap;
 import peterfajdiga.fastdraw.R;
+import peterfajdiga.fastdraw.categoryorder.CategoryOrderAdapter;
+import peterfajdiga.fastdraw.categoryorder.ReorderHelperCallback;
 
 /**
  * A {@link PreferenceActivity} that presents a set of application settings. On
@@ -134,7 +144,8 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
         return PreferenceFragment.class.getName().equals(fragmentName)
                 || GeneralPreferenceFragment.class.getName().equals(fragmentName)
                 || GesturesPreferenceFragment.class.getName().equals(fragmentName)
-                || AppearancePreferenceFragment.class.getName().equals(fragmentName);
+                || AppearancePreferenceFragment.class.getName().equals(fragmentName)
+                || CategoryOrderPreferenceFragment.class.getName().equals(fragmentName);
     }
 
     /**
@@ -185,6 +196,41 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
             bindPreferenceSummaryToValue(findPreference("action_doubleclick"));
             bindPreferenceSummaryToValue(findPreference("action_pinch"));
             bindPreferenceSummaryToValue(findPreference("action_unpinch"));
+        }
+    }
+
+    public static class CategoryOrderPreferenceFragment extends Fragment {
+
+        private RecyclerView recyclerView;
+
+        @Override
+        public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                                 Bundle savedInstanceState) {
+            final Context context = getActivity();
+            recyclerView = new RecyclerView(context);
+            return recyclerView;
+        }
+
+        @Override
+        public void onResume() {
+            super.onResume();
+            final Context context = getActivity();
+
+            final CategoryOrderAdapter adapter = new CategoryOrderAdapter(new PrefMap(context, "categoryorder"));
+            recyclerView.setAdapter(adapter);
+
+            recyclerView.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false));
+
+            new ItemTouchHelper(new ReorderHelperCallback(adapter)).attachToRecyclerView(recyclerView);
+        }
+
+        @Override
+        public void onPause() {
+            super.onPause();
+            final CategoryOrderAdapter adapter = (CategoryOrderAdapter)recyclerView.getAdapter();
+            if (adapter != null) {
+                adapter.persistOrder(getActivity());
+            }
         }
     }
 

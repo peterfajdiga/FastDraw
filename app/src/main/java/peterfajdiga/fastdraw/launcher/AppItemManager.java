@@ -10,6 +10,7 @@ import android.provider.Settings;
 
 import java.util.Map;
 
+import peterfajdiga.fastdraw.PrefMap;
 import peterfajdiga.fastdraw.R;
 import peterfajdiga.fastdraw.launcher.item.AppItem;
 import peterfajdiga.fastdraw.launcher.item.LauncherItem;
@@ -17,13 +18,13 @@ import peterfajdiga.fastdraw.launcher.item.LauncherItem;
 public class AppItemManager {
 
     private static void addAppItems(final Context context, final LauncherPager pager, final Intent launcherIntent) {
-        final SharedPreferences prefs = context.getSharedPreferences("categories", Context.MODE_PRIVATE);
+        final PrefMap categories = new PrefMap(context, "categories");
         final PackageManager packageManager = context.getPackageManager();
 
         launcherIntent.addCategory(Intent.CATEGORY_LAUNCHER);
         for (final ResolveInfo resInfo : packageManager.queryIntentActivities(launcherIntent, 0)) {
             final AppItem newAppItem = new AppItem(resInfo.activityInfo);
-            final String categoryName = prefs.getString(newAppItem.getID(), context.getString(R.string.default_category));
+            final String categoryName = categories.getString(newAppItem.getID(), context.getString(R.string.default_category));
             newAppItem.setCategoryNoDirty(categoryName);
             pager.addLauncherItemBulk(newAppItem);
         }

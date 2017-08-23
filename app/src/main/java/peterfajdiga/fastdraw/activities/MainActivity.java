@@ -2,7 +2,6 @@ package peterfajdiga.fastdraw.activities;
 
 import android.animation.LayoutTransition;
 import android.animation.ValueAnimator;
-import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
@@ -24,9 +23,12 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.Toast;
 
+import com.android.internal.util.Predicate;
+
 import java.io.File;
 
 import peterfajdiga.fastdraw.NavigationBarAnimator;
+import peterfajdiga.fastdraw.PrefMap;
 import peterfajdiga.fastdraw.Preferences;
 import peterfajdiga.fastdraw.R;
 import peterfajdiga.fastdraw.ViewBgAnimator;
@@ -208,12 +210,13 @@ public class MainActivity extends FragmentActivity implements
     protected void onPause() {
         super.onPause();
         LauncherItem.saveDirty(this);
+        cleanUnusedPrefKeysUrgent();
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        forgetDeletedApps();
+        cleanUnusedPrefKeysLazy();
 
         // BroadcastReceivers
         unregisterReceiver(installShortcutReceiver);
@@ -274,17 +277,25 @@ public class MainActivity extends FragmentActivity implements
         return launcherIntent != null && addAppToHome(launcherIntent);
     }
 
-    private void forgetDeletedApps() {
-        final SharedPreferences prefs = getSharedPreferences("categories", Context.MODE_PRIVATE);
-        final SharedPreferences.Editor prefsEditor = prefs.edit();
-
-        for (String appItemId : prefs.getAll().keySet()) {
-            String packageName = appItemId.substring(0, appItemId.indexOf('\0'));
-            if (!doesPackageExist(packageName)) {
-                prefsEditor.remove(appItemId);
+    private void cleanUnusedPrefKeysLazy() {
+        final PrefMap categories = new PrefMap(this, "categories");
+        categories.clean(new Predicate<String>() {
+            @Override
+            public boolean apply(String s) {
+                String packageName = s.substring(0, s.indexOf('\0'));
+                return !doesPackageExist(packageName);
             }
-        }
-        prefsEditor.apply();
+        });
+    }
+    private void cleanUnusedPrefKeysUrgent() {
+        final LauncherPager pager = getPager();
+        final PrefMap categoryOrder = new PrefMap(this, "categoryorder");
+        categoryOrder.clean(new Predicate<String>() {
+            @Override
+            public boolean apply(String s) {
+                return !pager.doesCategoryExist(s);
+            }
+        });
     }
 
     private boolean doesPackageExist(String packageName) {

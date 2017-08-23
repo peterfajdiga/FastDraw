@@ -1,5 +1,6 @@
 package peterfajdiga.fastdraw.launcher;
 
+import android.content.Context;
 import android.support.v4.view.PagerAdapter;
 import android.view.View;
 import android.view.ViewGroup;
@@ -7,12 +8,17 @@ import android.view.ViewGroup;
 import java.util.SortedMap;
 import java.util.concurrent.ConcurrentSkipListMap;
 
+import peterfajdiga.fastdraw.PrefMap;
+import peterfajdiga.fastdraw.categoryorder.CategoryComparator;
+
 class LauncherPagerAdapter extends PagerAdapter {
 
-    SortedMap<String, CategoryView> categories = new ConcurrentSkipListMap<>();
+    final SortedMap<String, CategoryView> categories;
     boolean firstCategoryLoaded = false;
 
-    public LauncherPagerAdapter() {}
+    public LauncherPagerAdapter(final Context context) {
+        categories = new ConcurrentSkipListMap<>(new CategoryComparator(new PrefMap(context, "categoryorder")));
+    }
 
     @Override
     public Object instantiateItem(ViewGroup container, int position) {

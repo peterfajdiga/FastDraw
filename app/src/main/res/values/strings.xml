@@ -81,4 +81,6 @@
     <string name="pref_title_action_doubleclick">Double tap action</string>
     <string name="pref_title_action_pinch">Pinch action</string>
     <string name="pref_title_action_unpinch">Zoom action</string>
+
+    <string name="pref_header_categoryorder">Order of categories</string>
 </resources>

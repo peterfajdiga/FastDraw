@@ -26,7 +26,7 @@ public class LauncherPager extends ViewPager {
     }
 
     private void init() {
-        setAdapter(new LauncherPagerAdapter());
+        setAdapter(new LauncherPagerAdapter(getContext()));
     }
 
     @Override
@@ -46,6 +46,11 @@ public class LauncherPager extends ViewPager {
             }
         }
         return false;
+    }
+
+    public boolean doesCategoryExist(final String categoryName) {
+        final LauncherPagerAdapter adapter = (LauncherPagerAdapter)super.getAdapter();
+        return adapter.categories.get(categoryName) != null;
     }
 
     public String getCurrentCategoryName() {

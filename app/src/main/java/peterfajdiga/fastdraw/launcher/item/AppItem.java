@@ -7,6 +7,7 @@ import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 
+import peterfajdiga.fastdraw.PrefMap;
 import peterfajdiga.fastdraw.launcher.AppItemManager;
 
 public class AppItem extends LauncherItem {
@@ -35,10 +36,8 @@ public class AppItem extends LauncherItem {
 
     @Override
     public void persist(final Context context) {
-        final SharedPreferences prefs = context.getSharedPreferences("categories", Context.MODE_PRIVATE);
-        final SharedPreferences.Editor prefsEditor = prefs.edit();
-        prefsEditor.putString(getID(), category);
-        prefsEditor.apply();
+        final PrefMap categories = new PrefMap(context, "categories");
+        categories.putString(getID(), category);
     }
 
     public void openAppDetails(final Context context) {
