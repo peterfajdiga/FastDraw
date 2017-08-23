@@ -70,9 +70,7 @@ public class TabContainer extends TabLayout {
         final Activity activity = (Activity) getContext();
         final ColorStateList iconColors = ContextCompat.getColorStateList(getContext(), R.color.tab);
         final String categoryName = tab.getText().toString();
-        final boolean categoryNameOrdered = isCategoryNameOrdered(categoryName);
-        final String visibleCategoryName = categoryNameOrdered ? categoryName.substring(ORDERED_CATEGORY_NAME_KEY_LENGTH) : categoryName;
-        final Drawable icon = getCategoryIcon(getContext(), visibleCategoryName);
+        final Drawable icon = getCategoryIcon(getContext(), categoryName);
 
         if (Preferences.showIcons) {
             if (icon != null) {
@@ -80,14 +78,11 @@ public class TabContainer extends TabLayout {
                 tab.setIcon(icon);
                 tab.setText("");
                 DrawableCompat.setTintList(DrawableCompat.wrap(icon), iconColors);
-            } else if (visibleCategoryName.length() == 1 && Preferences.largeSingle) {
+            } else if (categoryName.length() == 1 && Preferences.largeSingle) {
                 // TODO: Setting to disable
-                SpannableString tabString = new SpannableString(visibleCategoryName);
+                SpannableString tabString = new SpannableString(categoryName);
                 tabString.setSpan(new AbsoluteSizeSpan(19, true), 0, 1, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
                 tab.setText(tabString);
-            } else if (categoryNameOrdered) {
-                // we need to set the visible part only
-                tab.setText(visibleCategoryName);
             }
         }
         tab.setTag(Boolean.TRUE);  // mark as done
@@ -114,14 +109,6 @@ public class TabContainer extends TabLayout {
         });
         tabView.setTag(categoryName);
         tabView.setOnDragListener(new DropZoneCategory());
-    }
-
-    private static final int ORDERED_CATEGORY_NAME_KEY_LENGTH = 4;
-    private boolean isCategoryNameOrdered(final String category) {
-        final char[] chars = category.toCharArray();
-        return chars.length > ORDERED_CATEGORY_NAME_KEY_LENGTH
-                && chars[2] == ':'
-                && chars[3] == ':';
     }
 
 
