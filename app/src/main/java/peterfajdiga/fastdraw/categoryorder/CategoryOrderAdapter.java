@@ -47,12 +47,9 @@ public class CategoryOrderAdapter extends RecyclerView.Adapter<CategoryOrderAdap
     public void orderReset() {
         changesMade = false;
         MainActivity.forceFinish();
-        categoryOrderMap.clean(new Predicate<String>() {
-            @Override
-            public boolean apply(String s) {
-                return true;
-            }
-        });
+        for (String category : categories) {
+            categoryOrderMap.putInt(category, CategoryComparator.UNORDERED);
+        }
         reloadOrder();
     }
 
