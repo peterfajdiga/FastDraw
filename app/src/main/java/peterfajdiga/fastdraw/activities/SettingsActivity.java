@@ -207,11 +207,14 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
             final Context context = getActivity();
-            final RecyclerView recyclerView = new RecyclerView(context);
+            final RecyclerView recyclerView = (RecyclerView)inflater.inflate(R.layout.fragment_pref_categoryorder, container, false);
 
             categoryOrderAdapter = new CategoryOrderAdapter(new PrefMap(context, "categoryorder"));
             recyclerView.setAdapter(categoryOrderAdapter);
-            new ItemTouchHelper(new ReorderHelperCallback(categoryOrderAdapter)).attachToRecyclerView(recyclerView);
+
+            final ItemTouchHelper itemTouchHelper = new ItemTouchHelper(new ReorderHelperCallback(categoryOrderAdapter));
+            itemTouchHelper.attachToRecyclerView(recyclerView);
+            categoryOrderAdapter.setItemTouchHelper(itemTouchHelper);
 
             recyclerView.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false));
             return recyclerView;

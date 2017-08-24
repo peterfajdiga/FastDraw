@@ -1,16 +1,22 @@
 package peterfajdiga.fastdraw.categoryorder;
 
 import android.content.Context;
+import android.support.v4.view.MotionEventCompat;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.Arrays;
 import java.util.Set;
 
+import peterfajdiga.fastdraw.Common;
 import peterfajdiga.fastdraw.PrefMap;
+import peterfajdiga.fastdraw.R;
 import peterfajdiga.fastdraw.activities.MainActivity;
 
 public class CategoryOrderAdapter extends RecyclerView.Adapter<CategoryOrderAdapter.CategoryViewHolder> implements ReorderHelperListener {
@@ -18,6 +24,7 @@ public class CategoryOrderAdapter extends RecyclerView.Adapter<CategoryOrderAdap
     private String[] categories;
     private boolean changesMade = false;
     private final PrefMap categoryOrderMap;
+    private ItemTouchHelper itemTouchHelper = null;
 
     public CategoryOrderAdapter(final PrefMap categoryOrderMap) {
         this.categoryOrderMap = categoryOrderMap;
@@ -31,6 +38,10 @@ public class CategoryOrderAdapter extends RecyclerView.Adapter<CategoryOrderAdap
         notifyDataSetChanged();
     }
 
+    public void setItemTouchHelper(final ItemTouchHelper itemTouchHelper) {
+        this.itemTouchHelper = itemTouchHelper;
+    }
+
     @Override
     public int getItemCount() {
         return categories.length;
@@ -39,20 +50,39 @@ public class CategoryOrderAdapter extends RecyclerView.Adapter<CategoryOrderAdap
     @Override
     public CategoryViewHolder onCreateViewHolder(final ViewGroup parent, final int viewType) {
         final View view = LayoutInflater.from(parent.getContext())
-                .inflate(android.R.layout.simple_list_item_1, parent, false);
+                .inflate(R.layout.categoryorder_item, parent, false);
         return new CategoryViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(final CategoryViewHolder holder, final int position) {
-        holder.view.setText(categories[position]);
+        final Context context = holder.view.getContext();
+        final String categoryName = categories[position];
+
+        final TextView itemText = (TextView)holder.view.findViewById(R.id.text);
+        itemText.setText(categoryName);
+
+        final ImageView itemIcon = (ImageView)holder.view.findViewById(R.id.icon);
+        itemIcon.setImageDrawable(Common.getCategoryIcon(context, categoryName));
+        itemIcon.setColorFilter(context.getResources().getColor(R.color.bottomSheetIcon));
+
+        final View itemHandle = holder.view.findViewById(R.id.handle);
+        itemHandle.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if (itemTouchHelper != null && MotionEventCompat.getActionMasked(event) == MotionEvent.ACTION_DOWN) {
+                    itemTouchHelper.startDrag(holder);
+                }
+                return false;
+            }
+        });
     }
 
     class CategoryViewHolder extends RecyclerView.ViewHolder {
-        TextView view;
+        ViewGroup view;
         CategoryViewHolder(final View itemView) {
             super(itemView);
-            view = (TextView)itemView;
+            view = (ViewGroup)itemView;
         }
     }
 
