@@ -6,7 +6,7 @@ import peterfajdiga.fastdraw.PrefMap;
 
 public class CategoryComparator implements Comparator<String> {
 
-    private static final int UNORDERED = -1;
+    public static final int UNORDERED = Integer.MAX_VALUE;
 
     private final PrefMap categoryMap;
 

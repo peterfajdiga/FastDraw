@@ -11,6 +11,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.android.internal.util.Predicate;
+
 import java.util.Arrays;
 import java.util.Set;
 
@@ -28,14 +30,30 @@ public class CategoryOrderAdapter extends RecyclerView.Adapter<CategoryOrderAdap
 
     public CategoryOrderAdapter(final PrefMap categoryOrderMap) {
         this.categoryOrderMap = categoryOrderMap;
+        reloadCategories();
+    }
+
+    public void reloadCategories() {
+        Set<String> categorySet = categoryOrderMap.getKeys();
+        categories = categorySet.toArray(new String[categorySet.size()]);
         reloadOrder();
     }
 
     public void reloadOrder() {
-        Set<String> categorySet = categoryOrderMap.getKeys();
-        categories = categorySet.toArray(new String[categorySet.size()]);
         Arrays.sort(categories, new CategoryComparator(categoryOrderMap));
         notifyDataSetChanged();
+    }
+
+    public void orderReset() {
+        changesMade = false;
+        MainActivity.forceFinish();
+        categoryOrderMap.clean(new Predicate<String>() {
+            @Override
+            public boolean apply(String s) {
+                return true;
+            }
+        });
+        reloadOrder();
     }
 
     public void setItemTouchHelper(final ItemTouchHelper itemTouchHelper) {

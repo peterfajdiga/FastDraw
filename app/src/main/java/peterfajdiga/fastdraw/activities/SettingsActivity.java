@@ -19,6 +19,8 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -206,6 +208,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
+            setHasOptionsMenu(true);
             final Context context = getActivity();
             final RecyclerView recyclerView = (RecyclerView)inflater.inflate(R.layout.fragment_pref_categoryorder, container, false);
 
@@ -223,7 +226,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
         @Override
         public void onResume() {
             super.onResume();
-            categoryOrderAdapter.reloadOrder();
+            categoryOrderAdapter.reloadCategories();
         }
 
         @Override
@@ -232,6 +235,21 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
             if (categoryOrderAdapter != null) {
                 categoryOrderAdapter.persistOrder(getActivity());
             }
+        }
+
+        @Override
+        public void onCreateOptionsMenu(final Menu menu, final MenuInflater inflater) {
+            inflater.inflate(R.menu.categoryorder, menu);
+            super.onCreateOptionsMenu(menu, inflater);
+        }
+
+        @Override
+        public boolean onOptionsItemSelected(MenuItem item) {
+            if (item.getItemId() == R.id.action_orderreset) {
+                categoryOrderAdapter.orderReset();
+                return true;
+            }
+            return super.onOptionsItemSelected(item);
         }
     }
 

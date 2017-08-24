@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/action_orderreset"
+        android:title="@string/pref_title_orderreset"
+        android:icon="@drawable/ic_action_orderreset"
+        app:showAsAction="ifRoom" />
+
+</menu>

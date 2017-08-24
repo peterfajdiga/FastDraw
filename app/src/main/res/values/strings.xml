@@ -83,4 +83,5 @@
     <string name="pref_title_action_unpinch">Zoom action</string>
 
     <string name="pref_header_categoryorder">Order of categories</string>
+    <string name="pref_title_orderreset">Order alphabetically</string>
 </resources>
