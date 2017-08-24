@@ -6,9 +6,7 @@ import android.support.annotation.Nullable;
 
 import com.android.internal.util.Predicate;
 
-import java.util.Map;
 import java.util.Set;
-import java.util.concurrent.ConcurrentHashMap;
 
 public class PrefMap {
 
@@ -29,6 +27,13 @@ public class PrefMap {
 
     public int getInt(final String key, final int defValue) {
         return prefs.getInt(key, defValue);
+    }
+    public int getIntCreate(final String key, final int defValue) {
+        final int storedValue = prefs.getInt(key, defValue);
+        if (storedValue == defValue) {
+            putInt(key, defValue);
+        }
+        return storedValue;
     }
     public void putInt(final String key, final int value) {
         final SharedPreferences.Editor prefsEditor = prefs.edit();
@@ -51,24 +56,5 @@ public class PrefMap {
             }
         }
         prefsEditor.apply();
-    }
-
-
-    // cached
-
-    private Map<String, Integer> cache_int = new ConcurrentHashMap<>();
-    public int getIntCached(final String key, final int defValue) {
-        final Integer cachedValue = cache_int.get(key);
-        if (cachedValue != null) {
-            return cachedValue;
-        }
-
-        // if not yet cached, retrieve it from prefs and cache it
-        final int storedValue = prefs.getInt(key, defValue);
-        if (storedValue == defValue) {
-            putInt(key, defValue);
-        }
-        cache_int.put(key, storedValue);
-        return storedValue;
     }
 }

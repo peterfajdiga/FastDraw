@@ -16,8 +16,8 @@ public class CategoryComparator implements Comparator<String> {
 
     @Override
     public int compare(String category1, String category2) {
-        final int order_category1 = categoryMap.getIntCached(category1, UNORDERED);
-        final int order_category2 = categoryMap.getIntCached(category2, UNORDERED);
+        final int order_category1 = categoryMap.getIntCreate(category1, UNORDERED);
+        final int order_category2 = categoryMap.getIntCreate(category2, UNORDERED);
         final int orderDiff = order_category1 - order_category2;
         if (orderDiff == 0) {
             return category1.compareTo(category2);
