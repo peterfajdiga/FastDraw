@@ -56,6 +56,13 @@ class CategoryView extends GridView {
                 LauncherItem app = (LauncherItem)getAdapter().getItem(pos);
                 Intent intent = app.getIntent();
 
+                if (intent == null) {
+                    final String errMessage = context.getString(R.string.no_intent);
+                    final Toast toast = Toast.makeText(context, errMessage, Toast.LENGTH_LONG);
+                    toast.show();
+                    return;
+                }
+
                 // animation
                 ActivityOptions opts;
                 if (Build.VERSION.SDK_INT >= 23) {
