@@ -1,4 +1,4 @@
-package peterfajdiga.fastdraw.listeners;
+package peterfajdiga.fastdraw.dragdrop;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;

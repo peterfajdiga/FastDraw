@@ -21,7 +21,7 @@ import peterfajdiga.fastdraw.Common;
 import peterfajdiga.fastdraw.Preferences;
 import peterfajdiga.fastdraw.R;
 import peterfajdiga.fastdraw.dialogs.RenameCategoryDialog;
-import peterfajdiga.fastdraw.listeners.DropZoneCategory;
+import peterfajdiga.fastdraw.dragdrop.DropZoneCategory;
 
 public class TabContainer extends TabLayout {
 

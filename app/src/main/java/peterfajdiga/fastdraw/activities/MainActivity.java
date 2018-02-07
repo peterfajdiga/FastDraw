@@ -40,13 +40,13 @@ import peterfajdiga.fastdraw.launcher.LauncherPager;
 import peterfajdiga.fastdraw.launcher.item.AppItem;
 import peterfajdiga.fastdraw.launcher.item.LauncherItem;
 import peterfajdiga.fastdraw.launcher.item.ShortcutItem;
-import peterfajdiga.fastdraw.listeners.DragStartListener;
-import peterfajdiga.fastdraw.listeners.DropZoneAppInfo;
-import peterfajdiga.fastdraw.listeners.DropZoneCategory;
-import peterfajdiga.fastdraw.listeners.DropZoneNewCategory;
-import peterfajdiga.fastdraw.listeners.DropZoneRemoveShortcut;
-import peterfajdiga.fastdraw.listeners.InstallAppReceiver;
-import peterfajdiga.fastdraw.listeners.InstallShortcutReceiver;
+import peterfajdiga.fastdraw.launcher.DragStartListener;
+import peterfajdiga.fastdraw.dragdrop.DropZoneAppInfo;
+import peterfajdiga.fastdraw.dragdrop.DropZoneCategory;
+import peterfajdiga.fastdraw.dragdrop.DropZoneNewCategory;
+import peterfajdiga.fastdraw.dragdrop.DropZoneRemoveShortcut;
+import peterfajdiga.fastdraw.receivers.InstallAppReceiver;
+import peterfajdiga.fastdraw.receivers.InstallShortcutReceiver;
 import peterfajdiga.fastdraw.views.TabContainer;
 
 public class MainActivity extends FragmentActivity implements

@@ -30,7 +30,7 @@
         </activity>
 
         <receiver
-            android:name=".listeners.InstallShortcutReceiver"
+            android:name=".receivers.InstallShortcutReceiver"
             android:permission="com.android.launcher.permission.INSTALL_SHORTCUT">
             <intent-filter>
                 <action android:name="com.android.launcher.action.INSTALL_SHORTCUT" />

@@ -1,4 +1,4 @@
-package peterfajdiga.fastdraw.listeners;
+package peterfajdiga.fastdraw.receivers;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;

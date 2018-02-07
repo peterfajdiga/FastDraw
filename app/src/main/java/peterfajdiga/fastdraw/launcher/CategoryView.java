@@ -19,7 +19,6 @@ import android.widget.Toast;
 import peterfajdiga.fastdraw.Preferences;
 import peterfajdiga.fastdraw.R;
 import peterfajdiga.fastdraw.launcher.item.LauncherItem;
-import peterfajdiga.fastdraw.listeners.DragStartListener;
 
 class CategoryView extends GridView {
 
