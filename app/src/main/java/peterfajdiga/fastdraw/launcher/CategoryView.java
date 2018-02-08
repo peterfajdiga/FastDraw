@@ -91,7 +91,7 @@ class CategoryView extends GridView {
                 view.performHapticFeedback(HapticFeedbackConstants.LONG_PRESS);
 
                 // start drag
-                final View.DragShadowBuilder shadow = new View.DragShadowBuilder(view);
+                final View.DragShadowBuilder shadow = new OffsetDragShadowBuilder(view, interceptTouchX, interceptTouchY);
                 if (Build.VERSION.SDK_INT < 24) {
                     view.startDrag(null, shadow, null, 0);
                 } else {
