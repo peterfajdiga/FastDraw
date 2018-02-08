@@ -9,6 +9,8 @@ import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.content.res.ColorStateList;
+import android.graphics.LightingColorFilter;
+import android.graphics.Paint;
 import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -460,16 +462,17 @@ public class MainActivity extends FragmentActivity implements
             }
         }
         if (draggedView != null) {
-            final ImageView iconView = draggedView.findViewById(R.id.app_item_icon);
-            iconView.setImageTintList(null);
+            draggedView.setLayerType(View.LAYER_TYPE_NONE, null);
             draggedView = null;
         }
     }
 
     @Override
     public void onDragStarted(final View draggedView, final LauncherItem draggedItem) {
-        final ImageView iconView = draggedView.findViewById(R.id.app_item_icon);
-        iconView.setImageTintList(ColorStateList.valueOf(0xff000000));
+        final Paint silhouettePaint = new Paint();
+        silhouettePaint.setColorFilter(new LightingColorFilter(0xff000000, 0xff000000));
+        draggedView.setLayerType(View.LAYER_TYPE_SOFTWARE, silhouettePaint);
+
         this.draggedView = draggedView;
         this.draggedItem = draggedItem;
 
