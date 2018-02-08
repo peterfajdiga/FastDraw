@@ -8,6 +8,7 @@ import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
+import android.content.res.ColorStateList;
 import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -21,6 +22,7 @@ import android.support.v4.app.FragmentActivity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.android.internal.util.Predicate;
@@ -436,9 +438,6 @@ public class MainActivity extends FragmentActivity implements
 
     @Override
     public void onDragEnded() {
-        if (draggedView != null) {
-            draggedView.setAlpha(1.0f);
-        }
         if (draggedItem != null) {
             // hide drop zones
             findViewById(R.id.apps_pager).animate().alpha(1.0f);
@@ -460,11 +459,17 @@ public class MainActivity extends FragmentActivity implements
 //                }
             }
         }
+        if (draggedView != null) {
+            final ImageView iconView = draggedView.findViewById(R.id.app_item_icon);
+            iconView.setImageTintList(null);
+            draggedView = null;
+        }
     }
 
     @Override
     public void onDragStarted(final View draggedView, final LauncherItem draggedItem) {
-        draggedView.setAlpha(0.0f);
+        final ImageView iconView = draggedView.findViewById(R.id.app_item_icon);
+        iconView.setImageTintList(ColorStateList.valueOf(0xff000000));
         this.draggedView = draggedView;
         this.draggedItem = draggedItem;
 
