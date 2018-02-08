@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
+import android.view.View;
 
 import peterfajdiga.fastdraw.Preferences;
 import peterfajdiga.fastdraw.launcher.item.LauncherItem;
@@ -158,6 +159,6 @@ public class LauncherPager extends ViewPager {
         void onPagerPinch();
         void onPagerUnpinch();
         void setDelayedLaunchIntent(@NonNull Intent launchIntent, @NonNull Bundle launchOpts);
-        void onDragStarted(LauncherItem draggedItem);
+        void onDragStarted(View draggedView, LauncherItem draggedItem);
     }
 }

@@ -430,12 +430,15 @@ public class MainActivity extends FragmentActivity implements
 
 
     // LauncherItem dragging
-
+    private View draggedView = null;
     private LauncherItem draggedItem = null;
     private LauncherItem newCategoryDroppedItem = null;
 
     @Override
     public void onDragEnded() {
+        if (draggedView != null) {
+            draggedView.setAlpha(1.0f);
+        }
         if (draggedItem != null) {
             // hide drop zones
             findViewById(R.id.apps_pager).animate().alpha(1.0f);
@@ -460,7 +463,9 @@ public class MainActivity extends FragmentActivity implements
     }
 
     @Override
-    public void onDragStarted(LauncherItem draggedItem) {
+    public void onDragStarted(final View draggedView, final LauncherItem draggedItem) {
+        draggedView.setAlpha(0.0f);
+        this.draggedView = draggedView;
         this.draggedItem = draggedItem;
 
         // show drop zones

@@ -98,7 +98,7 @@ class CategoryView extends GridView {
                     view.startDragAndDrop(null, shadow, null, 0);
                 }
 
-                owner.onDragStarted((LauncherItem)parent.getItemAtPosition(position));
+                owner.onDragStarted(view, (LauncherItem)parent.getItemAtPosition(position));
 
                 return false;
             }
