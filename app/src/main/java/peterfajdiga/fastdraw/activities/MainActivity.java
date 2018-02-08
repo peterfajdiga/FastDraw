@@ -8,7 +8,6 @@ import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
-import android.content.res.ColorStateList;
 import android.graphics.LightingColorFilter;
 import android.graphics.Paint;
 import android.net.Uri;
@@ -21,10 +20,10 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
+import android.view.DragEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
-import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.android.internal.util.Predicate;
@@ -110,6 +109,29 @@ public class MainActivity extends FragmentActivity implements
 
         loadLauncherItems();
         appsPager.showCategory("HOME");
+
+
+        // immediate reaction to drag end
+        findViewById(android.R.id.content).setOnDragListener(new View.OnDragListener() {
+            @Override
+            public boolean onDrag(final View v, final DragEvent event) {
+                switch (event.getAction()) {
+                    case DragEvent.ACTION_DRAG_STARTED: {
+                        return draggedItem != null;
+                    }
+                    case DragEvent.ACTION_DROP: {
+                        onDragEnded1();
+                        return false;
+                    }
+                    case DragEvent.ACTION_DRAG_ENDED: {
+                        onDragEnded1();
+                        onDragEnded2();
+                        return true;
+                    }
+                    default: return true;
+                }
+            }
+        });
 
 
         // header color animator
@@ -439,33 +461,7 @@ public class MainActivity extends FragmentActivity implements
     private LauncherItem newCategoryDroppedItem = null;
 
     @Override
-    public void onDragEnded() {
-        if (draggedItem != null) {
-            // hide drop zones
-            findViewById(R.id.apps_pager).animate().alpha(1.0f);
-            findViewById(R.id.category_drop_zone_container).setVisibility(View.GONE);
-            draggedItem = null;
-
-            // reset header background
-            dragBgAnimator.reverse();
-
-            // show status or navigation bar
-            switch (Preferences.mainLayoutResource) {
-                case R.layout.activity_main_headertop: {
-                    getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
-                    break;
-                }
-//                case R.layout.activity_main_headerbtm: {
-//                    getWindow().getDecorView().setSystemUiVisibility(0);
-//                    break;
-//                }
-            }
-        }
-        if (draggedView != null) {
-            draggedView.setLayerType(View.LAYER_TYPE_NONE, null);
-            draggedView = null;
-        }
-    }
+    public void onDragEnded() {}
 
     @Override
     public void onDragStarted(final View draggedView, final LauncherItem draggedItem) {
@@ -497,6 +493,37 @@ public class MainActivity extends FragmentActivity implements
 //                getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
 //                break;
 //            }
+        }
+    }
+
+    public void onDragEnded1() {
+        if (draggedItem != null) {
+            // hide drop zones
+            findViewById(R.id.apps_pager).animate().alpha(1.0f);
+            findViewById(R.id.category_drop_zone_container).setVisibility(View.GONE);
+            draggedItem = null;
+
+            // reset header background
+            dragBgAnimator.reverse();
+
+            // show status or navigation bar
+            switch (Preferences.mainLayoutResource) {
+                case R.layout.activity_main_headertop: {
+                    getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
+                    break;
+                }
+//                case R.layout.activity_main_headerbtm: {
+//                    getWindow().getDecorView().setSystemUiVisibility(0);
+//                    break;
+//                }
+            }
+        }
+    }
+
+    public void onDragEnded2() {
+        if (draggedView != null) {
+            draggedView.setLayerType(View.LAYER_TYPE_NONE, null);
+            draggedView = null;
         }
     }
 
