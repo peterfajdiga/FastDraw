@@ -1,7 +1,6 @@
 package peterfajdiga.fastdraw;
 
 import android.content.Context;
-import android.content.SharedPreferences;
 
 import com.android.internal.util.Predicate;
 

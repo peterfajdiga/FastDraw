@@ -11,8 +11,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.android.internal.util.Predicate;
-
 import java.util.Arrays;
 import java.util.Set;
 

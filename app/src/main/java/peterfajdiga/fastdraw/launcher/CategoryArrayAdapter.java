@@ -34,14 +34,14 @@ class CategoryArrayAdapter extends ArrayAdapter<LauncherItem>{
 //            convertView.setBackgroundColor(0x40000000);
 //        }
 
-        ImageView appIcon = (ImageView)convertView.findViewById(R.id.app_item_icon);
+        ImageView appIcon = convertView.findViewById(R.id.app_item_icon);
         appIcon.setImageDrawable(item.icon);
 
-        TextView appLabel = (TextView)convertView.findViewById(R.id.app_item_name);
+        TextView appLabel = convertView.findViewById(R.id.app_item_name);
         appLabel.setText(item.name);
 
         if (Preferences.appItemResource == R.layout.app_item_package && item instanceof AppItem) {
-            TextView appName = (TextView)convertView.findViewById(R.id.app_item_package_name);
+            TextView appName = convertView.findViewById(R.id.app_item_package_name);
             appName.setText(((AppItem)item).packageName);
         }
 
