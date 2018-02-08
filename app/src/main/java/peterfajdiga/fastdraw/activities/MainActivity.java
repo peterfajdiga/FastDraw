@@ -40,7 +40,6 @@ import peterfajdiga.fastdraw.launcher.LauncherPager;
 import peterfajdiga.fastdraw.launcher.item.AppItem;
 import peterfajdiga.fastdraw.launcher.item.LauncherItem;
 import peterfajdiga.fastdraw.launcher.item.ShortcutItem;
-import peterfajdiga.fastdraw.launcher.DragStartListener;
 import peterfajdiga.fastdraw.dragdrop.DropZoneAppInfo;
 import peterfajdiga.fastdraw.dragdrop.DropZoneCategory;
 import peterfajdiga.fastdraw.dragdrop.DropZoneNewCategory;
@@ -56,7 +55,6 @@ public class MainActivity extends FragmentActivity implements
         DropZoneRemoveShortcut.Owner<LauncherItem>,
         DropZoneCategory.Owner<LauncherItem>,
         DropZoneNewCategory.Owner<LauncherItem>,
-        DragStartListener.Owner<LauncherItem>,
         NewCategoryDialog.Owner,
         RenameCategoryDialog.Owner {
 

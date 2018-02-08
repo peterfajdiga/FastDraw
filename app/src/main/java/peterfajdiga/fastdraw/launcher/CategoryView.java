@@ -84,7 +84,25 @@ class CategoryView extends GridView {
             }
         });
 
-        setOnItemLongClickListener(new DragStartListener());
+        final LauncherPager.Owner owner = getOwner();
+        setOnItemLongClickListener(new OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                view.performHapticFeedback(HapticFeedbackConstants.LONG_PRESS);
+
+                // start drag
+                final View.DragShadowBuilder shadow = new View.DragShadowBuilder(view);
+                if (Build.VERSION.SDK_INT < 24) {
+                    view.startDrag(null, shadow, null, 0);
+                } else {
+                    view.startDragAndDrop(null, shadow, null, 0);
+                }
+
+                owner.onDragStarted((LauncherItem)parent.getItemAtPosition(position));
+
+                return false;
+            }
+        });
     }
 
     private void launchWithPermission(final Intent launchIntent, final ActivityOptions launchOpts, final String permission) {

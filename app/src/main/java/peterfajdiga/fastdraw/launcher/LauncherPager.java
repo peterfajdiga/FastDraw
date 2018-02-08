@@ -158,5 +158,6 @@ public class LauncherPager extends ViewPager {
         void onPagerPinch();
         void onPagerUnpinch();
         void setDelayedLaunchIntent(@NonNull Intent launchIntent, @NonNull Bundle launchOpts);
+        void onDragStarted(LauncherItem draggedItem);
     }
 }
