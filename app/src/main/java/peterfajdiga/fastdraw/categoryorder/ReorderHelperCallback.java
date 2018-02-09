@@ -39,8 +39,8 @@ public class ReorderHelperCallback extends ItemTouchHelper.Callback {
     public int interpolateOutOfBoundsScroll(RecyclerView recyclerView, int viewSize, int viewSizeOutOfBounds, int totalSize, long msSinceStartScroll) {
         final int direction = (int)Math.signum(viewSizeOutOfBounds);
         int speed = (int)Math.round(Math.sqrt(Math.abs(viewSizeOutOfBounds * SPEED_MULT)));
-//        int speed = Math.round(viewSizeOutOfBounds * SPEED_MULT);
-//        speed *= speed;
+        //int speed = Math.round(viewSizeOutOfBounds * SPEED_MULT);
+        //speed *= speed;
         if (speed > MAX_SPEED) {
             speed = MAX_SPEED;
         }

@@ -92,7 +92,7 @@ public class MainActivity extends FragmentActivity implements
         ViewGroup header = (ViewGroup)findViewById(R.id.header);
         LayoutTransition lt = new LayoutTransition();
         lt.setStartDelay(LayoutTransition.APPEARING, 0);
-//        lt.setStartDelay(LayoutTransition.CHANGE_APPEARING, DROPZONE_TRANSITION_DURATION);
+        //lt.setStartDelay(LayoutTransition.CHANGE_APPEARING, DROPZONE_TRANSITION_DURATION);
         lt.setDuration(LayoutTransition.CHANGE_APPEARING, DROPZONE_TRANSITION_DURATION);
         lt.setStartDelay(LayoutTransition.CHANGE_DISAPPEARING, 0);
         lt.setDuration(LayoutTransition.CHANGE_DISAPPEARING, DROPZONE_TRANSITION_DURATION);
@@ -104,7 +104,7 @@ public class MainActivity extends FragmentActivity implements
 
         LauncherPager appsPager = getPager();
 
-        TabContainer tabContainer = (TabContainer)findViewById(R.id.tab_container);
+        TabContainer tabContainer = findViewById(R.id.tab_container);
         tabContainer.setupWithViewPager(appsPager);
 
         loadLauncherItems();
@@ -146,6 +146,7 @@ public class MainActivity extends FragmentActivity implements
         }
         dragBgAnimator.setCurrentPlayTime(0);
 
+
         // header preferences
         if (Preferences.scrollableTabs) {
             tabContainer.setTabMode(TabLayout.MODE_SCROLLABLE);
@@ -160,6 +161,7 @@ public class MainActivity extends FragmentActivity implements
             getWindow().setFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS, WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         }
 
+
         // BroadcastReceivers
         installShortcutReceiver = new InstallShortcutReceiver(this);
         registerReceiver(installShortcutReceiver, new IntentFilter("com.android.launcher.action.INSTALL_SHORTCUT"));
@@ -171,6 +173,7 @@ public class MainActivity extends FragmentActivity implements
         appChangeFilter.addDataScheme("package");
         registerReceiver(installAppReceiver, appChangeFilter);
     }
+
 
     private void onFirstRun() {
         final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
@@ -276,18 +279,28 @@ public class MainActivity extends FragmentActivity implements
         getPager().finishBulk();
     }
 
+
+    /**
+     * @param intent the intent that the app should be able to perform
+     * @return true if successful
+     */
     private boolean addDefaultAppToHome(@NonNull final Intent intent) {
-        // return true if successful
         final ResolveInfo resolveInfo = getPackageManager().resolveActivity(intent, 0);
         return resolveInfo != null && addAppToHome(resolveInfo.activityInfo.packageName);
     }
+
+    /**
+     * Always successful
+     */
     private void addAppToHome(@NonNull final AppItem appItem) {
-        // always successful
         appItem.setCategory("HOME");
         appItem.persist(this);
     }
+
+    /**
+     * @return true if successful
+     */
     private boolean addAppToHome(@NonNull final Intent launcherIntent) {
-        // return true if successful
         final ResolveInfo resolveInfo = getPackageManager().resolveActivity(launcherIntent, 0);
         if (resolveInfo == null) {
             return false;
@@ -295,12 +308,20 @@ public class MainActivity extends FragmentActivity implements
         addAppToHome(new AppItem(resolveInfo.activityInfo));
         return true;
     }
+
+    /**
+     * @return true if successful
+     */
     private boolean addAppToHome(@NonNull final String packageName) {
-        // return true if successful
         final Intent launcherIntent = getPackageManager().getLaunchIntentForPackage(packageName);
         return launcherIntent != null && addAppToHome(launcherIntent);
     }
 
+
+    /**
+     * Remove unused apps
+     * This only serves to clean up the pref file
+     */
     private void cleanUnusedPrefKeysLazy() {
         final PrefMap categories = new PrefMap(this, "categories");
         categories.clean(new Predicate<String>() {
@@ -311,6 +332,11 @@ public class MainActivity extends FragmentActivity implements
             }
         });
     }
+
+    /**
+     * Remove unused categories (for category ordering)
+     * This needs to be done, so that nonexistent categories don't show up in category order settings
+     */
     private void cleanUnusedPrefKeysUrgent() {
         final LauncherPager pager = getPager();
         final PrefMap categoryOrder = new PrefMap(this, "categoryorder");
@@ -489,10 +515,10 @@ public class MainActivity extends FragmentActivity implements
                 getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
                 break;
             }
-//            case R.layout.activity_main_headerbtm: {
-//                getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
-//                break;
-//            }
+            /*case R.layout.activity_main_headerbtm: {
+                getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
+                break;
+            }*/
         }
     }
 
@@ -512,10 +538,10 @@ public class MainActivity extends FragmentActivity implements
                     getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
                     break;
                 }
-//                case R.layout.activity_main_headerbtm: {
-//                    getWindow().getDecorView().setSystemUiVisibility(0);
-//                    break;
-//                }
+                /*case R.layout.activity_main_headerbtm: {
+                    getWindow().getDecorView().setSystemUiVisibility(0);
+                    break;
+                }*/
             }
         }
     }

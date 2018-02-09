@@ -37,7 +37,9 @@ public class LauncherPager extends ViewPager {
         wallpaperManager.setWallpaperOffsets(getWindowToken(), (position + offset) / (getAdapter().getCount() - 1), 0.5f);  // don't use getChildCount()
     }
 
-    // returns true if category exists and was selected
+    /**
+     * @return true if category exists and was selected
+     */
     public boolean showCategory(String categoryName) {
         final String[] categoryNames = getCategoryNames();
         for (int i = 0; i < categoryNames.length; i++) {
@@ -117,7 +119,9 @@ public class LauncherPager extends ViewPager {
         adapter.notifyDataSetChanged();
     }
 
-    // returns true if the category's last item was removed
+    /**
+     * @return true if the category's last item was removed
+     */
     public boolean removeLauncherItem(LauncherItem item) {
         final LauncherPagerAdapter adapter = (LauncherPagerAdapter)super.getAdapter();
         final String categoryName = item.getCategory();

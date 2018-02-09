@@ -7,6 +7,11 @@ public class OffsetDragShadowBuilder extends View.DragShadowBuilder {
 
     int touchX, touchY;
 
+    /**
+     * @param view The dragged view
+     * @param x The x coordinate of the touch (screen space)
+     * @param y The y coordinate of the touch (screen space)
+     */
     public OffsetDragShadowBuilder(final View view, final float x, final float y) {
         super(view);
         touchX = (int)(x - view.getX());

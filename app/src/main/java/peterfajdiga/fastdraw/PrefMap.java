@@ -45,8 +45,11 @@ public class PrefMap {
         return prefs.getAll().keySet();
     }
 
-    // remove unused entries
-    // filter.apply should return true for items to remove
+    /**
+     * remove unused entries
+     *
+     * @param filter should return true for items to remove
+     */
     public void clean(final Predicate<String> filter) {
         final SharedPreferences.Editor prefsEditor = prefs.edit();
 

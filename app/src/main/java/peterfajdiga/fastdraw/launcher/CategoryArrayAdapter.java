@@ -30,9 +30,9 @@ class CategoryArrayAdapter extends ArrayAdapter<LauncherItem>{
         }
         final LauncherItem item = getItem(position);
 
-//        if (item instanceof ShortcutItem) {
-//            convertView.setBackgroundColor(0x40000000);
-//        }
+        /*if (item instanceof ShortcutItem) {
+            convertView.setBackgroundColor(0x40000000);
+        }*/
 
         ImageView appIcon = convertView.findViewById(R.id.app_item_icon);
         appIcon.setImageDrawable(item.icon);
@@ -94,9 +94,11 @@ class CategoryArrayAdapter extends ArrayAdapter<LauncherItem>{
             return null;
         }
 
+        /**
+         * this must be called on main thread
+         */
         @Override
         protected void onPostExecute(Void result) {
-            // this must be done on main thread
             sort();
             notifyDataSetChanged();
         }

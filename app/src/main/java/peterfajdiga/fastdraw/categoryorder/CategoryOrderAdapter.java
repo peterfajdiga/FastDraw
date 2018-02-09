@@ -120,7 +120,11 @@ public class CategoryOrderAdapter extends RecyclerView.Adapter<CategoryOrderAdap
         return true;
     }
 
-    // return true if there were changes
+    /**
+     * Save the changes
+     *
+     * @return true if there were changes
+     */
     public boolean persistOrder(final Context context) {
         if (!changesMade) {
             return false;

@@ -97,7 +97,6 @@ class CategoryView extends GridView {
                 } else {
                     view.startDragAndDrop(null, shadow, null, 0);
                 }
-
                 owner.onDragStarted(view, (LauncherItem)parent.getItemAtPosition(position));
 
                 return false;
@@ -126,8 +125,8 @@ class CategoryView extends GridView {
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        // perform pinch on liftoff
         if (event.getAction() == MotionEvent.ACTION_UP) {
+            // perform pinch on liftoff
             if (pinchStartDistance - pinchPrevDistance > PINCH_DISTANCE_TRIGGER_DELTA) {
                 getOwner().onPagerPinch();
             } else if (pinchPrevDistance - unpinchStartDistance > PINCH_DISTANCE_TRIGGER_DELTA) {
