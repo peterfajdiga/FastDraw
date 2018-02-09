@@ -74,7 +74,7 @@ class CategoryView extends GridView {
                     case Intent.ACTION_CALL: launchWithPermission(intent, opts, Manifest.permission.CALL_PHONE); break;
                     default: try {
                         context.startActivity(intent, opts.toBundle());
-                    } catch (ActivityNotFoundException e) {
+                    } catch (ActivityNotFoundException | IllegalArgumentException e) {
                         final String errMessage = context.getString(R.string.no_app);
                         final Toast toast = Toast.makeText(context, errMessage, Toast.LENGTH_LONG);
                         toast.show();
