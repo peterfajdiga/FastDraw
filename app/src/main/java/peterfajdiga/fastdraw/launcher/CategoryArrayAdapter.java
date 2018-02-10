@@ -48,8 +48,8 @@ class CategoryArrayAdapter extends ArrayAdapter<LauncherItem>{
         convertView.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
-            ((CategoryView)parent).interceptTouchTime = Long.MAX_VALUE;
-            return false;
+                ((CategoryView)parent).interceptTouchTime = Long.MAX_VALUE;
+                return false;
             }
         });
 

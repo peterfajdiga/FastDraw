@@ -48,13 +48,11 @@ import peterfajdiga.fastdraw.launcher.item.AppItem;
 import peterfajdiga.fastdraw.launcher.item.LauncherItem;
 import peterfajdiga.fastdraw.launcher.item.ShortcutItem;
 import peterfajdiga.fastdraw.receivers.InstallAppReceiver;
-import peterfajdiga.fastdraw.receivers.InstallShortcutReceiver;
 import peterfajdiga.fastdraw.views.TabContainer;
 
 public class MainActivity extends FragmentActivity implements
         LauncherPager.Owner,
         InstallAppReceiver.Owner,
-        InstallShortcutReceiver.Owner,
         DropZoneRemoveShortcut.Owner<LauncherItem>,
         DropZoneCategory.Owner<LauncherItem>,
         DropZoneNewCategory.Owner<LauncherItem>,
@@ -65,7 +63,6 @@ public class MainActivity extends FragmentActivity implements
 
     private static final int DROPZONE_TRANSITION_DURATION = 200;
 
-    private InstallShortcutReceiver installShortcutReceiver;
     private InstallAppReceiver installAppReceiver;
 
     private ValueAnimator dragBgAnimator;
@@ -162,10 +159,7 @@ public class MainActivity extends FragmentActivity implements
         }
 
 
-        // BroadcastReceivers
-        installShortcutReceiver = new InstallShortcutReceiver(this);
-        registerReceiver(installShortcutReceiver, new IntentFilter("com.android.launcher.action.INSTALL_SHORTCUT"));
-
+        // App installation BroadcastReceiver
         installAppReceiver = new InstallAppReceiver(this);
         IntentFilter appChangeFilter = new IntentFilter(Intent.ACTION_PACKAGE_ADDED);
         appChangeFilter.addAction(Intent.ACTION_PACKAGE_REMOVED);
@@ -243,11 +237,14 @@ public class MainActivity extends FragmentActivity implements
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        cleanUnusedPrefKeysLazy();
+        if (instance == this) {  // should be the only one, because of singleInstance
+            instance = null;
+        }
 
-        // BroadcastReceivers
-        unregisterReceiver(installShortcutReceiver);
+        // App installation BroadcastReceivers
         unregisterReceiver(installAppReceiver);
+
+        cleanUnusedPrefKeysLazy();
     }
 
     @Override
@@ -368,6 +365,10 @@ public class MainActivity extends FragmentActivity implements
         }
     }
 
+    public static MainActivity getInstance() {
+        return instance;
+    }
+
     @Override
     public void onRequestPermissionsResult(final int requestCode, @NonNull final String[] permissions, @NonNull final int[] grantResults) {
         if (requestCode != LauncherPager.LAUNCH_PERMISSION || launchIntent == null) {
@@ -474,7 +475,6 @@ public class MainActivity extends FragmentActivity implements
         AppItemManager.removeAppItems(this, getPager(), packageName);
     }
 
-    @Override
     public void onShortcutReceived(ShortcutItem newShortcut) {
         getPager().addLauncherItem(newShortcut);
     }
