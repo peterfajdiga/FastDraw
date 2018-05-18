@@ -3,12 +3,14 @@ package peterfajdiga.fastdraw.launcher;
 import android.app.Activity;
 import android.content.Context;
 import android.os.AsyncTask;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.Comparator;
 
@@ -83,13 +85,30 @@ class CategoryArrayAdapter extends ArrayAdapter<LauncherItem>{
         itemLoader.execute();
     }
 
+    private boolean isLoaded() {
+        final int n = getCount();
+        for (int i = 0; i < n; i++) {
+            final LauncherItem item = getItem(i);
+            if (item.name.equals("Loading...")) {
+                final Toast toast = Toast.makeText(getContext(), "Could not load: " + item.getIntent(), Toast.LENGTH_LONG);
+                toast.show();
+                return false;
+            }
+        }
+        return true;
+    }
+
     private final class ItemLoader extends AsyncTask<Void, Void, Void> {
         @Override
         protected Void doInBackground(Void... params) {
-            final Context context = getContext();
-            final int n = getCount();
-            for (int i = 0; i < n; i++) {
-                getItem(i).load(context);
+            try {
+                final Context context = getContext();
+                final int n = getCount();
+                for (int i = 0; i < n; i++) {
+                    getItem(i).load(context);
+                }
+            } catch (Exception e) {
+                Log.e("FastDraw_itemLoad", e.toString());
             }
             return null;
         }
@@ -99,6 +118,7 @@ class CategoryArrayAdapter extends ArrayAdapter<LauncherItem>{
          */
         @Override
         protected void onPostExecute(Void result) {
+            isLoaded();
             sort();
             notifyDataSetChanged();
         }
