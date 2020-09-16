@@ -2,7 +2,7 @@ package peterfajdiga.fastdraw;
 
 import android.content.Context;
 
-import com.android.internal.util.Predicate;
+import androidx.core.util.Predicate;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;

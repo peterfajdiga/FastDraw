@@ -7,7 +7,7 @@ import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
-import android.support.v4.app.ActivityCompat;
+import androidx.core.app.ActivityCompat;
 import android.view.HapticFeedbackConstants;
 import android.view.MotionEvent;
 import android.view.View;

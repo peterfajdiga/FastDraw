@@ -16,17 +16,18 @@ import android.preference.PreferenceManager;
 import android.provider.ContactsContract;
 import android.provider.Settings;
 import android.provider.Telephony;
-import android.support.annotation.NonNull;
-import android.support.design.widget.TabLayout;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
 import android.view.DragEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.Toast;
 
-import com.android.internal.util.Predicate;
+import androidx.annotation.NonNull;
+import androidx.core.util.Predicate;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
+
+import com.google.android.material.tabs.TabLayout;
 
 import java.io.File;
 
@@ -323,7 +324,7 @@ public class MainActivity extends FragmentActivity implements
         final PrefMap categories = new PrefMap(this, "categories");
         categories.clean(new Predicate<String>() {
             @Override
-            public boolean apply(String s) {
+            public boolean test(String s) {
                 String packageName = s.substring(0, s.indexOf('\0'));
                 return !doesPackageExist(packageName);
             }
@@ -339,7 +340,7 @@ public class MainActivity extends FragmentActivity implements
         final PrefMap categoryOrder = new PrefMap(this, "categoryorder");
         categoryOrder.clean(new Predicate<String>() {
             @Override
-            public boolean apply(String s) {
+            public boolean test(String s) {
                 return !pager.doesCategoryExist(s);
             }
         });
