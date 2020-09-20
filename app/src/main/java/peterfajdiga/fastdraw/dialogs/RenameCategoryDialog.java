@@ -3,18 +3,21 @@ package peterfajdiga.fastdraw.dialogs;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.text.InputType;
 import android.view.WindowManager;
 import android.widget.EditText;
 
+import androidx.annotation.NonNull;
+import androidx.fragment.app.DialogFragment;
+
 import peterfajdiga.fastdraw.R;
 
 public class RenameCategoryDialog extends DialogFragment {
 
     @Override
+    @NonNull
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         final String categoryName = getArguments().getString("categoryName");
 

@@ -419,7 +419,7 @@ public class MainActivity extends FragmentActivity implements
         final Bundle args = new Bundle();
         args.putString("categoryName", getPager().getCurrentCategoryName());
         dialog.setArguments(args);
-        dialog.show(getFragmentManager(), "RenameCategoryDialog");
+        dialog.show(getSupportFragmentManager(), "RenameCategoryDialog");
     }
     public void openSettings() {
         final Intent settingsIntent = new Intent(this, SettingsActivity.class);
@@ -576,7 +576,7 @@ public class MainActivity extends FragmentActivity implements
     public void onDraggedItemNewCategory() {
         newCategoryDroppedItem = draggedItem;
         NewCategoryDialog dialog = new NewCategoryDialog();
-        dialog.show(getFragmentManager(), "NewCategoryDialog");
+        dialog.show(getSupportFragmentManager(), "NewCategoryDialog");
     }
 
     @Override

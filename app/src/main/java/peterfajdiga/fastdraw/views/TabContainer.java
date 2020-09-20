@@ -1,6 +1,5 @@
 package peterfajdiga.fastdraw.views;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.graphics.drawable.Drawable;
@@ -16,6 +15,7 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 import androidx.core.graphics.drawable.DrawableCompat;
+import androidx.fragment.app.FragmentActivity;
 
 import com.google.android.material.tabs.TabLayout;
 
@@ -70,7 +70,7 @@ public class TabContainer extends TabLayout {
             return;
         }
         //assert getContext() instanceof Activity;
-        final Activity activity = (Activity) getContext();
+        final FragmentActivity activity = (FragmentActivity) getContext();
         final ColorStateList iconColors = ContextCompat.getColorStateList(getContext(), R.color.tab);
         final String categoryName = tab.getText().toString();
         final Drawable icon = Common.getCategoryIcon(getContext(), categoryName);
@@ -104,7 +104,7 @@ public class TabContainer extends TabLayout {
                 Bundle args = new Bundle();
                 args.putString("categoryName", categoryName);
                 dialog.setArguments(args);
-                dialog.show(activity.getFragmentManager(), "RenameCategoryDialog");
+                dialog.show(activity.getSupportFragmentManager(), "RenameCategoryDialog");
                 return false;
             }
         });
