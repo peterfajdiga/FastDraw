@@ -15,7 +15,7 @@ public abstract class LauncherItem implements Comparable<LauncherItem> {
 
     protected String category;
 
-    private static List<LauncherItem> dirtyItems = new ArrayList<LauncherItem>();
+    private static final List<LauncherItem> dirtyItems = new ArrayList<>();
 
     @Override
     public int compareTo(@NonNull LauncherItem other) {
