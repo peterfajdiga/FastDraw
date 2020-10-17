@@ -14,35 +14,17 @@ import androidx.fragment.app.DialogFragment;
 
 import peterfajdiga.fastdraw.R;
 
-public class RenameCategoryDialog extends DialogFragment {
+public class RenameCategoryDialog extends CategoryInputDialog {
+    public RenameCategoryDialog() {}
 
-    @Override
-    @NonNull
-    public Dialog onCreateDialog(Bundle savedInstanceState) {
-        final String categoryName = getArguments().getString("categoryName");
-
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setTitle(R.string.rename_category);
-        final EditText input = new EditText(getActivity());
-        input.setSelectAllOnFocus(true);
-        input.setInputType(InputType.TYPE_TEXT_FLAG_CAP_CHARACTERS);
-        input.setText(categoryName);
-        builder.setView(input);
-
-        builder.setPositiveButton(R.string.rename, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                getOwner().onRenameCategoryDialogSuccess(categoryName, input.getText().toString().toUpperCase());
-            }
-        });
-
-        builder.setNegativeButton(android.R.string.cancel, null);
-
-        Dialog d = builder.create();
-        d.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
-        return d;
+    public RenameCategoryDialog(@NonNull final String initialCategoryName, @NonNull final String title, @NonNull final String positiveButtonText) {
+        setup(initialCategoryName, title, positiveButtonText);
     }
 
+    @Override
+    public void onPositiveButton(@NonNull final String initialCategoryName, @NonNull final String inputtedCategoryName) {
+        getOwner().onRenameCategoryDialogSuccess(initialCategoryName, inputtedCategoryName);
+    }
 
     protected Owner getOwner() {
         final Activity activity = getActivity();
@@ -53,7 +35,6 @@ public class RenameCategoryDialog extends DialogFragment {
                     + " must implement NewCategoryDialog.Owner");
         }
     }
-
 
     public interface Owner {
         void onRenameCategoryDialogSuccess(String oldCategoryName, String newCategoryName);

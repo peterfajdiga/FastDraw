@@ -415,10 +415,11 @@ public class MainActivity extends FragmentActivity implements
         startActivityForResult(Intent.createChooser(intent, getString(R.string.shortcut)), MainActivity.INSTALL_SHORTCUT_REQUEST);
     }
     public void renameCurrentCategory() {
-        final RenameCategoryDialog dialog = new RenameCategoryDialog();
-        final Bundle args = new Bundle();
-        args.putString("categoryName", getPager().getCurrentCategoryName());
-        dialog.setArguments(args);
+        final RenameCategoryDialog dialog = new RenameCategoryDialog(
+            getPager().getCurrentCategoryName(),
+            getString(R.string.rename_category),
+            getString(R.string.rename)
+        );
         dialog.show(getSupportFragmentManager(), "RenameCategoryDialog");
     }
     public void openSettings() {
@@ -575,7 +576,7 @@ public class MainActivity extends FragmentActivity implements
     @Override
     public void onDraggedItemNewCategory() {
         newCategoryDroppedItem = draggedItem;
-        NewCategoryDialog dialog = new NewCategoryDialog();
+        NewCategoryDialog dialog = new NewCategoryDialog(getString(R.string.new_category), getString(R.string.create));
         dialog.show(getSupportFragmentManager(), "NewCategoryDialog");
     }
 

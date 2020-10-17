@@ -14,32 +14,17 @@ import androidx.fragment.app.DialogFragment;
 
 import peterfajdiga.fastdraw.R;
 
-public class NewCategoryDialog extends DialogFragment {
+public class NewCategoryDialog extends CategoryInputDialog {
+    public NewCategoryDialog() {}
 
-    @Override
-    @NonNull
-    public Dialog onCreateDialog(Bundle savedInstanceState) {
-        final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setTitle(R.string.new_category);
-        final EditText input = new EditText(getActivity());
-        input.setSelectAllOnFocus(true);
-        input.setInputType(InputType.TYPE_TEXT_FLAG_CAP_CHARACTERS);
-        builder.setView(input);
-
-        builder.setPositiveButton(R.string.create, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                getOwner().onNewCategoryDialogSuccess(input.getText().toString().toUpperCase());
-            }
-        });
-
-        builder.setNegativeButton(android.R.string.cancel, null);
-
-        Dialog d = builder.create();
-        d.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
-        return d;
+    public NewCategoryDialog(@NonNull final String title, @NonNull final String positiveButtonText) {
+        setup("", title, positiveButtonText);
     }
 
+    @Override
+    public void onPositiveButton(@NonNull final String initialCategoryName, @NonNull final String inputtedCategoryName) {
+        getOwner().onNewCategoryDialogSuccess(inputtedCategoryName);
+    }
 
     protected Owner getOwner() {
         final Activity activity = getActivity();
@@ -50,7 +35,6 @@ public class NewCategoryDialog extends DialogFragment {
                     + " must implement NewCategoryDialog.Owner");
         }
     }
-
 
     public interface Owner {
         void onNewCategoryDialogSuccess(String newCategoryName);

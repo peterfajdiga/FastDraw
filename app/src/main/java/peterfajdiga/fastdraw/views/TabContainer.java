@@ -100,10 +100,11 @@ public class TabContainer extends TabLayout {
             @Override
             public boolean onLongClick(View view) {
                 view.performHapticFeedback(HapticFeedbackConstants.LONG_PRESS);
-                RenameCategoryDialog dialog = new RenameCategoryDialog();
-                Bundle args = new Bundle();
-                args.putString("categoryName", categoryName);
-                dialog.setArguments(args);
+                RenameCategoryDialog dialog = new RenameCategoryDialog(
+                    categoryName,
+                    getContext().getString(R.string.rename_category),
+                    getContext().getString(R.string.rename)
+                );
                 dialog.show(activity.getSupportFragmentManager(), "RenameCategoryDialog");
                 return false;
             }
