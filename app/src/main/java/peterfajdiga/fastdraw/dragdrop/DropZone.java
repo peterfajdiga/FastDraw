@@ -33,7 +33,6 @@ abstract class DropZone implements View.OnDragListener {
             }
             case DragEvent.ACTION_DRAG_ENDED: {
                 defaultBg = null;
-                castToOwner(view.getContext()).onDragEnded();
                 break;
             }
         }
@@ -54,7 +53,6 @@ abstract class DropZone implements View.OnDragListener {
 
 
     public interface Owner<T> {
-        void onDragEnded();
         T getDraggedItem();
     }
 }
