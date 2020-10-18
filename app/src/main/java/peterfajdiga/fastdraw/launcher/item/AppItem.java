@@ -11,8 +11,8 @@ import peterfajdiga.fastdraw.launcher.AppItemManager;
 
 public class AppItem extends LauncherItem implements Loadable {
 
-    public String packageName;
-    private String activityName;
+    public final String packageName;
+    private final String activityName;
 
     public AppItem(final ActivityInfo info) {
         packageName = info.packageName;

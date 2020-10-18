@@ -19,11 +19,11 @@ import peterfajdiga.fastdraw.R;
 
 public class ShortcutItem extends LauncherItem implements Loadable {
 
-    private Intent intent;
+    private final Intent intent;
     private boolean markedForDeletion = false;
     private String iconPackageName = null;
     private String iconResourceName = null;
-    private String salt = null;
+    private final String salt;
 
     public ShortcutItem(final Intent intent, final String salt, final String name, final Drawable icon) {
         this.intent   = intent;
