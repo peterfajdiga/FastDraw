@@ -1,18 +1,8 @@
 package peterfajdiga.fastdraw.dialogs;
 
 import android.app.Activity;
-import android.app.AlertDialog;
-import android.app.Dialog;
-import android.content.DialogInterface;
-import android.os.Bundle;
-import android.text.InputType;
-import android.view.WindowManager;
-import android.widget.EditText;
 
 import androidx.annotation.NonNull;
-import androidx.fragment.app.DialogFragment;
-
-import peterfajdiga.fastdraw.R;
 
 public class NewCategoryDialog extends CategoryInputDialog {
     public NewCategoryDialog() {}
