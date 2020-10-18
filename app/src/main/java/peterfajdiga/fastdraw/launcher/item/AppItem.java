@@ -30,7 +30,7 @@ public class AppItem extends LauncherItem implements Loadable {
 
     @Override
     public String getID() {
-        return packageName + "\0" + activityName;
+        return "app\0" + packageName + "\0" + activityName;
     }
 
     @Override

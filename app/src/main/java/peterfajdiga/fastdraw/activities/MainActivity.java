@@ -233,7 +233,7 @@ public class MainActivity extends FragmentActivity implements
     protected void onPause() {
         super.onPause();
         LauncherItem.saveDirty(this);
-        cleanUnusedPrefKeysUrgent();
+        cleanUnusedPrefKeysCategoryOrder();
     }
 
     @Override
@@ -246,7 +246,7 @@ public class MainActivity extends FragmentActivity implements
         // App installation BroadcastReceivers
         unregisterReceiver(installAppReceiver);
 
-        cleanUnusedPrefKeysLazy();
+        cleanUnusedPrefKeysAppsCategories();
     }
 
     @Override
@@ -317,18 +317,27 @@ public class MainActivity extends FragmentActivity implements
         return launcherIntent != null && addAppToHome(launcherIntent);
     }
 
-
     /**
      * Remove unused apps
      * This only serves to clean up the pref file
      */
-    private void cleanUnusedPrefKeysLazy() {
+    private void cleanUnusedPrefKeysAppsCategories() {
         final PrefMap categories = new PrefMap(this, "categories");
         categories.clean(new Predicate<String>() {
             @Override
-            public boolean test(String s) {
-                String packageName = s.substring(0, s.indexOf('\0'));
-                return !doesPackageExist(packageName);
+            public boolean test(final String id) {
+                final int separatorIndex = id.indexOf('\0');
+                final String type = id.substring(0, separatorIndex);
+                final String tail = id.substring(separatorIndex+1);
+                switch (type) {
+                    case "app":
+                        final String packageName = tail.substring(0, tail.indexOf('\0'));
+                        return !doesPackageExist(packageName);
+                    case "shortcut":
+                        return false;
+                    default:
+                        return true;
+                }
             }
         });
     }
@@ -337,7 +346,7 @@ public class MainActivity extends FragmentActivity implements
      * Remove unused categories (for category ordering)
      * This needs to be done, so that nonexistent categories don't show up in category order settings
      */
-    private void cleanUnusedPrefKeysUrgent() {
+    private void cleanUnusedPrefKeysCategoryOrder() {
         final LauncherPager pager = getPager();
         final PrefMap categoryOrder = new PrefMap(this, "categoryorder");
         categoryOrder.clean(new Predicate<String>() {
@@ -401,7 +410,6 @@ public class MainActivity extends FragmentActivity implements
     }
 
 
-
     // actions
 
     public void openActionsMenu() {
@@ -460,7 +468,6 @@ public class MainActivity extends FragmentActivity implements
     }
 
 
-
     // app management
 
     @Override
@@ -482,7 +489,6 @@ public class MainActivity extends FragmentActivity implements
     public void onShortcutReceived(ShortcutItem newShortcut) {
         getPager().addLauncherItem(newShortcut);
     }
-
 
 
     // LauncherItem dragging

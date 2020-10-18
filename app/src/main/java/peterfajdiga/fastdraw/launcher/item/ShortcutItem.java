@@ -44,7 +44,11 @@ public class ShortcutItem extends LauncherItem implements Loadable {
 
     @Override
     public String getID() {
-        return Integer.toString(intent.toUri(0).hashCode()) + '-' + salt;
+        return "shortcut\0" + intent.toUri(0).hashCode() + "\0" + salt;
+    }
+
+    private String getFilename() {
+        return getID().replace('\0', '_');
     }
 
     private static String generateSalt() {
@@ -54,7 +58,7 @@ public class ShortcutItem extends LauncherItem implements Loadable {
     @Override
     public void persist(Context context) {
         if (markedForDeletion) {
-            final File file = new File(getShortcutsDir(context), getID());
+            final File file = new File(getShortcutsDir(context), getFilename());
             file.delete();
         } else {
             try {
@@ -94,7 +98,7 @@ public class ShortcutItem extends LauncherItem implements Loadable {
     private static final String ICON_TYPE_RES    = "r";
     public void toFile(Context context) throws java.io.IOException {
         final String uri = intent.toUri(0);
-        final FileOutputStream fos = new FileOutputStream(new File(getShortcutsDir(context), getID()));  // ID contains salt
+        final FileOutputStream fos = new FileOutputStream(new File(getShortcutsDir(context), getFilename()));  // ID contains salt
         writeString(fos, uri);
         writeString(fos, name);
         writeString(fos, category);
@@ -114,9 +118,9 @@ public class ShortcutItem extends LauncherItem implements Loadable {
     public static ShortcutItem fromFile(Context context, File file) throws java.io.IOException, java.net.URISyntaxException {
         final FileInputStream fis = new FileInputStream(file);
 
-        final String truncatedFilename = file.getName().substring(1);  // in case it starts with -
-        final int saltIndex = truncatedFilename.indexOf('-') + 1;
-        final String salt = truncatedFilename.substring(saltIndex);  // salt is in filename
+        final String filename = file.getName();
+        final int saltIndex = filename.lastIndexOf('_') + 1;
+        final String salt = filename.substring(saltIndex);  // salt is in filename
 
         final Intent intent = Intent.parseUri(readString(fis), 0);
         final String name = readString(fis);
