@@ -129,7 +129,6 @@ public class LauncherPager extends ViewPager {
         final LauncherPagerAdapter adapter = (LauncherPagerAdapter)super.getAdapter();
         final String categoryName = item.getCategory();
         final CategoryView categoryView = adapter.categories.get(categoryName);
-        //assert appsView != null;
         final CategoryArrayAdapter innerAdapter = (CategoryArrayAdapter) categoryView.getAdapter();
         if (innerAdapter.getCount() == 1) {
             // remove category from pager, no need to remove the item from category
