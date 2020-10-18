@@ -122,7 +122,7 @@ public class LauncherPager extends ViewPager {
     /**
      * @return true if the category's last item was removed
      */
-    public boolean removeLauncherItem(LauncherItem item) {
+    public boolean removeLauncherItem(final LauncherItem item) {
         final LauncherPagerAdapter adapter = (LauncherPagerAdapter)super.getAdapter();
         final String categoryName = item.getCategory();
         final CategoryView categoryView = adapter.categories.get(categoryName);
@@ -141,7 +141,7 @@ public class LauncherPager extends ViewPager {
         }
     }
 
-    public void moveLauncherItem(LauncherItem item, String categoryName, boolean followItem) {
+    public void moveLauncherItem(final LauncherItem item, final String categoryName, final boolean followItem) {
         final String oldCategoryName = item.getCategory();
 
         boolean lastRemoved = false;
@@ -155,7 +155,6 @@ public class LauncherPager extends ViewPager {
             showCategory(categoryName);
         }
     }
-
 
     public interface Owner {
         void onPagerLongpress();
