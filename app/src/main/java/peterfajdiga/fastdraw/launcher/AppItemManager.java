@@ -7,9 +7,9 @@ import android.content.pm.ResolveInfo;
 import android.net.Uri;
 import android.provider.Settings;
 
+import java.util.List;
 import java.util.Map;
 
-import peterfajdiga.fastdraw.PrefMap;
 import peterfajdiga.fastdraw.R;
 import peterfajdiga.fastdraw.launcher.item.AppItem;
 import peterfajdiga.fastdraw.launcher.item.LauncherItem;
@@ -17,17 +17,16 @@ import peterfajdiga.fastdraw.launcher.item.LauncherItem;
 public class AppItemManager {
 
     private static void addAppItems(final Context context, final LauncherPager pager, final Intent launcherIntent) {
-        final PrefMap categories = new PrefMap(context, "categories");
         final PackageManager packageManager = context.getPackageManager();
-
         launcherIntent.addCategory(Intent.CATEGORY_LAUNCHER);
-        for (final ResolveInfo resInfo : packageManager.queryIntentActivities(launcherIntent, 0)) {
-            final AppItem newAppItem = new AppItem(resInfo.activityInfo);
-            final String categoryName = categories.getString(newAppItem.getID(), context.getString(R.string.default_category));
-            newAppItem.setCategoryNoDirty(categoryName);
-            pager.addLauncherItemBulk(newAppItem, categoryName);
+        final List<ResolveInfo> appActivities = packageManager.queryIntentActivities(launcherIntent, 0);
+
+        final LauncherItem[] apps = new LauncherItem[appActivities.size()];
+        for (int i = 0; i < apps.length; i++) {
+            apps[i] = new AppItem(appActivities.get(i).activityInfo);
         }
-        pager.finishBulk();
+
+        pager.addLauncherItems(context.getString(R.string.default_category), apps);
     }
 
     public static void addAppItems(final Context context, final LauncherPager pager) {

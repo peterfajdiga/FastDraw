@@ -5,10 +5,16 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.viewpager.widget.ViewPager;
+
 import android.util.AttributeSet;
 import android.view.View;
 
+import java.util.HashSet;
+import java.util.Set;
+
+import peterfajdiga.fastdraw.PrefMap;
 import peterfajdiga.fastdraw.Preferences;
 import peterfajdiga.fastdraw.launcher.item.LauncherItem;
 import peterfajdiga.fastdraw.launcher.item.Loadable;
@@ -16,19 +22,21 @@ import peterfajdiga.fastdraw.launcher.item.Loadable;
 public class LauncherPager extends ViewPager {
 
     public static final int LAUNCH_PERMISSION = 42;
+    private PrefMap itemCategoryMap;
 
     public LauncherPager(Context context) {
         super(context);
-        init();
+        init(context);
     }
 
     public LauncherPager(Context context, AttributeSet attrs) {
         super(context, attrs);
-        init();
+        init(context);
     }
 
-    private void init() {
-        setAdapter(new LauncherPagerAdapter(getContext()));
+    private void init(final Context context) {
+        setAdapter(new LauncherPagerAdapter(context));
+        itemCategoryMap = new PrefMap(context, "categories");  // TODO: pass from outside
     }
 
     @Override
@@ -82,43 +90,45 @@ public class LauncherPager extends ViewPager {
         return items;
     }
 
-    private void addLauncherItem(final LauncherItem item, @NonNull final String categoryName, final boolean bulk) {
+    public void addLauncherItems(@NonNull final String defaultCategory, @NonNull final LauncherItem... items) {
+        final LauncherPagerAdapter adapter = (LauncherPagerAdapter)super.getAdapter();
+        final Set<CategoryArrayAdapter> modifiedCategories = new HashSet<>(); // TODO: try ArraySet
+
+        for (final LauncherItem item : items) {
+            final String categoryName = getItemCategory(item, defaultCategory);
+            addLauncherItem(item, categoryName, false);
+        }
+
+        for (final CategoryArrayAdapter categoryAdapter : modifiedCategories) {
+            categoryAdapter.sort();
+            categoryAdapter.notifyDataSetChanged();
+        }
+        adapter.notifyDataSetChanged();
+    }
+
+    private void addLauncherItem(final LauncherItem item, @NonNull final String categoryName, boolean notify) {
         if (Preferences.hideHidden && categoryName.equals("HIDDEN")) {
             return;
         }
+
         final LauncherPagerAdapter adapter = (LauncherPagerAdapter)super.getAdapter();
         CategoryView categoryView = adapter.categories.get(categoryName);
         if (categoryView == null) {
             categoryView = new CategoryView(getContext());
             adapter.categories.put(categoryName, categoryView);
         }
-        final CategoryArrayAdapter innerAdapter = (CategoryArrayAdapter) categoryView.getAdapter();
-        innerAdapter.add(item);
-        if (adapter.firstCategoryLoaded) {
-            if (item instanceof Loadable) {
-                ((Loadable)item).load(getContext());
-            }
+
+        final CategoryArrayAdapter categoryAdapter = (CategoryArrayAdapter)categoryView.getAdapter();
+        categoryAdapter.add(item);
+        if (adapter.firstCategoryLoaded && item instanceof Loadable) {
+            ((Loadable)item).load(getContext());
         }
-        if (!bulk) {
-            innerAdapter.sort();
-            innerAdapter.notifyDataSetChanged();
-            getAdapter().notifyDataSetChanged();
+
+        if (notify) {
+            categoryAdapter.sort();
+            categoryAdapter.notifyDataSetChanged();
+            adapter.notifyDataSetChanged();
         }
-    }
-    public void addLauncherItem(final LauncherItem item, @NonNull final String categoryName) {
-        addLauncherItem(item, categoryName, false);
-    }
-    public void addLauncherItemBulk(final LauncherItem item, @NonNull final String categoryName) {
-        addLauncherItem(item, categoryName, true);
-    }
-    public void finishBulk() {
-        final LauncherPagerAdapter adapter = (LauncherPagerAdapter)getAdapter();
-        for (CategoryView categoryView : adapter.categories.values()) {
-            final CategoryArrayAdapter innerAdapter = (CategoryArrayAdapter)categoryView.getAdapter();
-            innerAdapter.sort();
-            innerAdapter.notifyDataSetChanged();
-        }
-        adapter.notifyDataSetChanged();
     }
 
     /**
@@ -126,7 +136,7 @@ public class LauncherPager extends ViewPager {
      */
     public boolean removeLauncherItem(final LauncherItem item) {
         final LauncherPagerAdapter adapter = (LauncherPagerAdapter)super.getAdapter();
-        final String categoryName = item.getCategory();
+        final String categoryName = getItemCategory(item, null);
         final CategoryView categoryView = adapter.categories.get(categoryName);
         final CategoryArrayAdapter innerAdapter = (CategoryArrayAdapter) categoryView.getAdapter();
         if (innerAdapter.getCount() == 1) {
@@ -143,7 +153,7 @@ public class LauncherPager extends ViewPager {
     }
 
     public void moveLauncherItem(final LauncherItem item, final String categoryName, final boolean followItem) {
-        final String oldCategoryName = item.getCategory();
+        final String oldCategoryName = getItemCategory(item, null);
 
         boolean lastRemoved = false;
         if (oldCategoryName != null) {
@@ -151,10 +161,19 @@ public class LauncherPager extends ViewPager {
         }
 
         item.setCategory(categoryName);
-        addLauncherItem(item, categoryName);
+        setItemCategory(item, categoryName);
+        addLauncherItem(item, categoryName, true);
         if (followItem && lastRemoved) {
             showCategory(categoryName);
         }
+    }
+
+    private String getItemCategory(@NonNull final LauncherItem item, @Nullable final String defaultCategory) {
+        return itemCategoryMap.getString(item.getID(), defaultCategory);
+    }
+
+    private void setItemCategory(@NonNull final LauncherItem item, @NonNull final String category) {
+        itemCategoryMap.putString(item.getID(), category);
     }
 
     public interface Owner {

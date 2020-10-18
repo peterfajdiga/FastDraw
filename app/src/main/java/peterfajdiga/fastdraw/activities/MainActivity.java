@@ -30,6 +30,8 @@ import androidx.fragment.app.FragmentActivity;
 import com.google.android.material.tabs.TabLayout;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 import peterfajdiga.fastdraw.NavigationBarAnimator;
 import peterfajdiga.fastdraw.PrefMap;
@@ -266,21 +268,19 @@ public class MainActivity extends FragmentActivity implements
         AppItemManager.addAppItems(this, getPager());
 
         // shortcuts
+        final List<LauncherItem> shortcuts = new ArrayList<>();
         final File shortcutsDir = ShortcutItem.getShortcutsDir(this);
-        final PrefMap categories = new PrefMap(this, "categories");
         shortcutsDir.mkdir();
         for (File file : shortcutsDir.listFiles()) {
             try {
                 final ShortcutItem item = ShortcutItem.fromFile(this, file);
-                final String category = categories.getString(item.getID(), "LOST&FOUND");
-                getPager().addLauncherItemBulk(item, category);
+                shortcuts.add(item);
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
-        getPager().finishBulk();
+        getPager().addLauncherItems("LOST&FOUND", shortcuts.toArray(new LauncherItem[0]));
     }
-
 
     /**
      * @param intent the intent that the app should be able to perform
@@ -490,7 +490,7 @@ public class MainActivity extends FragmentActivity implements
     }
 
     public void onShortcutReceived(final ShortcutItem newShortcut) {
-        getPager().addLauncherItem(newShortcut, getString(R.string.default_shortcut_category));
+        getPager().addLauncherItems(getString(R.string.default_shortcut_category), newShortcut);
     }
 
 
