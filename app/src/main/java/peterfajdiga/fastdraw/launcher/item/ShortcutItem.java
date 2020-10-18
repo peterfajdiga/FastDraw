@@ -65,7 +65,6 @@ public class ShortcutItem extends LauncherItem implements Loadable {
         }
     }
 
-
     public static File getShortcutsDir(Context context) {
         return new File(context.getFilesDir(), "shortcuts");
     }

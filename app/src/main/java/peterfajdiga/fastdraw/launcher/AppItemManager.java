@@ -56,7 +56,7 @@ public class AppItemManager {
                     // remove matching items
                     // don't increment i in this case, as item count has decreased
                     innerAdapter.remove(launcherItem);
-                    launcherItem.persist(context);
+                    ItemPersistence.persistItem(context, launcherItem, categoryName);
                     itemsRemoved = true;
                 } else {
                     i++;
