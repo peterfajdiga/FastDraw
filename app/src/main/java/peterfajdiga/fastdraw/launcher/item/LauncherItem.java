@@ -19,7 +19,7 @@ public abstract class LauncherItem implements Comparable<LauncherItem> {
 
     @Override
     public int compareTo(@NonNull LauncherItem other) {
-        return this.name.toString().compareToIgnoreCase(other.name.toString());
+        return this.name.compareToIgnoreCase(other.name);
     }
 
     public abstract void load(Context context);
