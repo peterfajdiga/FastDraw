@@ -17,7 +17,7 @@ import java.util.UUID;
 
 import peterfajdiga.fastdraw.R;
 
-public class ShortcutItem extends LauncherItem {
+public class ShortcutItem extends LauncherItem implements Loadable {
 
     private Intent intent;
     private boolean markedForDeletion = false;

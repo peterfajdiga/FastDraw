@@ -18,6 +18,7 @@ import peterfajdiga.fastdraw.Preferences;
 import peterfajdiga.fastdraw.R;
 import peterfajdiga.fastdraw.launcher.item.AppItem;
 import peterfajdiga.fastdraw.launcher.item.LauncherItem;
+import peterfajdiga.fastdraw.launcher.item.Loadable;
 
 class CategoryArrayAdapter extends ArrayAdapter<LauncherItem>{
 
@@ -74,7 +75,10 @@ class CategoryArrayAdapter extends ArrayAdapter<LauncherItem>{
         final Context context = getContext();
         final int n = getCount();
         for (int i = 0; i < n; i++) {
-            getItem(i).load(context);
+            final LauncherItem item = getItem(i);
+            if (item instanceof Loadable) {
+                ((Loadable)item).load(context);
+            }
         }
         sort();
         notifyDataSetChanged();
@@ -105,7 +109,10 @@ class CategoryArrayAdapter extends ArrayAdapter<LauncherItem>{
                 final Context context = getContext();
                 final int n = getCount();
                 for (int i = 0; i < n; i++) {
-                    getItem(i).load(context);
+                    final LauncherItem item = getItem(i);
+                    if (item instanceof Loadable) {
+                        ((Loadable)item).load(context);
+                    }
                 }
             } catch (Exception e) {
                 Log.e("FastDraw_itemLoad", e.toString());

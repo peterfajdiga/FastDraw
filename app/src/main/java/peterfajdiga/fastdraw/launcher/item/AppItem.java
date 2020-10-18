@@ -9,7 +9,7 @@ import android.content.pm.PackageManager;
 import peterfajdiga.fastdraw.PrefMap;
 import peterfajdiga.fastdraw.launcher.AppItemManager;
 
-public class AppItem extends LauncherItem {
+public class AppItem extends LauncherItem implements Loadable {
 
     public String packageName;
     private String activityName;

@@ -22,8 +22,6 @@ public abstract class LauncherItem implements Comparable<LauncherItem> {
         return this.name.compareToIgnoreCase(other.name);
     }
 
-    public abstract void load(Context context);
-
     public abstract String getID();
 
     public abstract Intent getIntent();

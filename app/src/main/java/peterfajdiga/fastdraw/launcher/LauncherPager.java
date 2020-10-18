@@ -11,6 +11,7 @@ import android.view.View;
 
 import peterfajdiga.fastdraw.Preferences;
 import peterfajdiga.fastdraw.launcher.item.LauncherItem;
+import peterfajdiga.fastdraw.launcher.item.Loadable;
 
 public class LauncherPager extends ViewPager {
 
@@ -95,7 +96,9 @@ public class LauncherPager extends ViewPager {
         final CategoryArrayAdapter innerAdapter = (CategoryArrayAdapter) categoryView.getAdapter();
         innerAdapter.add(item);
         if (adapter.firstCategoryLoaded) {
-            item.load(getContext());
+            if (item instanceof Loadable) {
+                ((Loadable)item).load(getContext());
+            }
         }
         if (!bulk) {
             innerAdapter.sort();
