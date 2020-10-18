@@ -25,7 +25,7 @@ public class AppItemManager {
             final AppItem newAppItem = new AppItem(resInfo.activityInfo);
             final String categoryName = categories.getString(newAppItem.getID(), context.getString(R.string.default_category));
             newAppItem.setCategoryNoDirty(categoryName);
-            pager.addLauncherItemBulk(newAppItem);
+            pager.addLauncherItemBulk(newAppItem, categoryName);
         }
         pager.finishBulk();
     }

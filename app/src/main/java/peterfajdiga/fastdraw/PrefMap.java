@@ -2,6 +2,8 @@ package peterfajdiga.fastdraw;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.util.Predicate;
 
@@ -42,6 +44,12 @@ public class PrefMap {
 
     public Set<String> getKeys() {
         return prefs.getAll().keySet();
+    }
+
+    public void remove(@NonNull final String key) {
+        final SharedPreferences.Editor prefsEditor = prefs.edit();
+        prefsEditor.remove(key);
+        prefsEditor.apply();
     }
 
     /**

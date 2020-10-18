@@ -267,10 +267,13 @@ public class MainActivity extends FragmentActivity implements
 
         // shortcuts
         final File shortcutsDir = ShortcutItem.getShortcutsDir(this);
+        final PrefMap categories = new PrefMap(this, "categories");
         shortcutsDir.mkdir();
         for (File file : shortcutsDir.listFiles()) {
             try {
-                getPager().addLauncherItemBulk(ShortcutItem.fromFile(this, file));
+                final ShortcutItem item = ShortcutItem.fromFile(this, file);
+                final String category = categories.getString(item.getID(), "LOST&FOUND");
+                getPager().addLauncherItemBulk(item, category);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -486,8 +489,8 @@ public class MainActivity extends FragmentActivity implements
         AppItemManager.removeAppItems(this, getPager(), packageName);
     }
 
-    public void onShortcutReceived(ShortcutItem newShortcut) {
-        getPager().addLauncherItem(newShortcut);
+    public void onShortcutReceived(final ShortcutItem newShortcut) {
+        getPager().addLauncherItem(newShortcut, getString(R.string.default_shortcut_category));
     }
 
 

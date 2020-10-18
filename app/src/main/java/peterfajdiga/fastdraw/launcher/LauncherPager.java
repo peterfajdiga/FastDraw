@@ -82,8 +82,7 @@ public class LauncherPager extends ViewPager {
         return items;
     }
 
-    private void addLauncherItem(final LauncherItem item, final boolean bulk) {
-        final String categoryName = item.getCategory();
+    private void addLauncherItem(final LauncherItem item, @NonNull final String categoryName, final boolean bulk) {
         if (Preferences.hideHidden && categoryName.equals("HIDDEN")) {
             return;
         }
@@ -106,11 +105,11 @@ public class LauncherPager extends ViewPager {
             getAdapter().notifyDataSetChanged();
         }
     }
-    public void addLauncherItem(final LauncherItem item) {
-        addLauncherItem(item, false);
+    public void addLauncherItem(final LauncherItem item, @NonNull final String categoryName) {
+        addLauncherItem(item, categoryName, false);
     }
-    public void addLauncherItemBulk(final LauncherItem item) {
-        addLauncherItem(item, true);
+    public void addLauncherItemBulk(final LauncherItem item, @NonNull final String categoryName) {
+        addLauncherItem(item, categoryName, true);
     }
     public void finishBulk() {
         final LauncherPagerAdapter adapter = (LauncherPagerAdapter)getAdapter();
@@ -152,7 +151,7 @@ public class LauncherPager extends ViewPager {
         }
 
         item.setCategory(categoryName);
-        addLauncherItem(item);
+        addLauncherItem(item, categoryName);
         if (followItem && lastRemoved) {
             showCategory(categoryName);
         }

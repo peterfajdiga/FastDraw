@@ -15,6 +15,7 @@ import java.io.FileOutputStream;
 import java.nio.ByteBuffer;
 import java.util.UUID;
 
+import peterfajdiga.fastdraw.PrefMap;
 import peterfajdiga.fastdraw.R;
 
 public class ShortcutItem extends LauncherItem implements Loadable {
@@ -57,12 +58,15 @@ public class ShortcutItem extends LauncherItem implements Loadable {
 
     @Override
     public void persist(Context context) {
+        final PrefMap categories = new PrefMap(context, "categories");
         if (markedForDeletion) {
             final File file = new File(getShortcutsDir(context), getFilename());
             file.delete();
+            categories.remove(getID());
         } else {
             try {
                 toFile(context);
+                categories.putString(getID(), category);
             } catch (Exception e) {
                 e.printStackTrace();
             }
