@@ -49,7 +49,7 @@ import peterfajdiga.fastdraw.launcher.item.AppItem;
 import peterfajdiga.fastdraw.launcher.item.LauncherItem;
 import peterfajdiga.fastdraw.launcher.item.ShortcutItem;
 import peterfajdiga.fastdraw.receivers.InstallAppReceiver;
-import peterfajdiga.fastdraw.views.TabContainer;
+import peterfajdiga.fastdraw.views.CategoryTabLayout;
 
 public class MainActivity extends FragmentActivity implements
         LauncherPager.Owner,
@@ -102,7 +102,7 @@ public class MainActivity extends FragmentActivity implements
 
         LauncherPager appsPager = getPager();
 
-        TabContainer tabContainer = findViewById(R.id.tab_container);
+        CategoryTabLayout tabContainer = findViewById(R.id.tab_container);
         tabContainer.setupWithViewPager(appsPager);
 
         loadLauncherItems();

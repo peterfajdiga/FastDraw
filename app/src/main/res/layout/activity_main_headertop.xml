@@ -17,7 +17,7 @@
         android:background="@android:color/transparent"
         android:elevation="@dimen/pager_header_elevation">
 
-        <peterfajdiga.fastdraw.views.TabContainer
+        <peterfajdiga.fastdraw.views.CategoryTabLayout
             android:id="@+id/tab_container"
             android:layout_width="match_parent"
             android:layout_height="@dimen/pager_header_height_with_status_bar"

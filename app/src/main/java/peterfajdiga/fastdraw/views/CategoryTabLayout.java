@@ -3,7 +3,6 @@ package peterfajdiga.fastdraw.views;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.graphics.drawable.Drawable;
-import android.os.Bundle;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.style.AbsoluteSizeSpan;
@@ -13,9 +12,11 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.fragment.app.FragmentActivity;
+import androidx.viewpager.widget.ViewPager;
 
 import com.google.android.material.tabs.TabLayout;
 
@@ -25,20 +26,23 @@ import peterfajdiga.fastdraw.R;
 import peterfajdiga.fastdraw.dialogs.RenameCategoryDialog;
 import peterfajdiga.fastdraw.dragdrop.DropZoneCategory;
 
-public class TabContainer extends TabLayout {
+public class CategoryTabLayout extends TabLayout {
 
-    public TabContainer(Context context) {
+    public CategoryTabLayout(Context context) {
         this(context, null);
     }
 
-    public TabContainer(Context context, AttributeSet attrs) {
+    public CategoryTabLayout(Context context, AttributeSet attrs) {
         this(context, attrs, 0);
     }
 
-    public TabContainer(Context context, AttributeSet attrs, int defStyleAttr) {
+    public CategoryTabLayout(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
     }
 
+    public void setupWithViewPager(@Nullable final ViewPager viewPager, final OnDragListener onDragListener) {
+        super.setupWithViewPager(viewPager);
+    }
 
     @Override
     public void addTab(@NonNull Tab tab, boolean setSelected) {
