@@ -296,8 +296,8 @@ public class MainActivity extends FragmentActivity implements
      */
     private void addAppToHome(@NonNull final AppItem appItem) {
         final String category = "HOME";
-        appItem.setCategory(category);
-        ItemPersistence.persistItem(this, appItem, category);
+        final PrefMap categoriesMap = new PrefMap(this, "categories");
+        categoriesMap.putString(appItem.getID(), category);
     }
 
     /**
