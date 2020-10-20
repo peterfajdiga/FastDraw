@@ -46,7 +46,6 @@ import peterfajdiga.fastdraw.dragdrop.DropZoneCategory;
 import peterfajdiga.fastdraw.dragdrop.DropZoneNewCategory;
 import peterfajdiga.fastdraw.dragdrop.DropZoneRemoveShortcut;
 import peterfajdiga.fastdraw.launcher.AppItemManager;
-import peterfajdiga.fastdraw.launcher.ItemPersistence;
 import peterfajdiga.fastdraw.launcher.LauncherPager;
 import peterfajdiga.fastdraw.launcher.item.AppItem;
 import peterfajdiga.fastdraw.launcher.item.LauncherItem;

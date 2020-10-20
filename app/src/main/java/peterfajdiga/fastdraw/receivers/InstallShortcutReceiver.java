@@ -4,10 +4,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 
-import peterfajdiga.fastdraw.R;
 import peterfajdiga.fastdraw.activities.MainActivity;
-import peterfajdiga.fastdraw.launcher.ItemPersistence;
-import peterfajdiga.fastdraw.launcher.item.LauncherItem;
 import peterfajdiga.fastdraw.launcher.item.ShortcutItem;
 
 public class InstallShortcutReceiver extends BroadcastReceiver {
@@ -16,9 +13,10 @@ public class InstallShortcutReceiver extends BroadcastReceiver {
     public void onReceive(Context context, Intent data) {
         System.err.println("asdf");
         final ShortcutItem newShortcutItem = ShortcutItem.shortcutFromIntent(context, data);
-        final String category = context.getString(R.string.default_shortcut_category);
-        ItemPersistence.persistItem(context, newShortcutItem, category); // TODO: refactor
-        // TODO?: save SHORTCUT category? Now it'll probably show up in LOST&FOUND
+        newShortcutItem.persist(context);
+
+        // TODO?: save SHORTCUT category? Now it'll probably show up in LOST&FOUND if MainActivity == null
+        // final String category = context.getString(R.string.default_shortcut_category);
 
         final MainActivity activity = MainActivity.getInstance();
         if (activity != null) {
