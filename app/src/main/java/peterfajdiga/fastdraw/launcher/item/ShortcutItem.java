@@ -9,6 +9,8 @@ import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 
+import androidx.annotation.NonNull;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -58,15 +60,12 @@ public class ShortcutItem extends LauncherItem implements Loadable {
 
     @Override
     public void persist(Context context) {
-        final PrefMap categories = new PrefMap(context, "categories");
         if (markedForDeletion) {
             final File file = new File(getShortcutsDir(context), getFilename());
             file.delete();
-            categories.remove(getID());
         } else {
             try {
                 toFile(context);
-                categories.putString(getID(), category);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -105,7 +104,6 @@ public class ShortcutItem extends LauncherItem implements Loadable {
         final FileOutputStream fos = new FileOutputStream(new File(getShortcutsDir(context), getFilename()));  // ID contains salt
         writeString(fos, uri);
         writeString(fos, name);
-        writeString(fos, category);
         if (iconResourceName != null) {
             writeString(fos, ICON_TYPE_RES);
             writeString(fos, iconPackageName);
@@ -128,7 +126,6 @@ public class ShortcutItem extends LauncherItem implements Loadable {
 
         final Intent intent = Intent.parseUri(readString(fis), 0);
         final String name = readString(fis);
-        final String categoryName = readString(fis);
         final String iconType = readString(fis);
 
         final ShortcutItem newItem;
@@ -140,13 +137,12 @@ public class ShortcutItem extends LauncherItem implements Loadable {
             default:               newItem = new ShortcutItem(intent, salt, name, null); break;
         }
         fis.close();
-        newItem.setCategoryNoDirty(categoryName);
         return newItem;
     }
 
-    public void delete() {
+    public void delete(@NonNull final Context context) {
         markedForDeletion = true;
-        markAsDirty();
+        persist(context);
     }
 
 

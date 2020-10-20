@@ -34,10 +34,7 @@ public class AppItem extends LauncherItem implements Loadable {
     }
 
     @Override
-    public void persist(final Context context) {
-        final PrefMap categories = new PrefMap(context, "categories");
-        categories.putString(getID(), category);
-    }
+    public void persist(final Context context) {}
 
     public void openAppDetails(final Context context) {
         AppItemManager.showPackageDetails(context, packageName);

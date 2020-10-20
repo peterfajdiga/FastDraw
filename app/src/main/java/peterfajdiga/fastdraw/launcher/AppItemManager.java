@@ -55,7 +55,8 @@ public class AppItemManager {
                     // remove matching items
                     // don't increment i in this case, as item count has decreased
                     innerAdapter.remove(launcherItem);
-                    ItemPersistence.persistItem(context, launcherItem, categoryName);
+                    // TODO: refactor: call LauncherPager.removeLauncherItem instead
+                    // TODO: refactor: maybe remove the now unused categories prefmap key here
                     itemsRemoved = true;
                 } else {
                     i++;

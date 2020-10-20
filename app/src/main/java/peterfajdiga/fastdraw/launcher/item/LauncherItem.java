@@ -13,10 +13,6 @@ public abstract class LauncherItem implements Comparable<LauncherItem> {
     public String name = "Loading...";
     public Drawable icon = null;
 
-    protected String category;
-
-    private static final List<LauncherItem> dirtyItems = new ArrayList<>();
-
     @Override
     public int compareTo(@NonNull LauncherItem other) {
         return this.name.compareToIgnoreCase(other.name);
@@ -26,27 +22,5 @@ public abstract class LauncherItem implements Comparable<LauncherItem> {
 
     public abstract Intent getIntent();
 
-    public String getCategory() {
-        return category;
-    }
-    public void setCategory(String category) {
-        markAsDirty();
-        this.category = category;
-    }
-    public void setCategoryNoDirty(String category) {
-        this.category = category;
-    }
-
     public abstract void persist(Context context);
-
-    public static void saveDirty(Context context) {
-        for (LauncherItem item : dirtyItems) {
-            item.persist(context);
-        }
-        dirtyItems.clear();
-    }
-
-    protected void markAsDirty() {
-        dirtyItems.add(this);
-    }
 }

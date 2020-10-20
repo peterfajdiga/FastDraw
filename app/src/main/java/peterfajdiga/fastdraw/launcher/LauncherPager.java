@@ -146,6 +146,7 @@ public class LauncherPager extends ViewPager {
             return true;
         } else {
             // remove item from category
+            itemCategoryMap.remove(item.getID());
             innerAdapter.remove(item);
             innerAdapter.notifyDataSetChanged();
             return false;
@@ -160,7 +161,6 @@ public class LauncherPager extends ViewPager {
             lastRemoved = removeLauncherItem(item);
         }
 
-        item.setCategory(categoryName);
         setItemCategory(item, categoryName);
         addLauncherItem(item, categoryName, true);
         if (followItem && lastRemoved) {
