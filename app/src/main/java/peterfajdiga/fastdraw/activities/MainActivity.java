@@ -254,7 +254,7 @@ public class MainActivity extends FragmentActivity implements
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == INSTALL_SHORTCUT_REQUEST && resultCode == RESULT_OK) {
             ShortcutItem newShortcut = ShortcutItem.shortcutFromIntent(this, data);
-            newShortcut.persist(this); // TODO: refactor
+            ShortcutItemManager.saveShortcut(this, newShortcut);
             getPager().moveLauncherItem(newShortcut, getPager().getCurrentCategoryName(), false);
         }
         super.onActivityResult(requestCode, resultCode, data);
@@ -563,6 +563,7 @@ public class MainActivity extends FragmentActivity implements
         ShortcutItem shortcutItem = (ShortcutItem)draggedItem;
         getPager().removeLauncherItem(shortcutItem);
         shortcutItem.delete(this);
+        ShortcutItemManager.saveShortcut(this, shortcutItem); // TODO: refactor
     }
 
     @Override

@@ -28,4 +28,27 @@ public class ShortcutItemManager {
         }
         return shortcuts.toArray(new ShortcutItem[0]);
     }
+
+    public static void saveShortcut(@NonNull final Context context, @NonNull final ShortcutItem shortcutItem) {
+        if (shortcutItem.markedForDeletion) {
+            final File file = new File(getShortcutsDir(context), getShortcutFilename(shortcutItem));
+            file.delete();
+        } else {
+            try {
+                shortcutItem.toFile(context);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    @NonNull
+    private static File getShortcutsDir(@NonNull final Context context) {
+        return new File(context.getFilesDir(), "shortcuts");
+    }
+
+    @NonNull
+    private static String getShortcutFilename(@NonNull final ShortcutItem shortcutItem) {
+        return shortcutItem.getID().replace('\0', '_');
+    }
 }

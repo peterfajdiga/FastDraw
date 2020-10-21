@@ -33,9 +33,6 @@ public class AppItem extends LauncherItem implements Loadable {
         return "app\0" + packageName + "\0" + activityName;
     }
 
-    @Override
-    public void persist(final Context context) {}
-
     public void openAppDetails(final Context context) {
         AppItemManager.showPackageDetails(context, packageName);
     }

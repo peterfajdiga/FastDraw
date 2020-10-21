@@ -17,13 +17,12 @@ import java.io.FileOutputStream;
 import java.nio.ByteBuffer;
 import java.util.UUID;
 
-import peterfajdiga.fastdraw.PrefMap;
 import peterfajdiga.fastdraw.R;
 
 public class ShortcutItem extends LauncherItem implements Loadable {
 
     private final Intent intent;
-    private boolean markedForDeletion = false;
+    public boolean markedForDeletion = false; // TODO: remove
     private String iconPackageName = null;
     private String iconResourceName = null;
     private final String salt;
@@ -56,20 +55,6 @@ public class ShortcutItem extends LauncherItem implements Loadable {
 
     private static String generateSalt() {
         return UUID.randomUUID().toString();
-    }
-
-    @Override
-    public void persist(Context context) {
-        if (markedForDeletion) {
-            final File file = new File(getShortcutsDir(context), getFilename());
-            file.delete();
-        } else {
-            try {
-                toFile(context);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
     }
 
     public static File getShortcutsDir(Context context) {
@@ -142,9 +127,7 @@ public class ShortcutItem extends LauncherItem implements Loadable {
 
     public void delete(@NonNull final Context context) {
         markedForDeletion = true;
-        persist(context);
     }
-
 
     private static void writeString(FileOutputStream fos, String string) throws java.io.IOException {
         byte[] stringBytes = string.getBytes();
