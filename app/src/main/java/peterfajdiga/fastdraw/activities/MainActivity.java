@@ -47,6 +47,7 @@ import peterfajdiga.fastdraw.dragdrop.DropZoneNewCategory;
 import peterfajdiga.fastdraw.dragdrop.DropZoneRemoveShortcut;
 import peterfajdiga.fastdraw.launcher.AppItemManager;
 import peterfajdiga.fastdraw.launcher.LauncherPager;
+import peterfajdiga.fastdraw.launcher.ShortcutItemManager;
 import peterfajdiga.fastdraw.launcher.item.AppItem;
 import peterfajdiga.fastdraw.launcher.item.LauncherItem;
 import peterfajdiga.fastdraw.launcher.item.ShortcutItem;
@@ -264,22 +265,8 @@ public class MainActivity extends FragmentActivity implements
     }
 
     private void loadLauncherItems() {
-        // apps
         AppItemManager.addAppItems(this, getPager());
-
-        // shortcuts
-        final List<LauncherItem> shortcuts = new ArrayList<>();
-        final File shortcutsDir = ShortcutItem.getShortcutsDir(this);
-        shortcutsDir.mkdir();
-        for (File file : shortcutsDir.listFiles()) {
-            try {
-                final ShortcutItem item = ShortcutItem.fromFile(this, file);
-                shortcuts.add(item);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-        getPager().addLauncherItems("LOST&FOUND", shortcuts.toArray(new LauncherItem[0]));
+        ShortcutItemManager.addShortcutItems(this, getPager());
     }
 
     /**
