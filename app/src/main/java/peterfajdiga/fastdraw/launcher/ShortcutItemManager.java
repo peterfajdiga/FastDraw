@@ -8,17 +8,17 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-import peterfajdiga.fastdraw.launcher.item.LauncherItem;
 import peterfajdiga.fastdraw.launcher.item.ShortcutItem;
 
 public class ShortcutItemManager {
     private ShortcutItemManager() {}
 
-    public static void addShortcutItems(@NonNull final Context context, @NonNull final LauncherPager pager) {
-        final List<LauncherItem> shortcuts = new ArrayList<>();
+    @NonNull
+    public static ShortcutItem[] getShortcutItems(@NonNull final Context context) {
+        final List<ShortcutItem> shortcuts = new ArrayList<>();
         final File shortcutsDir = ShortcutItem.getShortcutsDir(context);
         shortcutsDir.mkdir();
-        for (File file : shortcutsDir.listFiles()) {
+        for (final File file : shortcutsDir.listFiles()) {
             try {
                 final ShortcutItem item = ShortcutItem.fromFile(context, file);
                 shortcuts.add(item);
@@ -26,6 +26,6 @@ public class ShortcutItemManager {
                 e.printStackTrace();
             }
         }
-        pager.addLauncherItems("LOST&FOUND", shortcuts.toArray(new LauncherItem[0]));
+        return shortcuts.toArray(new ShortcutItem[0]);
     }
 }

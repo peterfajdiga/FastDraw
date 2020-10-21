@@ -264,7 +264,8 @@ public class MainActivity extends FragmentActivity implements
         final AppItem[] appItems = AppItemManager.getAppItems(getPackageManager());
         getPager().addLauncherItems(getString(R.string.default_category), appItems);
 
-        ShortcutItemManager.addShortcutItems(this, getPager());
+        final ShortcutItem[] shortcutItems = ShortcutItemManager.getShortcutItems(this);
+        getPager().addLauncherItems("LOST&FOUND", shortcutItems);
     }
 
     /**

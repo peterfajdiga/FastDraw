@@ -22,5 +22,5 @@ public abstract class LauncherItem implements Comparable<LauncherItem> {
 
     public abstract Intent getIntent();
 
-    public abstract void persist(Context context);
+    public abstract void persist(Context context); // TODO: Remove. This is only needed for ShortcutItem
 }
