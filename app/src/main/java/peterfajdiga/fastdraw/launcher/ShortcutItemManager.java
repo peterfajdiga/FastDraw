@@ -30,16 +30,16 @@ public class ShortcutItemManager {
     }
 
     public static void saveShortcut(@NonNull final Context context, @NonNull final ShortcutItem shortcutItem) {
-        if (shortcutItem.markedForDeletion) {
-            final File file = new File(getShortcutsDir(context), getShortcutFilename(shortcutItem));
-            file.delete();
-        } else {
-            try {
-                shortcutItem.toFile(context);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+        try {
+            shortcutItem.toFile(context);
+        } catch (Exception e) {
+            e.printStackTrace(); // TODO: handle
         }
+    }
+
+    public static void deleteShortcut(@NonNull final Context context, @NonNull final ShortcutItem shortcutItem) {
+        final File file = new File(getShortcutsDir(context), getShortcutFilename(shortcutItem));
+        file.delete();
     }
 
     @NonNull

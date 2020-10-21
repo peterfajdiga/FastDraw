@@ -562,8 +562,7 @@ public class MainActivity extends FragmentActivity implements
         assert draggedItem instanceof ShortcutItem;
         ShortcutItem shortcutItem = (ShortcutItem)draggedItem;
         getPager().removeLauncherItem(shortcutItem);
-        shortcutItem.delete(this);
-        ShortcutItemManager.saveShortcut(this, shortcutItem); // TODO: refactor
+        ShortcutItemManager.deleteShortcut(this, shortcutItem);
     }
 
     @Override

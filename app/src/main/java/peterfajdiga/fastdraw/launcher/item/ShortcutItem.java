@@ -22,7 +22,6 @@ import peterfajdiga.fastdraw.R;
 public class ShortcutItem extends LauncherItem implements Loadable {
 
     private final Intent intent;
-    public boolean markedForDeletion = false; // TODO: remove
     private String iconPackageName = null;
     private String iconResourceName = null;
     private final String salt;
@@ -102,6 +101,10 @@ public class ShortcutItem extends LauncherItem implements Loadable {
         fos.close();
     }
 
+    /*private void writeObject(@NonNull final java.io.ObjectOutputStream stream) throws java.io.IOException {
+        stream.writeObject(intent.toUri(0));
+    }*/
+
     public static ShortcutItem fromFile(Context context, File file) throws java.io.IOException, java.net.URISyntaxException {
         final FileInputStream fis = new FileInputStream(file);
 
@@ -123,10 +126,6 @@ public class ShortcutItem extends LauncherItem implements Loadable {
         }
         fis.close();
         return newItem;
-    }
-
-    public void delete(@NonNull final Context context) {
-        markedForDeletion = true;
     }
 
     private static void writeString(FileOutputStream fos, String string) throws java.io.IOException {
