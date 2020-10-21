@@ -7,38 +7,41 @@ import android.content.pm.ResolveInfo;
 import android.net.Uri;
 import android.provider.Settings;
 
+import androidx.annotation.NonNull;
+
 import java.util.List;
 import java.util.Map;
 
-import peterfajdiga.fastdraw.R;
 import peterfajdiga.fastdraw.launcher.item.AppItem;
 import peterfajdiga.fastdraw.launcher.item.LauncherItem;
 
 public class AppItemManager {
     private AppItemManager() {}
 
-    private static void addAppItems(final Context context, final LauncherPager pager, final Intent launcherIntent) {
-        final PackageManager packageManager = context.getPackageManager();
+    @NonNull
+    private static AppItem[] getAppItems(@NonNull final PackageManager packageManager, @NonNull final Intent launcherIntent) {
         launcherIntent.addCategory(Intent.CATEGORY_LAUNCHER);
         final List<ResolveInfo> appActivities = packageManager.queryIntentActivities(launcherIntent, 0);
 
-        final LauncherItem[] apps = new LauncherItem[appActivities.size()];
+        final AppItem[] apps = new AppItem[appActivities.size()];
         for (int i = 0; i < apps.length; i++) {
             apps[i] = new AppItem(appActivities.get(i).activityInfo);
         }
 
-        pager.addLauncherItems(context.getString(R.string.default_category), apps);
+        return apps;
     }
 
-    public static void addAppItems(final Context context, final LauncherPager pager) {
+    @NonNull
+    public static AppItem[] getAppItems(@NonNull final PackageManager packageManager) {
         final Intent launcherIntent = new Intent(Intent.ACTION_MAIN, null);
-        addAppItems(context, pager, launcherIntent);
+        return getAppItems(packageManager, launcherIntent);
     }
 
-    public static void addAppItems(final Context context, final LauncherPager pager, final String packageName) {
+    @NonNull
+    public static AppItem[] getAppItems(@NonNull final PackageManager packageManager, @NonNull final String packageName) {
         final Intent launcherIntent = new Intent(Intent.ACTION_MAIN, null);
         launcherIntent.setPackage(packageName);
-        addAppItems(context, pager, launcherIntent);
+        return getAppItems(packageManager, launcherIntent);
     }
 
     public static void removeAppItems(final Context context, final LauncherPager pager, final String packageName) {

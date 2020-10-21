@@ -29,10 +29,6 @@ import androidx.fragment.app.FragmentActivity;
 
 import com.google.android.material.tabs.TabLayout;
 
-import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
-
 import peterfajdiga.fastdraw.NavigationBarAnimator;
 import peterfajdiga.fastdraw.PrefMap;
 import peterfajdiga.fastdraw.Preferences;
@@ -265,7 +261,9 @@ public class MainActivity extends FragmentActivity implements
     }
 
     private void loadLauncherItems() {
-        AppItemManager.addAppItems(this, getPager());
+        final AppItem[] appItems = AppItemManager.getAppItems(getPackageManager());
+        getPager().addLauncherItems(getString(R.string.default_category), appItems);
+
         ShortcutItemManager.addShortcutItems(this, getPager());
     }
 
@@ -462,13 +460,16 @@ public class MainActivity extends FragmentActivity implements
 
     @Override
     public void onAppInstall(String packageName) {
-        AppItemManager.addAppItems(this, getPager(), packageName);
+        final AppItem[] appItems = AppItemManager.getAppItems(getPackageManager(), packageName);
+        getPager().addLauncherItems(getString(R.string.default_category), appItems);
     }
 
     @Override
     public void onAppChange(String packageName) {
         AppItemManager.removeAppItems(this, getPager(), packageName);
-        AppItemManager.addAppItems(this, getPager(), packageName);
+
+        final AppItem[] appItems = AppItemManager.getAppItems(getPackageManager(), packageName);
+        getPager().addLauncherItems(getString(R.string.default_category), appItems);
     }
 
     @Override
