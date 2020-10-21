@@ -15,6 +15,7 @@ import peterfajdiga.fastdraw.launcher.item.AppItem;
 import peterfajdiga.fastdraw.launcher.item.LauncherItem;
 
 public class AppItemManager {
+    private AppItemManager() {}
 
     private static void addAppItems(final Context context, final LauncherPager pager, final Intent launcherIntent) {
         final PackageManager packageManager = context.getPackageManager();
