@@ -38,7 +38,7 @@ class CategoryArrayAdapter extends ArrayAdapter<LauncherItem> {
         }*/
 
         ImageView appIcon = convertView.findViewById(R.id.app_item_icon);
-        appIcon.setImageDrawable(item.icon);
+        appIcon.setImageDrawable(item.getIcon());
 
         TextView appLabel = convertView.findViewById(R.id.app_item_name);
         appLabel.setText(item.getLabel());

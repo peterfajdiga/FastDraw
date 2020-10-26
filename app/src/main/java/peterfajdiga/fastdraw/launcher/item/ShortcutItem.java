@@ -23,6 +23,7 @@ import peterfajdiga.fastdraw.R;
 public class ShortcutItem extends LauncherItem implements Loadable {
 
     private final String label;
+    private Drawable icon;
     private final Intent intent;
     private String iconPackageName = null;
     private String iconResourceName = null;
@@ -52,6 +53,12 @@ public class ShortcutItem extends LauncherItem implements Loadable {
     @NonNull
     public String getLabel() {
         return label;
+    }
+
+    @Override
+    @NonNull
+    public Drawable getIcon() {
+        return icon;
     }
 
     @Override
