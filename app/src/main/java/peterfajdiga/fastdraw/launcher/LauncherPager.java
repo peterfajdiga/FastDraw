@@ -4,12 +4,12 @@ import android.app.WallpaperManager;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.AttributeSet;
+import android.view.View;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.viewpager.widget.ViewPager;
-
-import android.util.AttributeSet;
-import android.view.View;
 
 import java.util.HashSet;
 import java.util.Set;

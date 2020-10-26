@@ -9,8 +9,6 @@ import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 
-import androidx.annotation.NonNull;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;

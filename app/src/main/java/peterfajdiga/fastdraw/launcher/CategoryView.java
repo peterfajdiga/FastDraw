@@ -7,7 +7,6 @@ import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
-import androidx.core.app.ActivityCompat;
 import android.view.HapticFeedbackConstants;
 import android.view.MotionEvent;
 import android.view.View;
@@ -15,6 +14,8 @@ import android.view.ViewConfiguration;
 import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.Toast;
+
+import androidx.core.app.ActivityCompat;
 
 import peterfajdiga.fastdraw.Preferences;
 import peterfajdiga.fastdraw.R;

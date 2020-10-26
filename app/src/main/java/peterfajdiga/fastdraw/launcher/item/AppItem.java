@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 
-import peterfajdiga.fastdraw.PrefMap;
 import peterfajdiga.fastdraw.launcher.AppItemManager;
 
 public class AppItem extends LauncherItem implements Loadable {

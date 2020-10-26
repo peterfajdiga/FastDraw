@@ -1,12 +1,9 @@
 package peterfajdiga.fastdraw.launcher.item;
 
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
-import androidx.annotation.NonNull;
 
-import java.util.ArrayList;
-import java.util.List;
+import androidx.annotation.NonNull;
 
 public abstract class LauncherItem implements Comparable<LauncherItem> {
 

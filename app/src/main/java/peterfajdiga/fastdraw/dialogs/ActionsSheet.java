@@ -1,9 +1,10 @@
 package peterfajdiga.fastdraw.dialogs;
 
 import android.app.Dialog;
-import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import android.view.LayoutInflater;
 import android.view.View;
+
+import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
 import peterfajdiga.fastdraw.R;
 import peterfajdiga.fastdraw.activities.MainActivity;

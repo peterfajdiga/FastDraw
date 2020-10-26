@@ -1,7 +1,7 @@
 package peterfajdiga.fastdraw.categoryorder;
 
-import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.ItemTouchHelper;
+import androidx.recyclerview.widget.RecyclerView;
 
 public class ReorderHelperCallback extends ItemTouchHelper.Callback {
 
