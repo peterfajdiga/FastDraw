@@ -12,6 +12,7 @@ import peterfajdiga.fastdraw.launcher.AppItemManager;
 
 public class AppItem extends LauncherItem implements Loadable {
 
+    private String label;
     private final String packageName;
     private final String activityName;
 
@@ -25,6 +26,16 @@ public class AppItem extends LauncherItem implements Loadable {
     @NonNull
     public String getID() {
         return "app\0" + packageName + "\0" + activityName;
+    }
+
+    @Override
+    @NonNull
+    public String getLabel() {
+        if (isLoaded()) {
+            return label;
+        } else {
+            return "Loading...";
+        }
     }
 
     @Override
@@ -54,7 +65,7 @@ public class AppItem extends LauncherItem implements Loadable {
     public void load(@NonNull final Context context) {
         if (info != null) {
             final PackageManager packageManager = context.getPackageManager();
-            name = info.loadLabel(packageManager).toString();
+            label = info.loadLabel(packageManager).toString();
             icon = info.loadIcon(packageManager);
             info = null;
         }

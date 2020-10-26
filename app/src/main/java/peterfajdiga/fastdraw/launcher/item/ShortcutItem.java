@@ -22,20 +22,21 @@ import peterfajdiga.fastdraw.R;
 
 public class ShortcutItem extends LauncherItem implements Loadable {
 
+    private final String label;
     private final Intent intent;
     private String iconPackageName = null;
     private String iconResourceName = null;
     private final String salt;
 
-    public ShortcutItem(final Intent intent, final String salt, final String name, final Drawable icon) {
+    public ShortcutItem(final Intent intent, final String salt, final String label, final Drawable icon) {
         this.intent = intent;
         this.salt = salt;
-        this.name = name;
+        this.label = label;
         this.icon = icon;
         this.isLoaded = true;
     }
-    public ShortcutItem(final Intent intent, final String salt, final String name, final String iconPackageName, final String iconResourceName) {
-        this(intent, salt, name, null);
+    public ShortcutItem(final Intent intent, final String salt, final String label, final String iconPackageName, final String iconResourceName) {
+        this(intent, salt, label, null);
         this.iconPackageName = iconPackageName;
         this.iconResourceName = iconResourceName;
         this.isLoaded = false;
@@ -45,6 +46,12 @@ public class ShortcutItem extends LauncherItem implements Loadable {
     @NonNull
     public String getID() {
         return "shortcut\0" + intent.toUri(0).hashCode() + "\0" + salt;
+    }
+
+    @Override
+    @NonNull
+    public String getLabel() {
+        return label;
     }
 
     @Override
@@ -92,7 +99,7 @@ public class ShortcutItem extends LauncherItem implements Loadable {
         final String uri = intent.toUri(0);
         final FileOutputStream fos = new FileOutputStream(new File(getShortcutsDir(context), getFilename())); // ID contains salt
         writeString(fos, uri);
-        writeString(fos, name);
+        writeString(fos, label);
         if (iconResourceName != null) {
             writeString(fos, ICON_TYPE_RES);
             writeString(fos, iconPackageName);

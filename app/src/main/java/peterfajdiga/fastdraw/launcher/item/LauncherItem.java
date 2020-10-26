@@ -7,15 +7,14 @@ import androidx.annotation.NonNull;
 
 public abstract class LauncherItem implements Comparable<LauncherItem> {
 
-    public String name = "Loading...";
     public Drawable icon = null;
 
     @Override
     public int compareTo(@NonNull LauncherItem other) {
-        return this.name.compareToIgnoreCase(other.name);
+        return this.getLabel().compareToIgnoreCase(other.getLabel());
     }
 
     public abstract String getID();
-
+    public abstract String getLabel();
     public abstract Intent getIntent();
 }
