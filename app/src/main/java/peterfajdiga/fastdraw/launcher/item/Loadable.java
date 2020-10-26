@@ -2,6 +2,8 @@ package peterfajdiga.fastdraw.launcher.item;
 
 import android.content.Context;
 
+import androidx.annotation.NonNull;
+
 public interface Loadable {
-    void load(Context context);
+    void load(@NonNull Context context);
 }

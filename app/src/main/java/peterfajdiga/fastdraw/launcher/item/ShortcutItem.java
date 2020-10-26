@@ -9,6 +9,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 
+import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 
 import java.io.File;
@@ -148,7 +149,7 @@ public class ShortcutItem extends LauncherItem implements Loadable {
     /* loading */
 
     @Override
-    public void load(final Context context) {
+    public void load(@NonNull final Context context) {
         if (iconResourceName != null) {
             try {
                 icon = iconFromResource(context, iconPackageName, iconResourceName);

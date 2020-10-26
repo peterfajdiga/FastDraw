@@ -6,6 +6,8 @@ import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 
+import androidx.annotation.NonNull;
+
 import peterfajdiga.fastdraw.launcher.AppItemManager;
 
 public class AppItem extends LauncherItem implements Loadable {
@@ -42,7 +44,7 @@ public class AppItem extends LauncherItem implements Loadable {
     private ActivityInfo info;
 
     @Override
-    public void load(final Context context) {
+    public void load(@NonNull final Context context) {
         if (info != null) {
             final PackageManager packageManager = context.getPackageManager();
             name = info.loadLabel(packageManager).toString();
