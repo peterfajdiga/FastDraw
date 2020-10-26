@@ -125,7 +125,9 @@ public class MainActivity extends FragmentActivity implements
                         onDragEnded2();
                         return true;
                     }
-                    default: return true;
+                    default: {
+                        return true;
+                    }
                 }
             }
         });
@@ -428,11 +430,11 @@ public class MainActivity extends FragmentActivity implements
 
     public void performAction(final int action) {
         switch (action) {
-            case Preferences.ACTION_MENU:      openActionsMenu(); break;
-            case Preferences.ACTION_WALLPAPER: openWallpaperPicker(); break;
-            case Preferences.ACTION_SHORTCUT:  showCreateShortcutDialog(); break;
+            case Preferences.ACTION_MENU:            openActionsMenu(); break;
+            case Preferences.ACTION_WALLPAPER:       openWallpaperPicker(); break;
+            case Preferences.ACTION_SHORTCUT:        showCreateShortcutDialog(); break;
             case Preferences.ACTION_RENAME_CATEGORY: renameCurrentCategory(); break;
-            case Preferences.ACTION_SETTINGS:  openSettings(); break;
+            case Preferences.ACTION_SETTINGS:        openSettings(); break;
         }
     }
 
