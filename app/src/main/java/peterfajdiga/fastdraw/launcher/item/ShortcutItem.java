@@ -25,10 +25,10 @@ public class ShortcutItem extends LauncherItem implements Loadable {
     private final String salt;
 
     public ShortcutItem(final Intent intent, final String salt, final String name, final Drawable icon) {
-        this.intent   = intent;
-        this.salt     = salt;
-        this.name     = name;
-        this.icon     = icon;
+        this.intent = intent;
+        this.salt = salt;
+        this.name = name;
+        this.icon = icon;
     }
     public ShortcutItem(final Intent intent, final String salt, final String name, final String iconPackageName, final String iconResourceName) {
         this(intent, salt, name, null);

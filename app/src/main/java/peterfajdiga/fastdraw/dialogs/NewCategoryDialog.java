@@ -22,7 +22,7 @@ public class NewCategoryDialog extends CategoryInputDialog {
             return (Owner)activity;
         } else {
             throw new RuntimeException(activity.toString()
-                    + " must implement NewCategoryDialog.Owner");
+                + " must implement NewCategoryDialog.Owner");
         }
     }
 

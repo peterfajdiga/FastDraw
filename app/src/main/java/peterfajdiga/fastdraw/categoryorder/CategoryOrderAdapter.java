@@ -64,7 +64,7 @@ public class CategoryOrderAdapter extends RecyclerView.Adapter<CategoryOrderAdap
     @Override
     public CategoryViewHolder onCreateViewHolder(final ViewGroup parent, final int viewType) {
         final View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.categoryorder_item, parent, false);
+            .inflate(R.layout.categoryorder_item, parent, false);
         return new CategoryViewHolder(view);
     }
 
@@ -94,6 +94,7 @@ public class CategoryOrderAdapter extends RecyclerView.Adapter<CategoryOrderAdap
 
     class CategoryViewHolder extends RecyclerView.ViewHolder {
         ViewGroup view;
+
         CategoryViewHolder(final View itemView) {
             super(itemView);
             view = (ViewGroup)itemView;

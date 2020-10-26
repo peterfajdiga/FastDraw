@@ -43,7 +43,11 @@ public class LauncherPager extends ViewPager {
     public void onPageScrolled(final int position, final float offset, final int offsetPixels) {
         super.onPageScrolled(position, offset, offsetPixels);
         final WallpaperManager wallpaperManager = WallpaperManager.getInstance(getContext());
-        wallpaperManager.setWallpaperOffsets(getWindowToken(), (position + offset) / (getAdapter().getCount() - 1), 0.5f); // don't use getChildCount()
+        wallpaperManager.setWallpaperOffsets(
+            getWindowToken(),
+            (position + offset)/(getAdapter().getCount() - 1),
+            0.5f
+        ); // don't use getChildCount()
     }
 
     /**
@@ -138,7 +142,7 @@ public class LauncherPager extends ViewPager {
         final LauncherPagerAdapter adapter = (LauncherPagerAdapter)super.getAdapter();
         final String categoryName = getItemCategory(item); // TODO: handle null categoryName
         final CategoryView categoryView = adapter.categoryViews.get(categoryName);
-        final CategoryArrayAdapter categoryAdapter = (CategoryArrayAdapter) categoryView.getAdapter();
+        final CategoryArrayAdapter categoryAdapter = (CategoryArrayAdapter)categoryView.getAdapter();
 
         removeItemCategory(item);
         if (categoryAdapter.getCount() == 1) {

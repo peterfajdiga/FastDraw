@@ -72,15 +72,18 @@ class CategoryView extends GridView {
                 }
 
                 switch (intent.getAction()) {
-                    case Intent.ACTION_CALL: launchWithPermission(intent, opts, Manifest.permission.CALL_PHONE); break;
-                    default: try {
-                        context.startActivity(intent, opts.toBundle());
-                    } catch (ActivityNotFoundException | IllegalArgumentException e) {
-                        final String errMessage = context.getString(R.string.no_app);
-                        final Toast toast = Toast.makeText(context, errMessage, Toast.LENGTH_LONG);
-                        toast.show();
-                    }
-                    break;
+                    case Intent.ACTION_CALL:
+                        launchWithPermission(intent, opts, Manifest.permission.CALL_PHONE);
+                        break;
+                    default:
+                        try {
+                            context.startActivity(intent, opts.toBundle());
+                        } catch (ActivityNotFoundException | IllegalArgumentException e) {
+                            final String errMessage = context.getString(R.string.no_app);
+                            final Toast toast = Toast.makeText(context, errMessage, Toast.LENGTH_LONG);
+                            toast.show();
+                        }
+                        break;
                 }
             }
         });
@@ -119,7 +122,7 @@ class CategoryView extends GridView {
             owner = (LauncherPager.Owner)context;
         } else {
             throw new RuntimeException(context.toString()
-                    + " must implement LauncherPager.Owner");
+                + " must implement LauncherPager.Owner");
         }
         return owner;
     }
@@ -134,7 +137,7 @@ class CategoryView extends GridView {
                 getOwner().onPagerUnpinch();
             }
             // reset pinch and unpinch
-            pinchPrevDistance  = 0.0f;
+            pinchPrevDistance = 0.0f;
             pinchStartDistance = 0.0f;
             unpinchStartDistance = Float.MAX_VALUE;
         }

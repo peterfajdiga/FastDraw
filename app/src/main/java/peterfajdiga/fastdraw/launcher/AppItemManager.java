@@ -53,7 +53,7 @@ public class AppItemManager {
 
             boolean itemsRemoved = false;
             // iterate through categories' items
-            for (int i = 0; i < innerAdapter.getCount();) {
+            for (int i = 0; i < innerAdapter.getCount(); ) {
                 final LauncherItem launcherItem = innerAdapter.getItem(i);
                 if (launcherItem instanceof AppItem && ((AppItem)launcherItem).packageName.equals(packageName)) {
                     // remove matching items

@@ -56,14 +56,14 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
             if (preference instanceof ListPreference) {
                 // For list preferences, look up the correct display value in
                 // the preference's 'entries' list.
-                ListPreference listPreference = (ListPreference) preference;
+                ListPreference listPreference = (ListPreference)preference;
                 int index = listPreference.findIndexOfValue(stringValue);
 
                 // Set the summary to reflect the new value.
                 preference.setSummary(
-                        index >= 0
-                                ? listPreference.getEntries()[index]
-                                : null);
+                    index >= 0
+                        ? listPreference.getEntries()[index]
+                        : null);
 
             } else {
                 // For all other preferences, set the summary to the value's
@@ -80,7 +80,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
      */
     private static boolean isXLargeTablet(Context context) {
         return (context.getResources().getConfiguration().screenLayout
-                & Configuration.SCREENLAYOUT_SIZE_MASK) >= Configuration.SCREENLAYOUT_SIZE_XLARGE;
+            & Configuration.SCREENLAYOUT_SIZE_MASK) >= Configuration.SCREENLAYOUT_SIZE_XLARGE;
     }
 
     /**
@@ -98,10 +98,12 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
         // Trigger the listener immediately with the preference's
         // current value.
-        sBindPreferenceSummaryToValueListener.onPreferenceChange(preference,
-                PreferenceManager
-                        .getDefaultSharedPreferences(preference.getContext())
-                        .getString(preference.getKey(), ""));
+        sBindPreferenceSummaryToValueListener.onPreferenceChange(
+            preference,
+            PreferenceManager
+                .getDefaultSharedPreferences(preference.getContext())
+                .getString(preference.getKey(), "")
+        );
     }
 
     @Override
@@ -144,10 +146,10 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
      */
     protected boolean isValidFragment(String fragmentName) {
         return PreferenceFragment.class.getName().equals(fragmentName)
-                || GeneralPreferenceFragment.class.getName().equals(fragmentName)
-                || GesturesPreferenceFragment.class.getName().equals(fragmentName)
-                || AppearancePreferenceFragment.class.getName().equals(fragmentName)
-                || CategoryOrderPreferenceFragment.class.getName().equals(fragmentName);
+            || GeneralPreferenceFragment.class.getName().equals(fragmentName)
+            || GesturesPreferenceFragment.class.getName().equals(fragmentName)
+            || AppearancePreferenceFragment.class.getName().equals(fragmentName)
+            || CategoryOrderPreferenceFragment.class.getName().equals(fragmentName);
     }
 
     /**
@@ -206,8 +208,10 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
         private CategoryOrderAdapter categoryOrderAdapter;
 
         @Override
-        public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                                 Bundle savedInstanceState) {
+        public View onCreateView(
+            LayoutInflater inflater, ViewGroup container,
+            Bundle savedInstanceState
+        ) {
             setHasOptionsMenu(true);
             final Context context = getActivity();
             final RecyclerView recyclerView = (RecyclerView)inflater.inflate(R.layout.fragment_pref_categoryorder, container, false);
@@ -253,7 +257,6 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
         }
     }
 
-
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         final int id = item.getItemId();
@@ -274,11 +277,11 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
             super.onBackPressed();
         }
     }
+
     private boolean isShowingHeaderList() {
         // TODO: find a better way
         return getTitle().equals(getString(R.string.title_activity_settings));
     }
-
 
     @Override
     public void onResume() {

@@ -20,7 +20,7 @@ import peterfajdiga.fastdraw.launcher.item.AppItem;
 import peterfajdiga.fastdraw.launcher.item.LauncherItem;
 import peterfajdiga.fastdraw.launcher.item.Loadable;
 
-class CategoryArrayAdapter extends ArrayAdapter<LauncherItem>{
+class CategoryArrayAdapter extends ArrayAdapter<LauncherItem> {
 
     public CategoryArrayAdapter(Context context) {
         super(context, Preferences.appItemResource);

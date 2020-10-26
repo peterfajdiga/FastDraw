@@ -20,6 +20,7 @@ public class PrefMap {
     public String getString(final String key, @Nullable final String defValue) {
         return prefs.getString(key, defValue);
     }
+
     public void putString(final String key, @Nullable final String value) {
         final SharedPreferences.Editor prefsEditor = prefs.edit();
         prefsEditor.putString(key, value);
@@ -29,6 +30,7 @@ public class PrefMap {
     public int getInt(final String key, final int defValue) {
         return prefs.getInt(key, defValue);
     }
+
     public int getIntCreate(final String key, final int defValue) {
         final int storedValue = prefs.getInt(key, defValue);
         if (storedValue == defValue) {
@@ -36,6 +38,7 @@ public class PrefMap {
         }
         return storedValue;
     }
+
     public void putInt(final String key, final int value) {
         final SharedPreferences.Editor prefsEditor = prefs.edit();
         prefsEditor.putInt(key, value);

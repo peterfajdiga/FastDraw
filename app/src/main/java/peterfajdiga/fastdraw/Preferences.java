@@ -40,7 +40,6 @@ public final class Preferences {
     public static int pinchAction;
     public static int unpinchAction;
 
-
     public static void loadPreferences(final Context context) {
         final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
         final Resources res = context.getResources();

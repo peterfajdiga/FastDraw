@@ -33,7 +33,6 @@ public class InstallAppReceiver extends BroadcastReceiver {
         }
     }
 
-
     public interface Owner {
         void onAppInstall(String packageName);
         void onAppChange(String packageName);

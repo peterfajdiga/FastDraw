@@ -74,7 +74,7 @@ public class CategoryTabLayout extends TabLayout {
             return;
         }
         //assert getContext() instanceof Activity;
-        final FragmentActivity activity = (FragmentActivity) getContext();
+        final FragmentActivity activity = (FragmentActivity)getContext();
         final ColorStateList iconColors = ContextCompat.getColorStateList(getContext(), R.color.tab);
         final String categoryName = tab.getText().toString();
         final Drawable icon = Common.getCategoryIcon(getContext(), categoryName);
@@ -91,7 +91,6 @@ public class CategoryTabLayout extends TabLayout {
             }
         }
         tab.setTag(Boolean.TRUE); // mark as done
-
 
         // TabView
         final ViewGroup tabContainer = (ViewGroup)getChildAt(0);

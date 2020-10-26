@@ -21,10 +21,9 @@ public class DropZoneRemoveShortcut extends DropZone {
             return (Owner)context;
         } else {
             throw new RuntimeException(context.toString()
-                    + " must implement DropZoneRemoveShortcut.Owner");
+                + " must implement DropZoneRemoveShortcut.Owner");
         }
     }
-
 
     public interface Owner<T> extends DropZone.Owner<T> {
         void onDraggedItemRemove();

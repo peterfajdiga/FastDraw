@@ -41,16 +41,14 @@ abstract class DropZone implements View.OnDragListener {
 
     protected abstract void onDrop(View view);
 
-
     protected Owner castToOwner(final Context context) {
         if (context instanceof Owner) {
             return (Owner)context;
         } else {
             throw new RuntimeException(context.toString()
-                    + " must implement DropZone.Owner");
+                + " must implement DropZone.Owner");
         }
     }
-
 
     public interface Owner<T> {
         T getDraggedItem();

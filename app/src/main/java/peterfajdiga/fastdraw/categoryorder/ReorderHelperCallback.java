@@ -34,9 +34,16 @@ public class ReorderHelperCallback extends ItemTouchHelper.Callback {
 
     // faster, scrolling while dragging
     private final static float SPEED_MULT = 2;
-    private final static int   MAX_SPEED = 10;
+    private final static int MAX_SPEED = 10;
+
     @Override
-    public int interpolateOutOfBoundsScroll(RecyclerView recyclerView, int viewSize, int viewSizeOutOfBounds, int totalSize, long msSinceStartScroll) {
+    public int interpolateOutOfBoundsScroll(
+        RecyclerView recyclerView,
+        int viewSize,
+        int viewSizeOutOfBounds,
+        int totalSize,
+        long msSinceStartScroll
+    ) {
         final int direction = (int)Math.signum(viewSizeOutOfBounds);
         int speed = (int)Math.round(Math.sqrt(Math.abs(viewSizeOutOfBounds * SPEED_MULT)));
         //int speed = Math.round(viewSizeOutOfBounds * SPEED_MULT);

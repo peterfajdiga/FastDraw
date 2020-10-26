@@ -51,13 +51,13 @@ import peterfajdiga.fastdraw.receivers.InstallAppReceiver;
 import peterfajdiga.fastdraw.views.CategoryTabLayout;
 
 public class MainActivity extends FragmentActivity implements
-        LauncherPager.Owner,
-        InstallAppReceiver.Owner,
-        DropZoneRemoveShortcut.Owner<LauncherItem>,
-        DropZoneCategory.Owner<LauncherItem>,
-        DropZoneNewCategory.Owner<LauncherItem>,
-        NewCategoryDialog.Owner,
-        RenameCategoryDialog.Owner {
+    LauncherPager.Owner,
+    InstallAppReceiver.Owner,
+    DropZoneRemoveShortcut.Owner<LauncherItem>,
+    DropZoneCategory.Owner<LauncherItem>,
+    DropZoneNewCategory.Owner<LauncherItem>,
+    NewCategoryDialog.Owner,
+    RenameCategoryDialog.Owner {
 
     public static final int INSTALL_SHORTCUT_REQUEST = 2143;
 
@@ -107,7 +107,6 @@ public class MainActivity extends FragmentActivity implements
         loadLauncherItems();
         appsPager.showCategory("HOME");
 
-
         // immediate reaction to drag end
         findViewById(android.R.id.content).setOnDragListener(new View.OnDragListener() {
             @Override
@@ -132,7 +131,6 @@ public class MainActivity extends FragmentActivity implements
             }
         });
 
-
         // header color animator
         dragBgAnimator = ValueAnimator.ofArgb(Preferences.headerBgColor, Preferences.headerBgColorExpanded);
         dragBgAnimator.setDuration(DROPZONE_TRANSITION_DURATION);
@@ -144,7 +142,6 @@ public class MainActivity extends FragmentActivity implements
             getWindow().setNavigationBarColor(Preferences.headerBgColor);
         }
         dragBgAnimator.setCurrentPlayTime(0);
-
 
         // header preferences
         if (Preferences.scrollableTabs) {
@@ -160,7 +157,6 @@ public class MainActivity extends FragmentActivity implements
             getWindow().setFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS, WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         }
 
-
         // App installation BroadcastReceiver
         installAppReceiver = new InstallAppReceiver(this);
         IntentFilter appChangeFilter = new IntentFilter(Intent.ACTION_PACKAGE_ADDED);
@@ -169,7 +165,6 @@ public class MainActivity extends FragmentActivity implements
         appChangeFilter.addDataScheme("package");
         registerReceiver(installAppReceiver, appChangeFilter);
     }
-
 
     private void onFirstRun() {
         final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
@@ -319,7 +314,7 @@ public class MainActivity extends FragmentActivity implements
             public boolean test(final String id) {
                 final int separatorIndex = id.indexOf('\0');
                 final String type = id.substring(0, separatorIndex);
-                final String tail = id.substring(separatorIndex+1);
+                final String tail = id.substring(separatorIndex + 1);
                 switch (type) {
                     case "app":
                         final String packageName = tail.substring(0, tail.indexOf('\0'));
@@ -350,7 +345,7 @@ public class MainActivity extends FragmentActivity implements
 
     private boolean doesPackageExist(String packageName) {
         try {
-            getPackageManager().getPackageInfo(packageName,PackageManager.GET_META_DATA);
+            getPackageManager().getPackageInfo(packageName, PackageManager.GET_META_DATA);
         } catch (PackageManager.NameNotFoundException e) {
             return false;
         }
@@ -391,7 +386,7 @@ public class MainActivity extends FragmentActivity implements
         // launch
         startActivity(launchIntent, launchOpts);
         this.launchIntent = null;
-        this.launchOpts   = null;
+        this.launchOpts = null;
     }
 
     @Override
@@ -400,21 +395,23 @@ public class MainActivity extends FragmentActivity implements
         this.launchOpts = launchOpts;
     }
 
-
     // actions
 
     public void openActionsMenu() {
         final ActionsSheet dialog = new ActionsSheet();
         dialog.show(getSupportFragmentManager(), "ActionsSheet");
     }
+
     public void openWallpaperPicker() {
         final Intent intent = new Intent(Intent.ACTION_SET_WALLPAPER);
         startActivity(Intent.createChooser(intent, getString(R.string.wallpaper)));
     }
+
     public void showCreateShortcutDialog() {
         final Intent intent = new Intent(Intent.ACTION_CREATE_SHORTCUT);
         startActivityForResult(Intent.createChooser(intent, getString(R.string.shortcut)), MainActivity.INSTALL_SHORTCUT_REQUEST);
     }
+
     public void renameCurrentCategory() {
         final RenameCategoryDialog dialog = new RenameCategoryDialog(
             getPager().getCurrentCategoryName(),
@@ -423,6 +420,7 @@ public class MainActivity extends FragmentActivity implements
         );
         dialog.show(getSupportFragmentManager(), "RenameCategoryDialog");
     }
+
     public void openSettings() {
         final Intent settingsIntent = new Intent(this, SettingsActivity.class);
         startActivity(settingsIntent);
@@ -484,7 +482,6 @@ public class MainActivity extends FragmentActivity implements
         getPager().addLauncherItems(getString(R.string.default_shortcut_category), newShortcut);
     }
 
-
     // LauncherItem dragging
     private View draggedView = null;
     private LauncherItem draggedItem = null;
@@ -504,7 +501,7 @@ public class MainActivity extends FragmentActivity implements
         findViewById(R.id.category_drop_zone_container).setVisibility(View.VISIBLE);
 
         // show type specific drop zones
-        findViewById(R.id.drop_zone_app_info)       .setVisibility(draggedItem instanceof AppItem      ? View.VISIBLE : View.GONE);
+        findViewById(R.id.drop_zone_app_info).setVisibility(draggedItem instanceof AppItem ? View.VISIBLE : View.GONE);
         findViewById(R.id.drop_zone_remove_shortcut).setVisibility(draggedItem instanceof ShortcutItem ? View.VISIBLE : View.GONE);
 
         // set header background
