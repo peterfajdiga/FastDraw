@@ -511,16 +511,11 @@ public class MainActivity extends FragmentActivity implements
         dragBgAnimator.start();
 
         // hide status or navigation bar
-        switch (Preferences.mainLayoutResource) {
-            case R.layout.activity_main_headertop: {
-                getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
-                break;
-            }
-            /*case R.layout.activity_main_headerbtm: {
-                getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
-                break;
-            }*/
-        }
+        if (Preferences.mainLayoutResource == R.layout.activity_main_headertop) {
+            getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        } /*else if (Preferences.mainLayoutResource == R.layout.activity_main_headerbtm) {
+            getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
+        }*/
     }
 
     public void onDragEnded1() {
