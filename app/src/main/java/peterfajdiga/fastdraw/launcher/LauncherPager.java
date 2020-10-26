@@ -139,6 +139,8 @@ public class LauncherPager extends ViewPager {
         final String categoryName = getItemCategory(item); // TODO: handle null categoryName
         final CategoryView categoryView = adapter.categories.get(categoryName);
         final CategoryArrayAdapter innerAdapter = (CategoryArrayAdapter) categoryView.getAdapter();
+
+        itemCategoryMap.remove(item.getID());
         if (innerAdapter.getCount() == 1) {
             // remove category from pager, no need to remove the item from category
             adapter.categories.remove(categoryName);
@@ -146,7 +148,6 @@ public class LauncherPager extends ViewPager {
             return true;
         } else {
             // remove item from category
-            itemCategoryMap.remove(item.getID());
             innerAdapter.remove(item);
             innerAdapter.notifyDataSetChanged();
             return false;
