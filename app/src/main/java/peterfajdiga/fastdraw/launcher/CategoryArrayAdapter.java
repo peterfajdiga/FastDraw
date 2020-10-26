@@ -89,17 +89,16 @@ class CategoryArrayAdapter extends ArrayAdapter<LauncherItem> {
         itemLoader.execute();
     }
 
-    private boolean isLoaded() {
+    private void reportIfLoadFailure() {
         final int n = getCount();
         for (int i = 0; i < n; i++) {
             final LauncherItem item = getItem(i);
             if (item instanceof Loadable && !((Loadable)item).isLoaded()) {
                 final Toast toast = Toast.makeText(getContext(), "Could not load: " + item.getIntent(), Toast.LENGTH_LONG);
                 toast.show();
-                return false;
+                return;
             }
         }
-        return true;
     }
 
     private final class ItemLoader extends AsyncTask<Void, Void, Void> {
@@ -125,7 +124,7 @@ class CategoryArrayAdapter extends ArrayAdapter<LauncherItem> {
          */
         @Override
         protected void onPostExecute(Void result) {
-            isLoaded();
+            reportIfLoadFailure();
             sort();
             notifyDataSetChanged();
         }
