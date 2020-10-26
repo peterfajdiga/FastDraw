@@ -24,7 +24,7 @@ class CategoryView extends GridView {
 
     private static final int LONG_CLICK_TIME = ViewConfiguration.getLongPressTimeout();
     private static final int DOUBLE_CLICK_TIME = ViewConfiguration.getDoubleTapTimeout();
-    private static final float LONG_CLICK_MOUSE_MOVE_TOLERANCE = 50;  // TODO: separate for DOUBLE_CLICK
+    private static final float LONG_CLICK_MOUSE_MOVE_TOLERANCE = 50; // TODO: separate for DOUBLE_CLICK
     private static final float PINCH_DISTANCE_TRIGGER_DELTA = 500000;
 
     protected long interceptTouchTime;
@@ -140,7 +140,7 @@ class CategoryView extends GridView {
 
         switch (event.getPointerCount()) {
             case 2: {
-                interceptTouchTime = Long.MAX_VALUE;  // disable long click
+                interceptTouchTime = Long.MAX_VALUE; // disable long click
                 final float newDistance = distanceSquared(event);
 
                 // pinch detection

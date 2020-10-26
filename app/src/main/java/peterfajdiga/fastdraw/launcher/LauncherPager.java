@@ -36,14 +36,14 @@ public class LauncherPager extends ViewPager {
 
     private void init(@NonNull final Context context) {
         setAdapter(new LauncherPagerAdapter(context));
-        itemCategoryMap = new PrefMap(context, "categories");  // TODO: pass from outside
+        itemCategoryMap = new PrefMap(context, "categories"); // TODO: pass from outside
     }
 
     @Override
     public void onPageScrolled(final int position, final float offset, final int offsetPixels) {
         super.onPageScrolled(position, offset, offsetPixels);
         final WallpaperManager wallpaperManager = WallpaperManager.getInstance(getContext());
-        wallpaperManager.setWallpaperOffsets(getWindowToken(), (position + offset) / (getAdapter().getCount() - 1), 0.5f);  // don't use getChildCount()
+        wallpaperManager.setWallpaperOffsets(getWindowToken(), (position + offset) / (getAdapter().getCount() - 1), 0.5f); // don't use getChildCount()
     }
 
     /**

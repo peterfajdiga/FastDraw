@@ -85,7 +85,7 @@ public class ShortcutItem extends LauncherItem implements Loadable {
     private static final String ICON_TYPE_RES    = "r";
     public void toFile(Context context) throws java.io.IOException {
         final String uri = intent.toUri(0);
-        final FileOutputStream fos = new FileOutputStream(new File(getShortcutsDir(context), getFilename()));  // ID contains salt
+        final FileOutputStream fos = new FileOutputStream(new File(getShortcutsDir(context), getFilename())); // ID contains salt
         writeString(fos, uri);
         writeString(fos, name);
         if (iconResourceName != null) {
@@ -110,7 +110,7 @@ public class ShortcutItem extends LauncherItem implements Loadable {
 
         final String filename = file.getName();
         final int saltIndex = filename.lastIndexOf('_') + 1;
-        final String salt = filename.substring(saltIndex);  // salt is in filename
+        final String salt = filename.substring(saltIndex); // salt is in filename
 
         final Intent intent = Intent.parseUri(readString(fis), 0);
         final String name = readString(fis);

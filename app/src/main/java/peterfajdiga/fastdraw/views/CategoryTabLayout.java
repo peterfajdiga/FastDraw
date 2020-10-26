@@ -90,7 +90,7 @@ public class CategoryTabLayout extends TabLayout {
                 tab.setText(tabString);
             }
         }
-        tab.setTag(Boolean.TRUE);  // mark as done
+        tab.setTag(Boolean.TRUE); // mark as done
 
 
         // TabView

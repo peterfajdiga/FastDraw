@@ -237,7 +237,7 @@ public class MainActivity extends FragmentActivity implements
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if (instance == this) {  // should be the only one, because of singleInstance
+        if (instance == this) { // should be the only one, because of singleInstance
             instance = null;
         }
 

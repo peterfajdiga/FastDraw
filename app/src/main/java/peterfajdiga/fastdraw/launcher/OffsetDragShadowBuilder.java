@@ -17,10 +17,10 @@ public class OffsetDragShadowBuilder extends View.DragShadowBuilder {
         touchX = (int)(x - view.getX());
         touchY = (int)(y - view.getY());
         if (touchX < 0) {
-            touchX = 0;  // avoid crash when user misplaces shadow by using two fingers
+            touchX = 0; // avoid crash when user misplaces shadow by using two fingers
         }
         if (touchY < 0) {
-            touchY = 0;  // avoid crash when user misplaces shadow by using two fingers
+            touchY = 0; // avoid crash when user misplaces shadow by using two fingers
         }
     }
 
