@@ -24,23 +24,23 @@ public class LauncherPager extends ViewPager {
     public static final int LAUNCH_PERMISSION = 42;
     private PrefMap itemCategoryMap;
 
-    public LauncherPager(Context context) {
+    public LauncherPager(@NonNull final Context context) {
         super(context);
         init(context);
     }
 
-    public LauncherPager(Context context, AttributeSet attrs) {
+    public LauncherPager(@NonNull final Context context, @NonNull final AttributeSet attrs) {
         super(context, attrs);
         init(context);
     }
 
-    private void init(final Context context) {
+    private void init(@NonNull final Context context) {
         setAdapter(new LauncherPagerAdapter(context));
         itemCategoryMap = new PrefMap(context, "categories");  // TODO: pass from outside
     }
 
     @Override
-    public void onPageScrolled(int position, float offset, int offsetPixels) {
+    public void onPageScrolled(final int position, final float offset, final int offsetPixels) {
         super.onPageScrolled(position, offset, offsetPixels);
         final WallpaperManager wallpaperManager = WallpaperManager.getInstance(getContext());
         wallpaperManager.setWallpaperOffsets(getWindowToken(), (position + offset) / (getAdapter().getCount() - 1), 0.5f);  // don't use getChildCount()
@@ -49,7 +49,7 @@ public class LauncherPager extends ViewPager {
     /**
      * @return true if category exists and was selected
      */
-    public boolean showCategory(String categoryName) {
+    public boolean showCategory(@NonNull final String categoryName) {
         final String[] categoryNames = getCategoryNames();
         for (int i = 0; i < categoryNames.length; i++) {
             if (categoryNames[i].equals(categoryName)) {
@@ -60,9 +60,9 @@ public class LauncherPager extends ViewPager {
         return false;
     }
 
-    public boolean doesCategoryExist(final String categoryName) {
+    public boolean doesCategoryExist(@NonNull final String categoryName) {
         final LauncherPagerAdapter adapter = (LauncherPagerAdapter)super.getAdapter();
-        return adapter.categories.get(categoryName) != null;
+        return adapter.categoryViews.get(categoryName) != null;
     }
 
     public String getCurrentCategoryName() {
@@ -72,7 +72,7 @@ public class LauncherPager extends ViewPager {
 
     public String[] getCategoryNames() {
         final LauncherPagerAdapter adapter = (LauncherPagerAdapter)super.getAdapter();
-        final Object[] names = adapter.categories.keySet().toArray();
+        final Object[] names = adapter.categoryViews.keySet().toArray();
         String[] retval = new String[names.length];
         for (int i = 0; i < names.length; i++) {
             retval[i] = (String)names[i];
@@ -80,12 +80,12 @@ public class LauncherPager extends ViewPager {
         return retval;
     }
 
-    public LauncherItem[] getLauncherItems(String category) {
+    public LauncherItem[] getLauncherItems(@NonNull final String categoryName) {
         final LauncherPagerAdapter adapter = (LauncherPagerAdapter)super.getAdapter();
-        final CategoryArrayAdapter innerAdapter = (CategoryArrayAdapter)adapter.categories.get(category).getAdapter();
-        LauncherItem[] items = new LauncherItem[innerAdapter.getCount()];
+        final CategoryArrayAdapter categoryAdapter = (CategoryArrayAdapter)adapter.categoryViews.get(categoryName).getAdapter();
+        LauncherItem[] items = new LauncherItem[categoryAdapter.getCount()];
         for (int i = 0; i < items.length; i++) {
-            items[i] = innerAdapter.getItem(i);
+            items[i] = categoryAdapter.getItem(i);
         }
         return items;
     }
@@ -106,16 +106,16 @@ public class LauncherPager extends ViewPager {
         adapter.notifyDataSetChanged();
     }
 
-    private void addLauncherItem(final LauncherItem item, @NonNull final String categoryName, boolean notify) {
+    private void addLauncherItem(@NonNull final LauncherItem item, @NonNull final String categoryName, final boolean notify) {
         if (Preferences.hideHidden && categoryName.equals("HIDDEN")) {
             return;
         }
 
         final LauncherPagerAdapter adapter = (LauncherPagerAdapter)super.getAdapter();
-        CategoryView categoryView = adapter.categories.get(categoryName);
+        CategoryView categoryView = adapter.categoryViews.get(categoryName);
         if (categoryView == null) {
             categoryView = new CategoryView(getContext());
-            adapter.categories.put(categoryName, categoryView);
+            adapter.categoryViews.put(categoryName, categoryView);
         }
 
         final CategoryArrayAdapter categoryAdapter = (CategoryArrayAdapter)categoryView.getAdapter();
@@ -134,27 +134,27 @@ public class LauncherPager extends ViewPager {
     /**
      * @return true if the category's last item was removed
      */
-    public boolean removeLauncherItem(final LauncherItem item) {
+    public boolean removeLauncherItem(@NonNull final LauncherItem item) {
         final LauncherPagerAdapter adapter = (LauncherPagerAdapter)super.getAdapter();
         final String categoryName = getItemCategory(item); // TODO: handle null categoryName
-        final CategoryView categoryView = adapter.categories.get(categoryName);
-        final CategoryArrayAdapter innerAdapter = (CategoryArrayAdapter) categoryView.getAdapter();
+        final CategoryView categoryView = adapter.categoryViews.get(categoryName);
+        final CategoryArrayAdapter categoryAdapter = (CategoryArrayAdapter) categoryView.getAdapter();
 
         itemCategoryMap.remove(item.getID());
-        if (innerAdapter.getCount() == 1) {
+        if (categoryAdapter.getCount() == 1) {
             // remove category from pager, no need to remove the item from category
-            adapter.categories.remove(categoryName);
+            adapter.categoryViews.remove(categoryName);
             adapter.notifyDataSetChanged();
             return true;
         } else {
             // remove item from category
-            innerAdapter.remove(item);
-            innerAdapter.notifyDataSetChanged();
+            categoryAdapter.remove(item);
+            categoryAdapter.notifyDataSetChanged();
             return false;
         }
     }
 
-    public void moveLauncherItem(final LauncherItem item, final String categoryName, final boolean followItem) {
+    public void moveLauncherItem(@NonNull final LauncherItem item, @NonNull final String categoryName, final boolean followItem) {
         final String oldCategoryName = getItemCategory(item);
 
         boolean lastRemoved = false;
@@ -184,8 +184,8 @@ public class LauncherPager extends ViewPager {
         return storedCategory;
     }
 
-    private void setItemCategory(@NonNull final LauncherItem item, @NonNull final String category) {
-        itemCategoryMap.putString(item.getID(), category);
+    private void setItemCategory(@NonNull final LauncherItem item, @NonNull final String categoryName) {
+        itemCategoryMap.putString(item.getID(), categoryName);
     }
 
     public interface Owner {
@@ -194,6 +194,6 @@ public class LauncherPager extends ViewPager {
         void onPagerPinch();
         void onPagerUnpinch();
         void setDelayedLaunchIntent(@NonNull Intent launchIntent, @NonNull Bundle launchOpts);
-        void onDragStarted(View draggedView, LauncherItem draggedItem);
+        void onDragStarted(@NonNull View draggedView, @NonNull LauncherItem draggedItem);
     }
 }

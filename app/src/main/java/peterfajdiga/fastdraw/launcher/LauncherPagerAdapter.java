@@ -13,19 +13,19 @@ import peterfajdiga.fastdraw.categoryorder.CategoryComparator;
 
 class LauncherPagerAdapter extends PagerAdapter {
 
-    final SortedMap<String, CategoryView> categories;
+    final SortedMap<String, CategoryView> categoryViews;
     boolean firstCategoryLoaded = false;
 
     public LauncherPagerAdapter(final Context context) {
-        categories = new ConcurrentSkipListMap<>(new CategoryComparator(new PrefMapCached(context, "categoryorder")));
+        categoryViews = new ConcurrentSkipListMap<>(new CategoryComparator(new PrefMapCached(context, "categoryorder")));
     }
 
     @Override
     public Object instantiateItem(ViewGroup container, int position) {
-        final CategoryView layout = (CategoryView)categories.values().toArray()[position];
+        final CategoryView layout = (CategoryView)categoryViews.values().toArray()[position];
         container.addView(layout);
         if (!firstCategoryLoaded) {
-            loadCategories(layout);
+            loadCategoryViews(layout);
             firstCategoryLoaded = true;
         }
         return layout;
@@ -38,7 +38,7 @@ class LauncherPagerAdapter extends PagerAdapter {
 
     @Override
     public int getCount() {
-        return categories.keySet().size();
+        return categoryViews.keySet().size();
     }
 
     @Override
@@ -48,12 +48,12 @@ class LauncherPagerAdapter extends PagerAdapter {
 
     @Override
     public String getPageTitle(int position) {
-        return (String)categories.keySet().toArray()[position];
+        return (String)categoryViews.keySet().toArray()[position];
     }
 
     @Override
     public int getItemPosition(Object object) {
-        final Object[] views = categories.values().toArray();
+        final Object[] views = categoryViews.values().toArray();
         for (int i = 0; i < views.length; i++) {
             if (views[i] == object) {
                 return i;
@@ -65,13 +65,13 @@ class LauncherPagerAdapter extends PagerAdapter {
 
     /* loading */
 
-    public void loadCategories(final CategoryView firstToLoad) {
+    public void loadCategoryViews(final CategoryView firstToLoad) {
         // load first category
         final CategoryArrayAdapter firstInnerAdapter = (CategoryArrayAdapter)firstToLoad.getAdapter();
         firstInnerAdapter.loadItems();
 
         // load all others
-        for (CategoryView categoryView : categories.values()) {
+        for (CategoryView categoryView : categoryViews.values()) {
             if (categoryView == firstToLoad) {
                 // already loaded
                 continue;

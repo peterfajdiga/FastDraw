@@ -489,7 +489,7 @@ public class MainActivity extends FragmentActivity implements
     private LauncherItem newCategoryDroppedItem = null;
 
     @Override
-    public void onDragStarted(final View draggedView, final LauncherItem draggedItem) {
+    public void onDragStarted(@NonNull final View draggedView, @NonNull final LauncherItem draggedItem) {
         final Paint silhouettePaint = new Paint();
         silhouettePaint.setColorFilter(new LightingColorFilter(0xff000000, 0xff000000));
         draggedView.setLayerType(View.LAYER_TYPE_SOFTWARE, silhouettePaint);
