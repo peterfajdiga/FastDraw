@@ -41,7 +41,6 @@ public class AppItem extends LauncherItem implements Loadable {
     }
 
     @Override
-    @NonNull
     public Drawable getIcon() {
         return icon;
     }

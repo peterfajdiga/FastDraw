@@ -50,19 +50,16 @@ public class ShortcutItem extends LauncherItem implements Loadable {
     }
 
     @Override
-    @NonNull
     public String getLabel() {
         return label;
     }
 
     @Override
-    @NonNull
     public Drawable getIcon() {
         return icon;
     }
 
     @Override
-    @NonNull
     public Intent getIntent() {
         return intent;
     }
