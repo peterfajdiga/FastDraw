@@ -49,9 +49,12 @@ public class AppItem extends LauncherItem implements Loadable {
             final PackageManager packageManager = context.getPackageManager();
             name = info.loadLabel(packageManager).toString();
             icon = info.loadIcon(packageManager);
-
-            // forget
             info = null;
         }
+    }
+
+    @Override
+    public boolean isLoaded() {
+        return info == null;
     }
 }

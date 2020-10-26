@@ -6,4 +6,5 @@ import androidx.annotation.NonNull;
 
 public interface Loadable {
     void load(@NonNull Context context);
+    boolean isLoaded();
 }

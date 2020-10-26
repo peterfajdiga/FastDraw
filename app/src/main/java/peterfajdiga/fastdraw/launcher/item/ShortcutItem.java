@@ -32,11 +32,13 @@ public class ShortcutItem extends LauncherItem implements Loadable {
         this.salt = salt;
         this.name = name;
         this.icon = icon;
+        this.isLoaded = true;
     }
     public ShortcutItem(final Intent intent, final String salt, final String name, final String iconPackageName, final String iconResourceName) {
         this(intent, salt, name, null);
         this.iconPackageName = iconPackageName;
         this.iconResourceName = iconResourceName;
+        this.isLoaded = false;
     }
 
     @Override
@@ -148,14 +150,23 @@ public class ShortcutItem extends LauncherItem implements Loadable {
 
     /* loading */
 
+    private boolean isLoaded;
+
     @Override
     public void load(@NonNull final Context context) {
-        if (iconResourceName != null) {
+        if (!isLoaded()) {
             try {
                 icon = iconFromResource(context, iconPackageName, iconResourceName);
-            } catch (Exception e) {
+            } catch (final Exception e) {
+                e.printStackTrace();
                 ContextCompat.getDrawable(context, R.drawable.ic_item_shortcut_leftover);
             }
+            isLoaded = true;
         }
+    }
+
+    @Override
+    public boolean isLoaded() {
+        return isLoaded;
     }
 }
