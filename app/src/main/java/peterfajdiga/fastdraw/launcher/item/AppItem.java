@@ -22,16 +22,18 @@ public class AppItem extends LauncherItem implements Loadable {
     }
 
     @Override
+    @NonNull
+    public String getID() {
+        return "app\0" + packageName + "\0" + activityName;
+    }
+
+    @Override
+    @NonNull
     public Intent getIntent() {
         final Intent intent = new Intent(Intent.ACTION_MAIN);
         intent.setComponent(new ComponentName(packageName, activityName));
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         return intent;
-    }
-
-    @Override
-    public String getID() {
-        return "app\0" + packageName + "\0" + activityName;
     }
 
     @NonNull

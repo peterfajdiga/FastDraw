@@ -42,13 +42,15 @@ public class ShortcutItem extends LauncherItem implements Loadable {
     }
 
     @Override
-    public Intent getIntent() {
-        return intent;
+    @NonNull
+    public String getID() {
+        return "shortcut\0" + intent.toUri(0).hashCode() + "\0" + salt;
     }
 
     @Override
-    public String getID() {
-        return "shortcut\0" + intent.toUri(0).hashCode() + "\0" + salt;
+    @NonNull
+    public Intent getIntent() {
+        return intent;
     }
 
     private String getFilename() {
