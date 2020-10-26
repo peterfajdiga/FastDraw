@@ -55,7 +55,7 @@ public class AppItemManager {
             // iterate through categories' items
             for (int i = 0; i < innerAdapter.getCount(); ) {
                 final LauncherItem launcherItem = innerAdapter.getItem(i);
-                if (launcherItem instanceof AppItem && ((AppItem)launcherItem).packageName.equals(packageName)) {
+                if (launcherItem instanceof AppItem && ((AppItem)launcherItem).getPackageName().equals(packageName)) {
                     // remove matching items
                     // don't increment i in this case, as item count has decreased
                     innerAdapter.remove(launcherItem);

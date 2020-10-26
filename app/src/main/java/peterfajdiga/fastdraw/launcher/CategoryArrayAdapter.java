@@ -45,7 +45,7 @@ class CategoryArrayAdapter extends ArrayAdapter<LauncherItem> {
 
         if (Preferences.appItemResource == R.layout.app_item_package && item instanceof AppItem) {
             TextView appName = convertView.findViewById(R.id.app_item_package_name);
-            appName.setText(((AppItem)item).packageName);
+            appName.setText(((AppItem)item).getPackageName());
         }
 
         convertView.setOnTouchListener(new View.OnTouchListener() {

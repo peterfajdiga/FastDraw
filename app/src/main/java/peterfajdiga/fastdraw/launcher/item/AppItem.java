@@ -12,7 +12,7 @@ import peterfajdiga.fastdraw.launcher.AppItemManager;
 
 public class AppItem extends LauncherItem implements Loadable {
 
-    public final String packageName;
+    private final String packageName;
     private final String activityName;
 
     public AppItem(final ActivityInfo info) {
@@ -32,6 +32,11 @@ public class AppItem extends LauncherItem implements Loadable {
     @Override
     public String getID() {
         return "app\0" + packageName + "\0" + activityName;
+    }
+
+    @NonNull
+    public String getPackageName() {
+        return packageName;
     }
 
     public void openAppDetails(final Context context) {
