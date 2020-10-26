@@ -136,7 +136,7 @@ public class LauncherPager extends ViewPager {
      */
     public boolean removeLauncherItem(final LauncherItem item) {
         final LauncherPagerAdapter adapter = (LauncherPagerAdapter)super.getAdapter();
-        final String categoryName = getItemCategory(item, null);
+        final String categoryName = getItemCategory(item); // TODO: handle null categoryName
         final CategoryView categoryView = adapter.categories.get(categoryName);
         final CategoryArrayAdapter innerAdapter = (CategoryArrayAdapter) categoryView.getAdapter();
         if (innerAdapter.getCount() == 1) {
@@ -154,7 +154,7 @@ public class LauncherPager extends ViewPager {
     }
 
     public void moveLauncherItem(final LauncherItem item, final String categoryName, final boolean followItem) {
-        final String oldCategoryName = getItemCategory(item, null);
+        final String oldCategoryName = getItemCategory(item);
 
         boolean lastRemoved = false;
         if (oldCategoryName != null) {
@@ -168,8 +168,19 @@ public class LauncherPager extends ViewPager {
         }
     }
 
-    private String getItemCategory(@NonNull final LauncherItem item, @Nullable final String defaultCategory) {
-        return itemCategoryMap.getString(item.getID(), defaultCategory);
+    @Nullable
+    private String getItemCategory(@NonNull final LauncherItem item) {
+        return itemCategoryMap.getString(item.getID(), null);
+    }
+
+    @NonNull
+    private String getItemCategory(@NonNull final LauncherItem item, @NonNull final String defaultCategory) {
+        final String storedCategory = getItemCategory(item);
+        if (storedCategory == null) {
+            setItemCategory(item, defaultCategory);
+            return defaultCategory;
+        }
+        return storedCategory;
     }
 
     private void setItemCategory(@NonNull final LauncherItem item, @NonNull final String category) {
