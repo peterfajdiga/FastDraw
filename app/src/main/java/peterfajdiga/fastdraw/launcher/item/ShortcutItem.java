@@ -11,6 +11,7 @@ import android.graphics.drawable.Drawable;
 
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
+import androidx.core.content.res.ResourcesCompat;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -92,7 +93,7 @@ public class ShortcutItem extends LauncherItem implements Loadable {
     private static Drawable iconFromResource(final Context context, final String packageName, final String resourceName) throws PackageManager.NameNotFoundException {
         final Resources resources = context.getPackageManager().getResourcesForApplication(packageName);
         final int id = resources.getIdentifier(resourceName, null, null);
-        return resources.getDrawable(id, context.getTheme());
+        return ResourcesCompat.getDrawable(context.getResources(), id, context.getTheme());
     }
 
 
