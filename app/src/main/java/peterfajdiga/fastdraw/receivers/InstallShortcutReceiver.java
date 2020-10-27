@@ -13,7 +13,7 @@ public class InstallShortcutReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent data) {
         System.err.println("asdf");
-        final ShortcutItem newShortcutItem = ShortcutItem.shortcutFromIntent(context, data);
+        final ShortcutItem newShortcutItem = ShortcutItemManager.shortcutFromIntent(context, data);
         ShortcutItemManager.saveShortcut(context, newShortcutItem);
 
         // TODO?: save SHORTCUT category? Now it'll probably show up in LOST&FOUND if MainActivity == null

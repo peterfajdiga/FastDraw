@@ -250,7 +250,7 @@ public class MainActivity extends FragmentActivity implements
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == INSTALL_SHORTCUT_REQUEST && resultCode == RESULT_OK) {
-            ShortcutItem newShortcut = ShortcutItem.shortcutFromIntent(this, data);
+            ShortcutItem newShortcut = ShortcutItemManager.shortcutFromIntent(this, data);
             ShortcutItemManager.saveShortcut(this, newShortcut);
             getPager().moveLauncherItem(newShortcut, getPager().getCurrentCategoryName(), false);
         }

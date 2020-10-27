@@ -17,7 +17,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.nio.ByteBuffer;
-import java.util.UUID;
 
 import peterfajdiga.fastdraw.R;
 
@@ -69,27 +68,10 @@ public class ShortcutItem extends LauncherItem implements Loadable {
         return getID().replace('\0', '_');
     }
 
-    private static String generateSalt() {
-        return UUID.randomUUID().toString();
-    }
-
     public static File getShortcutsDir(Context context) {
         return new File(context.getFilesDir(), "shortcuts");
     }
 
-    public static ShortcutItem shortcutFromIntent(Context context, Intent data) {
-        final Intent launchIntent = data.getParcelableExtra(Intent.EXTRA_SHORTCUT_INTENT);
-        final String name = data.getStringExtra(Intent.EXTRA_SHORTCUT_NAME);
-        final Bitmap bmp = data.getParcelableExtra(Intent.EXTRA_SHORTCUT_ICON);
-
-        if (bmp != null) {
-            final Drawable icon = new BitmapDrawable(context.getResources(), bmp);
-            return new ShortcutItem(launchIntent, generateSalt(), name, icon);
-        } else {
-            final Intent.ShortcutIconResource iconResource = data.getParcelableExtra(Intent.EXTRA_SHORTCUT_ICON_RESOURCE);
-            return new ShortcutItem(launchIntent, generateSalt(), name, iconResource.packageName, iconResource.resourceName);
-        }
-    }
     private static Drawable iconFromResource(final Context context, final String packageName, final String resourceName) throws PackageManager.NameNotFoundException {
         final Resources resources = context.getPackageManager().getResourcesForApplication(packageName);
         final int id = resources.getIdentifier(resourceName, null, null);
