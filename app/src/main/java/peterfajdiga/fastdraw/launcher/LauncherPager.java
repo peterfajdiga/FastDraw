@@ -45,9 +45,9 @@ public class LauncherPager extends ViewPager {
         final WallpaperManager wallpaperManager = WallpaperManager.getInstance(getContext());
         wallpaperManager.setWallpaperOffsets(
             getWindowToken(),
-            (position + offset)/(getAdapter().getCount() - 1),
+            (position + offset) / (getAdapter().getCount() - 1), // don't use getChildCount()
             0.5f
-        ); // don't use getChildCount()
+        );
     }
 
     /**
