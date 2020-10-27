@@ -100,10 +100,6 @@ public class ShortcutItem extends LauncherItem implements Loadable {
         fos.close();
     }
 
-    /*private void writeObject(@NonNull final java.io.ObjectOutputStream stream) throws java.io.IOException {
-        stream.writeObject(intent.toUri(0));
-    }*/
-
     public static ShortcutItem fromFile(Context context, File file) throws java.io.IOException, java.net.URISyntaxException {
         final FileInputStream fis = new FileInputStream(file);
 
