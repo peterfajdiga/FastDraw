@@ -16,6 +16,7 @@ import androidx.core.content.res.ResourcesCompat;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.InputStream;
 import java.nio.ByteBuffer;
 
 import peterfajdiga.fastdraw.R;
@@ -110,31 +111,40 @@ public class ShortcutItem extends LauncherItem implements Loadable {
         final Intent intent = Intent.parseUri(readString(fis), 0);
         final String name = readString(fis);
 
-        for (int i = 0; i < 2; i++) { // TODO: stop supporting old file format
-            final String iconType = readString(fis);
-            final ShortcutItem newItem;
-            switch (iconType) {
-                case ICON_TYPE_BITMAP:
-                    newItem = new ShortcutItem(intent, salt, name,
-                        new BitmapDrawable(context.getResources(), BitmapFactory.decodeFileDescriptor(fis.getFD()))
-                    );
-                    break;
-                case ICON_TYPE_RES:
-                    newItem = new ShortcutItem(intent, salt, name, readString(fis), readString(fis));
-                    break;
-                case ICON_TYPE_NONE:
-                    newItem = new ShortcutItem(intent, salt, name, null);
-                    break;
-                default:
-                    // We have probably read category (from old version) instead of iconType.
-                    // In the old version, iconType followed category, so let's read again and this time we should get the iconType.
-                    continue;
-            }
-            fis.close();
-            return newItem;
-        }
+        return fromFileReadIcon(context, file, fis, intent, name, salt, true);
+    }
 
-        throw new java.io.IOException("Invalid shortcut item file"); // TODO: remove exception after stopping supporting old file format
+    private static ShortcutItem fromFileReadIcon(
+        @NonNull final Context context,
+        @NonNull final File file,
+        @NonNull final FileInputStream fis,
+        @NonNull final Intent intent,
+        @NonNull final String name,
+        @NonNull final String salt,
+        final boolean tryOldFormat
+    ) throws java.io.IOException {
+        final String iconType = readString(fis);
+        switch (iconType) {
+            case ICON_TYPE_BITMAP:
+                return new ShortcutItem(intent, salt, name,
+                    new BitmapDrawable(context.getResources(), BitmapFactory.decodeFileDescriptor(fis.getFD()))
+                );
+            case ICON_TYPE_RES:
+                return new ShortcutItem(intent, salt, name, readString(fis), readString(fis));
+            case ICON_TYPE_NONE:
+                return new ShortcutItem(intent, salt, name, null);
+            default:
+                if (!tryOldFormat) {
+                    return new ShortcutItem(intent, salt, name, null);
+                }
+                System.err.println("Try old format for file " + file.getAbsolutePath());
+                // We have probably read category (from old version) instead of iconType.
+                // In the old version, iconType followed category, so let's read again and this time we should get the iconType.
+                final ShortcutItem item = fromFileReadIcon(context, file, fis, intent, name, salt, false);
+                item.toFile(context); // save it in the new format
+                System.err.println("Saved new format for file " + item.getFilename());
+                return item;
+        }
     }
 
     private static void writeString(@NonNull final FileOutputStream fos, @NonNull final String string) throws java.io.IOException {
@@ -143,7 +153,7 @@ public class ShortcutItem extends LauncherItem implements Loadable {
         fos.write(stringBytes);
     }
 
-    private static String readString(@NonNull final FileInputStream fis) throws java.io.IOException {
+    private static String readString(@NonNull final InputStream fis) throws java.io.IOException {
         final byte[] stringLengthBytes = new byte[4];
         fis.read(stringLengthBytes);
         int stringLength = ByteBuffer.wrap(stringLengthBytes).getInt();
