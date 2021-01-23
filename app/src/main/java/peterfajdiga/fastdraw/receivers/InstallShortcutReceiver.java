@@ -12,7 +12,6 @@ public class InstallShortcutReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent data) {
-        System.err.println("asdf");
         final ShortcutItem newShortcutItem = ShortcutItemManager.shortcutFromIntent(context, data);
         ShortcutItemManager.saveShortcut(context, newShortcutItem);
 
