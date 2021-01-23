@@ -109,24 +109,32 @@ public class ShortcutItem extends LauncherItem implements Loadable {
 
         final Intent intent = Intent.parseUri(readString(fis), 0);
         final String name = readString(fis);
-        final String iconType = readString(fis);
 
-        final ShortcutItem newItem;
-        switch (iconType) {
-            case ICON_TYPE_BITMAP:
-                newItem = new ShortcutItem(intent, salt, name,
-                    new BitmapDrawable(context.getResources(), BitmapFactory.decodeFileDescriptor(fis.getFD()))
-                );
-                break;
-            case ICON_TYPE_RES:
-                newItem = new ShortcutItem(intent, salt, name, readString(fis), readString(fis));
-                break;
-            default:
-                newItem = new ShortcutItem(intent, salt, name, null);
-                break;
+        for (int i = 0; i < 2; i++) { // TODO: stop supporting old file format
+            final String iconType = readString(fis);
+            final ShortcutItem newItem;
+            switch (iconType) {
+                case ICON_TYPE_BITMAP:
+                    newItem = new ShortcutItem(intent, salt, name,
+                        new BitmapDrawable(context.getResources(), BitmapFactory.decodeFileDescriptor(fis.getFD()))
+                    );
+                    break;
+                case ICON_TYPE_RES:
+                    newItem = new ShortcutItem(intent, salt, name, readString(fis), readString(fis));
+                    break;
+                case ICON_TYPE_NONE:
+                    newItem = new ShortcutItem(intent, salt, name, null);
+                    break;
+                default:
+                    // We have probably read category (from old version) instead of iconType.
+                    // In the old version, iconType followed category, so let's read again and this time we should get the iconType.
+                    continue;
+            }
+            fis.close();
+            return newItem;
         }
-        fis.close();
-        return newItem;
+
+        throw new java.io.IOException("Invalid shortcut item file"); // TODO: remove exception after stopping supporting old file format
     }
 
     private static void writeString(@NonNull final FileOutputStream fos, @NonNull final String string) throws java.io.IOException {
