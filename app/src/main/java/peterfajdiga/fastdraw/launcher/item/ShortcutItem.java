@@ -68,7 +68,7 @@ public class ShortcutItem extends LauncherItem implements Loadable {
         return getID().replace('\0', '_');
     }
 
-    public static File getShortcutsDir(Context context) {
+    public static File getShortcutsDir(@NonNull final Context context) {
         return new File(context.getFilesDir(), "shortcuts");
     }
 
@@ -82,7 +82,7 @@ public class ShortcutItem extends LauncherItem implements Loadable {
     private static final String ICON_TYPE_NONE   = "n";
     private static final String ICON_TYPE_BITMAP = "b";
     private static final String ICON_TYPE_RES    = "r";
-    public void toFile(Context context) throws java.io.IOException {
+    public void toFile(@NonNull final Context context) throws java.io.IOException {
         final String uri = intent.toUri(0);
         final FileOutputStream fos = new FileOutputStream(new File(getShortcutsDir(context), getFilename())); // ID contains salt
         writeString(fos, uri);
@@ -100,7 +100,7 @@ public class ShortcutItem extends LauncherItem implements Loadable {
         fos.close();
     }
 
-    public static ShortcutItem fromFile(Context context, File file) throws java.io.IOException, java.net.URISyntaxException {
+    public static ShortcutItem fromFile(@NonNull final Context context, @NonNull final File file) throws java.io.IOException, java.net.URISyntaxException {
         final FileInputStream fis = new FileInputStream(file);
 
         final String filename = file.getName();
@@ -123,18 +123,18 @@ public class ShortcutItem extends LauncherItem implements Loadable {
         return newItem;
     }
 
-    private static void writeString(FileOutputStream fos, String string) throws java.io.IOException {
-        byte[] stringBytes = string.getBytes();
+    private static void writeString(@NonNull final FileOutputStream fos, @NonNull final String string) throws java.io.IOException {
+        final byte[] stringBytes = string.getBytes();
         fos.write(ByteBuffer.allocate(4).putInt(stringBytes.length).array());
         fos.write(stringBytes);
     }
 
-    private static String readString(FileInputStream fis) throws java.io.IOException {
-        byte[] stringLengthBytes = new byte[4];
+    private static String readString(@NonNull final FileInputStream fis) throws java.io.IOException {
+        final byte[] stringLengthBytes = new byte[4];
         fis.read(stringLengthBytes);
         int stringLength = ByteBuffer.wrap(stringLengthBytes).getInt();
 
-        byte[] stringBytes = new byte[stringLength];
+        final byte[] stringBytes = new byte[stringLength];
         fis.read(stringBytes);
         return new String(stringBytes);
     }
