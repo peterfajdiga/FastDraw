@@ -37,7 +37,7 @@ public class ShortcutItemManager {
     public static void saveShortcut(@NonNull final Context context, @NonNull final ShortcutItem shortcutItem) {
         try {
             shortcutItem.toFile(context);
-        } catch (Exception e) {
+        } catch (final Exception e) {
             e.printStackTrace(); // TODO: handle
         }
     }
