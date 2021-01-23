@@ -27,7 +27,7 @@ public class ShortcutItemManager {
             try {
                 final ShortcutItem item = ShortcutItem.fromFile(context, file);
                 shortcuts.add(item);
-            } catch (Exception e) {
+            } catch (final Exception e) {
                 e.printStackTrace();
             }
         }
