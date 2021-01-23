@@ -113,11 +113,17 @@ public class ShortcutItem extends LauncherItem implements Loadable {
 
         final ShortcutItem newItem;
         switch (iconType) {
-            case ICON_TYPE_BITMAP: newItem = new ShortcutItem(intent, salt, name,
-                new BitmapDrawable(context.getResources(), BitmapFactory.decodeFileDescriptor(fis.getFD()))
-            ); break;
-            case ICON_TYPE_RES:    newItem = new ShortcutItem(intent, salt, name, readString(fis), readString(fis)); break;
-            default:               newItem = new ShortcutItem(intent, salt, name, null); break;
+            case ICON_TYPE_BITMAP:
+                newItem = new ShortcutItem(intent, salt, name,
+                    new BitmapDrawable(context.getResources(), BitmapFactory.decodeFileDescriptor(fis.getFD()))
+                );
+                break;
+            case ICON_TYPE_RES:
+                newItem = new ShortcutItem(intent, salt, name, readString(fis), readString(fis));
+                break;
+            default:
+                newItem = new ShortcutItem(intent, salt, name, null);
+                break;
         }
         fis.close();
         return newItem;
