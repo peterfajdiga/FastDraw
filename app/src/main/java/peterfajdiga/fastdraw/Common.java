@@ -75,6 +75,7 @@ public final class Common {
             case "FILES":
             case "FILESYSTEM":  return context.getDrawable(R.drawable.ic_category_folder);
             case "GAMES":       return context.getDrawable(R.drawable.ic_category_games);
+            case "CONTACTS":
             case "PEOPLE":
             case "SOCIAL":      return context.getDrawable(R.drawable.ic_category_group);
             case "HOME":
