@@ -141,6 +141,7 @@ public class ShortcutItem extends LauncherItem implements Loadable {
                 // We have probably read category (from old version) instead of iconType.
                 // In the old version, iconType followed category, so let's read again and this time we should get the iconType.
                 final ShortcutItem item = fromFileReadIcon(context, file, fis, intent, name, salt, false);
+                file.delete(); // delete the old file
                 item.toFile(context); // save it in the new format
                 System.err.println("Saved new format for file " + item.getFilename());
                 return item;
