@@ -39,6 +39,7 @@ public final class Common {
             case "CLOUD":       return context.getDrawable(R.drawable.ic_category_cloud);
             case "COMPUTER":
             case "PC":          return context.getDrawable(R.drawable.ic_category_computer);
+            case "GARBAGE":
             case "JUNK":
             case "RUBBISH":
             case "TRASH":       return context.getDrawable(R.drawable.ic_category_delete);
