@@ -7,8 +7,8 @@
     <string name="rename_category">Rename category</string>
     <string name="rename">Rename</string>
     <string name="app_info">App info</string>
-    <string name="wallpaper">Select wallpaper</string>
-    <string name="shortcut">Add shortcut</string>
+    <string name="select_wallpaper">Select wallpaper</string>
+    <string name="add_shortcut">Add shortcut</string>
     <string name="remove_shortcut">Remove shortcut</string>
 
     <string name="action_wallpaper">Change wallpaper</string>

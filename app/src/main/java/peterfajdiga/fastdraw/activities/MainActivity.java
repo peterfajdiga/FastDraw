@@ -404,12 +404,12 @@ public class MainActivity extends FragmentActivity implements
 
     public void openWallpaperPicker() {
         final Intent intent = new Intent(Intent.ACTION_SET_WALLPAPER);
-        startActivity(Intent.createChooser(intent, getString(R.string.wallpaper)));
+        startActivity(Intent.createChooser(intent, getString(R.string.select_wallpaper)));
     }
 
     public void showCreateShortcutDialog() {
         final Intent intent = new Intent(Intent.ACTION_CREATE_SHORTCUT);
-        startActivityForResult(Intent.createChooser(intent, getString(R.string.shortcut)), MainActivity.INSTALL_SHORTCUT_REQUEST);
+        startActivityForResult(Intent.createChooser(intent, getString(R.string.add_shortcut)), MainActivity.INSTALL_SHORTCUT_REQUEST);
     }
 
     public void renameCurrentCategory() {
