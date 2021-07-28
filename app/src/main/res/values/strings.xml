@@ -7,12 +7,12 @@
     <string name="rename_category">Rename category</string>
     <string name="rename">Rename</string>
     <string name="app_info">App info</string>
-    <string name="select_wallpaper">Select wallpaper</string>
-    <string name="add_shortcut">Add shortcut</string>
+    <string name="select_wallpaper">Change wallpaper</string>
+    <string name="add_shortcut">Add a shortcut</string>
     <string name="remove_shortcut">Remove shortcut</string>
 
     <string name="action_wallpaper">Change wallpaper</string>
-    <string name="action_shortcut">Create new shortcut</string>
+    <string name="action_shortcut">Add a shortcut</string>
     <string name="action_rename_category">Rename current category</string>
     <string name="action_settings">Open preferences</string>
 
