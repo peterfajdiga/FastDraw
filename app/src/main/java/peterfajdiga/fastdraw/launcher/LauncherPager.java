@@ -101,6 +101,8 @@ public class LauncherPager extends ViewPager {
         for (final LauncherItem item : items) {
             final String categoryName = getItemCategory(item, defaultCategory);
             addLauncherItem(item, categoryName, false);
+            final CategoryArrayAdapter categoryAdapter = (CategoryArrayAdapter)adapter.categoryViews.get(categoryName).getAdapter();
+            modifiedCategories.add(categoryAdapter);
         }
 
         for (final CategoryArrayAdapter categoryAdapter : modifiedCategories) {
