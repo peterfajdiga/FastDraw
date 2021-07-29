@@ -96,6 +96,7 @@ class CategoryArrayAdapter extends ArrayAdapter<LauncherItem> {
             if (item instanceof Loadable && !((Loadable)item).isLoaded()) {
                 final Toast toast = Toast.makeText(getContext(), "Could not load: " + item.getIntent(), Toast.LENGTH_LONG);
                 toast.show();
+                // TODO (BUG): retry?
                 return;
             }
         }

@@ -369,6 +369,8 @@ public class MainActivity extends FragmentActivity implements
 
     @Override
     public void onRequestPermissionsResult(final int requestCode, @NonNull final String[] permissions, @NonNull final int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
         if (requestCode != LauncherPager.LAUNCH_PERMISSION || launchIntent == null) {
             return;
         }
@@ -462,7 +464,7 @@ public class MainActivity extends FragmentActivity implements
     @Override
     public void onAppInstall(String packageName) {
         final AppItem[] appItems = AppItemManager.getAppItems(getPackageManager(), packageName);
-        getPager().addLauncherItems(getString(R.string.default_category), appItems);
+        getPager().addLauncherItems(getString(R.string.default_category), appItems); // TODO (BUG): app item may already be there. check before adding
     }
 
     @Override
