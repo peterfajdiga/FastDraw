@@ -2,8 +2,6 @@ package peterfajdiga.fastdraw.launcher;
 
 import android.app.WallpaperManager;
 import android.content.Context;
-import android.content.Intent;
-import android.os.Bundle;
 import android.util.AttributeSet;
 import android.view.View;
 
@@ -20,9 +18,8 @@ import peterfajdiga.fastdraw.launcher.item.LauncherItem;
 import peterfajdiga.fastdraw.launcher.item.Loadable;
 
 public class LauncherPager extends ViewPager {
-
-    public static final int LAUNCH_PERMISSION = 42;
     private PrefMap itemCategoryMap;
+    private LaunchManager launchManager;
 
     public LauncherPager(@NonNull final Context context) {
         super(context);
@@ -37,6 +34,10 @@ public class LauncherPager extends ViewPager {
     private void init(@NonNull final Context context) {
         setAdapter(new LauncherPagerAdapter(context));
         itemCategoryMap = new PrefMap(context, "categories"); // TODO: pass from outside
+    }
+
+    public void setLaunchManager(@NonNull final LaunchManager launchManager) {
+        this.launchManager = launchManager;
     }
 
     @Override
@@ -120,7 +121,7 @@ public class LauncherPager extends ViewPager {
         final LauncherPagerAdapter adapter = (LauncherPagerAdapter)super.getAdapter();
         CategoryView categoryView = adapter.categoryViews.get(categoryName);
         if (categoryView == null) {
-            categoryView = new CategoryView(getContext());
+            categoryView = new CategoryView(getContext(), launchManager);
             adapter.categoryViews.put(categoryName, categoryView);
         }
 
@@ -203,7 +204,6 @@ public class LauncherPager extends ViewPager {
         void onPagerDoubletap();
         void onPagerPinch();
         void onPagerUnpinch();
-        void setDelayedLaunchIntent(@NonNull Intent launchIntent, @NonNull Bundle launchOpts);
         void onDragStarted(@NonNull View draggedView, @NonNull LauncherItem draggedItem);
     }
 }

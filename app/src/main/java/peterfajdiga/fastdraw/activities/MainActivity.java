@@ -1,5 +1,7 @@
 package peterfajdiga.fastdraw.activities;
 
+import static peterfajdiga.fastdraw.launcher.LaunchManager.PERMISSION_REQUEST_CODE;
+
 import android.animation.LayoutTransition;
 import android.animation.ValueAnimator;
 import android.content.Intent;
@@ -20,7 +22,6 @@ import android.view.DragEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.core.util.Predicate;
@@ -42,6 +43,7 @@ import peterfajdiga.fastdraw.dragdrop.DropZoneCategory;
 import peterfajdiga.fastdraw.dragdrop.DropZoneNewCategory;
 import peterfajdiga.fastdraw.dragdrop.DropZoneRemoveShortcut;
 import peterfajdiga.fastdraw.launcher.AppItemManager;
+import peterfajdiga.fastdraw.launcher.LaunchManager;
 import peterfajdiga.fastdraw.launcher.LauncherPager;
 import peterfajdiga.fastdraw.launcher.ShortcutItemManager;
 import peterfajdiga.fastdraw.launcher.item.AppItem;
@@ -68,8 +70,7 @@ public class MainActivity extends FragmentActivity implements
     private ValueAnimator dragBgAnimator;
 
     private static MainActivity instance;
-    private Intent launchIntent = null;
-    private Bundle launchOpts = null;
+    private LaunchManager launchManager = new LaunchManager(this);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -100,6 +101,7 @@ public class MainActivity extends FragmentActivity implements
         findViewById(R.id.drop_zone_remove_shortcut).setOnDragListener(new DropZoneRemoveShortcut());
 
         LauncherPager appsPager = getPager();
+        appsPager.setLaunchManager(launchManager);
 
         CategoryTabLayout tabContainer = findViewById(R.id.tab_container);
         tabContainer.setupWithViewPager(appsPager);
@@ -371,30 +373,9 @@ public class MainActivity extends FragmentActivity implements
     public void onRequestPermissionsResult(final int requestCode, @NonNull final String[] permissions, @NonNull final int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
 
-        if (requestCode != LauncherPager.LAUNCH_PERMISSION || launchIntent == null) {
-            return;
+        if (requestCode == PERMISSION_REQUEST_CODE) {
+            launchManager.onRequestPermissionsResult(permissions, grantResults);
         }
-        // check permissions
-        for (int i = 0; i < permissions.length; i++) {
-            if (grantResults[i] == PackageManager.PERMISSION_DENIED) {
-                // only calling requires permission
-                // if this changes, TODO: fix string no_permission
-                final String errMessage = getString(R.string.no_permission);
-                final Toast toast = Toast.makeText(this, errMessage, Toast.LENGTH_LONG);
-                toast.show();
-                return;
-            }
-        }
-        // launch
-        startActivity(launchIntent, launchOpts);
-        this.launchIntent = null;
-        this.launchOpts = null;
-    }
-
-    @Override
-    public void setDelayedLaunchIntent(@NonNull final Intent launchIntent, @NonNull final Bundle launchOpts) {
-        this.launchIntent = launchIntent;
-        this.launchOpts = launchOpts;
     }
 
     // actions

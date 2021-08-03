@@ -1,11 +1,6 @@
 package peterfajdiga.fastdraw.launcher;
 
-import android.Manifest;
-import android.app.Activity;
-import android.app.ActivityOptions;
-import android.content.ActivityNotFoundException;
 import android.content.Context;
-import android.content.Intent;
 import android.os.Build;
 import android.view.HapticFeedbackConstants;
 import android.view.MotionEvent;
@@ -13,16 +8,14 @@ import android.view.View;
 import android.view.ViewConfiguration;
 import android.widget.AdapterView;
 import android.widget.GridView;
-import android.widget.Toast;
 
-import androidx.core.app.ActivityCompat;
+import androidx.annotation.NonNull;
 
 import peterfajdiga.fastdraw.Preferences;
 import peterfajdiga.fastdraw.R;
 import peterfajdiga.fastdraw.launcher.item.LauncherItem;
 
 class CategoryView extends GridView {
-
     private static final int LONG_CLICK_TIME = ViewConfiguration.getLongPressTimeout();
     private static final int DOUBLE_CLICK_TIME = ViewConfiguration.getDoubleTapTimeout();
     private static final float LONG_CLICK_MOUSE_MOVE_TOLERANCE = 50; // TODO: separate for DOUBLE_CLICK
@@ -36,7 +29,7 @@ class CategoryView extends GridView {
     protected float pinchStartDistance = 0.0f;
     protected float unpinchStartDistance = Float.MAX_VALUE;
 
-    public CategoryView(final Context context) {
+    public CategoryView(@NonNull final Context context, @NonNull final LaunchManager launchManager) {
         super(context);
 
         if (Preferences.appItemResource == R.layout.app_item) {
@@ -52,39 +45,9 @@ class CategoryView extends GridView {
 
         setOnItemClickListener(new OnItemClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int pos, long id) {
-                LauncherItem app = (LauncherItem)getAdapter().getItem(pos);
-                Intent intent = app.getIntent();
-
-                if (intent == null) {
-                    final String errMessage = context.getString(R.string.no_intent);
-                    final Toast toast = Toast.makeText(context, errMessage, Toast.LENGTH_LONG);
-                    toast.show();
-                    return;
-                }
-
-                // animation
-                ActivityOptions opts;
-                if (Build.VERSION.SDK_INT >= 23) {
-                    opts = ActivityOptions.makeClipRevealAnimation(view, 0, 0, view.getWidth(), view.getHeight());
-                } else {
-                    opts = ActivityOptions.makeScaleUpAnimation(view, 0, 0, view.getWidth(), view.getHeight());
-                }
-
-                switch (intent.getAction()) {
-                    case Intent.ACTION_CALL:
-                        launchWithPermission(intent, opts, Manifest.permission.CALL_PHONE);
-                        break;
-                    default:
-                        try {
-                            context.startActivity(intent, opts.toBundle());
-                        } catch (ActivityNotFoundException | IllegalArgumentException e) {
-                            final String errMessage = context.getString(R.string.no_app);
-                            final Toast toast = Toast.makeText(context, errMessage, Toast.LENGTH_LONG);
-                            toast.show();
-                        }
-                        break;
-                }
+            public void onItemClick(final AdapterView<?> adapterView, final View view, final int pos, final long id) {
+                final LauncherItem item = (LauncherItem)getAdapter().getItem(pos);
+                launchManager.launch(item, view);
             }
         });
 
@@ -106,13 +69,6 @@ class CategoryView extends GridView {
                 return false;
             }
         });
-    }
-
-    private void launchWithPermission(final Intent launchIntent, final ActivityOptions launchOpts, final String permission) {
-        final LauncherPager.Owner owner = getOwner();
-        //assert owner instanceof Activity;
-        ActivityCompat.requestPermissions((Activity)owner, new String[]{permission}, LauncherPager.LAUNCH_PERMISSION);
-        owner.setDelayedLaunchIntent(launchIntent, launchOpts.toBundle());
     }
 
     private LauncherPager.Owner getOwner() {
