@@ -10,7 +10,6 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.Comparator;
 
@@ -94,8 +93,7 @@ class CategoryArrayAdapter extends ArrayAdapter<LauncherItem> {
         for (int i = 0; i < n; i++) {
             final LauncherItem item = getItem(i);
             if (item instanceof Loadable && !((Loadable)item).isLoaded()) {
-                final Toast toast = Toast.makeText(getContext(), "Could not load: " + item.getIntent(), Toast.LENGTH_LONG);
-                toast.show();
+                Log.e("CategoryArrayAdapter", "Could not load launcher item: " + item.getID());
                 // TODO (BUG): retry?
                 return;
             }
