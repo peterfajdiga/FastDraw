@@ -1,5 +1,6 @@
 package peterfajdiga.fastdraw.launcher.item;
 
+import android.app.ActivityOptions;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -8,6 +9,8 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
+import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
@@ -20,9 +23,9 @@ import java.io.InputStream;
 import java.nio.ByteBuffer;
 
 import peterfajdiga.fastdraw.R;
+import peterfajdiga.fastdraw.launcher.LaunchManager;
 
 public class ShortcutItem extends LauncherItem implements Loadable {
-
     private final String label;
     private Drawable icon;
     private final Intent intent;
@@ -61,6 +64,20 @@ public class ShortcutItem extends LauncherItem implements Loadable {
     }
 
     @Override
+    public void launch(final LaunchManager launchManager, final View view) {
+        final Intent intent = getIntent();
+
+        // animation // TODO: deduplicate code
+        ActivityOptions opts;
+        if (Build.VERSION.SDK_INT >= 23) {
+            opts = ActivityOptions.makeClipRevealAnimation(view, 0, 0, view.getWidth(), view.getHeight());
+        } else {
+            opts = ActivityOptions.makeScaleUpAnimation(view, 0, 0, view.getWidth(), view.getHeight());
+        }
+
+        launchManager.launch(intent, opts.toBundle());
+    }
+
     public Intent getIntent() {
         return intent;
     }

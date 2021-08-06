@@ -2,20 +2,16 @@ package peterfajdiga.fastdraw.launcher;
 
 import android.Manifest;
 import android.app.Activity;
-import android.app.ActivityOptions;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.os.Build;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 
 import peterfajdiga.fastdraw.R;
-import peterfajdiga.fastdraw.launcher.item.LauncherItem;
 
 public class LaunchManager {
     public static final int PERMISSION_REQUEST_CODE = 42;
@@ -27,9 +23,7 @@ public class LaunchManager {
         this.activity = activity;
     }
 
-    public void launch(@NonNull final LauncherItem item, @NonNull final View view) {
-        Intent intent = item.getIntent();
-
+    public void launch(final Intent intent, @NonNull final Bundle opts) {
         if (intent == null) {
             final String errMessage = activity.getString(R.string.no_intent);
             final Toast toast = Toast.makeText(activity, errMessage, Toast.LENGTH_LONG);
@@ -37,25 +31,17 @@ public class LaunchManager {
             return;
         }
 
-        // animation
-        ActivityOptions opts;
-        if (Build.VERSION.SDK_INT >= 23) {
-            opts = ActivityOptions.makeClipRevealAnimation(view, 0, 0, view.getWidth(), view.getHeight());
-        } else {
-            opts = ActivityOptions.makeScaleUpAnimation(view, 0, 0, view.getWidth(), view.getHeight());
-        }
-
         switch (intent.getAction()) {
             case Intent.ACTION_CALL:
                 launchWithPermission(intent, opts, Manifest.permission.CALL_PHONE);
                 break;
             default:
-                launch(intent, opts.toBundle());
+                launchWithoutPermission(intent, opts);
                 break;
         }
     }
 
-    private void launch(@NonNull final Intent intent, @NonNull final Bundle opts) {
+    private void launchWithoutPermission(@NonNull final Intent intent, @NonNull final Bundle opts) {
         try {
             activity.startActivity(intent, opts);
         } catch (ActivityNotFoundException | IllegalArgumentException e) {
@@ -65,9 +51,9 @@ public class LaunchManager {
         }
     }
 
-    private void launchWithPermission(@NonNull final Intent launchIntent, @NonNull final ActivityOptions launchOpts, @NonNull final String permission) {
+    private void launchWithPermission(@NonNull final Intent launchIntent, @NonNull final Bundle opts, @NonNull final String permission) {
         ActivityCompat.requestPermissions(activity, new String[]{permission}, PERMISSION_REQUEST_CODE);
-        delayedLaunch = new DelayedLaunch(launchIntent, launchOpts.toBundle());
+        delayedLaunch = new DelayedLaunch(launchIntent, opts);
     }
 
     public void onRequestPermissionsResult(@NonNull final String[] permissions, @NonNull final int[] grantResults) {
