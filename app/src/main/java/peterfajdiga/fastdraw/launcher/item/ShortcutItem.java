@@ -64,7 +64,7 @@ public class ShortcutItem extends LauncherItem implements Loadable {
     }
 
     @Override
-    public void launch(final LaunchManager launchManager, final View view) {
+    public void launch(final Context context, final LaunchManager launchManager, final View view) {
         final Intent intent = getIntent();
 
         // animation // TODO: deduplicate code

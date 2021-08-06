@@ -47,7 +47,7 @@ class CategoryView extends GridView {
             @Override
             public void onItemClick(final AdapterView<?> adapterView, final View view, final int pos, final long id) {
                 final LauncherItem item = (LauncherItem)getAdapter().getItem(pos);
-                item.launch(launchManager, view);
+                item.launch(getContext(), launchManager, view);
             }
         });
 
