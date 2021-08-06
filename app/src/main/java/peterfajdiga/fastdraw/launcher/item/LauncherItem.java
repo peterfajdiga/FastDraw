@@ -9,12 +9,12 @@ import peterfajdiga.fastdraw.launcher.LaunchManager;
 
 public abstract class LauncherItem implements Comparable<LauncherItem> {
     public abstract String getID();
-    public abstract String getLabel();
+    public abstract CharSequence getLabel();
     public abstract Drawable getIcon();
     public abstract void launch(LaunchManager launchManager, View view);
 
     @Override
     public int compareTo(@NonNull LauncherItem other) {
-        return this.getLabel().compareToIgnoreCase(other.getLabel());
+        return this.getLabel().toString().compareToIgnoreCase(other.getLabel().toString());
     }
 }

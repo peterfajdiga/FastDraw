@@ -54,7 +54,7 @@ public class ShortcutItem extends LauncherItem implements Loadable {
     }
 
     @Override
-    public String getLabel() {
+    public CharSequence getLabel() {
         return label;
     }
 

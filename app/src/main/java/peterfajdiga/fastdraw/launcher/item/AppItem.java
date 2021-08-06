@@ -36,7 +36,7 @@ public class AppItem extends LauncherItem implements Loadable {
 
     @Override
     @NonNull
-    public String getLabel() {
+    public CharSequence getLabel() {
         if (isLoaded()) {
             return label;
         } else {
