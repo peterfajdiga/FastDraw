@@ -338,22 +338,19 @@ public class MainActivity extends FragmentActivity implements
      */
     private void cleanUnusedPrefKeysAppsCategories() {
         final PrefMap categories = new PrefMap(this, "categories");
-        categories.clean(new Predicate<String>() {
-            @Override
-            public boolean test(final String id) {
-                final int separatorIndex = id.indexOf('\0');
-                final String type = id.substring(0, separatorIndex);
-                final String tail = id.substring(separatorIndex + 1);
-                switch (type) {
-                    case AppItem.TYPE_KEY:
-                        final String packageName = tail.substring(0, tail.indexOf('\0'));
-                        return !doesPackageExist(packageName);
-                    case ShortcutItem.TYPE_KEY:
-                    case OreoShortcutItem.TYPE_KEY:
-                        return false;
-                    default:
-                        return true;
-                }
+        categories.clean(id -> {
+            final int separatorIndex = id.indexOf('\0');
+            final String type = id.substring(0, separatorIndex);
+            final String tail = id.substring(separatorIndex + 1);
+            switch (type) {
+                case AppItem.TYPE_KEY:
+                    final String packageName = tail.substring(0, tail.indexOf('\0'));
+                    return !doesPackageExist(packageName);
+                case ShortcutItem.TYPE_KEY:
+                case OreoShortcutItem.TYPE_KEY:
+                    return false;
+                default:
+                    return true;
             }
         });
     }
