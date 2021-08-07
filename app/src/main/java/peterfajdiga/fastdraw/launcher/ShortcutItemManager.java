@@ -57,7 +57,12 @@ public class ShortcutItemManager {
                 return ShortcutItem.fromFile(context, file);
             case OreoShortcutItem.TYPE_KEY:
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                    return OreoShortcutItem.fromFile(context, file);
+                    try {
+                        return OreoShortcutItem.fromFile(context, file);
+                    } catch (final Saveable.LeftoverException e) {
+                        file.delete();
+                        return null;
+                    }
                 } else {
                     return null;
                 }

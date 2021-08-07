@@ -26,4 +26,6 @@ public interface Saveable {
         fis.read(stringBytes);
         return new String(stringBytes);
     }
+
+    class LeftoverException extends Exception {}
 }

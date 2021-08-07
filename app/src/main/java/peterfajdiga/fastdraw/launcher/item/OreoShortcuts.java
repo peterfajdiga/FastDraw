@@ -33,7 +33,7 @@ public class OreoShortcuts {
         @NonNull final Context context,
         @NonNull final String packageName,
         @NonNull final String oreoShortcutId
-    ) {
+    ) throws Saveable.LeftoverException {
         final LauncherApps.ShortcutQuery query = new LauncherApps.ShortcutQuery();
         query.setPackage(packageName);
         query.setShortcutIds(Collections.singletonList(oreoShortcutId));
@@ -63,8 +63,8 @@ public class OreoShortcuts {
         }
 
         if (shortcuts.isEmpty()) {
-            Log.e("OreoShortcuts", "No shortcuts found"); // TODO: delete shortcut
-            return null;
+            Log.e("OreoShortcuts", "No shortcuts found");
+            throw new Saveable.LeftoverException();
         }
 
         return shortcuts.get(0);

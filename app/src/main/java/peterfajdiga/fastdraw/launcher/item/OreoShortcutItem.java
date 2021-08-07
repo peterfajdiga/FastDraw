@@ -23,6 +23,7 @@ import java.io.IOException;
 import peterfajdiga.fastdraw.launcher.LaunchManager;
 
 public class OreoShortcutItem extends LauncherItem implements Saveable {
+    // TODO: remove and delete oreo shortcut as soon as target app is uninstalled
     public static final String TYPE_KEY = "oreo";
 
     private final String packageName;
@@ -93,7 +94,7 @@ public class OreoShortcutItem extends LauncherItem implements Saveable {
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Nullable
-    public static OreoShortcutItem fromFile(@NonNull final Context context, @NonNull final File file) throws java.io.IOException, java.net.URISyntaxException {
+    public static OreoShortcutItem fromFile(@NonNull final Context context, @NonNull final File file) throws java.io.IOException, LeftoverException {
         final FileInputStream fis = new FileInputStream(file);
         final String packageName = Saveable.readString(fis);
         final String oreoShortcutId = Saveable.readString(fis);
