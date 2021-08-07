@@ -65,11 +65,6 @@ public class AppItem extends LauncherItem implements Loadable {
         launchManager.launch(intent, opts.toBundle());
     }
 
-    @Override
-    public boolean isRemovable() {
-        return false;
-    }
-
     @NonNull
     private Intent getIntent() {
         final Intent intent = new Intent(Intent.ACTION_MAIN);

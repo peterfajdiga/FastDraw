@@ -513,7 +513,7 @@ public class MainActivity extends FragmentActivity implements
 
         // show type specific drop zones
         findViewById(R.id.drop_zone_app_info).setVisibility(draggedItem instanceof AppItem ? View.VISIBLE : View.GONE);
-        findViewById(R.id.drop_zone_remove_shortcut).setVisibility(draggedItem.isRemovable() ? View.VISIBLE : View.GONE);
+        findViewById(R.id.drop_zone_remove_shortcut).setVisibility(draggedItem instanceof Saveable ? View.VISIBLE : View.GONE);
 
         // set header background
         dragBgAnimator.start();
@@ -564,11 +564,9 @@ public class MainActivity extends FragmentActivity implements
 
     @Override
     public void onDraggedItemRemove() {
-        assert draggedItem.isRemovable();
+        assert draggedItem instanceof Saveable;
         LauncherItem shortcutItem = draggedItem;
         getPager().removeLauncherItem(shortcutItem);
-
-        assert draggedItem instanceof Saveable;
         ShortcutItemManager.deleteShortcut(this, (Saveable)shortcutItem);
     }
 

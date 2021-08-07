@@ -79,11 +79,6 @@ public class OreoShortcutItem extends LauncherItem implements Saveable {
     }
 
     @Override
-    public boolean isRemovable() {
-        return true;
-    }
-
-    @Override
     public void toFile(@NonNull final File file) throws IOException {
         final FileOutputStream fos = new FileOutputStream(file);
         Saveable.writeString(fos, packageName);

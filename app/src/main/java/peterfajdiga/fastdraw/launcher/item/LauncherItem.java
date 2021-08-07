@@ -13,7 +13,6 @@ public abstract class LauncherItem implements Comparable<LauncherItem> {
     public abstract CharSequence getLabel();
     public abstract Drawable getIcon();
     public abstract void launch(Context context, LaunchManager launchManager, View view);
-    public abstract boolean isRemovable();
 
     @Override
     public int compareTo(@NonNull LauncherItem other) {

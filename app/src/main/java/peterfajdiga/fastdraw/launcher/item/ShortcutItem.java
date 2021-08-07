@@ -77,11 +77,6 @@ public class ShortcutItem extends LauncherItem implements Loadable, Saveable {
         launchManager.launch(intent, opts.toBundle());
     }
 
-    @Override
-    public boolean isRemovable() {
-        return true;
-    }
-
     private static Drawable iconFromResource(final Context context, final String packageName, final String resourceName) throws PackageManager.NameNotFoundException {
         final Resources resources = context.getPackageManager().getResourcesForApplication(packageName);
         final int id = resources.getIdentifier(resourceName, null, null);
