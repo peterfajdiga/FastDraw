@@ -13,6 +13,7 @@ import android.os.UserHandle;
 import android.os.UserManager;
 import android.text.TextUtils;
 import android.util.Log;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -20,6 +21,8 @@ import androidx.annotation.RequiresApi;
 
 import java.util.Collections;
 import java.util.List;
+
+import peterfajdiga.fastdraw.R;
 
 public class OreoShortcuts {
     private OreoShortcuts() {}
@@ -41,7 +44,8 @@ public class OreoShortcuts {
 
         final UserHandle user = getRunningUserHandle(launcherApps, userManager);
         if (user == null) {
-            Log.e("OreoShortcuts", "User is locked or not running"); // TODO: toast?
+            Log.e("OreoShortcuts", "User is locked or not running");
+            Toast.makeText(context, context.getResources().getString(R.string.error_oreo_user_handle), Toast.LENGTH_LONG).show();
             return null;
         }
 
@@ -49,10 +53,12 @@ public class OreoShortcuts {
         try {
             shortcuts = launcherApps.getShortcuts(query, user);
         } catch (final IllegalStateException e) {
-            Log.e("OreoShortcuts", "User is locked or not running"); // TODO: toast?
+            Log.e("OreoShortcuts", "User is locked or not running (IllegalStateException)");
+            Toast.makeText(context, context.getResources().getString(R.string.error_oreo_user_handle), Toast.LENGTH_LONG).show();
             return null;
         } catch (final SecurityException e) {
-            Log.e("OreoShortcuts", "Can't load shortcut because Fast Draw is not the default launcher"); // TODO: toast
+            Log.e("OreoShortcuts", "Can't get shortcuts (SecurityException)");
+            Toast.makeText(context, context.getResources().getString(R.string.error_oreo_get_shortcuts), Toast.LENGTH_LONG).show();
             return null;
         }
 
