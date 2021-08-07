@@ -64,8 +64,13 @@ public class AppItem extends LauncherItem implements Loadable {
         launchManager.launch(intent, opts.toBundle());
     }
 
+    @Override
+    public boolean isRemovable() {
+        return false;
+    }
+
     @NonNull
-    public Intent getIntent() {
+    private Intent getIntent() {
         final Intent intent = new Intent(Intent.ACTION_MAIN);
         intent.setComponent(new ComponentName(packageName, activityName));
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);

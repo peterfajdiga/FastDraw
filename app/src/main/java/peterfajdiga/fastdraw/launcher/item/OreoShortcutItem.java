@@ -17,7 +17,6 @@ import androidx.annotation.RequiresApi;
 import peterfajdiga.fastdraw.launcher.LaunchManager;
 
 public class OreoShortcutItem extends LauncherItem {
-    // TODO: make OreoShortcutItem removable
     private final String packageName;
     private final String oreoShortcutId;
     private final CharSequence label;
@@ -69,6 +68,11 @@ public class OreoShortcutItem extends LauncherItem {
         }
 
         launcherApps.startShortcut(packageName, oreoShortcutId, view.getClipBounds(), null, user); // TODO: opts (animation)
+    }
+
+    @Override
+    public boolean isRemovable() {
+        return true;
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)

@@ -507,7 +507,7 @@ public class MainActivity extends FragmentActivity implements
 
         // show type specific drop zones
         findViewById(R.id.drop_zone_app_info).setVisibility(draggedItem instanceof AppItem ? View.VISIBLE : View.GONE);
-        findViewById(R.id.drop_zone_remove_shortcut).setVisibility(draggedItem instanceof ShortcutItem ? View.VISIBLE : View.GONE);
+        findViewById(R.id.drop_zone_remove_shortcut).setVisibility(draggedItem.isRemovable() ? View.VISIBLE : View.GONE);
 
         // set header background
         dragBgAnimator.start();

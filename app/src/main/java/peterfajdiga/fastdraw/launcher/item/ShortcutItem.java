@@ -65,8 +65,6 @@ public class ShortcutItem extends LauncherItem implements Loadable {
 
     @Override
     public void launch(final Context context, final LaunchManager launchManager, final View view) {
-        final Intent intent = getIntent();
-
         // animation // TODO: deduplicate code
         ActivityOptions opts;
         if (Build.VERSION.SDK_INT >= 23) {
@@ -78,8 +76,9 @@ public class ShortcutItem extends LauncherItem implements Loadable {
         launchManager.launch(intent, opts.toBundle());
     }
 
-    public Intent getIntent() {
-        return intent;
+    @Override
+    public boolean isRemovable() {
+        return true;
     }
 
     private String getFilename() {
