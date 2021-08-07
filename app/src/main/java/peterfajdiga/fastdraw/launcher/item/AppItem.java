@@ -16,6 +16,7 @@ import peterfajdiga.fastdraw.launcher.AppItemManager;
 import peterfajdiga.fastdraw.launcher.LaunchManager;
 
 public class AppItem extends LauncherItem implements Loadable {
+    public static final String TYPE_KEY = "app";
 
     private String label;
     private Drawable icon;
@@ -31,7 +32,7 @@ public class AppItem extends LauncherItem implements Loadable {
     @Override
     @NonNull
     public String getID() {
-        return "app\0" + packageName + "\0" + activityName;
+        return TYPE_KEY + "\0" + packageName + "\0" + activityName;
     }
 
     @Override

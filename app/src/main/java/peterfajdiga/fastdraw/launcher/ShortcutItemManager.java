@@ -8,16 +8,22 @@ import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 
 import java.io.File;
+import java.io.IOException;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+import peterfajdiga.fastdraw.launcher.item.LauncherItem;
 import peterfajdiga.fastdraw.launcher.item.OreoShortcutItem;
+import peterfajdiga.fastdraw.launcher.item.OreoShortcuts;
 import peterfajdiga.fastdraw.launcher.item.Saveable;
 import peterfajdiga.fastdraw.launcher.item.ShortcutItem;
 
@@ -25,24 +31,52 @@ public class ShortcutItemManager {
     private ShortcutItemManager() {}
 
     @NonNull
-    public static ShortcutItem[] getShortcutItems(@NonNull final Context context) {
-        final List<ShortcutItem> shortcuts = new ArrayList<>();
-        final File shortcutsDir = getShortcutsDir(context, "shortcuts");
+    public static List<LauncherItem> getShortcutItems(@NonNull final Context context) {
+        final List<LauncherItem> shortcuts = new ArrayList<>();
+        final File shortcutsDir = getShortcutsDir(context);
         shortcutsDir.mkdir();
         for (final File file : shortcutsDir.listFiles()) {
             try {
-                final ShortcutItem item = ShortcutItem.fromFile(context, file);
+                final LauncherItem item = readLauncherItem(context, file);
+                if (item == null) {
+                    continue;
+                }
                 shortcuts.add(item);
             } catch (final Exception e) {
                 e.printStackTrace();
             }
         }
-        return shortcuts.toArray(new ShortcutItem[0]);
+        return shortcuts;
+    }
+
+    @Nullable
+    private static LauncherItem readLauncherItem(@NonNull final Context context, @NonNull final File file) throws IOException, URISyntaxException {
+        final String typeKey = getTypeKey(file);
+        switch (typeKey) {
+            case ShortcutItem.TYPE_KEY:
+                return ShortcutItem.fromFile(context, file);
+            case OreoShortcutItem.TYPE_KEY:
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    return OreoShortcutItem.fromFile(context, file);
+                } else {
+                    return null;
+                }
+            default:
+                Log.w("ShortcutItemManager", "Unknown file type key: " + typeKey);
+                return null;
+        }
+    }
+
+    @NonNull
+    private static String getTypeKey(@NonNull final File file) {
+        final String filename = file.getName();
+        final int index = filename.indexOf("_");
+        return filename.substring(0, index);
     }
 
     public static void saveShortcut(@NonNull final Context context, @NonNull final Saveable item) {
         try {
-            final File file = new File(getShortcutsDir(context, item.getTypeKey()), item.getFilename());
+            final File file = new File(getShortcutsDir(context), item.getFilename());
             item.toFile(file);
         } catch (final Exception e) {
             e.printStackTrace(); // TODO: handle
@@ -50,13 +84,13 @@ public class ShortcutItemManager {
     }
 
     public static void deleteShortcut(@NonNull final Context context, @NonNull final Saveable item) {
-        final File file = new File(getShortcutsDir(context, item.getTypeKey()), item.getFilename());
+        final File file = new File(getShortcutsDir(context), item.getFilename());
         file.delete();
     }
 
     @NonNull
-    private static File getShortcutsDir(@NonNull final Context context, @NonNull final String typeKey) {
-        return new File(context.getFilesDir(), typeKey);
+    private static File getShortcutsDir(@NonNull final Context context) {
+        return new File(context.getFilesDir(), "shortcuts");
     }
 
     @NonNull
@@ -75,23 +109,20 @@ public class ShortcutItemManager {
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
-    @NonNull
+    @Nullable
     public static OreoShortcutItem oreoShortcutFromIntent(@NonNull final Context context, @NonNull final Intent data) {
         final LauncherApps.PinItemRequest pinItemRequest = data.getParcelableExtra(LauncherApps.EXTRA_PIN_ITEM_REQUEST);
+        if (!pinItemRequest.accept()) {
+            return null;
+        }
         final ShortcutInfo shortcutInfo = pinItemRequest.getShortcutInfo();
 
         return new OreoShortcutItem(
             shortcutInfo.getPackage(),
             shortcutInfo.getId(),
-            shortcutInfo.getShortLabel(), // TODO: use long is short unavailable
-            getOreoShortcutIcon(context, shortcutInfo)
+            OreoShortcuts.getLabel(shortcutInfo),
+            OreoShortcuts.getIcon(context, shortcutInfo)
         );
-    }
-
-    @RequiresApi(api = Build.VERSION_CODES.N_MR1)
-    private static Drawable getOreoShortcutIcon(@NonNull final Context context, @NonNull ShortcutInfo shortcutInfo) {
-        @NonNull final LauncherApps launcherApps = (LauncherApps)context.getSystemService(Context.LAUNCHER_APPS_SERVICE);
-        return launcherApps.getShortcutIconDrawable(shortcutInfo, 0);
     }
 
     @NonNull

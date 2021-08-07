@@ -31,6 +31,8 @@ import androidx.fragment.app.FragmentActivity;
 
 import com.google.android.material.tabs.TabLayout;
 
+import java.util.List;
+
 import peterfajdiga.fastdraw.NavigationBarAnimator;
 import peterfajdiga.fastdraw.PrefMap;
 import peterfajdiga.fastdraw.Preferences;
@@ -50,6 +52,7 @@ import peterfajdiga.fastdraw.launcher.ShortcutItemManager;
 import peterfajdiga.fastdraw.launcher.item.AppItem;
 import peterfajdiga.fastdraw.launcher.item.LauncherItem;
 import peterfajdiga.fastdraw.launcher.item.OreoShortcutItem;
+import peterfajdiga.fastdraw.launcher.item.Saveable;
 import peterfajdiga.fastdraw.launcher.item.ShortcutItem;
 import peterfajdiga.fastdraw.receivers.InstallAppReceiver;
 import peterfajdiga.fastdraw.views.CategoryTabLayout;
@@ -174,9 +177,11 @@ public class MainActivity extends FragmentActivity implements
             final String action = intent.getAction();
             if (action.equals(LauncherApps.ACTION_CONFIRM_PIN_SHORTCUT) && android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
                 final OreoShortcutItem newShortcut = ShortcutItemManager.oreoShortcutFromIntent(this, intent);
-                final String shortcutCategoryName = getString(R.string.default_shortcut_category);
-                addShortcut(newShortcut, shortcutCategoryName);
-                getPager().showCategory(shortcutCategoryName);
+                if (newShortcut != null) {
+                    final String shortcutCategoryName = getString(R.string.default_shortcut_category);
+                    addShortcut(newShortcut, shortcutCategoryName);
+                    getPager().showCategory(shortcutCategoryName);
+                }
             }
         }
     }
@@ -277,7 +282,7 @@ public class MainActivity extends FragmentActivity implements
     }
 
     private void addShortcut(@NonNull final OreoShortcutItem shortcutItem, @NonNull final String categoryName) {
-        // ShortcutItemManager.saveShortcut(this, shortcutItem); // TODO
+        ShortcutItemManager.saveShortcut(this, shortcutItem);
         getPager().moveLauncherItem(shortcutItem, categoryName, false);
     }
 
@@ -285,8 +290,8 @@ public class MainActivity extends FragmentActivity implements
         final AppItem[] appItems = AppItemManager.getAppItems(getPackageManager());
         getPager().addLauncherItems(getString(R.string.default_category), appItems);
 
-        final ShortcutItem[] shortcutItems = ShortcutItemManager.getShortcutItems(this);
-        getPager().addLauncherItems("LOST&FOUND", shortcutItems);
+        final List<LauncherItem> shortcutItems = ShortcutItemManager.getShortcutItems(this);
+        getPager().addLauncherItems("LOST&FOUND", shortcutItems.toArray(new LauncherItem[0]));
     }
 
     /**
@@ -340,10 +345,11 @@ public class MainActivity extends FragmentActivity implements
                 final String type = id.substring(0, separatorIndex);
                 final String tail = id.substring(separatorIndex + 1);
                 switch (type) {
-                    case "app":
+                    case AppItem.TYPE_KEY:
                         final String packageName = tail.substring(0, tail.indexOf('\0'));
                         return !doesPackageExist(packageName);
-                    case "shortcut":
+                    case ShortcutItem.TYPE_KEY:
+                    case OreoShortcutItem.TYPE_KEY:
                         return false;
                     default:
                         return true;
@@ -558,10 +564,12 @@ public class MainActivity extends FragmentActivity implements
 
     @Override
     public void onDraggedItemRemove() {
-        assert draggedItem instanceof ShortcutItem;
-        ShortcutItem shortcutItem = (ShortcutItem)draggedItem;
+        assert draggedItem.isRemovable();
+        LauncherItem shortcutItem = draggedItem;
         getPager().removeLauncherItem(shortcutItem);
-        ShortcutItemManager.deleteShortcut(this, shortcutItem);
+
+        assert draggedItem instanceof Saveable;
+        ShortcutItemManager.deleteShortcut(this, (Saveable)shortcutItem);
     }
 
     @Override

@@ -2,6 +2,7 @@ package peterfajdiga.fastdraw.launcher.item;
 
 import android.content.Context;
 import android.content.pm.LauncherApps;
+import android.content.pm.ShortcutInfo;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.UserHandle;
@@ -15,11 +16,15 @@ import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 
 import peterfajdiga.fastdraw.launcher.LaunchManager;
 
 public class OreoShortcutItem extends LauncherItem implements Saveable {
+    public static final String TYPE_KEY = "oreo";
+
     private final String packageName;
     private final String oreoShortcutId;
     private final CharSequence label;
@@ -35,7 +40,7 @@ public class OreoShortcutItem extends LauncherItem implements Saveable {
 
     @Override
     public String getID() {
-        return "oreo\0" + (packageName + oreoShortcutId).hashCode(); // TODO: add salt?
+        return TYPE_KEY + "\0" + (packageName + oreoShortcutId).hashCode(); // TODO: add salt?
     }
 
     @Override
@@ -64,7 +69,7 @@ public class OreoShortcutItem extends LauncherItem implements Saveable {
             return;
         }
 
-        final UserHandle user = getRunningUserHandle(launcherApps, userManager);
+        final UserHandle user = OreoShortcuts.getRunningUserHandle(launcherApps, userManager);
         if (user == null) {
             Log.e("OreoShortcutItem", "user is locked or not running"); // TODO: toast?
             return;
@@ -78,29 +83,37 @@ public class OreoShortcutItem extends LauncherItem implements Saveable {
         return true;
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.O)
-    @Nullable
-    private UserHandle getRunningUserHandle(@NonNull final LauncherApps launcherApps, @NonNull final UserManager userManager) {
-        for (final UserHandle user : launcherApps.getProfiles()) {
-            if (userManager.isUserRunning(user) && userManager.isUserUnlocked(user)) {
-                return user;
-            }
-        }
-        return null;
-    }
-
     @Override
     public void toFile(@NonNull final File file) throws IOException {
-        file.createNewFile(); // all data is in filename
-    }
-
-    @Override
-    public String getTypeKey() {
-        return "oreo-shortcuts";
+        final FileOutputStream fos = new FileOutputStream(file);
+        Saveable.writeString(fos, packageName);
+        Saveable.writeString(fos, oreoShortcutId);
+        fos.close();
     }
 
     @Override
     public String getFilename() {
         return getID().replace('\0', '_');
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    @Nullable
+    public static OreoShortcutItem fromFile(@NonNull final Context context, @NonNull final File file) throws java.io.IOException, java.net.URISyntaxException {
+        final FileInputStream fis = new FileInputStream(file);
+        final String packageName = Saveable.readString(fis);
+        final String oreoShortcutId = Saveable.readString(fis);
+        fis.close();
+
+        final ShortcutInfo shortcutInfo = OreoShortcuts.getShortcutInfo(context, packageName, oreoShortcutId);
+        if (shortcutInfo == null) {
+            return null;
+        }
+
+        return new OreoShortcutItem(
+            packageName,
+            oreoShortcutId,
+            OreoShortcuts.getLabel(shortcutInfo),
+            OreoShortcuts.getIcon(context, shortcutInfo)
+        );
     }
 }

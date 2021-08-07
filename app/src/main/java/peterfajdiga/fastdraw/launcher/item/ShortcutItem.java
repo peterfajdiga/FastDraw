@@ -19,14 +19,14 @@ import androidx.core.content.res.ResourcesCompat;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.io.InputStream;
-import java.nio.ByteBuffer;
 
 import peterfajdiga.fastdraw.R;
 import peterfajdiga.fastdraw.launcher.LaunchManager;
 import peterfajdiga.fastdraw.launcher.ShortcutItemManager;
 
 public class ShortcutItem extends LauncherItem implements Loadable, Saveable {
+    public static final String TYPE_KEY = "shortcut";
+
     private final String label;
     private Drawable icon;
     private final Intent intent;
@@ -51,7 +51,7 @@ public class ShortcutItem extends LauncherItem implements Loadable, Saveable {
     @Override
     @NonNull
     public String getID() {
-        return "shortcut\0" + intent.toUri(0).hashCode() + "\0" + salt;
+        return TYPE_KEY + "\0" + intent.toUri(0).hashCode() + "\0" + salt;
     }
 
     @Override
@@ -96,25 +96,20 @@ public class ShortcutItem extends LauncherItem implements Loadable, Saveable {
     @Override
     public void toFile(@NonNull final File file) throws java.io.IOException {
         final String uri = intent.toUri(0);
-        final FileOutputStream fos = new FileOutputStream(file); // ID contains salt
-        writeString(fos, uri);
-        writeString(fos, label);
+        final FileOutputStream fos = new FileOutputStream(file); // filename contains salt
+        Saveable.writeString(fos, uri);
+        Saveable.writeString(fos, label);
         if (iconResourceName != null) {
-            writeString(fos, ICON_TYPE_RES);
-            writeString(fos, iconPackageName);
-            writeString(fos, iconResourceName);
+            Saveable.writeString(fos, ICON_TYPE_RES);
+            Saveable.writeString(fos, iconPackageName);
+            Saveable.writeString(fos, iconResourceName);
         } else if (icon != null && icon instanceof BitmapDrawable) {
-            writeString(fos, ICON_TYPE_BITMAP);
+            Saveable.writeString(fos, ICON_TYPE_BITMAP);
             ((BitmapDrawable)icon).getBitmap().compress(Bitmap.CompressFormat.PNG, 100, fos);
         } else {
-            writeString(fos, ICON_TYPE_NONE);
+            Saveable.writeString(fos, ICON_TYPE_NONE);
         }
         fos.close();
-    }
-
-    @Override
-    public String getTypeKey() {
-        return "shortcuts";
     }
 
     @Override
@@ -129,10 +124,12 @@ public class ShortcutItem extends LauncherItem implements Loadable, Saveable {
         final int saltIndex = filename.lastIndexOf('_') + 1;
         final String salt = filename.substring(saltIndex); // salt is in filename
 
-        final Intent intent = Intent.parseUri(readString(fis), 0);
-        final String name = readString(fis);
+        final Intent intent = Intent.parseUri(Saveable.readString(fis), 0);
+        final String name = Saveable.readString(fis);
 
-        return fromFileReadIcon(context, file, fis, intent, name, salt, true);
+        final ShortcutItem shortcutItem = fromFileReadIcon(context, file, fis, intent, name, salt, true);
+        fis.close();
+        return shortcutItem;
     }
 
     private static ShortcutItem fromFileReadIcon(
@@ -144,14 +141,14 @@ public class ShortcutItem extends LauncherItem implements Loadable, Saveable {
         @NonNull final String salt,
         final boolean tryOldFormat
     ) throws java.io.IOException {
-        final String iconType = readString(fis);
+        final String iconType = Saveable.readString(fis);
         switch (iconType) {
             case ICON_TYPE_BITMAP:
                 return new ShortcutItem(intent, salt, name,
                     new BitmapDrawable(context.getResources(), BitmapFactory.decodeFileDescriptor(fis.getFD()))
                 );
             case ICON_TYPE_RES:
-                return new ShortcutItem(intent, salt, name, readString(fis), readString(fis));
+                return new ShortcutItem(intent, salt, name, Saveable.readString(fis), Saveable.readString(fis));
             case ICON_TYPE_NONE:
                 return new ShortcutItem(intent, salt, name, null);
             default:
@@ -165,22 +162,6 @@ public class ShortcutItem extends LauncherItem implements Loadable, Saveable {
                 ShortcutItemManager.saveShortcut(context, item); // save it in the new format
                 return item;
         }
-    }
-
-    private static void writeString(@NonNull final FileOutputStream fos, @NonNull final String string) throws java.io.IOException {
-        final byte[] stringBytes = string.getBytes();
-        fos.write(ByteBuffer.allocate(4).putInt(stringBytes.length).array());
-        fos.write(stringBytes);
-    }
-
-    private static String readString(@NonNull final InputStream fis) throws java.io.IOException {
-        final byte[] stringLengthBytes = new byte[4];
-        fis.read(stringLengthBytes);
-        int stringLength = ByteBuffer.wrap(stringLengthBytes).getInt();
-
-        final byte[] stringBytes = new byte[stringLength];
-        fis.read(stringBytes);
-        return new String(stringBytes);
     }
 
 
