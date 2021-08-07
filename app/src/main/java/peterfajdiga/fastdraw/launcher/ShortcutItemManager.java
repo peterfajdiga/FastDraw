@@ -18,6 +18,7 @@ import java.util.List;
 import java.util.UUID;
 
 import peterfajdiga.fastdraw.launcher.item.OreoShortcutItem;
+import peterfajdiga.fastdraw.launcher.item.Saveable;
 import peterfajdiga.fastdraw.launcher.item.ShortcutItem;
 
 public class ShortcutItemManager {
@@ -26,7 +27,7 @@ public class ShortcutItemManager {
     @NonNull
     public static ShortcutItem[] getShortcutItems(@NonNull final Context context) {
         final List<ShortcutItem> shortcuts = new ArrayList<>();
-        final File shortcutsDir = getShortcutsDir(context);
+        final File shortcutsDir = getShortcutsDir(context, "shortcuts");
         shortcutsDir.mkdir();
         for (final File file : shortcutsDir.listFiles()) {
             try {
@@ -39,28 +40,23 @@ public class ShortcutItemManager {
         return shortcuts.toArray(new ShortcutItem[0]);
     }
 
-    public static void saveShortcut(@NonNull final Context context, @NonNull final ShortcutItem shortcutItem) {
+    public static void saveShortcut(@NonNull final Context context, @NonNull final Saveable item) {
         try {
-            final File file = new File(getShortcutsDir(context), getShortcutFilename(shortcutItem));
-            shortcutItem.toFile(file);
+            final File file = new File(getShortcutsDir(context, item.getTypeKey()), item.getFilename());
+            item.toFile(file);
         } catch (final Exception e) {
             e.printStackTrace(); // TODO: handle
         }
     }
 
-    public static void deleteShortcut(@NonNull final Context context, @NonNull final ShortcutItem shortcutItem) {
-        final File file = new File(getShortcutsDir(context), getShortcutFilename(shortcutItem));
+    public static void deleteShortcut(@NonNull final Context context, @NonNull final Saveable item) {
+        final File file = new File(getShortcutsDir(context, item.getTypeKey()), item.getFilename());
         file.delete();
     }
 
     @NonNull
-    private static File getShortcutsDir(@NonNull final Context context) {
-        return new File(context.getFilesDir(), "shortcuts");
-    }
-
-    @NonNull
-    private static String getShortcutFilename(@NonNull final ShortcutItem shortcutItem) {
-        return shortcutItem.getID().replace('\0', '_');
+    private static File getShortcutsDir(@NonNull final Context context, @NonNull final String typeKey) {
+        return new File(context.getFilesDir(), typeKey);
     }
 
     @NonNull

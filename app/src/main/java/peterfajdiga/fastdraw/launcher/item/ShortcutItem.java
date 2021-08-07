@@ -26,7 +26,7 @@ import peterfajdiga.fastdraw.R;
 import peterfajdiga.fastdraw.launcher.LaunchManager;
 import peterfajdiga.fastdraw.launcher.ShortcutItemManager;
 
-public class ShortcutItem extends LauncherItem implements Loadable {
+public class ShortcutItem extends LauncherItem implements Loadable, Saveable {
     private final String label;
     private Drawable icon;
     private final Intent intent;
@@ -92,6 +92,8 @@ public class ShortcutItem extends LauncherItem implements Loadable {
     private static final String ICON_TYPE_NONE   = "n";
     private static final String ICON_TYPE_BITMAP = "b";
     private static final String ICON_TYPE_RES    = "r";
+
+    @Override
     public void toFile(@NonNull final File file) throws java.io.IOException {
         final String uri = intent.toUri(0);
         final FileOutputStream fos = new FileOutputStream(file); // ID contains salt
@@ -108,6 +110,16 @@ public class ShortcutItem extends LauncherItem implements Loadable {
             writeString(fos, ICON_TYPE_NONE);
         }
         fos.close();
+    }
+
+    @Override
+    public String getTypeKey() {
+        return "shortcuts";
+    }
+
+    @Override
+    public String getFilename() {
+        return getID().replace('\0', '_');
     }
 
     public static ShortcutItem fromFile(@NonNull final Context context, @NonNull final File file) throws java.io.IOException, java.net.URISyntaxException {
