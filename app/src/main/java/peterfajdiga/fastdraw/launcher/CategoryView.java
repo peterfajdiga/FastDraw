@@ -5,9 +5,7 @@ import android.content.Context;
 import android.os.Build;
 import android.view.HapticFeedbackConstants;
 import android.view.MotionEvent;
-import android.view.View;
 import android.view.ViewConfiguration;
-import android.widget.AdapterView;
 import android.widget.GridView;
 
 import androidx.annotation.NonNull;
@@ -44,39 +42,33 @@ class CategoryView extends GridView {
 
         setAdapter(new CategoryArrayAdapter(context));
 
-        setOnItemClickListener(new OnItemClickListener() {
-            @Override
-            public void onItemClick(final AdapterView<?> adapterView, final View view, final int pos, final long id) {
-                final LauncherItem item = (LauncherItem)getAdapter().getItem(pos);
+        setOnItemClickListener((adapterView, view, pos, id) -> {
+            final LauncherItem item = (LauncherItem)getAdapter().getItem(pos);
 
-                ActivityOptions opts;
-                if (Build.VERSION.SDK_INT >= 23) {
-                    opts = ActivityOptions.makeClipRevealAnimation(view, 0, 0, view.getWidth(), view.getHeight());
-                } else {
-                    opts = ActivityOptions.makeScaleUpAnimation(view, 0, 0, view.getWidth(), view.getHeight());
-                }
-
-                item.launch(getContext(), launchManager, opts.toBundle(), view.getClipBounds());
+            ActivityOptions opts;
+            if (Build.VERSION.SDK_INT >= 23) {
+                opts = ActivityOptions.makeClipRevealAnimation(view, 0, 0, view.getWidth(), view.getHeight());
+            } else {
+                opts = ActivityOptions.makeScaleUpAnimation(view, 0, 0, view.getWidth(), view.getHeight());
             }
+
+            item.launch(getContext(), launchManager, opts.toBundle(), view.getClipBounds());
         });
 
         final LauncherPager.Owner owner = getOwner();
-        setOnItemLongClickListener(new OnItemLongClickListener() {
-            @Override
-            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                view.performHapticFeedback(HapticFeedbackConstants.LONG_PRESS);
+        setOnItemLongClickListener((parent, view, position, id) -> {
+            view.performHapticFeedback(HapticFeedbackConstants.LONG_PRESS);
 
-                // start drag
-                final View.DragShadowBuilder shadow = new OffsetDragShadowBuilder(view, interceptTouchX, interceptTouchY);
-                if (Build.VERSION.SDK_INT < 24) {
-                    view.startDrag(null, shadow, null, 0);
-                } else {
-                    view.startDragAndDrop(null, shadow, null, 0);
-                }
-                owner.onDragStarted(view, (LauncherItem)parent.getItemAtPosition(position));
-
-                return false;
+            // start drag
+            final DragShadowBuilder shadow = new OffsetDragShadowBuilder(view, interceptTouchX, interceptTouchY);
+            if (Build.VERSION.SDK_INT < 24) {
+                view.startDrag(null, shadow, null, 0);
+            } else {
+                view.startDragAndDrop(null, shadow, null, 0);
             }
+            owner.onDragStarted(view, (LauncherItem)parent.getItemAtPosition(position));
+
+            return false;
         });
     }
 
