@@ -41,13 +41,23 @@ public class OreoShortcuts {
 
         final UserHandle user = getRunningUserHandle(launcherApps, userManager);
         if (user == null) {
-            Log.e("OreoShortcuts", "user is locked or not running"); // TODO: toast?
+            Log.e("OreoShortcuts", "User is locked or not running"); // TODO: toast?
             return null;
         }
 
-        final List<ShortcutInfo> shortcuts = launcherApps.getShortcuts(query, user);
+        final List<ShortcutInfo> shortcuts;
+        try {
+            shortcuts = launcherApps.getShortcuts(query, user);
+        } catch (final IllegalStateException e) {
+            Log.e("OreoShortcuts", "User is locked or not running"); // TODO: toast?
+            return null;
+        } catch (final SecurityException e) {
+            Log.e("OreoShortcuts", "Can't load shortcut because Fast Draw is not the default launcher"); // TODO: toast
+            return null;
+        }
+
         if (shortcuts.isEmpty()) {
-            Log.e("OreoShortcuts", "no shortcuts found"); // TODO: toast?
+            Log.e("OreoShortcuts", "No shortcuts found"); // TODO: delete shortcut
             return null;
         }
 
