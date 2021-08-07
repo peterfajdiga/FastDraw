@@ -2,17 +2,22 @@ package peterfajdiga.fastdraw.launcher;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.LauncherApps;
+import android.content.pm.ShortcutInfo;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+import peterfajdiga.fastdraw.launcher.item.OreoShortcutItem;
 import peterfajdiga.fastdraw.launcher.item.ShortcutItem;
 
 public class ShortcutItemManager {
@@ -70,6 +75,26 @@ public class ShortcutItemManager {
             final Intent.ShortcutIconResource iconResource = data.getParcelableExtra(Intent.EXTRA_SHORTCUT_ICON_RESOURCE);
             return new ShortcutItem(launchIntent, generateSalt(), name, iconResource.packageName, iconResource.resourceName);
         }
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    @NonNull
+    public static OreoShortcutItem oreoShortcutFromIntent(@NonNull final Context context, @NonNull final Intent data) {
+        final LauncherApps.PinItemRequest pinItemRequest = data.getParcelableExtra(LauncherApps.EXTRA_PIN_ITEM_REQUEST);
+        final ShortcutInfo shortcutInfo = pinItemRequest.getShortcutInfo();
+
+        return new OreoShortcutItem(
+            shortcutInfo.getPackage(),
+            shortcutInfo.getId(),
+            shortcutInfo.getShortLabel(), // TODO: use long is short unavailable
+            getOreoShortcutIcon(context, shortcutInfo)
+        );
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N_MR1)
+    private static Drawable getOreoShortcutIcon(@NonNull final Context context, @NonNull ShortcutInfo shortcutInfo) {
+        @NonNull final LauncherApps launcherApps = (LauncherApps)context.getSystemService(Context.LAUNCHER_APPS_SERVICE);
+        return launcherApps.getShortcutIconDrawable(shortcutInfo, 0);
     }
 
     @NonNull

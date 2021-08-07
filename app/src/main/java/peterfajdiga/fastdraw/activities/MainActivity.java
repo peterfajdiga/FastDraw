@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
+import android.content.pm.LauncherApps;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.graphics.LightingColorFilter;
@@ -48,6 +49,7 @@ import peterfajdiga.fastdraw.launcher.LauncherPager;
 import peterfajdiga.fastdraw.launcher.ShortcutItemManager;
 import peterfajdiga.fastdraw.launcher.item.AppItem;
 import peterfajdiga.fastdraw.launcher.item.LauncherItem;
+import peterfajdiga.fastdraw.launcher.item.OreoShortcutItem;
 import peterfajdiga.fastdraw.launcher.item.ShortcutItem;
 import peterfajdiga.fastdraw.receivers.InstallAppReceiver;
 import peterfajdiga.fastdraw.views.CategoryTabLayout;
@@ -166,6 +168,17 @@ public class MainActivity extends FragmentActivity implements
         appChangeFilter.addAction(Intent.ACTION_PACKAGE_CHANGED);
         appChangeFilter.addDataScheme("package");
         registerReceiver(installAppReceiver, appChangeFilter);
+
+        final Intent intent = getIntent();
+        if (intent != null) {
+            final String action = intent.getAction();
+            if (action.equals(LauncherApps.ACTION_CONFIRM_PIN_SHORTCUT) && android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+                final OreoShortcutItem newShortcut = ShortcutItemManager.oreoShortcutFromIntent(this, intent);
+                final String shortcutCategoryName = getString(R.string.default_shortcut_category);
+                addShortcut(newShortcut, shortcutCategoryName);
+                getPager().showCategory(shortcutCategoryName);
+            }
+        }
     }
 
     private void onFirstRun() {
@@ -252,11 +265,20 @@ public class MainActivity extends FragmentActivity implements
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == INSTALL_SHORTCUT_REQUEST && resultCode == RESULT_OK) {
-            ShortcutItem newShortcut = ShortcutItemManager.shortcutFromIntent(this, data);
-            ShortcutItemManager.saveShortcut(this, newShortcut);
-            getPager().moveLauncherItem(newShortcut, getPager().getCurrentCategoryName(), false);
+            final ShortcutItem newShortcut = ShortcutItemManager.shortcutFromIntent(this, data);
+            addShortcut(newShortcut, getPager().getCurrentCategoryName());
         }
         super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    private void addShortcut(@NonNull final ShortcutItem shortcutItem, @NonNull final String categoryName) {
+        ShortcutItemManager.saveShortcut(this, shortcutItem);
+        getPager().moveLauncherItem(shortcutItem, categoryName, false);
+    }
+
+    private void addShortcut(@NonNull final OreoShortcutItem shortcutItem, @NonNull final String categoryName) {
+        // ShortcutItemManager.saveShortcut(this, shortcutItem); // TODO
+        getPager().moveLauncherItem(shortcutItem, categoryName, false);
     }
 
     private void loadLauncherItems() {
