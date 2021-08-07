@@ -26,7 +26,7 @@ public class ShortcutItemManager {
     @NonNull
     public static ShortcutItem[] getShortcutItems(@NonNull final Context context) {
         final List<ShortcutItem> shortcuts = new ArrayList<>();
-        final File shortcutsDir = ShortcutItem.getShortcutsDir(context);
+        final File shortcutsDir = getShortcutsDir(context);
         shortcutsDir.mkdir();
         for (final File file : shortcutsDir.listFiles()) {
             try {
@@ -41,7 +41,8 @@ public class ShortcutItemManager {
 
     public static void saveShortcut(@NonNull final Context context, @NonNull final ShortcutItem shortcutItem) {
         try {
-            shortcutItem.toFile(context);
+            final File file = new File(getShortcutsDir(context), getShortcutFilename(shortcutItem));
+            shortcutItem.toFile(file);
         } catch (final Exception e) {
             e.printStackTrace(); // TODO: handle
         }

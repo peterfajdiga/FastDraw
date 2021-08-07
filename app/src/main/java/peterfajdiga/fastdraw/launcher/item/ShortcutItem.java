@@ -24,6 +24,7 @@ import java.nio.ByteBuffer;
 
 import peterfajdiga.fastdraw.R;
 import peterfajdiga.fastdraw.launcher.LaunchManager;
+import peterfajdiga.fastdraw.launcher.ShortcutItemManager;
 
 public class ShortcutItem extends LauncherItem implements Loadable {
     private final String label;
@@ -81,14 +82,6 @@ public class ShortcutItem extends LauncherItem implements Loadable {
         return true;
     }
 
-    private String getFilename() {
-        return getID().replace('\0', '_');
-    }
-
-    public static File getShortcutsDir(@NonNull final Context context) {
-        return new File(context.getFilesDir(), "shortcuts");
-    }
-
     private static Drawable iconFromResource(final Context context, final String packageName, final String resourceName) throws PackageManager.NameNotFoundException {
         final Resources resources = context.getPackageManager().getResourcesForApplication(packageName);
         final int id = resources.getIdentifier(resourceName, null, null);
@@ -99,9 +92,9 @@ public class ShortcutItem extends LauncherItem implements Loadable {
     private static final String ICON_TYPE_NONE   = "n";
     private static final String ICON_TYPE_BITMAP = "b";
     private static final String ICON_TYPE_RES    = "r";
-    public void toFile(@NonNull final Context context) throws java.io.IOException {
+    public void toFile(@NonNull final File file) throws java.io.IOException {
         final String uri = intent.toUri(0);
-        final FileOutputStream fos = new FileOutputStream(new File(getShortcutsDir(context), getFilename())); // ID contains salt
+        final FileOutputStream fos = new FileOutputStream(file); // ID contains salt
         writeString(fos, uri);
         writeString(fos, label);
         if (iconResourceName != null) {
@@ -153,11 +146,11 @@ public class ShortcutItem extends LauncherItem implements Loadable {
                 if (!tryOldFormat) {
                     return new ShortcutItem(intent, salt, name, null);
                 }
-                // We have probably read category (from old version) instead of iconType.
-                // In the old version, iconType followed category, so let's read again and this time we should get the iconType.
+                // We have probably read the category name (from the old format) instead of iconType.
+                // In the old format, iconType followed category, so let's read again and this time we should get the iconType.
                 final ShortcutItem item = fromFileReadIcon(context, file, fis, intent, name, salt, false);
                 file.delete(); // delete the old file
-                item.toFile(context); // save it in the new format
+                ShortcutItemManager.saveShortcut(context, item); // save it in the new format
                 return item;
         }
     }
