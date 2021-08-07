@@ -14,9 +14,12 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 
+import java.io.File;
+import java.io.IOException;
+
 import peterfajdiga.fastdraw.launcher.LaunchManager;
 
-public class OreoShortcutItem extends LauncherItem {
+public class OreoShortcutItem extends LauncherItem implements Saveable {
     private final String packageName;
     private final String oreoShortcutId;
     private final CharSequence label;
@@ -32,7 +35,7 @@ public class OreoShortcutItem extends LauncherItem {
 
     @Override
     public String getID() {
-        return "oreo\0" + packageName + "\0" + oreoShortcutId; // TODO: add salt?
+        return "oreo\0" + (packageName + oreoShortcutId).hashCode(); // TODO: add salt?
     }
 
     @Override
@@ -84,5 +87,20 @@ public class OreoShortcutItem extends LauncherItem {
             }
         }
         return null;
+    }
+
+    @Override
+    public void toFile(@NonNull final File file) throws IOException {
+        file.createNewFile(); // all data is in filename
+    }
+
+    @Override
+    public String getTypeKey() {
+        return "oreo-shortcuts";
+    }
+
+    @Override
+    public String getFilename() {
+        return getID().replace('\0', '_');
     }
 }
