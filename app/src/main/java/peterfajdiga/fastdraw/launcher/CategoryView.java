@@ -1,5 +1,6 @@
 package peterfajdiga.fastdraw.launcher;
 
+import android.app.ActivityOptions;
 import android.content.Context;
 import android.os.Build;
 import android.view.HapticFeedbackConstants;
@@ -47,7 +48,15 @@ class CategoryView extends GridView {
             @Override
             public void onItemClick(final AdapterView<?> adapterView, final View view, final int pos, final long id) {
                 final LauncherItem item = (LauncherItem)getAdapter().getItem(pos);
-                item.launch(getContext(), launchManager, view);
+
+                ActivityOptions opts;
+                if (Build.VERSION.SDK_INT >= 23) {
+                    opts = ActivityOptions.makeClipRevealAnimation(view, 0, 0, view.getWidth(), view.getHeight());
+                } else {
+                    opts = ActivityOptions.makeScaleUpAnimation(view, 0, 0, view.getWidth(), view.getHeight());
+                }
+
+                item.launch(getContext(), launchManager, opts.toBundle(), view.getClipBounds());
             }
         });
 

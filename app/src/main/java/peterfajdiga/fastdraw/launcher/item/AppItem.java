@@ -1,14 +1,13 @@
 package peterfajdiga.fastdraw.launcher.item;
 
-import android.app.ActivityOptions;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
+import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
-import android.os.Build;
-import android.view.View;
+import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 
@@ -51,18 +50,15 @@ public class AppItem extends LauncherItem implements Loadable {
     }
 
     @Override
-    public void launch(final Context context, final LaunchManager launchManager, final View view) {
+    public void launch(
+        final Context context,
+        final LaunchManager launchManager,
+        final Bundle opts,
+        final Rect clipBounds
+    ) {
         final Intent intent = getIntent();
-
-        // animation // TODO: deduplicate code
-        ActivityOptions opts;
-        if (Build.VERSION.SDK_INT >= 23) {
-            opts = ActivityOptions.makeClipRevealAnimation(view, 0, 0, view.getWidth(), view.getHeight());
-        } else {
-            opts = ActivityOptions.makeScaleUpAnimation(view, 0, 0, view.getWidth(), view.getHeight());
-        }
-
-        launchManager.launch(intent, opts.toBundle());
+        intent.setSourceBounds(clipBounds);
+        launchManager.launch(intent, opts);
     }
 
     @NonNull

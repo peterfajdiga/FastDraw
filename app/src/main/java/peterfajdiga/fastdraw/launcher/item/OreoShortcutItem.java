@@ -3,13 +3,14 @@ package peterfajdiga.fastdraw.launcher.item;
 import android.content.Context;
 import android.content.pm.LauncherApps;
 import android.content.pm.ShortcutInfo;
+import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
+import android.os.Bundle;
 import android.os.UserHandle;
 import android.os.UserManager;
 import android.text.TextUtils;
 import android.util.Log;
-import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -56,7 +57,12 @@ public class OreoShortcutItem extends LauncherItem implements Saveable {
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
-    public void launch(final Context context, final LaunchManager launchManager, final View view) {
+    public void launch(
+        final Context context,
+        final LaunchManager launchManager,
+        final Bundle opts,
+        final Rect clipBounds
+    ) {
         @NonNull final LauncherApps launcherApps = (LauncherApps)context.getSystemService(Context.LAUNCHER_APPS_SERVICE);
         @NonNull final UserManager userManager = (UserManager)context.getSystemService(Context.USER_SERVICE);
 
@@ -76,7 +82,7 @@ public class OreoShortcutItem extends LauncherItem implements Saveable {
             return;
         }
 
-        launcherApps.startShortcut(packageName, oreoShortcutId, view.getClipBounds(), null, user); // TODO: opts (animation)
+        launcherApps.startShortcut(packageName, oreoShortcutId, clipBounds, opts, user); // TODO: opts (animation)
     }
 
     @Override
