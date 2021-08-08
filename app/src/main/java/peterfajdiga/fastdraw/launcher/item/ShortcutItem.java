@@ -167,7 +167,7 @@ public class ShortcutItem extends LauncherItem implements Loadable, Saveable {
                 icon = iconFromResource(context, iconPackageName, iconResourceName);
             } catch (final Exception e) {
                 e.printStackTrace();
-                ContextCompat.getDrawable(context, R.drawable.ic_item_shortcut_leftover);
+                icon = ContextCompat.getDrawable(context, R.drawable.ic_item_shortcut_leftover);
             }
             isLoaded = true;
         }
