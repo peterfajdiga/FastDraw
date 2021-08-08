@@ -37,6 +37,10 @@ class CategoryView extends GridView {
                 context.getResources().getDimensionPixelSize(R.dimen.app_item_grid_icon_size) +
                 context.getResources().getDimensionPixelSize(R.dimen.app_item_grid_icon_padding) * 2
             );
+            final int padding = Math.round(context.getResources().getDimensionPixelSize(R.dimen.app_item_grid_container_padding));
+            setPadding(padding, padding, padding, padding);
+            setClipToPadding(false);
+            setScrollBarStyle(SCROLLBARS_OUTSIDE_OVERLAY);
         }
         setStackFromBottom(Preferences.stackFromBottom);
 
