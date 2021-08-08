@@ -13,8 +13,8 @@
     <dimen name="status_bar_height">24dp</dimen>
 
     <dimen name="app_icon_size">48dp</dimen>
-    <dimen name="app_padding_top">12dp</dimen>
-    <dimen name="app_padding_bottom">0dp</dimen>
+    <dimen name="app_padding_top">16dp</dimen>
+    <dimen name="app_padding_bottom">3dp</dimen>
     <dimen name="app_icon_padding">24dp</dimen>
     <dimen name="app_label">13sp</dimen>
 </resources>
