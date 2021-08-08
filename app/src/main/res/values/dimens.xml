@@ -12,6 +12,9 @@
     <!--<dimen name="status_bar_height">@*android:dimen/status_bar_height</dimen>-->
     <dimen name="status_bar_height">24dp</dimen>
 
-    <dimen name="app_icon_size">56dp</dimen>
-    <dimen name="app_icon_padding">12dp</dimen>
+    <dimen name="app_icon_size">48dp</dimen>
+    <dimen name="app_padding_top">12dp</dimen>
+    <dimen name="app_padding_bottom">0dp</dimen>
+    <dimen name="app_icon_padding">24dp</dimen>
+    <dimen name="app_label">13sp</dimen>
 </resources>

@@ -3,7 +3,8 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:paddingTop="@dimen/app_icon_padding">
+    android:paddingTop="@dimen/app_padding_top"
+    android:paddingBottom="@dimen/app_padding_bottom">
 
     <ImageView
         android:id="@+id/app_item_icon"
@@ -18,13 +19,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_marginTop="2dp"
+        android:layout_marginTop="8dp"
         android:layout_marginLeft="4dp"
         android:layout_marginRight="4dp"
         android:textAlignment="center"
         android:ellipsize="end"
         android:fontFamily="sans-serif-condensed"
-        android:textSize="13sp"
+        android:textSize="@dimen/app_label"
         android:minLines="2"
         android:maxLines="2"
         style="@style/FloatingText" />
