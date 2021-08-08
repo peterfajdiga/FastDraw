@@ -31,11 +31,11 @@ class CategoryView extends GridView {
     public CategoryView(@NonNull final Context context, @NonNull final LaunchManager launchManager) {
         super(context);
 
-        if (Preferences.appItemResource == R.layout.app_item) {
+        if (Preferences.appItemResource == R.layout.app_item_block) {
             setNumColumns(GridView.AUTO_FIT);
             setColumnWidth(
-                context.getResources().getDimensionPixelSize(R.dimen.app_icon_size) +
-                context.getResources().getDimensionPixelSize(R.dimen.app_icon_padding) * 2
+                context.getResources().getDimensionPixelSize(R.dimen.app_item_block_icon_size) +
+                context.getResources().getDimensionPixelSize(R.dimen.app_item_block_icon_padding) * 2
             );
         }
         setStackFromBottom(Preferences.stackFromBottom);

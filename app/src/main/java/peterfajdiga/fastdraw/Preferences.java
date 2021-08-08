@@ -46,7 +46,7 @@ public final class Preferences {
 
         switch (prefs.getString("appItemResource", res.getString(R.string.default_appItemResource))) {
             default:
-            case "0": appItemResource = R.layout.app_item; break;
+            case "0": appItemResource = R.layout.app_item_block; break;
             case "1": appItemResource = R.layout.app_item_horizontal; break;
             case "2": appItemResource = R.layout.app_item_package; break;
         }
