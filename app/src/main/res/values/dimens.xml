@@ -21,6 +21,6 @@
     <dimen name="app_item_list_padding_horizontal">16dp</dimen>
     <dimen name="app_item_list_padding_vertical">8dp</dimen>
     <dimen name="app_item_list_icon_padding_end">16dp</dimen>
-    <dimen name="app_item_list_icon_size">56dp</dimen>
-    <dimen name="app_item_list_label_text_size">18sp</dimen>
+    <dimen name="app_item_list_icon_size">40dp</dimen>
+    <dimen name="app_item_list_label_text_size">16sp</dimen>
 </resources>
