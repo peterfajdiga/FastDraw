@@ -73,12 +73,11 @@ public class ShortcutItem extends LauncherItem implements Loadable, Saveable {
         launchManager.launch(intent, opts);
     }
 
-    private static Drawable iconFromResource(final Context context, final String packageName, final String resourceName) throws PackageManager.NameNotFoundException {
+    private static Drawable iconFromResource(final Context context, final String packageName, final String resourceName) throws PackageManager.NameNotFoundException, Resources.NotFoundException {
         final Resources resources = context.getPackageManager().getResourcesForApplication(packageName);
         final int id = resources.getIdentifier(resourceName, null, null);
-        return ResourcesCompat.getDrawable(context.getResources(), id, context.getTheme());
+        return ResourcesCompat.getDrawable(resources, id, context.getTheme());
     }
-
 
     private static final String ICON_TYPE_NONE   = "n";
     private static final String ICON_TYPE_BITMAP = "b";
@@ -165,7 +164,7 @@ public class ShortcutItem extends LauncherItem implements Loadable, Saveable {
         if (!isLoaded()) {
             try {
                 icon = iconFromResource(context, iconPackageName, iconResourceName);
-            } catch (final Exception e) {
+            } catch (final Resources.NotFoundException| PackageManager.NameNotFoundException e) {
                 e.printStackTrace();
                 icon = ContextCompat.getDrawable(context, R.drawable.ic_item_shortcut_leftover);
             }
