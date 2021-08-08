@@ -46,8 +46,8 @@ public final class Preferences {
 
         switch (prefs.getString("appItemResource", res.getString(R.string.default_appItemResource))) {
             default:
-            case "0": appItemResource = R.layout.app_item_block; break;
-            case "1": appItemResource = R.layout.app_item_horizontal; break;
+            case "0": appItemResource = R.layout.app_item_grid; break;
+            case "1": appItemResource = R.layout.app_item_list; break;
         }
         allowOrientation                   = prefs.getBoolean("allowOrientation",  res.getBoolean(R.bool.default_allowOrientation));
         mainLayoutResource                 = prefs.getBoolean("headerbtm",         res.getBoolean(R.bool.default_headerbtm)) ? R.layout.activity_main_headerbtm : R.layout.activity_main_headertop;
