@@ -101,6 +101,9 @@ public class LauncherPager extends ViewPager {
 
         for (final LauncherItem item : items) {
             final String categoryName = getItemCategory(item, defaultCategory);
+            if (Preferences.hideHidden && categoryName.equals("HIDDEN")) {
+                continue;
+            }
             addLauncherItem(item, categoryName, false);
             final CategoryArrayAdapter categoryAdapter = (CategoryArrayAdapter)adapter.categoryViews.get(categoryName).getAdapter();
             modifiedCategories.add(categoryAdapter);
