@@ -11,11 +11,8 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import java.util.Comparator;
-
 import peterfajdiga.fastdraw.Preferences;
 import peterfajdiga.fastdraw.R;
-import peterfajdiga.fastdraw.launcher.item.AppItem;
 import peterfajdiga.fastdraw.launcher.item.LauncherItem;
 import peterfajdiga.fastdraw.launcher.item.Loadable;
 
@@ -42,11 +39,6 @@ class CategoryArrayAdapter extends ArrayAdapter<LauncherItem> {
         TextView appLabel = convertView.findViewById(R.id.app_item_name);
         appLabel.setText(item.getLabel());
 
-        if (Preferences.appItemResource == R.layout.app_item_package && item instanceof AppItem) {
-            TextView appName = convertView.findViewById(R.id.app_item_package_name);
-            appName.setText(((AppItem)item).getPackageName());
-        }
-
         convertView.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
@@ -59,12 +51,7 @@ class CategoryArrayAdapter extends ArrayAdapter<LauncherItem> {
     }
 
     void sort() {
-        sort(new Comparator<LauncherItem>() {
-            @Override
-            public int compare(LauncherItem launcherItem, LauncherItem t1) {
-                return launcherItem.compareTo(t1);
-            }
-        });
+        sort(LauncherItem::compareTo);
     }
 
 

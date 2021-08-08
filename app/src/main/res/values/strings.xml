@@ -28,12 +28,10 @@
     <string-array name="pref_appItemResource_titles">
         <item>Normal block</item>
         <item>Horizontal</item>
-        <item>Horizontal with package name</item>
     </string-array>
     <string-array name="pref_appItemResource_values">
         <item>0</item>
         <item>1</item>
-        <item>2</item>
     </string-array>
     <string name="pref_title_allowOrientation">Allow rotation</string>
     <string name="pref_description_allowOrientation">Allow changing orientation between portrait and landscape</string>
