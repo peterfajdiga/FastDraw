@@ -26,12 +26,6 @@
             android:background="@android:color/white"
             android:visibility="gone" />
 
-        <peterfajdiga.fastdraw.views.CategoryTabLayout
-            android:id="@+id/tab_container"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/pager_header_height"
-            style="@style/AppsTabLayout" />
-
         <LinearLayout
             android:id="@+id/category_drop_zone_container"
             android:layout_width="match_parent"
@@ -55,6 +49,12 @@
                 android:text="@string/remove_shortcut"
                 style="@style/DropZone"/>
         </LinearLayout>
+
+        <peterfajdiga.fastdraw.views.CategoryTabLayout
+            android:id="@+id/tab_container"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/pager_header_height"
+            style="@style/AppsTabLayout" />
 
     </LinearLayout>
 
