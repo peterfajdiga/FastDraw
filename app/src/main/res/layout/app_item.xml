@@ -25,7 +25,7 @@
         android:textAlignment="center"
         android:ellipsize="end"
         android:fontFamily="sans-serif-condensed"
-        android:textSize="@dimen/app_label"
+        android:textSize="@dimen/app_label_text_size"
         android:minLines="2"
         android:maxLines="2"
         style="@style/FloatingText" />

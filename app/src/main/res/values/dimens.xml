@@ -14,7 +14,7 @@
 
     <dimen name="app_icon_size">48dp</dimen>
     <dimen name="app_padding_top">16dp</dimen>
-    <dimen name="app_padding_bottom">3dp</dimen>
+    <dimen name="app_padding_bottom">3dp</dimen><!--app_padding_top - app_label_text_size-->
     <dimen name="app_icon_padding">24dp</dimen>
-    <dimen name="app_label">13sp</dimen>
+    <dimen name="app_label_text_size">13sp</dimen>
 </resources>
