@@ -89,6 +89,7 @@ public class AppItem extends LauncherItem implements Loadable {
             final PackageManager packageManager = context.getPackageManager();
             label = info.loadLabel(packageManager).toString();
             icon = info.loadIcon(packageManager);
+            // Sometimes the label and/or icon returned here are garbled. TODO: Detect that and retry
             info = null;
         }
     }
