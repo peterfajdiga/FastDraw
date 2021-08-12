@@ -125,16 +125,15 @@ public class LauncherPager extends ViewPager {
         if (category == null) {
             category = new Category(getContext(), launchManager);
             adapter.categories.put(categoryName, category);
+            if (notify) {
+                adapter.notifyDataSetChanged();
+            }
         }
 
         if (adapter.firstCategoryLoaded && item instanceof Loadable) {
             ((Loadable)item).load(getContext());
         }
         category.add(item, notify);
-
-        if (notify) {
-            adapter.notifyDataSetChanged(); // TODO: move up to category creation
-        }
     }
 
     /**
