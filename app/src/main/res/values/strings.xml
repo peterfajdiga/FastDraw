@@ -15,6 +15,7 @@
     <string name="action_shortcut">Add a shortcut</string>
     <string name="action_rename_category">Rename current category</string>
     <string name="action_settings">Open preferences</string>
+    <string name="action_notifications">Open notifications drawer</string>
 
     <string name="no_app">App not installed</string>
     <string name="no_permission">You did not give Fast Draw permission to call. You can change that in Fast Draw\'s app info.</string>
@@ -67,6 +68,7 @@
         <item>@string/action_shortcut</item>
         <item>@string/action_rename_category</item>
         <item>@string/action_settings</item>
+        <item>@string/action_notifications</item>
     </string-array>
     <string-array name="pref_actions_values">
         <item>0</item>
@@ -75,6 +77,7 @@
         <item>3</item>
         <item>4</item>
         <item>5</item>
+        <item>6</item>
     </string-array>
     <string name="pref_title_action_longclick">Longpress action</string>
     <string name="pref_title_action_doubleclick">Double tap action</string>
@@ -86,4 +89,6 @@
 
     <string name="error_oreo_user_handle">User is locked or not running</string>
     <string name="error_oreo_get_shortcuts">Can\'t load shortcut because Fast Draw is not the default launcher</string>
+
+    <string name="error_expand_notifications_panel">Can\'t open the notifications panel. Perhaps your Android version doesn\'t support this for third party launchers.</string>
 </resources>

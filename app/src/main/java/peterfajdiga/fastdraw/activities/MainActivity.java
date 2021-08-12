@@ -4,6 +4,7 @@ import static peterfajdiga.fastdraw.launcher.LaunchManager.PERMISSION_REQUEST_CO
 
 import android.animation.LayoutTransition;
 import android.animation.ValueAnimator;
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
@@ -23,6 +24,7 @@ import android.view.DragEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.core.util.Predicate;
@@ -31,6 +33,8 @@ import androidx.fragment.app.FragmentActivity;
 
 import com.google.android.material.tabs.TabLayout;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.List;
 
 import peterfajdiga.fastdraw.NavigationBarAnimator;
@@ -434,6 +438,18 @@ public class MainActivity extends FragmentActivity implements
         startActivity(settingsIntent);
     }
 
+    public void expandNotificationsPanel() {
+        @SuppressLint("WrongConstant") final Object statusBarService = getSystemService("statusbar");
+        try {
+            final Class<?> statusBarManager = Class.forName("android.app.StatusBarManager");
+            final Method expandMethod = statusBarManager.getMethod("expandNotificationsPanel");
+            expandMethod.invoke(statusBarService);
+        } catch (final ClassNotFoundException | NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
+            e.printStackTrace();
+            Toast.makeText(this, R.string.error_expand_notifications_panel, Toast.LENGTH_LONG).show();
+        }
+    }
+
     public void performAction(final int action) {
         switch (action) {
             case Preferences.ACTION_MENU:            openActionsMenu(); break;
@@ -441,6 +457,7 @@ public class MainActivity extends FragmentActivity implements
             case Preferences.ACTION_SHORTCUT:        showCreateShortcutDialog(); break;
             case Preferences.ACTION_RENAME_CATEGORY: renameCurrentCategory(); break;
             case Preferences.ACTION_SETTINGS:        openSettings(); break;
+            case Preferences.ACTION_NOTIFICATIONS:   expandNotificationsPanel(); break;
         }
     }
 
