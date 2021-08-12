@@ -1,0 +1,107 @@
+package peterfajdiga.fastdraw.launcher;
+
+import android.content.Context;
+import android.os.AsyncTask;
+import android.util.Log;
+import android.view.View;
+
+import peterfajdiga.fastdraw.launcher.item.LauncherItem;
+import peterfajdiga.fastdraw.launcher.item.Loadable;
+
+public class Category {
+    private final CategoryArrayAdapter adapter; // TODO: remove
+    private final CategoryView view;
+
+    public Category(final Context context, final LaunchManager launchManager) {
+        view = new CategoryView(context, launchManager);
+        adapter = (CategoryArrayAdapter)view.getAdapter();
+    }
+
+    public View getView() {
+        return view;
+    }
+
+    public int getCount() {
+        return adapter.getCount();
+    }
+
+    public void add(final LauncherItem launcherItem, final boolean notify) {
+        adapter.add(launcherItem);
+        if (notify) {
+            adapter.sort();
+            adapter.notifyDataSetChanged();
+        }
+    }
+
+    public void remove(final LauncherItem launcherItem) {
+        adapter.remove(launcherItem);
+        adapter.notifyDataSetChanged();
+    }
+
+    public LauncherItem getItem(final int index) {
+        return adapter.getItem(index);
+    }
+
+    public void notifyAdapter() { // TODO: remove
+        adapter.sort();
+        adapter.notifyDataSetChanged();
+    }
+
+    public void loadItems(final Context context) {
+        final int n = adapter.getCount();
+        for (int i = 0; i < n; i++) {
+            final LauncherItem item = adapter.getItem(i);
+            if (item instanceof Loadable) {
+                ((Loadable)item).load(context);
+            }
+        }
+        adapter.sort();
+        adapter.notifyDataSetChanged();
+    }
+
+    public void loadItemsAsync() {
+        final ItemLoader itemLoader = new ItemLoader();
+        itemLoader.execute();
+    }
+
+    private void reportIfLoadFailure() {
+        final int n = adapter.getCount();
+        for (int i = 0; i < n; i++) {
+            final LauncherItem item = adapter.getItem(i);
+            if (item instanceof Loadable && !((Loadable)item).isLoaded()) {
+                Log.e("CategoryArrayAdapter", "Could not load launcher item: " + item.getID());
+                // TODO (BUG): retry?
+                return;
+            }
+        }
+    }
+
+    private final class ItemLoader extends AsyncTask<Void, Void, Void> {
+        @Override
+        protected Void doInBackground(Void... params) {
+            try {
+                final Context context = adapter.getContext();
+                final int n = adapter.getCount();
+                for (int i = 0; i < n; i++) {
+                    final LauncherItem item = adapter.getItem(i);
+                    if (item instanceof Loadable) {
+                        ((Loadable)item).load(context);
+                    }
+                }
+            } catch (Exception e) {
+                Log.e("FastDraw_itemLoad", e.toString());
+            }
+            return null;
+        }
+
+        /**
+         * this must be called on main thread
+         */
+        @Override
+        protected void onPostExecute(Void result) {
+            reportIfLoadFailure();
+            adapter.sort();
+            adapter.notifyDataSetChanged();
+        }
+    }
+}

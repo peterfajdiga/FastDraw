@@ -4,6 +4,7 @@ import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.annotation.NonNull;
 import androidx.viewpager.widget.PagerAdapter;
 
 import java.util.SortedMap;
@@ -13,50 +14,52 @@ import peterfajdiga.fastdraw.PrefMapCached;
 import peterfajdiga.fastdraw.categoryorder.CategoryComparator;
 
 class LauncherPagerAdapter extends PagerAdapter {
-
-    final SortedMap<String, CategoryView> categoryViews;
+    final SortedMap<String, Category> categories;
     boolean firstCategoryLoaded = false;
 
     public LauncherPagerAdapter(final Context context) {
-        categoryViews = new ConcurrentSkipListMap<>(new CategoryComparator(new PrefMapCached(context, "categoryorder")));
+        categories = new ConcurrentSkipListMap<>(new CategoryComparator(new PrefMapCached(context, "categoryorder")));
     }
 
     @Override
+    @NonNull
     public Object instantiateItem(ViewGroup container, int position) {
-        final CategoryView layout = (CategoryView)categoryViews.values().toArray()[position];
-        container.addView(layout);
+        final Category category = (Category)categories.values().toArray()[position];
+        container.addView(category.getView());
         if (!firstCategoryLoaded) {
-            loadCategoryViews(layout);
+            loadCategoryViews(container.getContext(), category);
             firstCategoryLoaded = true;
         }
-        return layout;
+        return category;
     }
 
     @Override
-    public void destroyItem(ViewGroup container, int position, Object view) {
-        container.removeView((View)view);
+    public void destroyItem(final ViewGroup container, final int position, final Object object) {
+        final Category category = (Category)object;
+        container.removeView(category.getView());
     }
 
     @Override
     public int getCount() {
-        return categoryViews.keySet().size();
+        return categories.keySet().size();
     }
 
     @Override
-    public boolean isViewFromObject(View view, Object object) {
-        return view == object;
+    public boolean isViewFromObject(final View view, final Object object) {
+        final Category category = (Category)object;
+        return view == category.getView();
     }
 
     @Override
     public String getPageTitle(int position) {
-        return (String)categoryViews.keySet().toArray()[position];
+        return (String)categories.keySet().toArray()[position];
     }
 
     @Override
-    public int getItemPosition(Object object) {
-        final Object[] views = categoryViews.values().toArray();
-        for (int i = 0; i < views.length; i++) {
-            if (views[i] == object) {
+    public int getItemPosition(final Object object) {
+        final Object[] categories = this.categories.values().toArray();
+        for (int i = 0; i < categories.length; i++) {
+            if (categories[i] == object) {
                 return i;
             }
         }
@@ -66,19 +69,17 @@ class LauncherPagerAdapter extends PagerAdapter {
 
     /* loading */
 
-    public void loadCategoryViews(final CategoryView firstToLoad) {
+    public void loadCategoryViews(final Context context, final Category firstToLoad) {
         // load first category
-        final CategoryArrayAdapter firstInnerAdapter = (CategoryArrayAdapter)firstToLoad.getAdapter();
-        firstInnerAdapter.loadItems();
+        firstToLoad.loadItems(context);
 
         // load all others
-        for (CategoryView categoryView : categoryViews.values()) {
-            if (categoryView == firstToLoad) {
+        for (Category category : categories.values()) {
+            if (category == firstToLoad) {
                 // already loaded
                 continue;
             }
-            final CategoryArrayAdapter innerAdapter = (CategoryArrayAdapter)categoryView.getAdapter();
-            innerAdapter.loadItemsAsync();
+            category.loadItemsAsync();
         }
     }
 }

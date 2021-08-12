@@ -46,7 +46,7 @@ public class AppItemManager {
 
     public static void removeAppItems(final Context context, final LauncherPager pager, final String packageName) {
         final LauncherPagerAdapter adapter = (LauncherPagerAdapter)pager.getAdapter();
-        for (Map.Entry categoryEntry : adapter.categoryViews.entrySet()) {
+        for (Map.Entry categoryEntry : adapter.categories.entrySet()) {
             final String categoryName = (String)categoryEntry.getKey();
             final CategoryView categoryView = (CategoryView)categoryEntry.getValue();
             final CategoryArrayAdapter innerAdapter = (CategoryArrayAdapter)categoryView.getAdapter();
@@ -71,7 +71,7 @@ public class AppItemManager {
                 innerAdapter.notifyDataSetChanged();
                 if (innerAdapter.getCount() == 0) {
                     // remove the now empty category from pager
-                    adapter.categoryViews.remove(categoryName);
+                    adapter.categories.remove(categoryName);
                 }
             }
         }
