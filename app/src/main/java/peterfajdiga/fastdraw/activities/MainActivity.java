@@ -111,6 +111,7 @@ public class MainActivity extends FragmentActivity implements
 
         LauncherPager appsPager = getPager();
         appsPager.setLaunchManager(launchManager);
+        appsPager.setOwner(this);
 
         CategoryTabLayout tabContainer = findViewById(R.id.tab_container);
         tabContainer.setupWithViewPager(appsPager);

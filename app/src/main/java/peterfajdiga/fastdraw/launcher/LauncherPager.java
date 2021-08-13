@@ -22,6 +22,7 @@ import peterfajdiga.fastdraw.launcher.item.Loadable;
 public class LauncherPager extends ViewPager {
     private PrefMap itemCategoryMap;
     private LaunchManager launchManager;
+    private Owner owner;
 
     public LauncherPager(@NonNull final Context context) {
         super(context);
@@ -40,6 +41,10 @@ public class LauncherPager extends ViewPager {
 
     public void setLaunchManager(@NonNull final LaunchManager launchManager) {
         this.launchManager = launchManager;
+    }
+
+    public void setOwner(@NonNull final Owner owner) {
+        this.owner = owner;
     }
 
     @Override
@@ -119,6 +124,8 @@ public class LauncherPager extends ViewPager {
     }
 
     private void addLauncherItems(@NonNull final String categoryName, @NonNull final List<LauncherItem> items) {
+        assert owner != null;
+
         if (Preferences.hideHidden && categoryName.equals("HIDDEN")) {
             return;
         }
@@ -126,7 +133,7 @@ public class LauncherPager extends ViewPager {
         final LauncherPagerAdapter adapter = (LauncherPagerAdapter)super.getAdapter();
         Category category = adapter.categories.get(categoryName);
         if (category == null) {
-            category = new Category(getContext(), launchManager);
+            category = new Category(getContext(), owner, launchManager);
             adapter.categories.put(categoryName, category);
             adapter.notifyDataSetChanged();
         }
@@ -141,7 +148,9 @@ public class LauncherPager extends ViewPager {
         }
     }
 
-    private void addLauncherItem(@NonNull final LauncherItem item, @NonNull final String categoryName, final boolean notify) {
+    private void addLauncherItem(@NonNull final LauncherItem item, @NonNull final String categoryName, final boolean notify) { // TODO: remove or refactor
+        assert owner != null;
+
         if (Preferences.hideHidden && categoryName.equals("HIDDEN")) {
             return;
         }
@@ -149,7 +158,7 @@ public class LauncherPager extends ViewPager {
         final LauncherPagerAdapter adapter = (LauncherPagerAdapter)super.getAdapter();
         Category category = adapter.categories.get(categoryName);
         if (category == null) {
-            category = new Category(getContext(), launchManager);
+            category = new Category(getContext(), owner, launchManager);
             adapter.categories.put(categoryName, category);
             if (notify) {
                 adapter.notifyDataSetChanged();

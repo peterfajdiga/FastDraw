@@ -1,18 +1,11 @@
 package peterfajdiga.fastdraw.launcher;
 
-import android.app.ActivityOptions;
 import android.content.Context;
-import android.os.Build;
+import android.util.AttributeSet;
 import android.view.HapticFeedbackConstants;
 import android.view.MotionEvent;
 import android.view.ViewConfiguration;
 import android.widget.GridView;
-
-import androidx.annotation.NonNull;
-
-import peterfajdiga.fastdraw.Preferences;
-import peterfajdiga.fastdraw.R;
-import peterfajdiga.fastdraw.launcher.item.LauncherItem;
 
 class CategoryView extends GridView {
     private static final int LONG_CLICK_TIME = ViewConfiguration.getLongPressTimeout();
@@ -28,52 +21,20 @@ class CategoryView extends GridView {
     protected float pinchStartDistance = 0.0f;
     protected float unpinchStartDistance = Float.MAX_VALUE;
 
-    public CategoryView(@NonNull final Context context, @NonNull final LaunchManager launchManager) {
+    public CategoryView(final Context context) {
         super(context);
+    }
 
-        if (Preferences.appItemResource == R.layout.app_item_grid) {
-            setNumColumns(GridView.AUTO_FIT);
-            setColumnWidth(
-                context.getResources().getDimensionPixelSize(R.dimen.app_item_grid_icon_size) +
-                context.getResources().getDimensionPixelSize(R.dimen.app_item_grid_icon_padding) * 2
-            );
-            final int padding = Math.round(context.getResources().getDimensionPixelSize(R.dimen.app_item_grid_container_padding));
-            setPadding(padding, padding, padding, padding);
-            setClipToPadding(false);
-            setScrollBarStyle(SCROLLBARS_OUTSIDE_OVERLAY);
-        }
-        setStackFromBottom(Preferences.stackFromBottom);
+    public CategoryView(final Context context, final AttributeSet attrs) {
+        super(context, attrs);
+    }
 
-        setAdapter(new CategoryArrayAdapter(context));
+    public CategoryView(final Context context, final AttributeSet attrs, final int defStyleAttr) {
+        super(context, attrs, defStyleAttr);
+    }
 
-        setOnItemClickListener((adapterView, view, pos, id) -> {
-            final LauncherItem item = (LauncherItem)getAdapter().getItem(pos);
-
-            ActivityOptions opts;
-            if (Build.VERSION.SDK_INT >= 23) {
-                opts = ActivityOptions.makeClipRevealAnimation(view, 0, 0, view.getWidth(), view.getHeight());
-            } else {
-                opts = ActivityOptions.makeScaleUpAnimation(view, 0, 0, view.getWidth(), view.getHeight());
-            }
-
-            item.launch(getContext(), launchManager, opts.toBundle(), view.getClipBounds());
-        });
-
-        final LauncherPager.Owner owner = getOwner();
-        setOnItemLongClickListener((parent, view, position, id) -> {
-            view.performHapticFeedback(HapticFeedbackConstants.LONG_PRESS);
-
-            // start drag
-            final DragShadowBuilder shadow = new OffsetDragShadowBuilder(view, interceptTouchX, interceptTouchY);
-            if (Build.VERSION.SDK_INT < 24) {
-                view.startDrag(null, shadow, null, 0);
-            } else {
-                view.startDragAndDrop(null, shadow, null, 0);
-            }
-            owner.onDragStarted(view, (LauncherItem)parent.getItemAtPosition(position));
-
-            return false;
-        });
+    public CategoryView(final Context context, final AttributeSet attrs, final int defStyleAttr, final int defStyleRes) {
+        super(context, attrs, defStyleAttr, defStyleRes);
     }
 
     private LauncherPager.Owner getOwner() {
