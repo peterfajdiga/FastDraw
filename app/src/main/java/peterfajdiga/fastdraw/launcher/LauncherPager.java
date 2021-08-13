@@ -92,11 +92,7 @@ public class LauncherPager extends ViewPager {
     public LauncherItem[] getLauncherItems(@NonNull final String categoryName) {
         final LauncherPagerAdapter adapter = (LauncherPagerAdapter)super.getAdapter();
         final Category category = adapter.categories.get(categoryName);
-        LauncherItem[] items = new LauncherItem[category.getCount()];
-        for (int i = 0; i < items.length; i++) {
-            items[i] = category.getItem(i);
-        }
-        return items;
+        return category.getItems();
     }
 
     public void addLauncherItems(@NonNull final String defaultCategory, @NonNull final LauncherItem... items) {

@@ -44,7 +44,7 @@ public class Category {
     public void remove(@NonNull final Context context, @NonNull final String packageName, final boolean removeShortcuts) {
         boolean itemsRemoved = false;
         for (int i = 0; i < getCount();) {
-            final LauncherItem item = getItem(i);
+            final LauncherItem item = adapter.getItem(i);
             if ((removeShortcuts || !(item instanceof Saveable)) && packageName.equals(item.getPackageName())) {
                 remove(item);
                 itemsRemoved = true;
@@ -61,8 +61,13 @@ public class Category {
         }
     }
 
-    public LauncherItem getItem(final int index) {
-        return adapter.getItem(index);
+    @NonNull
+    public LauncherItem[] getItems() {
+        final LauncherItem[] items = new LauncherItem[getCount()];
+        for (int i = 0; i < items.length; i++) {
+            items[i] = adapter.getItem(i);
+        }
+        return items;
     }
 
     public void loadItems(final Context context) {
