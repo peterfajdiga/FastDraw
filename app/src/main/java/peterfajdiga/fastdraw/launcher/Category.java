@@ -41,14 +41,16 @@ public class Category {
         adapter.notifyDataSetChanged();
     }
 
-    public void remove(@NonNull final String packageName, final boolean removeShortcuts) {
+    public void remove(@NonNull final Context context, @NonNull final String packageName, final boolean removeShortcuts) {
         boolean itemsRemoved = false;
         for (int i = 0; i < getCount();) {
             final LauncherItem item = getItem(i);
             if ((removeShortcuts || !(item instanceof Saveable)) && packageName.equals(item.getPackageName())) {
                 remove(item);
-                // TODO: delete shortcut files
                 itemsRemoved = true;
+                if (item instanceof Saveable) {
+                    ShortcutItemManager.deleteShortcut(context, (Saveable)item); // TODO: refactor?
+                }
             } else {
                 i++;
             }

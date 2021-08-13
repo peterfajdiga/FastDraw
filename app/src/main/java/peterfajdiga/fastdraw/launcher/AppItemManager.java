@@ -51,7 +51,7 @@ public class AppItemManager {
             final String categoryName = categoryEntry.getKey();
             final Category category = categoryEntry.getValue();
 
-            category.remove(packageName, removeShortcuts);
+            category.remove(context, packageName, removeShortcuts);
             if (category.getCount() == 0) {
                 categoriesRemoved = true;
                 adapter.categories.remove(categoryName);
