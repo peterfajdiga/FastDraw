@@ -1,11 +1,14 @@
 package peterfajdiga.fastdraw.launcher;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.HapticFeedbackConstants;
 import android.view.MotionEvent;
 import android.view.ViewConfiguration;
 import android.widget.GridView;
+
+import androidx.annotation.NonNull;
 
 class CategoryView extends GridView {
     private static final int LONG_CLICK_TIME = ViewConfiguration.getLongPressTimeout();
@@ -20,6 +23,8 @@ class CategoryView extends GridView {
     protected float pinchPrevDistance = 0.0f;
     protected float pinchStartDistance = 0.0f;
     protected float unpinchStartDistance = Float.MAX_VALUE;
+
+    private Listener listener;
 
     public CategoryView(final Context context) {
         super(context);
@@ -37,26 +42,19 @@ class CategoryView extends GridView {
         super(context, attrs, defStyleAttr, defStyleRes);
     }
 
-    private LauncherPager.Owner getOwner() {
-        final Context context = getContext();
-        final LauncherPager.Owner owner;
-        if (context instanceof LauncherPager.Owner) {
-            owner = (LauncherPager.Owner)context;
-        } else {
-            throw new RuntimeException(context.toString()
-                + " must implement LauncherPager.Owner");
-        }
-        return owner;
+    public void setListener(@NonNull final Listener listener) {
+        this.listener = listener;
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         if (event.getAction() == MotionEvent.ACTION_UP) {
             // perform pinch on liftoff
             if (pinchStartDistance - pinchPrevDistance > PINCH_DISTANCE_TRIGGER_DELTA) {
-                getOwner().onPagerPinch();
+                listener.onPinch();
             } else if (pinchPrevDistance - unpinchStartDistance > PINCH_DISTANCE_TRIGGER_DELTA) {
-                getOwner().onPagerUnpinch();
+                listener.onUnpinch();
             }
             // reset pinch and unpinch
             pinchPrevDistance = 0.0f;
@@ -95,7 +93,7 @@ class CategoryView extends GridView {
                 // long click detection
                 if (System.currentTimeMillis() - interceptTouchTime >= LONG_CLICK_TIME) {
                     this.performHapticFeedback(HapticFeedbackConstants.LONG_PRESS);
-                    getOwner().onPagerLongpress();
+                    listener.onLongpress();
                     interceptTouchTime = Long.MAX_VALUE;
                 } else if (hasPointerMoved(event.getX(), event.getY())) {
                     interceptTouchTime = Long.MAX_VALUE;
@@ -117,7 +115,7 @@ class CategoryView extends GridView {
             // double click detection
             final long timeSinceLastClick = newInterceptTouchTime - interceptTouchTime;
             if (timeSinceLastClick > 0 && timeSinceLastClick <= DOUBLE_CLICK_TIME && !hasPointerMoved(newX, newY)) {
-                getOwner().onPagerDoubletap();
+                listener.onDoubletap();
             }
 
             // save new values
@@ -140,5 +138,12 @@ class CategoryView extends GridView {
         final float dx = event.getX(0) - event.getX(1);
         final float dy = event.getY(0) - event.getY(1);
         return dx*dx + dy*dy;
+    }
+
+    public interface Listener {
+        void onLongpress();
+        void onDoubletap();
+        void onPinch();
+        void onUnpinch();
     }
 }

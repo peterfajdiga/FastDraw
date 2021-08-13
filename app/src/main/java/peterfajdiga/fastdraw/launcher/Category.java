@@ -128,6 +128,28 @@ public class Category {
             return false;
         });
 
+        categoryView.setListener(new CategoryView.Listener() {
+            @Override
+            public void onLongpress() {
+                owner.onPagerLongpress();
+            }
+
+            @Override
+            public void onDoubletap() {
+                owner.onPagerDoubletap();
+            }
+
+            @Override
+            public void onPinch() {
+                owner.onPagerPinch();
+            }
+
+            @Override
+            public void onUnpinch() {
+                owner.onPagerUnpinch();
+            }
+        });
+
         return categoryView;
     }
 
