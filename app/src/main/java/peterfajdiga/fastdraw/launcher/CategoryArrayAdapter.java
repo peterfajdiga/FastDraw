@@ -39,7 +39,7 @@ class CategoryArrayAdapter extends ArrayAdapter<LauncherItem> {
         convertView.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
-                ((GesturesGridView)parent).interceptTouchTime = Long.MAX_VALUE;
+                ((GesturesGridView)parent).interceptTouchTime = Long.MAX_VALUE; // TODO: refactor
                 return false;
             }
         });
