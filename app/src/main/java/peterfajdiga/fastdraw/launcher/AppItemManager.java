@@ -44,33 +44,14 @@ public class AppItemManager {
         return getAppItems(packageManager, launcherIntent);
     }
 
-    public static void removeAppItems(final Context context, final LauncherPager pager, final String packageName) {
-        boolean categoriesRemoved = false;
-        final LauncherPagerAdapter adapter = (LauncherPagerAdapter)pager.getAdapter();
-        for (final Map.Entry<String, Category> categoryEntry : adapter.categories.entrySet()) {
-            final String categoryName = categoryEntry.getKey();
-            final Category category = categoryEntry.getValue();
-            
-            category.removeAppItems(packageName);
-            if (category.getCount() == 0) {
-                categoriesRemoved = true;
-                adapter.categories.remove(categoryName);
-            }
-        }
-
-        if (categoriesRemoved) {
-            adapter.notifyDataSetChanged();
-        }
-    }
-
-    public static void removeItems(final Context context, final LauncherPager pager, final String packageName) {
+    public static void removeItems(final Context context, final LauncherPager pager, final String packageName, final boolean appItemsOnly) {
         boolean categoriesRemoved = false;
         final LauncherPagerAdapter adapter = (LauncherPagerAdapter)pager.getAdapter();
         for (final Map.Entry<String, Category> categoryEntry : adapter.categories.entrySet()) {
             final String categoryName = categoryEntry.getKey();
             final Category category = categoryEntry.getValue();
 
-            category.remove(packageName);
+            category.remove(packageName, appItemsOnly);
             if (category.getCount() == 0) {
                 categoriesRemoved = true;
                 adapter.categories.remove(categoryName);
