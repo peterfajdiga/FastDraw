@@ -9,7 +9,11 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.viewpager.widget.ViewPager;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import peterfajdiga.fastdraw.PrefMap;
@@ -96,23 +100,51 @@ public class LauncherPager extends ViewPager {
     }
 
     public void addLauncherItems(@NonNull final String defaultCategory, @NonNull final LauncherItem... items) {
-        final LauncherPagerAdapter adapter = (LauncherPagerAdapter)super.getAdapter();
-        final Set<Category> modifiedCategories = new HashSet<>(); // TODO: try ArraySet
+        final Map<String, List<LauncherItem>> itemsByCategory = getLauncherItemsByCategory(defaultCategory, items);
+        for (final Map.Entry<String, List<LauncherItem>> entry : itemsByCategory.entrySet()) {
+            addLauncherItems(entry.getKey(), entry.getValue());
+        }
+    }
 
+    private Map<String, List<LauncherItem>> getLauncherItemsByCategory(@NonNull final String defaultCategory, @NonNull final LauncherItem... items) {
+        final Map<String, List<LauncherItem>> itemsByCategory = new HashMap<>();
         for (final LauncherItem item : items) {
             final String categoryName = getItemCategory(item, defaultCategory);
             if (Preferences.hideHidden && categoryName.equals("HIDDEN")) {
                 continue;
             }
-            addLauncherItem(item, categoryName, false);
-            final Category category = adapter.categories.get(categoryName);
-            modifiedCategories.add(category);
+
+            List<LauncherItem> categoryItems = itemsByCategory.get(categoryName);
+            if (categoryItems == null) {
+                categoryItems = new ArrayList<>();
+                itemsByCategory.put(categoryName, categoryItems);
+            }
+            categoryItems.add(item);
+        }
+        return itemsByCategory;
+    }
+
+    private void addLauncherItems(@NonNull final String categoryName, @NonNull final List<LauncherItem> items) {
+        if (Preferences.hideHidden && categoryName.equals("HIDDEN")) {
+            return;
         }
 
-        for (final Category category : modifiedCategories) {
-            category.notifyAdapter();
+        final LauncherPagerAdapter adapter = (LauncherPagerAdapter)super.getAdapter();
+        Category category = adapter.categories.get(categoryName);
+        if (category == null) {
+            category = new Category(getContext(), launchManager);
+            adapter.categories.put(categoryName, category);
+            adapter.notifyDataSetChanged();
         }
-        adapter.notifyDataSetChanged();
+
+        category.add(items.toArray(new LauncherItem[0]));
+        if (adapter.firstCategoryLoaded) {
+            for (final LauncherItem item : items) {
+                if (item instanceof Loadable) {
+                    ((Loadable)item).load(getContext());
+                }
+            }
+        }
     }
 
     private void addLauncherItem(@NonNull final LauncherItem item, @NonNull final String categoryName, final boolean notify) {
@@ -133,7 +165,7 @@ public class LauncherPager extends ViewPager {
         if (adapter.firstCategoryLoaded && item instanceof Loadable) {
             ((Loadable)item).load(getContext());
         }
-        category.add(item, notify);
+        category.add(item);
     }
 
     /**

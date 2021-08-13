@@ -25,12 +25,12 @@ public class Category {
         return adapter.getCount();
     }
 
-    public void add(final LauncherItem launcherItem, final boolean notify) {
-        adapter.add(launcherItem);
-        if (notify) {
-            adapter.sort();
-            adapter.notifyDataSetChanged();
+    public void add(final LauncherItem... launcherItems) {
+        for (final LauncherItem launcherItem : launcherItems) {
+            adapter.add(launcherItem);
         }
+        adapter.sort();
+        adapter.notifyDataSetChanged();
     }
 
     public void remove(final LauncherItem launcherItem) {
@@ -40,11 +40,6 @@ public class Category {
 
     public LauncherItem getItem(final int index) {
         return adapter.getItem(index);
-    }
-
-    public void notifyAdapter() { // TODO: remove
-        adapter.sort();
-        adapter.notifyDataSetChanged();
     }
 
     public void loadItems(final Context context) {
