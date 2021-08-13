@@ -45,37 +45,22 @@ public class AppItemManager {
     }
 
     public static void removeAppItems(final Context context, final LauncherPager pager, final String packageName) {
+        boolean categoriesRemoved = false;
         final LauncherPagerAdapter adapter = (LauncherPagerAdapter)pager.getAdapter();
-        for (Map.Entry categoryEntry : adapter.categories.entrySet()) {
-            final String categoryName = (String)categoryEntry.getKey();
-            final CategoryView categoryView = (CategoryView)categoryEntry.getValue();
-            final CategoryArrayAdapter innerAdapter = (CategoryArrayAdapter)categoryView.getAdapter();
-
-            boolean itemsRemoved = false;
-            // iterate through categories' items
-            for (int i = 0; i < innerAdapter.getCount(); ) {
-                final LauncherItem launcherItem = innerAdapter.getItem(i);
-                if (launcherItem instanceof AppItem && ((AppItem)launcherItem).getPackageName().equals(packageName)) {
-                    // remove matching items
-                    // don't increment i in this case, as item count has decreased
-                    innerAdapter.remove(launcherItem);
-                    // TODO: refactor: call LauncherPager.removeLauncherItem instead
-                    // TODO: refactor: maybe remove the now unused categories prefmap key here
-                    itemsRemoved = true;
-                } else {
-                    i++;
-                }
-            }
-            if (itemsRemoved) {
-                // update category adapter
-                innerAdapter.notifyDataSetChanged();
-                if (innerAdapter.getCount() == 0) {
-                    // remove the now empty category from pager
-                    adapter.categories.remove(categoryName);
-                }
+        for (final Map.Entry<String, Category> categoryEntry : adapter.categories.entrySet()) {
+            final String categoryName = categoryEntry.getKey();
+            final Category category = categoryEntry.getValue();
+            
+            category.remove(packageName);
+            if (category.getCount() == 0) {
+                categoriesRemoved = true;
+                adapter.categories.remove(categoryName);
             }
         }
-        adapter.notifyDataSetChanged();
+
+        if (categoriesRemoved) {
+            adapter.notifyDataSetChanged();
+        }
     }
 
     public static void showPackageDetails(final Context context, final String packageName) {

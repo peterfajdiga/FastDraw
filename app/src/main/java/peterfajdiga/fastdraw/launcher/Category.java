@@ -5,6 +5,7 @@ import android.os.AsyncTask;
 import android.util.Log;
 import android.view.View;
 
+import peterfajdiga.fastdraw.launcher.item.AppItem;
 import peterfajdiga.fastdraw.launcher.item.LauncherItem;
 import peterfajdiga.fastdraw.launcher.item.Loadable;
 
@@ -36,6 +37,24 @@ public class Category {
     public void remove(final LauncherItem launcherItem) {
         adapter.remove(launcherItem);
         adapter.notifyDataSetChanged();
+    }
+
+    public void remove(final String packageName) {
+        boolean itemsRemoved = false;
+        for (int i = 0; i < getCount();) {
+            final LauncherItem item = getItem(i);
+            if (item instanceof AppItem && ((AppItem)item).getPackageName().equals(packageName)) {
+                // TODO: oreo shortcuts
+                remove(item);
+                itemsRemoved = true;
+            } else {
+                i++;
+            }
+        }
+
+        if (itemsRemoved) {
+            adapter.notifyDataSetChanged();
+        }
     }
 
     public LauncherItem getItem(final int index) {
