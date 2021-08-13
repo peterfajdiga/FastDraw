@@ -12,6 +12,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.res.ResourcesCompat;
 
@@ -71,6 +72,12 @@ public class ShortcutItem extends LauncherItem implements Loadable, Saveable {
         final Rect clipBounds
     ) {
         launchManager.launch(intent, opts);
+    }
+
+    @Override
+    @Nullable
+    public String getPackageName() {
+        return intent.getPackage();
     }
 
     private static Drawable iconFromResource(final Context context, final String packageName, final String resourceName) throws PackageManager.NameNotFoundException, Resources.NotFoundException {

@@ -84,6 +84,7 @@ public class OreoShortcutItem extends LauncherItem implements Saveable {
         launcherApps.startShortcut(packageName, oreoShortcutId, clipBounds, opts, user); // TODO: opts (animation)
     }
 
+    @Override
     @NonNull
     public String getPackageName() {
         return packageName;

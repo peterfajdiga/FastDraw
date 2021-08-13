@@ -69,6 +69,7 @@ public class AppItem extends LauncherItem implements Loadable {
         return intent;
     }
 
+    @Override
     @NonNull
     public String getPackageName() {
         return packageName;
