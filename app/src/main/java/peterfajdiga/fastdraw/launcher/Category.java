@@ -2,6 +2,7 @@ package peterfajdiga.fastdraw.launcher;
 
 import android.app.ActivityOptions;
 import android.content.Context;
+import android.graphics.PointF;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.util.Log;
@@ -107,11 +108,16 @@ public class Category {
             item.launch(context, launchManager, opts.toBundle(), view.getClipBounds());
         });
 
+        final PointF touchPoint = new PointF();
+        categoryView.setOnTouchListener((v, event) -> {
+            touchPoint.set(event.getX(), event.getY());
+            return false;
+        });
         categoryView.setOnItemLongClickListener((parent, view, position, id) -> {
             view.performHapticFeedback(HapticFeedbackConstants.LONG_PRESS);
 
             // start drag
-            final View.DragShadowBuilder shadow = new OffsetDragShadowBuilder(view, 0.0f, 0.0f); // TODO: interceptTouchX, interceptTouchY
+            final View.DragShadowBuilder shadow = new OffsetDragShadowBuilder(view, touchPoint.x, touchPoint.y);
             if (Build.VERSION.SDK_INT < 24) {
                 view.startDrag(null, shadow, null, 0);
             } else {
