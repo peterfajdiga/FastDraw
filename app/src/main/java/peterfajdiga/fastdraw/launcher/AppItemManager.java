@@ -44,14 +44,14 @@ public class AppItemManager {
         return getAppItems(packageManager, launcherIntent);
     }
 
-    public static void removeItems(final Context context, final LauncherPager pager, final String packageName, final boolean appItemsOnly) {
+    public static void removeItems(final Context context, final LauncherPager pager, final String packageName, final boolean removeShortcuts) {
         boolean categoriesRemoved = false;
         final LauncherPagerAdapter adapter = (LauncherPagerAdapter)pager.getAdapter();
         for (final Map.Entry<String, Category> categoryEntry : adapter.categories.entrySet()) {
             final String categoryName = categoryEntry.getKey();
             final Category category = categoryEntry.getValue();
 
-            category.remove(packageName, appItemsOnly);
+            category.remove(packageName, removeShortcuts);
             if (category.getCount() == 0) {
                 categoriesRemoved = true;
                 adapter.categories.remove(categoryName);

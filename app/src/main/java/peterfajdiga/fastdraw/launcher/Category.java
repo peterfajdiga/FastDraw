@@ -7,9 +7,9 @@ import android.view.View;
 
 import androidx.annotation.NonNull;
 
-import peterfajdiga.fastdraw.launcher.item.AppItem;
 import peterfajdiga.fastdraw.launcher.item.LauncherItem;
 import peterfajdiga.fastdraw.launcher.item.Loadable;
+import peterfajdiga.fastdraw.launcher.item.Saveable;
 
 public class Category {
     private final CategoryArrayAdapter adapter; // TODO: remove
@@ -41,11 +41,11 @@ public class Category {
         adapter.notifyDataSetChanged();
     }
 
-    public void remove(@NonNull final String packageName, final boolean appItemsOnly) {
+    public void remove(@NonNull final String packageName, final boolean removeShortcuts) {
         boolean itemsRemoved = false;
         for (int i = 0; i < getCount();) {
             final LauncherItem item = getItem(i);
-            if ((!appItemsOnly || item instanceof AppItem) && packageName.equals(item.getPackageName())) {
+            if ((removeShortcuts || !(item instanceof Saveable)) && packageName.equals(item.getPackageName())) {
                 remove(item);
                 // TODO: delete shortcut files
                 itemsRemoved = true;

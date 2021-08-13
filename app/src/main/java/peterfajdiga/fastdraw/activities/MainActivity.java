@@ -492,7 +492,7 @@ public class MainActivity extends FragmentActivity implements
 
     @Override
     public void onAppChange(String packageName) {
-        AppItemManager.removeItems(this, getPager(), packageName, true);
+        AppItemManager.removeItems(this, getPager(), packageName, false);
 
         final AppItem[] appItems = AppItemManager.getAppItems(getPackageManager(), packageName);
         getPager().addLauncherItems(getString(R.string.default_category), appItems);
@@ -500,7 +500,7 @@ public class MainActivity extends FragmentActivity implements
 
     @Override
     public void onAppRemove(String packageName) {
-        AppItemManager.removeItems(this, getPager(), packageName, false);
+        AppItemManager.removeItems(this, getPager(), packageName, true);
     }
 
     public void onShortcutReceived(final ShortcutItem newShortcut) {
