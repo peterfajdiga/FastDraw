@@ -7,6 +7,7 @@ import android.view.View;
 
 import androidx.annotation.NonNull;
 
+import peterfajdiga.fastdraw.launcher.item.AppItem;
 import peterfajdiga.fastdraw.launcher.item.LauncherItem;
 import peterfajdiga.fastdraw.launcher.item.Loadable;
 
@@ -40,12 +41,30 @@ public class Category {
         adapter.notifyDataSetChanged();
     }
 
+    public void removeAppItems(@NonNull final String packageName) {
+        boolean itemsRemoved = false;
+        for (int i = 0; i < getCount();) {
+            final LauncherItem item = getItem(i);
+            if (item instanceof AppItem && packageName.equals(item.getPackageName())) {
+                remove(item);
+                itemsRemoved = true;
+            } else {
+                i++;
+            }
+        }
+
+        if (itemsRemoved) {
+            adapter.notifyDataSetChanged();
+        }
+    }
+
     public void remove(@NonNull final String packageName) {
         boolean itemsRemoved = false;
         for (int i = 0; i < getCount();) {
             final LauncherItem item = getItem(i);
             if (packageName.equals(item.getPackageName())) {
                 remove(item);
+                // TODO: delete shortcut files
                 itemsRemoved = true;
             } else {
                 i++;

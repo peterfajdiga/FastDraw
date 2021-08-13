@@ -500,7 +500,7 @@ public class MainActivity extends FragmentActivity implements
 
     @Override
     public void onAppRemove(String packageName) {
-        AppItemManager.removeAppItems(this, getPager(), packageName);
+        AppItemManager.removeItems(this, getPager(), packageName);
     }
 
     public void onShortcutReceived(final ShortcutItem newShortcut) {
