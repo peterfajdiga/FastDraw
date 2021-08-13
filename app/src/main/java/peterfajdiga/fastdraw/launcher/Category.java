@@ -78,24 +78,24 @@ public class Category {
     }
 
     private View createView(final Context context, final LauncherPager.Owner owner, final LaunchManager launchManager, final CategoryArrayAdapter adapter) {
-        final CategoryView categoryView = new CategoryView(context);
+        final GesturesGridView containerView = new GesturesGridView(context);
 
         if (Preferences.appItemResource == R.layout.app_item_grid) {
-            categoryView.setNumColumns(GridView.AUTO_FIT);
-            categoryView.setColumnWidth(
+            containerView.setNumColumns(GridView.AUTO_FIT);
+            containerView.setColumnWidth(
                 context.getResources().getDimensionPixelSize(R.dimen.app_item_grid_icon_size) +
                     context.getResources().getDimensionPixelSize(R.dimen.app_item_grid_icon_padding) * 2
             );
             final int padding = Math.round(context.getResources().getDimensionPixelSize(R.dimen.app_item_grid_container_padding));
-            categoryView.setPadding(padding, padding, padding, padding);
-            categoryView.setClipToPadding(false);
-            categoryView.setScrollBarStyle(View.SCROLLBARS_OUTSIDE_OVERLAY);
+            containerView.setPadding(padding, padding, padding, padding);
+            containerView.setClipToPadding(false);
+            containerView.setScrollBarStyle(View.SCROLLBARS_OUTSIDE_OVERLAY);
         }
-        categoryView.setStackFromBottom(Preferences.stackFromBottom);
+        containerView.setStackFromBottom(Preferences.stackFromBottom);
 
-        categoryView.setAdapter(adapter);
+        containerView.setAdapter(adapter);
 
-        categoryView.setOnItemClickListener((adapterView, view, pos, id) -> {
+        containerView.setOnItemClickListener((adapterView, view, pos, id) -> {
             final LauncherItem item = adapter.getItem(pos);
 
             ActivityOptions opts;
@@ -109,11 +109,11 @@ public class Category {
         });
 
         final PointF touchPoint = new PointF();
-        categoryView.setOnTouchListener((v, event) -> {
+        containerView.setOnTouchListener((v, event) -> {
             touchPoint.set(event.getX(), event.getY());
             return false;
         });
-        categoryView.setOnItemLongClickListener((parent, view, position, id) -> {
+        containerView.setOnItemLongClickListener((parent, view, position, id) -> {
             view.performHapticFeedback(HapticFeedbackConstants.LONG_PRESS);
 
             // start drag
@@ -128,7 +128,7 @@ public class Category {
             return false;
         });
 
-        categoryView.setListener(new CategoryView.Listener() {
+        containerView.setListener(new GesturesGridView.Listener() {
             @Override
             public void onLongpress() {
                 owner.onPagerLongpress();
@@ -150,7 +150,7 @@ public class Category {
             }
         });
 
-        return categoryView;
+        return containerView;
     }
 
     public void loadItems(final Context context) {

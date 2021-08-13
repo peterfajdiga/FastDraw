@@ -2,8 +2,6 @@ package peterfajdiga.fastdraw.launcher;
 
 import android.app.Activity;
 import android.content.Context;
-import android.os.AsyncTask;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,7 +12,6 @@ import android.widget.TextView;
 import peterfajdiga.fastdraw.Preferences;
 import peterfajdiga.fastdraw.R;
 import peterfajdiga.fastdraw.launcher.item.LauncherItem;
-import peterfajdiga.fastdraw.launcher.item.Loadable;
 
 class CategoryArrayAdapter extends ArrayAdapter<LauncherItem> {
 
@@ -42,7 +39,7 @@ class CategoryArrayAdapter extends ArrayAdapter<LauncherItem> {
         convertView.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
-                ((CategoryView)parent).interceptTouchTime = Long.MAX_VALUE;
+                ((GesturesGridView)parent).interceptTouchTime = Long.MAX_VALUE;
                 return false;
             }
         });

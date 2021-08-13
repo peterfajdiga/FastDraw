@@ -10,7 +10,7 @@ import android.widget.GridView;
 
 import androidx.annotation.NonNull;
 
-class CategoryView extends GridView {
+class GesturesGridView extends GridView {
     private static final int LONG_CLICK_TIME = ViewConfiguration.getLongPressTimeout();
     private static final int DOUBLE_CLICK_TIME = ViewConfiguration.getDoubleTapTimeout();
     private static final float LONG_CLICK_MOUSE_MOVE_TOLERANCE = 50; // TODO: separate for DOUBLE_CLICK
@@ -26,19 +26,19 @@ class CategoryView extends GridView {
 
     private Listener listener;
 
-    public CategoryView(final Context context) {
+    public GesturesGridView(final Context context) {
         super(context);
     }
 
-    public CategoryView(final Context context, final AttributeSet attrs) {
+    public GesturesGridView(final Context context, final AttributeSet attrs) {
         super(context, attrs);
     }
 
-    public CategoryView(final Context context, final AttributeSet attrs, final int defStyleAttr) {
+    public GesturesGridView(final Context context, final AttributeSet attrs, final int defStyleAttr) {
         super(context, attrs, defStyleAttr);
     }
 
-    public CategoryView(final Context context, final AttributeSet attrs, final int defStyleAttr, final int defStyleRes) {
+    public GesturesGridView(final Context context, final AttributeSet attrs, final int defStyleAttr, final int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
     }
 
