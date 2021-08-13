@@ -13,7 +13,6 @@ import java.util.List;
 import java.util.Map;
 
 import peterfajdiga.fastdraw.launcher.item.AppItem;
-import peterfajdiga.fastdraw.launcher.item.LauncherItem;
 
 public class AppItemManager {
     private AppItemManager() {}
@@ -51,8 +50,8 @@ public class AppItemManager {
             final String categoryName = categoryEntry.getKey();
             final Category category = categoryEntry.getValue();
 
-            category.remove(context, packageName, removeShortcuts);
-            if (category.getCount() == 0) {
+            category.removeItem(context, packageName, removeShortcuts);
+            if (category.getItemCount() == 0) {
                 categoriesRemoved = true;
                 adapter.categories.remove(categoryName);
             }

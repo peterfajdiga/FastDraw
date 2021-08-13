@@ -24,11 +24,11 @@ public class Category {
         return view;
     }
 
-    public int getCount() {
+    public int getItemCount() {
         return adapter.getCount();
     }
 
-    public void add(final LauncherItem... launcherItems) {
+    public void addItem(final LauncherItem... launcherItems) {
         for (final LauncherItem launcherItem : launcherItems) {
             adapter.add(launcherItem);
         }
@@ -36,17 +36,17 @@ public class Category {
         adapter.notifyDataSetChanged();
     }
 
-    public void remove(final LauncherItem launcherItem) {
+    public void removeItem(final LauncherItem launcherItem) {
         adapter.remove(launcherItem);
         adapter.notifyDataSetChanged();
     }
 
-    public void remove(@NonNull final Context context, @NonNull final String packageName, final boolean removeShortcuts) {
+    public void removeItem(@NonNull final Context context, @NonNull final String packageName, final boolean removeShortcuts) {
         boolean itemsRemoved = false;
-        for (int i = 0; i < getCount();) {
+        for (int i = 0; i < getItemCount();) {
             final LauncherItem item = adapter.getItem(i);
             if ((removeShortcuts || !(item instanceof Saveable)) && packageName.equals(item.getPackageName())) {
-                remove(item);
+                removeItem(item);
                 itemsRemoved = true;
                 if (item instanceof Saveable) {
                     ShortcutItemManager.deleteShortcut(context, (Saveable)item); // TODO: refactor?
@@ -63,7 +63,7 @@ public class Category {
 
     @NonNull
     public LauncherItem[] getItems() {
-        final LauncherItem[] items = new LauncherItem[getCount()];
+        final LauncherItem[] items = new LauncherItem[getItemCount()];
         for (int i = 0; i < items.length; i++) {
             items[i] = adapter.getItem(i);
         }

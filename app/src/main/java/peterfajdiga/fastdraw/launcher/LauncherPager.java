@@ -11,10 +11,8 @@ import androidx.viewpager.widget.ViewPager;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import peterfajdiga.fastdraw.PrefMap;
 import peterfajdiga.fastdraw.Preferences;
@@ -133,7 +131,7 @@ public class LauncherPager extends ViewPager {
             adapter.notifyDataSetChanged();
         }
 
-        category.add(items.toArray(new LauncherItem[0]));
+        category.addItem(items.toArray(new LauncherItem[0]));
         if (adapter.firstCategoryLoaded) {
             for (final LauncherItem item : items) {
                 if (item instanceof Loadable) {
@@ -161,7 +159,7 @@ public class LauncherPager extends ViewPager {
         if (adapter.firstCategoryLoaded && item instanceof Loadable) {
             ((Loadable)item).load(getContext());
         }
-        category.add(item);
+        category.addItem(item);
     }
 
     /**
@@ -173,14 +171,14 @@ public class LauncherPager extends ViewPager {
         final Category category = adapter.categories.get(categoryName);
 
         removeItemCategory(item);
-        if (category.getCount() == 1) {
+        if (category.getItemCount() == 1) {
             // remove category from pager, no need to remove the item from category
             adapter.categories.remove(categoryName);
             adapter.notifyDataSetChanged();
             return true;
         } else {
             // remove item from category
-            category.remove(item);
+            category.removeItem(item);
             return false;
         }
     }
