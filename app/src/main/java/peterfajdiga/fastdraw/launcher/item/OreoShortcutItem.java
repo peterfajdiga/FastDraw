@@ -24,7 +24,6 @@ import java.io.IOException;
 import peterfajdiga.fastdraw.launcher.LaunchManager;
 
 public class OreoShortcutItem extends LauncherItem implements Saveable {
-    // TODO: remove and delete oreo shortcut as soon as target app is uninstalled
     public static final String TYPE_KEY = "oreo";
 
     private final String packageName;
@@ -83,6 +82,11 @@ public class OreoShortcutItem extends LauncherItem implements Saveable {
         }
 
         launcherApps.startShortcut(packageName, oreoShortcutId, clipBounds, opts, user); // TODO: opts (animation)
+    }
+
+    @NonNull
+    public String getPackageName() {
+        return packageName;
     }
 
     @Override

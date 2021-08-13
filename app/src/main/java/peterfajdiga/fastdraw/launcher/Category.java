@@ -5,9 +5,13 @@ import android.os.AsyncTask;
 import android.util.Log;
 import android.view.View;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 import peterfajdiga.fastdraw.launcher.item.AppItem;
 import peterfajdiga.fastdraw.launcher.item.LauncherItem;
 import peterfajdiga.fastdraw.launcher.item.Loadable;
+import peterfajdiga.fastdraw.launcher.item.OreoShortcutItem;
 
 public class Category {
     private final CategoryArrayAdapter adapter; // TODO: remove
@@ -39,12 +43,11 @@ public class Category {
         adapter.notifyDataSetChanged();
     }
 
-    public void remove(final String packageName) {
+    public void remove(@NonNull final String packageName) {
         boolean itemsRemoved = false;
         for (int i = 0; i < getCount();) {
             final LauncherItem item = getItem(i);
-            if (item instanceof AppItem && ((AppItem)item).getPackageName().equals(packageName)) {
-                // TODO: oreo shortcuts
+            if (packageName.equals(getItemPackageName(item))) {
                 remove(item);
                 itemsRemoved = true;
             } else {
@@ -54,6 +57,17 @@ public class Category {
 
         if (itemsRemoved) {
             adapter.notifyDataSetChanged();
+        }
+    }
+
+    @Nullable
+    private static String getItemPackageName(final LauncherItem item) {
+        if (item instanceof AppItem) {
+            return ((AppItem)item).getPackageName();
+        } else if (item instanceof OreoShortcutItem) {
+            return ((OreoShortcutItem)item).getPackageName();
+        } else {
+            return null;
         }
     }
 
