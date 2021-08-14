@@ -84,7 +84,11 @@ public class Category {
         for (final LauncherItem item : items) {
             if (item instanceof Loadable) {
                 final int currentIndex = adapter.getItems().indexOf(item);
-                ((Loadable)item).load(context);
+                try {
+                    ((Loadable)item).load(context);
+                } catch (final Exception e) {
+                    Log.e("Category", "Failed to load item of package " + item.getPackageName(), e);
+                }
                 adapter.getItems().updateItemAt(currentIndex, item);
             }
         }
@@ -110,12 +114,8 @@ public class Category {
     private final class ItemLoader extends AsyncTask<Void, Void, Void> {
         @Override
         protected Void doInBackground(Void... params) {
-            try {
-                final Context context = view.getContext(); // TODO: refactor?
-                loadItems(context);
-            } catch (Exception e) {
-                Log.e("FastDraw_itemLoad", e.toString());
-            }
+            final Context context = view.getContext(); // TODO: refactor?
+            loadItems(context);
             return null;
         }
 
