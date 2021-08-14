@@ -123,9 +123,6 @@ public class Category {
             return null;
         }
 
-        /**
-         * this must be called on main thread
-         */
         @Override
         protected void onPostExecute(Void result) {
             reportIfLoadFailure();
