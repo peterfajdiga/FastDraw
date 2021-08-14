@@ -92,8 +92,8 @@ public class CategoryOrderAdapter extends RecyclerView.Adapter<CategoryOrderAdap
         });
     }
 
-    class CategoryViewHolder extends RecyclerView.ViewHolder {
-        ViewGroup view;
+    static class CategoryViewHolder extends RecyclerView.ViewHolder {
+        final ViewGroup view;
 
         CategoryViewHolder(final View itemView) {
             super(itemView);
