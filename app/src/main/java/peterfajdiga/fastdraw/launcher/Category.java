@@ -18,7 +18,9 @@ import peterfajdiga.fastdraw.R;
 import peterfajdiga.fastdraw.launcher.item.LauncherItem;
 import peterfajdiga.fastdraw.launcher.item.Loadable;
 import peterfajdiga.fastdraw.launcher.item.Saveable;
+import peterfajdiga.fastdraw.views.gestures.DoubleTap;
 import peterfajdiga.fastdraw.views.gestures.LongPress;
+import peterfajdiga.fastdraw.views.gestures.OnTouchListenerMux;
 
 public class Category {
     private final CategoryAdapter adapter;
@@ -87,7 +89,10 @@ public class Category {
             containerView.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false));
         }
 
-        containerView.setOnTouchListener(new LongPress(1, owner::onPagerLongpress));
+        containerView.setOnTouchListener(new OnTouchListenerMux(
+            new LongPress(1, owner::onPagerLongpress),
+            new DoubleTap(1, owner::onPagerDoubletap)
+        ));
         return containerView;
     }
 
