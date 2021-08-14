@@ -80,18 +80,22 @@ public class Category {
     }
 
     public void loadItems(final Context context) {
+        loadItemsHelper(context);
+        adapter.getItems().replaceAll(getItems());
+    }
+
+    private void loadItemsHelper(final Context context) {
         final LauncherItem[] items = getItems();
         for (final LauncherItem item : items) {
             if (item instanceof Loadable) {
-                final int currentIndex = adapter.getItems().indexOf(item);
                 try {
                     ((Loadable)item).load(context);
                 } catch (final Exception e) {
                     Log.e("Category", "Failed to load item of package " + item.getPackageName(), e);
                 }
-                adapter.getItems().updateItemAt(currentIndex, item);
             }
         }
+
     }
 
     public void loadItemsAsync() {
@@ -115,7 +119,7 @@ public class Category {
         @Override
         protected Void doInBackground(Void... params) {
             final Context context = view.getContext(); // TODO: refactor?
-            loadItems(context);
+            loadItemsHelper(context);
             return null;
         }
 
@@ -125,6 +129,7 @@ public class Category {
         @Override
         protected void onPostExecute(Void result) {
             reportIfLoadFailure();
+            adapter.getItems().replaceAll(getItems());
         }
     }
 }
