@@ -26,23 +26,11 @@ class CategoryArrayAdapter extends ArrayAdapter<LauncherItem> {
         }
         final LauncherItem item = getItem(position);
 
-        /*if (item instanceof ShortcutItem) {
-            convertView.setBackgroundColor(0x40000000);
-        }*/
-
         ImageView appIcon = convertView.findViewById(R.id.app_item_icon);
         appIcon.setImageDrawable(item.getIcon());
 
         TextView appLabel = convertView.findViewById(R.id.app_item_name);
         appLabel.setText(item.getLabel());
-
-        convertView.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View view, MotionEvent motionEvent) {
-                ((GesturesGridView)parent).interceptTouchTime = Long.MAX_VALUE; // TODO: refactor
-                return false;
-            }
-        });
 
         return convertView;
     }
