@@ -12,8 +12,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-
-import java.util.List;
+import androidx.recyclerview.widget.SortedList;
 
 import peterfajdiga.fastdraw.Preferences;
 import peterfajdiga.fastdraw.R;
@@ -23,12 +22,51 @@ import peterfajdiga.fastdraw.launcher.item.Loadable;
 public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ItemViewHolder> {
     private final LauncherPager.Owner owner;
     private final LaunchManager launchManager;
-    private final List<LauncherItem> items;
+    private final SortedList<LauncherItem> items;
 
-    public CategoryAdapter(@NonNull final LauncherPager.Owner owner, @NonNull final LaunchManager launchManager, @NonNull final List<LauncherItem> items) {
+    public CategoryAdapter(@NonNull final LauncherPager.Owner owner, @NonNull final LaunchManager launchManager) {
         this.owner = owner;
         this.launchManager = launchManager;
-        this.items = items;
+        this.items = new SortedList<>(LauncherItem.class, new SortedList.Callback<LauncherItem>() {
+            @Override
+            public int compare(final LauncherItem o1, final LauncherItem o2) {
+                return o1.compareTo(o2);
+            }
+
+            @Override
+            public void onChanged(final int position, final int count) {
+                notifyItemRangeChanged(position, count);
+            }
+
+            @Override
+            public boolean areContentsTheSame(final LauncherItem oldItem, final LauncherItem newItem) {
+                return oldItem.equals(newItem);
+            }
+
+            @Override
+            public boolean areItemsTheSame(final LauncherItem item1, final LauncherItem item2) {
+                return item1.equals(item2);
+            }
+
+            @Override
+            public void onInserted(final int position, final int count) {
+                notifyItemRangeInserted(position, count);
+            }
+
+            @Override
+            public void onRemoved(final int position, final int count) {
+                notifyItemRangeRemoved(position, count);
+            }
+
+            @Override
+            public void onMoved(final int fromPosition, final int toPosition) {
+                notifyItemMoved(fromPosition, toPosition);
+            }
+        });
+    }
+
+    SortedList<LauncherItem> getItems() {
+        return items;
     }
 
     @Override
