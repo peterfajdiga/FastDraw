@@ -80,15 +80,14 @@ public class Category {
     }
 
     public void loadItems(final Context context) {
-        final int n = getItemCount();
-        for (int i = 0; i < n; i++) {
-            final LauncherItem item = adapter.getItems().get(i);
+        final LauncherItem[] items = getItems();
+        for (final LauncherItem item : items) {
             if (item instanceof Loadable) {
+                final int currentIndex = adapter.getItems().indexOf(item);
                 ((Loadable)item).load(context);
+                adapter.getItems().updateItemAt(currentIndex, item);
             }
-
         }
-        adapter.notifyDataSetChanged();
     }
 
     public void loadItemsAsync() {
@@ -113,13 +112,7 @@ public class Category {
         protected Void doInBackground(Void... params) {
             try {
                 final Context context = view.getContext(); // TODO: refactor?
-                final int n = getItemCount();
-                for (int i = 0; i < n; i++) {
-                    final LauncherItem item = adapter.getItems().get(i);
-                    if (item instanceof Loadable) {
-                        ((Loadable)item).load(context);
-                    }
-                }
+                loadItems(context);
             } catch (Exception e) {
                 Log.e("FastDraw_itemLoad", e.toString());
             }
@@ -132,7 +125,6 @@ public class Category {
         @Override
         protected void onPostExecute(Void result) {
             reportIfLoadFailure();
-            adapter.notifyDataSetChanged();
         }
     }
 }
