@@ -1,5 +1,6 @@
 package peterfajdiga.fastdraw.launcher;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
@@ -17,6 +18,7 @@ import peterfajdiga.fastdraw.R;
 import peterfajdiga.fastdraw.launcher.item.LauncherItem;
 import peterfajdiga.fastdraw.launcher.item.Loadable;
 import peterfajdiga.fastdraw.launcher.item.Saveable;
+import peterfajdiga.fastdraw.views.gestures.LongPress;
 
 public class Category {
     private final CategoryAdapter adapter;
@@ -66,6 +68,7 @@ public class Category {
         return items;
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     private View createView(final Context context, final LauncherPager.Owner owner, final LaunchManager launchManager, final CategoryAdapter adapter) {
         final RecyclerView containerView = new RecyclerView(context);
         containerView.setAdapter(adapter);
@@ -84,6 +87,7 @@ public class Category {
             containerView.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false));
         }
 
+        containerView.setOnTouchListener(new LongPress(1, owner::onPagerLongpress));
         return containerView;
     }
 
