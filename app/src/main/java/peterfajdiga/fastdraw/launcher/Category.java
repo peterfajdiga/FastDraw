@@ -21,6 +21,7 @@ import peterfajdiga.fastdraw.launcher.item.Saveable;
 import peterfajdiga.fastdraw.views.gestures.DoubleTap;
 import peterfajdiga.fastdraw.views.gestures.LongPress;
 import peterfajdiga.fastdraw.views.gestures.OnTouchListenerMux;
+import peterfajdiga.fastdraw.views.gestures.Pinch;
 
 public class Category {
     private final CategoryAdapter adapter;
@@ -91,7 +92,9 @@ public class Category {
 
         containerView.setOnTouchListener(new OnTouchListenerMux(
             new LongPress(1, owner::onPagerLongpress),
-            new DoubleTap(1, owner::onPagerDoubletap)
+            new DoubleTap(1, owner::onPagerDoubletap),
+            new Pinch(false, owner::onPagerPinch),
+            new Pinch(true, owner::onPagerUnpinch)
         ));
         return containerView;
     }
