@@ -71,7 +71,11 @@ public class Category {
         containerView.setAdapter(adapter);
 
         if (Preferences.appItemResource == R.layout.app_item_grid) {
-            containerView.setLayoutManager(new GridLayoutManager(context, 4)); // TODO: configurable or automatic column count // TODO: remove stack from bottom
+            if (Preferences.stackFromBottom) {
+                containerView.setLayoutManager(new GridLayoutManager(context, 4, GridLayoutManager.VERTICAL, true)); // TODO: configurable or automatic column count
+            } else {
+                containerView.setLayoutManager(new GridLayoutManager(context, 4)); // TODO: configurable or automatic column count
+            }
             final int padding = Math.round(context.getResources().getDimensionPixelSize(R.dimen.app_item_grid_container_padding));
             containerView.setPadding(padding, padding, padding, padding);
             containerView.setClipToPadding(false);
