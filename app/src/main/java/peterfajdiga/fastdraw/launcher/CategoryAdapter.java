@@ -79,12 +79,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ItemVi
 
     @Override
     public void onBindViewHolder(@NonNull final ItemViewHolder holder, final int position) {
-        final Context context = holder.view.getContext();
-
         final LauncherItem item = items.get(position);
-        if (item instanceof Loadable) {
-            ((Loadable)item).load(context); // TODO: async
-        }
 
         final ImageView appIcon = holder.view.findViewById(R.id.app_item_icon);
         appIcon.setImageDrawable(item.getIcon());
@@ -100,6 +95,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ItemVi
                 opts = ActivityOptions.makeScaleUpAnimation(view, 0, 0, view.getWidth(), view.getHeight());
             }
 
+            final Context context = holder.view.getContext();
             item.launch(context, launchManager, opts.toBundle(), view.getClipBounds());
         });
 
