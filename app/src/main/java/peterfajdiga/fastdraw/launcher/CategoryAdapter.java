@@ -1,7 +1,9 @@
 package peterfajdiga.fastdraw.launcher;
 
+import android.annotation.SuppressLint;
 import android.app.ActivityOptions;
 import android.content.Context;
+import android.graphics.PointF;
 import android.os.Build;
 import android.view.HapticFeedbackConstants;
 import android.view.LayoutInflater;
@@ -76,6 +78,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ItemVi
         return new CategoryAdapter.ItemViewHolder(view);
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     public void onBindViewHolder(@NonNull final ItemViewHolder holder, final int position) {
         final LauncherItem item = items.get(position);
@@ -98,14 +101,19 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ItemVi
             item.launch(context, launchManager, opts.toBundle(), view.getClipBounds());
         });
 
+        final PointF touchPoint = new PointF();
+        holder.view.setOnTouchListener((view, event) -> {
+            touchPoint.set(event.getX(), event.getY());
+            return false;
+        });
         holder.view.setOnLongClickListener(view -> {
             view.performHapticFeedback(HapticFeedbackConstants.LONG_PRESS);
 
-            final float x = view.getX() + view.getWidth() / 2.0f;
-            final float y = view.getY() + view.getHeight() / 2.0f;
+            final float x = view.getX() + touchPoint.x;
+            final float y = view.getY() + touchPoint.y;
 
             // start drag
-            final View.DragShadowBuilder shadow = new OffsetDragShadowBuilder(view, x, y); // TODO: use interceptTouchX, interceptTouchY
+            final View.DragShadowBuilder shadow = new OffsetDragShadowBuilder(view, x, y);
             if (Build.VERSION.SDK_INT < 24) {
                 view.startDrag(null, shadow, null, 0);
             } else {
