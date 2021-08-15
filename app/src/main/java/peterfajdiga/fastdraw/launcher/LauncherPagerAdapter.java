@@ -79,7 +79,7 @@ class LauncherPagerAdapter extends PagerAdapter {
                 // already loaded
                 continue;
             }
-            category.loadItemsAsync();
+            category.loadItemsAsync(context);
         }
     }
 }

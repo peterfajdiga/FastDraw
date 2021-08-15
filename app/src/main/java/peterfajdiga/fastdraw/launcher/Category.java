@@ -2,7 +2,8 @@ package peterfajdiga.fastdraw.launcher;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.os.AsyncTask;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 import android.view.View;
 
@@ -12,6 +13,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.Arrays;
+import java.util.concurrent.Executors;
 
 import peterfajdiga.fastdraw.Preferences;
 import peterfajdiga.fastdraw.R;
@@ -116,6 +118,14 @@ public class Category {
         adapter.getItems().replaceAll(getItems());
     }
 
+    public void loadItemsAsync(final Context context) {
+        final Handler handler = new Handler(Looper.getMainLooper());
+        Executors.newSingleThreadExecutor().execute(() -> {
+            loadItemsHelper(context);
+            handler.post(() -> adapter.getItems().replaceAll(getItems()));
+        });
+    }
+
     private void loadItemsHelper(final Context context) {
         loaded = true;
         final LauncherItem[] items = getItems();
@@ -127,38 +137,6 @@ public class Category {
                     Log.e("Category", "Failed to load item of package " + item.getPackageName(), e);
                 }
             }
-        }
-    }
-
-    public void loadItemsAsync() {
-        final ItemLoader itemLoader = new ItemLoader();
-        itemLoader.execute();
-    }
-
-    private void reportIfLoadFailure() {
-        final int n = getItemCount();
-        for (int i = 0; i < n; i++) {
-            final LauncherItem item = adapter.getItems().get(i);
-            if (item instanceof Loadable && !((Loadable)item).isLoaded()) {
-                Log.e("CategoryArrayAdapter", "Could not load launcher item: " + item.getID());
-                // TODO (BUG): retry?
-                return;
-            }
-        }
-    }
-
-    private final class ItemLoader extends AsyncTask<Void, Void, Void> { // TODO: replace with java.util.concurrent
-        @Override
-        protected Void doInBackground(Void... params) {
-            final Context context = view.getContext();
-            loadItemsHelper(context);
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(Void result) {
-            reportIfLoadFailure();
-            adapter.getItems().replaceAll(getItems());
         }
     }
 }
