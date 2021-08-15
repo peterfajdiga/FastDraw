@@ -138,7 +138,7 @@ public class LauncherPager extends ViewPager {
             adapter.notifyDataSetChanged();
         }
 
-        category.addItem(items.toArray(new LauncherItem[0]));
+        category.addItems(items.toArray(new LauncherItem[0]));
         if (adapter.firstCategoryLoaded) {
             for (final LauncherItem item : items) {
                 if (item instanceof Loadable) {
@@ -168,7 +168,7 @@ public class LauncherPager extends ViewPager {
         if (adapter.firstCategoryLoaded && item instanceof Loadable) {
             ((Loadable)item).load(getContext());
         }
-        category.addItem(item);
+        category.addItems(item);
     }
 
     /**

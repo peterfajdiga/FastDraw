@@ -40,7 +40,7 @@ public class Category {
         return adapter.getItemCount();
     }
 
-    public void addItem(final LauncherItem... launcherItems) {
+    public void addItems(final LauncherItem... launcherItems) {
         adapter.getItems().addAll(Arrays.asList(launcherItems));
     }
 
@@ -119,7 +119,6 @@ public class Category {
                 }
             }
         }
-
     }
 
     public void loadItemsAsync() {
