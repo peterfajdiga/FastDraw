@@ -29,7 +29,7 @@ public class Category {
 
     public Category(final Context context, final LauncherPager.Owner owner, final LaunchManager launchManager) {
         this.adapter = new CategoryAdapter(owner, launchManager);
-        view = createView(context, owner, launchManager, adapter); // TODO: reduce parameters
+        view = createView(context, owner, adapter);
     }
 
     public View getView() {
@@ -72,7 +72,11 @@ public class Category {
     }
 
     @SuppressLint("ClickableViewAccessibility")
-    private View createView(final Context context, final LauncherPager.Owner owner, final LaunchManager launchManager, final CategoryAdapter adapter) {
+    private View createView(
+        final Context context,
+        final LauncherPager.Owner owner,
+        final CategoryAdapter adapter
+    ) {
         final RecyclerView containerView = new RecyclerView(context);
         containerView.setAdapter(adapter);
 
