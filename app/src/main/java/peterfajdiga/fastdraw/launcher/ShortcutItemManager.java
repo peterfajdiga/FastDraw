@@ -42,8 +42,8 @@ public class ShortcutItemManager {
                     continue;
                 }
                 shortcuts.add(item);
-            } catch (final Exception e) {
-                e.printStackTrace();
+            } catch (final IOException | URISyntaxException e) {
+                Log.e("ShortcutItemManager", "Failed to read shortcut " + file.getName(), e);
             }
         }
         return shortcuts;
@@ -83,8 +83,8 @@ public class ShortcutItemManager {
         try {
             final File file = new File(getShortcutsDir(context), item.getFilename());
             item.toFile(file);
-        } catch (final Exception e) {
-            e.printStackTrace(); // TODO: handle
+        } catch (final IOException e) {
+            Log.e("ShortcutItemManager", "Failed to save shortcut " + item.getFilename(), e); // TODO: handle? how?
         }
     }
 
