@@ -25,8 +25,7 @@ public class LaunchManager {
 
     public void launch(final Intent intent, @NonNull final Bundle opts) {
         if (intent == null) {
-            final String errMessage = activity.getString(R.string.no_intent);
-            final Toast toast = Toast.makeText(activity, errMessage, Toast.LENGTH_LONG);
+            final Toast toast = Toast.makeText(activity, R.string.no_intent, Toast.LENGTH_LONG);
             toast.show();
             return;
         }
@@ -45,8 +44,7 @@ public class LaunchManager {
         try {
             activity.startActivity(intent, opts);
         } catch (ActivityNotFoundException | IllegalArgumentException e) {
-            final String errMessage = activity.getString(R.string.no_app);
-            final Toast toast = Toast.makeText(activity, errMessage, Toast.LENGTH_LONG);
+            final Toast toast = Toast.makeText(activity, R.string.no_app, Toast.LENGTH_LONG);
             toast.show();
         }
     }
@@ -64,8 +62,7 @@ public class LaunchManager {
         if (gotPermission(permissions, grantResults)) {
             launch(delayedLaunch.launchIntent, delayedLaunch.launchOpts);
         } else {
-            final String errMessage = activity.getString(R.string.no_permission);
-            final Toast toast = Toast.makeText(activity, errMessage, Toast.LENGTH_LONG);
+            final Toast toast = Toast.makeText(activity, R.string.no_permission, Toast.LENGTH_LONG);
             toast.show();
         }
 
