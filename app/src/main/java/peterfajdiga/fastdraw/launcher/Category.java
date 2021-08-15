@@ -114,21 +114,22 @@ public class Category {
     }
 
     public void loadItems(final Context context) {
-        loadItemsHelper(context);
-        adapter.getItems().replaceAll(getItems());
+        final LauncherItem[] items = getItems();
+        loadItemsHelper(context, items);
+        adapter.getItems().replaceAll(items);
     }
 
     public void loadItemsAsync(final Context context) {
         final Handler handler = new Handler(Looper.getMainLooper());
         Executors.newSingleThreadExecutor().execute(() -> {
-            loadItemsHelper(context);
-            handler.post(() -> adapter.getItems().replaceAll(getItems()));
+            final LauncherItem[] items = getItems();
+            loadItemsHelper(context, items);
+            handler.post(() -> adapter.getItems().replaceAll(items));
         });
     }
 
-    private void loadItemsHelper(final Context context) {
+    private void loadItemsHelper(final Context context, final LauncherItem[] items) {
         loaded = true;
-        final LauncherItem[] items = getItems();
         for (final LauncherItem item : items) {
             if (item instanceof Loadable) {
                 try {
