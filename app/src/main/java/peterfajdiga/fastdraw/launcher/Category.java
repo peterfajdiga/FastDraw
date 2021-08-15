@@ -28,7 +28,6 @@ import peterfajdiga.fastdraw.views.gestures.Pinch;
 public class Category {
     private final CategoryAdapter adapter;
     private final View view;
-    private boolean loaded = false;
 
     public Category(final Context context, final LauncherPager.Owner owner, final LaunchManager launchManager) {
         this.adapter = new CategoryAdapter(owner, launchManager);
@@ -44,13 +43,6 @@ public class Category {
     }
 
     public void addItems(final LauncherItem... launcherItems) {
-        if (loaded) {
-            for (final LauncherItem item : launcherItems) {
-                if (item instanceof Loadable && !((Loadable)item).isLoaded()) {
-                    Log.w("Category", "Adding a non-loaded item " + item.getPackageName() + " to a loaded category");
-                }
-            }
-        }
         adapter.getItems().addAll(Arrays.asList(launcherItems));
     }
 
@@ -129,7 +121,6 @@ public class Category {
     }
 
     private void loadItemsHelper(final Context context, final LauncherItem[] items) {
-        loaded = true;
         for (final LauncherItem item : items) {
             if (item instanceof Loadable) {
                 try {
