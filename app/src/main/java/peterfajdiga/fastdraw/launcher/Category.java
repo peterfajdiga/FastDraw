@@ -139,10 +139,10 @@ public class Category {
         }
     }
 
-    private final class ItemLoader extends AsyncTask<Void, Void, Void> {
+    private final class ItemLoader extends AsyncTask<Void, Void, Void> { // TODO: replace with java.util.concurrent
         @Override
         protected Void doInBackground(Void... params) {
-            final Context context = view.getContext(); // TODO: refactor?
+            final Context context = view.getContext();
             loadItemsHelper(context);
             return null;
         }
