@@ -101,7 +101,7 @@ public class LauncherPager extends ViewPager {
     public void addLauncherItems(@NonNull final String defaultCategory, @NonNull final LauncherItem... items) {
         final Map<String, List<LauncherItem>> itemsByCategory = getLauncherItemsByCategory(defaultCategory, items);
         for (final Map.Entry<String, List<LauncherItem>> entry : itemsByCategory.entrySet()) {
-            addLauncherItems(entry.getKey(), entry.getValue());
+            addLauncherItemsToCategory(entry.getKey(), entry.getValue().toArray(new LauncherItem[0]));
         }
     }
 
@@ -123,7 +123,7 @@ public class LauncherPager extends ViewPager {
         return itemsByCategory;
     }
 
-    private void addLauncherItems(@NonNull final String categoryName, @NonNull final List<LauncherItem> items) {
+    private void addLauncherItemsToCategory(@NonNull final String categoryName, @NonNull final LauncherItem... items) {
         assert owner != null;
 
         if (Preferences.hideHidden && categoryName.equals("HIDDEN")) {
@@ -138,7 +138,6 @@ public class LauncherPager extends ViewPager {
             adapter.notifyDataSetChanged();
         }
 
-        category.addItems(items.toArray(new LauncherItem[0]));
         if (adapter.firstCategoryLoaded) {
             for (final LauncherItem item : items) {
                 if (item instanceof Loadable) {
@@ -146,29 +145,7 @@ public class LauncherPager extends ViewPager {
                 }
             }
         }
-    }
-
-    private void addLauncherItem(@NonNull final LauncherItem item, @NonNull final String categoryName, final boolean notify) { // TODO: remove or refactor
-        assert owner != null;
-
-        if (Preferences.hideHidden && categoryName.equals("HIDDEN")) {
-            return;
-        }
-
-        final LauncherPagerAdapter adapter = (LauncherPagerAdapter)super.getAdapter();
-        Category category = adapter.categories.get(categoryName);
-        if (category == null) {
-            category = new Category(getContext(), owner, launchManager);
-            adapter.categories.put(categoryName, category);
-            if (notify) {
-                adapter.notifyDataSetChanged();
-            }
-        }
-
-        if (adapter.firstCategoryLoaded && item instanceof Loadable) {
-            ((Loadable)item).load(getContext());
-        }
-        category.addItems(item);
+        category.addItems(items);
     }
 
     /**
@@ -201,7 +178,7 @@ public class LauncherPager extends ViewPager {
         }
 
         setItemCategory(item, categoryName);
-        addLauncherItem(item, categoryName, true);
+        addLauncherItemsToCategory(categoryName, item);
         if (followItem && lastRemoved) {
             showCategory(categoryName);
         }
