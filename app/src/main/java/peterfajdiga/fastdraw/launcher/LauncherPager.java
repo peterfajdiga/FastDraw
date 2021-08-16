@@ -2,7 +2,10 @@ package peterfajdiga.fastdraw.launcher;
 
 import android.app.WallpaperManager;
 import android.content.Context;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
 
 import androidx.annotation.NonNull;
@@ -14,6 +17,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.Executors;
 
 import peterfajdiga.fastdraw.PrefMap;
 import peterfajdiga.fastdraw.Preferences;
@@ -148,14 +152,27 @@ public class LauncherPager extends ViewPager {
             adapter.notifyDataSetChanged();
         }
 
-        if (adapter.firstCategoryLoaded) {
-            for (final LauncherItem item : items) {
-                if (item instanceof Loadable) {
-                    ((Loadable)item).load(getContext());
+        loadAndAddItems(category, items);
+    }
+
+    private void loadAndAddItems(@NonNull final Category category, @NonNull final LauncherItem... items) {
+        final Handler handler = new Handler(Looper.getMainLooper());
+        Executors.newSingleThreadExecutor().execute(() -> {
+            loadItems(getContext(), items);
+            handler.post(() -> category.addItems(items));
+        });
+    }
+
+    private static void loadItems(final Context context, @NonNull final LauncherItem... items) {
+        for (final LauncherItem item : items) {
+            if (item instanceof Loadable) {
+                try {
+                    ((Loadable)item).load(context);
+                } catch (final Exception e) {
+                    Log.e("Category", "Failed to load item of package " + item.getPackageName(), e);
                 }
             }
         }
-        category.addItems(items);
     }
 
     /**

@@ -2,9 +2,6 @@ package peterfajdiga.fastdraw.launcher;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.os.Handler;
-import android.os.Looper;
-import android.util.Log;
 import android.view.View;
 
 import androidx.annotation.NonNull;
@@ -13,12 +10,10 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.Arrays;
-import java.util.concurrent.Executors;
 
 import peterfajdiga.fastdraw.Preferences;
 import peterfajdiga.fastdraw.R;
 import peterfajdiga.fastdraw.launcher.item.LauncherItem;
-import peterfajdiga.fastdraw.launcher.item.Loadable;
 import peterfajdiga.fastdraw.views.gestures.DoubleTap;
 import peterfajdiga.fastdraw.views.gestures.LongPress;
 import peterfajdiga.fastdraw.views.gestures.OnTouchListenerMux;
@@ -88,32 +83,5 @@ public class Category {
             new Pinch(true, owner::onPagerUnpinch)
         ));
         return containerView;
-    }
-
-    public void loadItems(final Context context) {
-        final LauncherItem[] items = getItems();
-        loadItemsHelper(context, items);
-        adapter.getItems().replaceAll(items);
-    }
-
-    public void loadItemsAsync(final Context context) {
-        final Handler handler = new Handler(Looper.getMainLooper());
-        Executors.newSingleThreadExecutor().execute(() -> {
-            final LauncherItem[] items = getItems();
-            loadItemsHelper(context, items);
-            handler.post(() -> adapter.getItems().replaceAll(items));
-        });
-    }
-
-    private void loadItemsHelper(final Context context, final LauncherItem[] items) {
-        for (final LauncherItem item : items) {
-            if (item instanceof Loadable) {
-                try {
-                    ((Loadable)item).load(context);
-                } catch (final Exception e) {
-                    Log.e("Category", "Failed to load item of package " + item.getPackageName(), e);
-                }
-            }
-        }
     }
 }

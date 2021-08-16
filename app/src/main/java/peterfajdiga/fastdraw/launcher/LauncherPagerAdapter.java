@@ -15,7 +15,6 @@ import peterfajdiga.fastdraw.categoryorder.CategoryComparator;
 
 class LauncherPagerAdapter extends PagerAdapter {
     final SortedMap<String, Category> categories;
-    boolean firstCategoryLoaded = false;
 
     public LauncherPagerAdapter(final Context context) {
         categories = new ConcurrentSkipListMap<>(new CategoryComparator(new PrefMapCached(context, "categoryorder")));
@@ -26,10 +25,6 @@ class LauncherPagerAdapter extends PagerAdapter {
     public Object instantiateItem(ViewGroup container, int position) {
         final Category category = (Category)categories.values().toArray()[position];
         container.addView(category.getView());
-        if (!firstCategoryLoaded) {
-            loadCategoryViews(container.getContext(), category);
-            firstCategoryLoaded = true;
-        }
         return category;
     }
 
@@ -64,22 +59,5 @@ class LauncherPagerAdapter extends PagerAdapter {
             }
         }
         return POSITION_NONE;
-    }
-
-
-    /* loading */
-
-    public void loadCategoryViews(final Context context, final Category firstToLoad) {
-        // load first category
-        firstToLoad.loadItems(context);
-
-        // load all others
-        for (Category category : categories.values()) {
-            if (category == firstToLoad) {
-                // already loaded
-                continue;
-            }
-            category.loadItemsAsync(context);
-        }
     }
 }
