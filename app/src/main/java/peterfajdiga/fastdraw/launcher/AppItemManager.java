@@ -10,9 +10,10 @@ import android.provider.Settings;
 import androidx.annotation.NonNull;
 
 import java.util.List;
-import java.util.Map;
 
 import peterfajdiga.fastdraw.launcher.item.AppItem;
+import peterfajdiga.fastdraw.launcher.item.LauncherItem;
+import peterfajdiga.fastdraw.launcher.item.Saveable;
 
 public class AppItemManager {
     private AppItemManager() {}
@@ -43,22 +44,14 @@ public class AppItemManager {
         return getAppItems(packageManager, launcherIntent);
     }
 
-    public static void removeItems(final Context context, final LauncherPager pager, final String packageName, final boolean removeShortcuts) {
-        boolean categoriesRemoved = false;
-        final LauncherPagerAdapter adapter = (LauncherPagerAdapter)pager.getAdapter();
-        for (final Map.Entry<String, Category> categoryEntry : adapter.categories.entrySet()) {
-            final String categoryName = categoryEntry.getKey();
-            final Category category = categoryEntry.getValue();
-
-            category.removeItem(context, packageName, removeShortcuts);
-            if (category.getItemCount() == 0) {
-                categoriesRemoved = true;
-                adapter.categories.remove(categoryName);
+    public static void removePackageItems(final Context context, final LauncherPager pager, final String packageName, final boolean removeShortcuts) {
+        for (final LauncherItem item : pager.getLauncherItems()) {
+            if (packageName.equals(item.getPackageName()) && (removeShortcuts || !(item instanceof Saveable))) {
+                pager.removeLauncherItem(item);
+                if (item instanceof Saveable) {
+                    ShortcutItemManager.deleteShortcut(context, (Saveable)item);
+                }
             }
-        }
-
-        if (categoriesRemoved) {
-            adapter.notifyDataSetChanged();
         }
     }
 

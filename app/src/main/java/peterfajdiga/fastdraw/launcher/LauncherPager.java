@@ -10,6 +10,7 @@ import androidx.annotation.Nullable;
 import androidx.viewpager.widget.ViewPager;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -96,6 +97,15 @@ public class LauncherPager extends ViewPager {
         final LauncherPagerAdapter adapter = (LauncherPagerAdapter)super.getAdapter();
         final Category category = adapter.categories.get(categoryName);
         return category.getItems();
+    }
+
+    public List<LauncherItem> getLauncherItems() {
+        final List<LauncherItem> launcherItems = new ArrayList<>();
+        final LauncherPagerAdapter adapter = (LauncherPagerAdapter)super.getAdapter();
+        for (final Category category : adapter.categories.values()) {
+            launcherItems.addAll(Arrays.asList(category.getItems()));
+        }
+        return launcherItems;
     }
 
     public void addLauncherItems(@NonNull final String defaultCategory, @NonNull final LauncherItem... items) {

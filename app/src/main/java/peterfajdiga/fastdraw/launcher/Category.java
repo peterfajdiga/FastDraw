@@ -19,7 +19,6 @@ import peterfajdiga.fastdraw.Preferences;
 import peterfajdiga.fastdraw.R;
 import peterfajdiga.fastdraw.launcher.item.LauncherItem;
 import peterfajdiga.fastdraw.launcher.item.Loadable;
-import peterfajdiga.fastdraw.launcher.item.Saveable;
 import peterfajdiga.fastdraw.views.gestures.DoubleTap;
 import peterfajdiga.fastdraw.views.gestures.LongPress;
 import peterfajdiga.fastdraw.views.gestures.OnTouchListenerMux;
@@ -48,20 +47,6 @@ public class Category {
 
     public void removeItem(final LauncherItem launcherItem) {
         adapter.getItems().remove(launcherItem);
-    }
-
-    public void removeItem(@NonNull final Context context, @NonNull final String packageName, final boolean removeShortcuts) {
-        for (int i = 0; i < getItemCount();) {
-            final LauncherItem item = adapter.getItems().get(i);
-            if ((removeShortcuts || !(item instanceof Saveable)) && packageName.equals(item.getPackageName())) {
-                adapter.getItems().removeItemAt(i);
-                if (item instanceof Saveable) {
-                    ShortcutItemManager.deleteShortcut(context, (Saveable)item); // TODO: refactor?
-                }
-            } else {
-                i++;
-            }
-        }
     }
 
     @NonNull
