@@ -4,7 +4,6 @@ import android.graphics.Point;
 import android.view.View;
 
 public class OffsetDragShadowBuilder extends View.DragShadowBuilder {
-
     int touchX, touchY;
 
     /**
