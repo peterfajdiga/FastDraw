@@ -2,6 +2,7 @@ package peterfajdiga.fastdraw.launcher;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.util.DisplayMetrics;
 import android.view.View;
 
 import androidx.annotation.NonNull;
@@ -76,11 +77,12 @@ public class Category {
             containerView.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false));
         }
 
+        final DisplayMetrics displayMetrics = context.getResources().getDisplayMetrics();
         containerView.setOnTouchListener(new OnTouchListenerMux(
-            new LongPress(1, owner::onPagerLongpress),
-            new DoubleTap(1, owner::onPagerDoubletap),
-            new Pinch(false, owner::onPagerPinch),
-            new Pinch(true, owner::onPagerUnpinch)
+            new LongPress(displayMetrics, 1, owner::onPagerLongpress),
+            new DoubleTap(displayMetrics, 1, owner::onPagerDoubletap),
+            new Pinch(displayMetrics, false, owner::onPagerPinch),
+            new Pinch(displayMetrics, true, owner::onPagerUnpinch)
         ));
         return containerView;
     }

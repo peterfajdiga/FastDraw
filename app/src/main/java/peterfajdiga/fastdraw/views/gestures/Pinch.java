@@ -1,22 +1,28 @@
 package peterfajdiga.fastdraw.views.gestures;
 
 import android.annotation.SuppressLint;
+import android.util.DisplayMetrics;
 import android.view.MotionEvent;
 import android.view.View;
 
 public class Pinch implements View.OnTouchListener {
-    private static final float THRESHOLD = 500000;
+    private static final float THRESHOLD_DP = 240f;
 
+    private final float thresholdSq;
     private final float mult;
     private final GestureListener listener;
     private float startDistSq;
 
-    public Pinch(final boolean unpinch, final GestureListener listener) {
+    public Pinch(final DisplayMetrics metrics, final boolean unpinch, final GestureListener listener) {
+        final float threshold = THRESHOLD_DP * metrics.density;
+        this.thresholdSq = threshold * threshold;
+
         if (unpinch) {
             mult = 1.0f;
         } else {
             mult = -1.0f;
         }
+
         this.listener = listener;
         cancel();
     }
@@ -51,7 +57,7 @@ public class Pinch implements View.OnTouchListener {
 
     private boolean finishMaybe(final MotionEvent event) {
         final float delta = distSq(event) - startDistSq;
-        if (delta * mult >= THRESHOLD) {
+        if (delta * mult >= thresholdSq) {
             cancel();
             listener.onGesture();
             return true;
