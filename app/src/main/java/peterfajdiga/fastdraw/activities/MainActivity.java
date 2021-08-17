@@ -581,7 +581,7 @@ public class MainActivity extends FragmentActivity implements
     public void onDraggedItemRemove() {
         assert draggedItem instanceof Saveable;
         LauncherItem shortcutItem = draggedItem;
-        getPager().removeLauncherItem(shortcutItem);
+        getPager().removeLauncherItem(shortcutItem, true);
         ShortcutItemManager.deleteShortcut(this, (Saveable)shortcutItem);
     }
 

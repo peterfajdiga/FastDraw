@@ -178,12 +178,14 @@ public class LauncherPager extends ViewPager {
     /**
      * @return true if the category's last item was removed
      */
-    public boolean removeLauncherItem(@NonNull final LauncherItem item) {
+    public boolean removeLauncherItem(@NonNull final LauncherItem item, final boolean permanent) {
         final LauncherPagerAdapter adapter = (LauncherPagerAdapter)super.getAdapter();
         final String categoryName = getItemCategory(item); // TODO: handle null categoryName
         final Category category = adapter.categories.get(categoryName);
 
-        removeItemCategory(item);
+        if (permanent) {
+            removeItemCategory(item);
+        }
         if (category.getItemCount() == 1) {
             // remove category from pager, no need to remove the item from category
             adapter.categories.remove(categoryName);
@@ -201,7 +203,7 @@ public class LauncherPager extends ViewPager {
 
         boolean lastRemoved = false;
         if (oldCategoryName != null) {
-            lastRemoved = removeLauncherItem(item);
+            lastRemoved = removeLauncherItem(item, false);
         }
 
         setItemCategory(item, categoryName);
