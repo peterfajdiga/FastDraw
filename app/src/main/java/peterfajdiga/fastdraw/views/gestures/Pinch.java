@@ -6,7 +6,7 @@ import android.view.MotionEvent;
 import android.view.View;
 
 public class Pinch implements View.OnTouchListener {
-    private static final float THRESHOLD_DP = 240f;
+    private static final float THRESHOLD_DP = 200f;
 
     private final float thresholdSq;
     private final float mult;
@@ -40,6 +40,10 @@ public class Pinch implements View.OnTouchListener {
                 start(event);
                 return false;
             case MotionEvent.ACTION_MOVE:
+                if (!started()) {
+                    start(event);
+                    return false;
+                }
                 return finishMaybe(event);
             default:
                 cancel();
@@ -49,6 +53,10 @@ public class Pinch implements View.OnTouchListener {
 
     private void start(final MotionEvent event) {
         startDistSq = distSq(event);
+    }
+
+    private boolean started() {
+        return !Float.isNaN(startDistSq);
     }
 
     private void cancel() {
