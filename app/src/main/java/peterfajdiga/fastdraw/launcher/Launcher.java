@@ -92,28 +92,10 @@ public class Launcher {
     }
 
     public void addLauncherItems(@NonNull final String defaultCategory, @NonNull final LauncherItem... items) {
-        final Map<String, List<LauncherItem>> itemsByCategory = getLauncherItemsByCategory(defaultCategory, items);
+        final Map<String, List<LauncherItem>> itemsByCategory = categorizeLauncherItems(defaultCategory, items);
         for (final Map.Entry<String, List<LauncherItem>> entry : itemsByCategory.entrySet()) {
             addLauncherItemsToCategory(entry.getKey(), entry.getValue().toArray(new LauncherItem[0]));
         }
-    }
-
-    private Map<String, List<LauncherItem>> getLauncherItemsByCategory(@NonNull final String defaultCategory, @NonNull final LauncherItem... items) {
-        final Map<String, List<LauncherItem>> itemsByCategory = new HashMap<>();
-        for (final LauncherItem item : items) {
-            final String categoryName = getItemCategory(item, defaultCategory);
-            if (Preferences.hideHidden && categoryName.equals("HIDDEN")) {
-                continue;
-            }
-
-            List<LauncherItem> categoryItems = itemsByCategory.get(categoryName);
-            if (categoryItems == null) {
-                categoryItems = new ArrayList<>();
-                itemsByCategory.put(categoryName, categoryItems);
-            }
-            categoryItems.add(item);
-        }
-        return itemsByCategory;
     }
 
     private void addLauncherItemsToCategory(@NonNull final String categoryName, @NonNull final LauncherItem... items) {
@@ -129,6 +111,10 @@ public class Launcher {
             adapter.notifyDataSetChanged();
         }
 
+        addLauncherItemsToCategory(category, items);
+    }
+
+    private void addLauncherItemsToCategory(@NonNull final Category category, @NonNull final LauncherItem... items) {
         loadAndAddItems(category, items);
     }
 
@@ -151,6 +137,24 @@ public class Launcher {
                 }
             }
         }
+    }
+
+    private Map<String, List<LauncherItem>> categorizeLauncherItems(@NonNull final String defaultCategory, @NonNull final LauncherItem... items) {
+        final Map<String, List<LauncherItem>> itemsByCategory = new HashMap<>();
+        for (final LauncherItem item : items) {
+            final String categoryName = getItemCategory(item, defaultCategory);
+            if (Preferences.hideHidden && categoryName.equals("HIDDEN")) {
+                continue;
+            }
+
+            List<LauncherItem> categoryItems = itemsByCategory.get(categoryName);
+            if (categoryItems == null) {
+                categoryItems = new ArrayList<>();
+                itemsByCategory.put(categoryName, categoryItems);
+            }
+            categoryItems.add(item);
+        }
+        return itemsByCategory;
     }
 
     /**
