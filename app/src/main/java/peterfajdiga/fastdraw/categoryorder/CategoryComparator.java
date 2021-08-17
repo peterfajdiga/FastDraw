@@ -5,7 +5,6 @@ import java.util.Comparator;
 import peterfajdiga.fastdraw.PrefMap;
 
 public class CategoryComparator implements Comparator<String> {
-
     public static final int UNORDERED = Integer.MAX_VALUE;
 
     private final PrefMap categoryMap;
@@ -19,10 +18,10 @@ public class CategoryComparator implements Comparator<String> {
         final int order_category1 = categoryMap.getIntCreate(category1, UNORDERED);
         final int order_category2 = categoryMap.getIntCreate(category2, UNORDERED);
         final int orderDiff = order_category1 - order_category2;
-        if (orderDiff == 0) {
-            return category1.compareTo(category2);
-        } else {
+        if (orderDiff != 0) {
             return orderDiff;
+        } else {
+            return category1.compareTo(category2);
         }
     }
 }

@@ -204,7 +204,6 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
     }
 
     public static class CategoryOrderPreferenceFragment extends Fragment {
-
         private CategoryOrderAdapter categoryOrderAdapter;
 
         @Override

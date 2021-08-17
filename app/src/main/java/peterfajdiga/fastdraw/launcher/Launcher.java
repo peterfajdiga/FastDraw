@@ -117,8 +117,6 @@ public class Launcher {
     }
 
     private void addLauncherItemsToCategory(@NonNull final String categoryName, @NonNull final LauncherItem... items) {
-        assert owner != null;
-
         if (Preferences.hideHidden && categoryName.equals("HIDDEN")) {
             return;
         }

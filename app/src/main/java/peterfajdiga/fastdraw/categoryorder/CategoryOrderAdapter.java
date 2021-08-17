@@ -1,5 +1,6 @@
 package peterfajdiga.fastdraw.categoryorder;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -21,7 +22,6 @@ import peterfajdiga.fastdraw.R;
 import peterfajdiga.fastdraw.activities.MainActivity;
 
 public class CategoryOrderAdapter extends RecyclerView.Adapter<CategoryOrderAdapter.CategoryViewHolder> implements ReorderHelperListener {
-
     private String[] categories;
     private boolean changesMade = false;
     private final PrefMap categoryOrderMap;
@@ -68,6 +68,7 @@ public class CategoryOrderAdapter extends RecyclerView.Adapter<CategoryOrderAdap
         return new CategoryViewHolder(view);
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     public void onBindViewHolder(final CategoryViewHolder holder, final int position) {
         final Context context = holder.view.getContext();
@@ -81,14 +82,11 @@ public class CategoryOrderAdapter extends RecyclerView.Adapter<CategoryOrderAdap
         itemIcon.setColorFilter(context.getResources().getColor(R.color.bottomSheetIcon));
 
         final View itemHandle = holder.view.findViewById(R.id.handle);
-        itemHandle.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                if (itemTouchHelper != null && MotionEventCompat.getActionMasked(event) == MotionEvent.ACTION_DOWN) {
-                    itemTouchHelper.startDrag(holder);
-                }
-                return false;
+        itemHandle.setOnTouchListener((v, event) -> {
+            if (itemTouchHelper != null && MotionEventCompat.getActionMasked(event) == MotionEvent.ACTION_DOWN) {
+                itemTouchHelper.startDrag(holder);
             }
+            return false;
         });
     }
 
@@ -131,7 +129,6 @@ public class CategoryOrderAdapter extends RecyclerView.Adapter<CategoryOrderAdap
         if (!changesMade) {
             return false;
         }
-        final PrefMap categoryOrder = new PrefMap(context, "categoryorder");
         for (int i = 0; i < categories.length; i++) {
             categoryOrderMap.putInt(categories[i], i);
         }
