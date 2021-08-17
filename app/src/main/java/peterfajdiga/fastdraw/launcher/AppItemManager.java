@@ -44,7 +44,7 @@ public class AppItemManager {
         return getAppItems(packageManager, launcherIntent);
     }
 
-    public static void removePackageItems(final Context context, final LauncherPager pager, final String packageName, final boolean permanent) {
+    public static void removePackageItems(final Context context, final Launcher pager, final String packageName, final boolean permanent) {
         for (final LauncherItem item : pager.getLauncherItems()) {
             if (packageName.equals(item.getPackageName()) && (permanent || !(item instanceof Saveable))) {
                 pager.removeLauncherItem(item, permanent);

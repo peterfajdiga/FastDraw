@@ -23,7 +23,7 @@ public class Category {
     private final CategoryAdapter adapter;
     private final View view;
 
-    public Category(final Context context, final LauncherPager.Owner owner, final LaunchManager launchManager) {
+    public Category(final Context context, final Launcher.Owner owner, final LaunchManager launchManager) {
         this.adapter = new CategoryAdapter(owner, launchManager);
         view = createView(context, owner, adapter);
     }
@@ -56,7 +56,7 @@ public class Category {
     @SuppressLint("ClickableViewAccessibility")
     private View createView(
         final Context context,
-        final LauncherPager.Owner owner,
+        final Launcher.Owner owner,
         final CategoryAdapter adapter
     ) {
         final RecyclerView containerView = new RecyclerView(context);

@@ -1,10 +1,8 @@
 package peterfajdiga.fastdraw.launcher;
 
-import android.app.WallpaperManager;
 import android.content.Context;
 import android.os.Handler;
 import android.os.Looper;
-import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
 
@@ -24,43 +22,25 @@ import peterfajdiga.fastdraw.Preferences;
 import peterfajdiga.fastdraw.launcher.item.LauncherItem;
 import peterfajdiga.fastdraw.launcher.item.Loadable;
 
-public class LauncherPager extends ViewPager {
-    private PrefMap itemCategoryMap;
-    private LaunchManager launchManager;
-    private Owner owner;
+public class Launcher {
+    private final PrefMap itemCategoryMap;
+    private final LaunchManager launchManager;
+    private final Owner owner;
+    private final ViewPager pager;
+    private final LauncherPagerAdapter adapter;
 
-    public LauncherPager(@NonNull final Context context) {
-        super(context);
-        init(context);
-    }
-
-    public LauncherPager(@NonNull final Context context, @NonNull final AttributeSet attrs) {
-        super(context, attrs);
-        init(context);
-    }
-
-    private void init(@NonNull final Context context) {
-        setAdapter(new LauncherPagerAdapter(context));
-        itemCategoryMap = new PrefMap(context, "categories"); // TODO: pass from outside
-    }
-
-    public void setLaunchManager(@NonNull final LaunchManager launchManager) {
+    public Launcher(
+        @NonNull final LaunchManager launchManager,
+        @NonNull final Owner owner,
+        @NonNull final ViewPager pager
+    ) {
+        final Context context = pager.getContext();
+        this.itemCategoryMap = new PrefMap(context, "categories"); // TODO: pass from outside
         this.launchManager = launchManager;
-    }
-
-    public void setOwner(@NonNull final Owner owner) {
         this.owner = owner;
-    }
-
-    @Override
-    public void onPageScrolled(final int position, final float offset, final int offsetPixels) {
-        super.onPageScrolled(position, offset, offsetPixels);
-        final WallpaperManager wallpaperManager = WallpaperManager.getInstance(getContext());
-        wallpaperManager.setWallpaperOffsets(
-            getWindowToken(),
-            (position + offset) / (getAdapter().getCount() - 1), // don't use getChildCount()
-            0.5f
-        );
+        this.pager = pager;
+        this.adapter = new LauncherPagerAdapter(context);
+        pager.setAdapter(this.adapter);
     }
 
     /**
@@ -70,25 +50,26 @@ public class LauncherPager extends ViewPager {
         final String[] categoryNames = getCategoryNames();
         for (int i = 0; i < categoryNames.length; i++) {
             if (categoryNames[i].equals(categoryName)) {
-                setCurrentItem(i);
+                pager.setCurrentItem(i);
                 return true;
             }
         }
         return false;
     }
 
+    public void showFirstCategory() {
+        pager.setCurrentItem(0);
+    }
+
     public boolean doesCategoryExist(@NonNull final String categoryName) {
-        final LauncherPagerAdapter adapter = (LauncherPagerAdapter)super.getAdapter();
         return adapter.categories.get(categoryName) != null;
     }
 
     public String getCurrentCategoryName() {
-        final LauncherPagerAdapter adapter = (LauncherPagerAdapter)super.getAdapter();
-        return adapter.getPageTitle(getCurrentItem());
+        return adapter.getPageTitle(pager.getCurrentItem());
     }
 
     public String[] getCategoryNames() {
-        final LauncherPagerAdapter adapter = (LauncherPagerAdapter)super.getAdapter();
         final Object[] names = adapter.categories.keySet().toArray();
         String[] retval = new String[names.length];
         for (int i = 0; i < names.length; i++) {
@@ -98,14 +79,12 @@ public class LauncherPager extends ViewPager {
     }
 
     public LauncherItem[] getLauncherItems(@NonNull final String categoryName) {
-        final LauncherPagerAdapter adapter = (LauncherPagerAdapter)super.getAdapter();
         final Category category = adapter.categories.get(categoryName);
         return category.getItems();
     }
 
     public List<LauncherItem> getLauncherItems() {
         final List<LauncherItem> launcherItems = new ArrayList<>();
-        final LauncherPagerAdapter adapter = (LauncherPagerAdapter)super.getAdapter();
         for (final Category category : adapter.categories.values()) {
             launcherItems.addAll(Arrays.asList(category.getItems()));
         }
@@ -144,10 +123,10 @@ public class LauncherPager extends ViewPager {
             return;
         }
 
-        final LauncherPagerAdapter adapter = (LauncherPagerAdapter)super.getAdapter();
         Category category = adapter.categories.get(categoryName);
         if (category == null) {
-            category = new Category(getContext(), owner, launchManager);
+            final Context context = pager.getContext();
+            category = new Category(context, owner, launchManager);
             adapter.categories.put(categoryName, category);
             adapter.notifyDataSetChanged();
         }
@@ -156,9 +135,10 @@ public class LauncherPager extends ViewPager {
     }
 
     private void loadAndAddItems(@NonNull final Category category, @NonNull final LauncherItem... items) {
+        final Context context = pager.getContext();
         final Handler handler = new Handler(Looper.getMainLooper());
         Executors.newSingleThreadExecutor().execute(() -> {
-            loadItems(getContext(), items);
+            loadItems(context, items);
             handler.post(() -> category.addItems(items));
         });
     }
@@ -179,7 +159,6 @@ public class LauncherPager extends ViewPager {
      * @return true if the category's last item was removed
      */
     public boolean removeLauncherItem(@NonNull final LauncherItem item, final boolean permanent) {
-        final LauncherPagerAdapter adapter = (LauncherPagerAdapter)super.getAdapter();
         final String categoryName = getItemCategory(item); // TODO: handle null categoryName
         final Category category = adapter.categories.get(categoryName);
 

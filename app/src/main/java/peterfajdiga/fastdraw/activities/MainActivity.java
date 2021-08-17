@@ -30,6 +30,7 @@ import androidx.annotation.NonNull;
 import androidx.core.util.Predicate;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
+import androidx.viewpager.widget.ViewPager;
 
 import com.google.android.material.tabs.TabLayout;
 
@@ -51,7 +52,7 @@ import peterfajdiga.fastdraw.dragdrop.DropZoneNewCategory;
 import peterfajdiga.fastdraw.dragdrop.DropZoneRemoveShortcut;
 import peterfajdiga.fastdraw.launcher.AppItemManager;
 import peterfajdiga.fastdraw.launcher.LaunchManager;
-import peterfajdiga.fastdraw.launcher.LauncherPager;
+import peterfajdiga.fastdraw.launcher.Launcher;
 import peterfajdiga.fastdraw.launcher.ShortcutItemManager;
 import peterfajdiga.fastdraw.launcher.item.AppItem;
 import peterfajdiga.fastdraw.launcher.item.LauncherItem;
@@ -62,7 +63,7 @@ import peterfajdiga.fastdraw.receivers.InstallAppReceiver;
 import peterfajdiga.fastdraw.views.CategoryTabLayout;
 
 public class MainActivity extends FragmentActivity implements
-    LauncherPager.Owner,
+    Launcher.Owner,
     InstallAppReceiver.Owner,
     DropZoneRemoveShortcut.Owner<LauncherItem>,
     DropZoneCategory.Owner<LauncherItem>,
@@ -80,6 +81,7 @@ public class MainActivity extends FragmentActivity implements
 
     private static MainActivity instance;
     private LaunchManager launchManager = new LaunchManager(this);
+    private Launcher launcher;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -109,15 +111,14 @@ public class MainActivity extends FragmentActivity implements
         findViewById(R.id.drop_zone_app_info).setOnDragListener(new DropZoneAppInfo());
         findViewById(R.id.drop_zone_remove_shortcut).setOnDragListener(new DropZoneRemoveShortcut());
 
-        LauncherPager appsPager = getPager();
-        appsPager.setLaunchManager(launchManager);
-        appsPager.setOwner(this);
+        ViewPager appsPager = findViewById(R.id.apps_pager);
+        launcher = new Launcher(launchManager, this, appsPager);
 
         CategoryTabLayout tabContainer = findViewById(R.id.tab_container);
         tabContainer.setupWithViewPager(appsPager);
 
         loadLauncherItems();
-        appsPager.showCategory("HOME");
+        launcher.showCategory("HOME");
 
         // immediate reaction to drag end
         findViewById(android.R.id.content).setOnDragListener(new View.OnDragListener() {
@@ -185,7 +186,7 @@ public class MainActivity extends FragmentActivity implements
                 if (newShortcut != null) {
                     final String shortcutCategoryName = getString(R.string.default_shortcut_category);
                     addShortcut(newShortcut, shortcutCategoryName);
-                    getPager().showCategory(shortcutCategoryName);
+                    launcher.showCategory(shortcutCategoryName);
                 }
             }
         }
@@ -242,9 +243,9 @@ public class MainActivity extends FragmentActivity implements
             }
 
             // show home category
-            final LauncherPager pager = getPager();
+            final Launcher pager = launcher;
             if (!pager.showCategory("HOME")) {
-                pager.setCurrentItem(0);
+                pager.showFirstCategory();
             }
         }
     }
@@ -276,27 +277,27 @@ public class MainActivity extends FragmentActivity implements
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == INSTALL_SHORTCUT_REQUEST && resultCode == RESULT_OK) {
             final ShortcutItem newShortcut = ShortcutItemManager.shortcutFromIntent(this, data);
-            addShortcut(newShortcut, getPager().getCurrentCategoryName());
+            addShortcut(newShortcut, launcher.getCurrentCategoryName());
         }
         super.onActivityResult(requestCode, resultCode, data);
     }
 
     private void addShortcut(@NonNull final ShortcutItem shortcutItem, @NonNull final String categoryName) {
         ShortcutItemManager.saveShortcut(this, shortcutItem);
-        getPager().moveLauncherItem(shortcutItem, categoryName, false);
+        launcher.moveLauncherItem(shortcutItem, categoryName, false);
     }
 
     private void addShortcut(@NonNull final OreoShortcutItem shortcutItem, @NonNull final String categoryName) {
         ShortcutItemManager.saveShortcut(this, shortcutItem);
-        getPager().moveLauncherItem(shortcutItem, categoryName, false);
+        launcher.moveLauncherItem(shortcutItem, categoryName, false);
     }
 
     private void loadLauncherItems() {
         final AppItem[] appItems = AppItemManager.getAppItems(getPackageManager());
-        getPager().addLauncherItems(getString(R.string.default_category), appItems);
+        launcher.addLauncherItems(getString(R.string.default_category), appItems);
 
         final List<LauncherItem> shortcutItems = ShortcutItemManager.getShortcutItems(this);
-        getPager().addLauncherItems("LOST&FOUND", shortcutItems.toArray(new LauncherItem[0]));
+        launcher.addLauncherItems("LOST&FOUND", shortcutItems.toArray(new LauncherItem[0]));
     }
 
     /**
@@ -365,7 +366,7 @@ public class MainActivity extends FragmentActivity implements
      * This needs to be done, so that nonexistent categories don't show up in category order settings
      */
     private void cleanUnusedPrefKeysCategoryOrder() {
-        final LauncherPager pager = getPager();
+        final Launcher pager = launcher;
         final PrefMap categoryOrder = new PrefMap(this, "categoryorder");
         categoryOrder.clean(new Predicate<String>() {
             @Override
@@ -382,10 +383,6 @@ public class MainActivity extends FragmentActivity implements
             return false;
         }
         return true;
-    }
-
-    public LauncherPager getPager() {
-        return (LauncherPager)findViewById(R.id.apps_pager);
     }
 
     public static void forceFinish() {
@@ -427,7 +424,7 @@ public class MainActivity extends FragmentActivity implements
 
     public void renameCurrentCategory() {
         final RenameCategoryDialog dialog = new RenameCategoryDialog(
-            getPager().getCurrentCategoryName(),
+            launcher.getCurrentCategoryName(),
             getString(R.string.rename_category),
             getString(R.string.rename)
         );
@@ -488,24 +485,24 @@ public class MainActivity extends FragmentActivity implements
     @Override
     public void onAppInstall(String packageName) {
         final AppItem[] appItems = AppItemManager.getAppItems(getPackageManager(), packageName);
-        getPager().addLauncherItems(getString(R.string.default_category), appItems); // TODO (BUG): app item may already be there. check before adding
+        launcher.addLauncherItems(getString(R.string.default_category), appItems); // TODO (BUG): app item may already be there. check before adding
     }
 
     @Override
     public void onAppChange(String packageName) {
-        AppItemManager.removePackageItems(this, getPager(), packageName, false);
+        AppItemManager.removePackageItems(this, launcher, packageName, false);
 
         final AppItem[] appItems = AppItemManager.getAppItems(getPackageManager(), packageName);
-        getPager().addLauncherItems(getString(R.string.default_category), appItems);
+        launcher.addLauncherItems(getString(R.string.default_category), appItems);
     }
 
     @Override
     public void onAppRemove(String packageName) {
-        AppItemManager.removePackageItems(this, getPager(), packageName, true);
+        AppItemManager.removePackageItems(this, launcher, packageName, true);
     }
 
     public void onShortcutReceived(final ShortcutItem newShortcut) {
-        getPager().addLauncherItems(getString(R.string.default_shortcut_category), newShortcut);
+        launcher.addLauncherItems(getString(R.string.default_shortcut_category), newShortcut);
     }
 
     // LauncherItem dragging
@@ -581,13 +578,13 @@ public class MainActivity extends FragmentActivity implements
     public void onDraggedItemRemove() {
         assert draggedItem instanceof Saveable;
         LauncherItem shortcutItem = draggedItem;
-        getPager().removeLauncherItem(shortcutItem, true);
+        launcher.removeLauncherItem(shortcutItem, true);
         ShortcutItemManager.deleteShortcut(this, (Saveable)shortcutItem);
     }
 
     @Override
     public void onDraggedItemChangeCategory(String newCategoryName) {
-        getPager().moveLauncherItem(draggedItem, newCategoryName, true);
+        launcher.moveLauncherItem(draggedItem, newCategoryName, true);
     }
 
     @Override
@@ -599,13 +596,13 @@ public class MainActivity extends FragmentActivity implements
 
     @Override
     public void onNewCategoryDialogSuccess(String newCategoryName) {
-        getPager().moveLauncherItem(newCategoryDroppedItem, newCategoryName, true);
+        launcher.moveLauncherItem(newCategoryDroppedItem, newCategoryName, true);
         newCategoryDroppedItem = null;
     }
 
     @Override
     public void onRenameCategoryDialogSuccess(String oldCategoryName, String newCategoryName) {
-        final LauncherPager pager = getPager();
+        final Launcher pager = launcher;
         boolean followItem = oldCategoryName.equals(pager.getCurrentCategoryName());
         for (LauncherItem item : pager.getLauncherItems(oldCategoryName)) {
             pager.moveLauncherItem(item, newCategoryName, followItem);
