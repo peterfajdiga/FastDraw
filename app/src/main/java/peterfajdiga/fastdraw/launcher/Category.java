@@ -79,8 +79,8 @@ public class Category {
 
         final DisplayMetrics displayMetrics = context.getResources().getDisplayMetrics();
         containerView.setOnTouchListener(new OnTouchListenerMux(
-            new LongPress(displayMetrics, 1, owner::onPagerLongpress),
-            new DoubleTap(displayMetrics, 1, owner::onPagerDoubletap),
+            new LongPress(displayMetrics, owner::onPagerLongpress),
+            new DoubleTap(displayMetrics, owner::onPagerDoubletap),
             new Pinch(displayMetrics, false, owner::onPagerPinch),
             new Pinch(displayMetrics, true, owner::onPagerUnpinch)
         ));

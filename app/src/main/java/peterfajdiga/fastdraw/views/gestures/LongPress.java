@@ -13,15 +13,13 @@ public class LongPress implements View.OnTouchListener {
     private static final float MOVE_TOLERANCE_DP = 18f;
 
     private final float moveToleranceSq;
-    private final int pointerCount;
     private final GestureListener listener;
     private long touchDownTime;
     private final PointF touchDownPoint = new PointF();
 
-    public LongPress(final DisplayMetrics metrics, final int pointerCount, final GestureListener listener) {
+    public LongPress(final DisplayMetrics metrics, final GestureListener listener) {
         final float moveTolerance = MOVE_TOLERANCE_DP * metrics.density;
         this.moveToleranceSq = moveTolerance * moveTolerance;
-        this.pointerCount = pointerCount;
         this.listener = listener;
         cancel();
     }
@@ -29,7 +27,7 @@ public class LongPress implements View.OnTouchListener {
     @SuppressLint("ClickableViewAccessibility")
     @Override
     public boolean onTouch(final View v, final MotionEvent event) {
-        if (event.getPointerCount() != pointerCount) {
+        if (event.getPointerCount() != 1) {
             cancel();
             return false;
         }
