@@ -284,20 +284,20 @@ public class MainActivity extends FragmentActivity implements
 
     private void addShortcut(@NonNull final ShortcutItem shortcutItem, @NonNull final String categoryName) {
         ShortcutItemManager.saveShortcut(this, shortcutItem);
-        launcher.moveLauncherItem(shortcutItem, categoryName, false);
+        launcher.moveItem(shortcutItem, categoryName, false);
     }
 
     private void addShortcut(@NonNull final OreoShortcutItem shortcutItem, @NonNull final String categoryName) {
         ShortcutItemManager.saveShortcut(this, shortcutItem);
-        launcher.moveLauncherItem(shortcutItem, categoryName, false);
+        launcher.moveItem(shortcutItem, categoryName, false);
     }
 
     private void loadLauncherItems() {
         final AppItem[] appItems = AppItemManager.getAppItems(getPackageManager());
-        launcher.addLauncherItems(getString(R.string.default_category), appItems);
+        launcher.addItems(getString(R.string.default_category), appItems);
 
         final List<LauncherItem> shortcutItems = ShortcutItemManager.getShortcutItems(this);
-        launcher.addLauncherItems("LOST&FOUND", shortcutItems.toArray(new LauncherItem[0]));
+        launcher.addItems("LOST&FOUND", shortcutItems.toArray(new LauncherItem[0]));
     }
 
     /**
@@ -485,7 +485,7 @@ public class MainActivity extends FragmentActivity implements
     @Override
     public void onAppInstall(String packageName) {
         final AppItem[] appItems = AppItemManager.getAppItems(getPackageManager(), packageName);
-        launcher.addLauncherItems(getString(R.string.default_category), appItems); // TODO (BUG): app item may already be there. check before adding
+        launcher.addItems(getString(R.string.default_category), appItems); // TODO (BUG): app item may already be there. check before adding
     }
 
     @Override
@@ -493,7 +493,7 @@ public class MainActivity extends FragmentActivity implements
         AppItemManager.removePackageItems(this, launcher, packageName, false);
 
         final AppItem[] appItems = AppItemManager.getAppItems(getPackageManager(), packageName);
-        launcher.addLauncherItems(getString(R.string.default_category), appItems);
+        launcher.addItems(getString(R.string.default_category), appItems);
     }
 
     @Override
@@ -502,7 +502,7 @@ public class MainActivity extends FragmentActivity implements
     }
 
     public void onShortcutReceived(final ShortcutItem newShortcut) {
-        launcher.addLauncherItems(getString(R.string.default_shortcut_category), newShortcut);
+        launcher.addItems(getString(R.string.default_shortcut_category), newShortcut);
     }
 
     // LauncherItem dragging
@@ -578,13 +578,13 @@ public class MainActivity extends FragmentActivity implements
     public void onDraggedItemRemove() {
         assert draggedItem instanceof Saveable;
         LauncherItem shortcutItem = draggedItem;
-        launcher.removeLauncherItem(shortcutItem, true);
+        launcher.removeItem(shortcutItem, true);
         ShortcutItemManager.deleteShortcut(this, (Saveable)shortcutItem);
     }
 
     @Override
     public void onDraggedItemChangeCategory(String newCategoryName) {
-        launcher.moveLauncherItem(draggedItem, newCategoryName, true);
+        launcher.moveItem(draggedItem, newCategoryName, true);
     }
 
     @Override
@@ -596,7 +596,7 @@ public class MainActivity extends FragmentActivity implements
 
     @Override
     public void onNewCategoryDialogSuccess(String newCategoryName) {
-        launcher.moveLauncherItem(newCategoryDroppedItem, newCategoryName, true);
+        launcher.moveItem(newCategoryDroppedItem, newCategoryName, true);
         newCategoryDroppedItem = null;
     }
 
@@ -604,8 +604,8 @@ public class MainActivity extends FragmentActivity implements
     public void onRenameCategoryDialogSuccess(String oldCategoryName, String newCategoryName) {
         final Launcher pager = launcher;
         boolean followItem = oldCategoryName.equals(pager.getCurrentCategoryName());
-        for (LauncherItem item : pager.getLauncherItems(oldCategoryName)) {
-            pager.moveLauncherItem(item, newCategoryName, followItem);
+        for (LauncherItem item : pager.getItems(oldCategoryName)) {
+            pager.moveItem(item, newCategoryName, followItem);
         }
     }
 }

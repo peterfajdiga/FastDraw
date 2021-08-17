@@ -78,12 +78,12 @@ public class Launcher {
         return retval;
     }
 
-    public LauncherItem[] getLauncherItems(@NonNull final String categoryName) {
+    public LauncherItem[] getItems(@NonNull final String categoryName) {
         final Category category = adapter.categories.get(categoryName);
         return category.getItems();
     }
 
-    public List<LauncherItem> getLauncherItems() {
+    public List<LauncherItem> getItems() {
         final List<LauncherItem> launcherItems = new ArrayList<>();
         for (final Category category : adapter.categories.values()) {
             launcherItems.addAll(Arrays.asList(category.getItems()));
@@ -91,14 +91,14 @@ public class Launcher {
         return launcherItems;
     }
 
-    public void addLauncherItems(@NonNull final String defaultCategory, @NonNull final LauncherItem... items) {
-        final Map<String, List<LauncherItem>> itemsByCategory = categorizeLauncherItems(defaultCategory, items);
+    public void addItems(@NonNull final String defaultCategory, @NonNull final LauncherItem... items) {
+        final Map<String, List<LauncherItem>> itemsByCategory = categorizeItems(defaultCategory, items);
         for (final Map.Entry<String, List<LauncherItem>> entry : itemsByCategory.entrySet()) {
-            addLauncherItemsToCategory(entry.getKey(), entry.getValue().toArray(new LauncherItem[0]));
+            addItemsToCategory(entry.getKey(), entry.getValue().toArray(new LauncherItem[0]));
         }
     }
 
-    private void addLauncherItemsToCategory(@NonNull final String categoryName, @NonNull final LauncherItem... items) {
+    private void addItemsToCategory(@NonNull final String categoryName, @NonNull final LauncherItem... items) {
         if (Preferences.hideHidden && categoryName.equals("HIDDEN")) {
             return;
         }
@@ -111,10 +111,10 @@ public class Launcher {
             adapter.notifyDataSetChanged();
         }
 
-        addLauncherItemsToCategory(category, items);
+        addItemsToCategory(category, items);
     }
 
-    private void addLauncherItemsToCategory(@NonNull final Category category, @NonNull final LauncherItem... items) {
+    private void addItemsToCategory(@NonNull final Category category, @NonNull final LauncherItem... items) {
         loadAndAddItems(category, items);
     }
 
@@ -139,7 +139,7 @@ public class Launcher {
         }
     }
 
-    private Map<String, List<LauncherItem>> categorizeLauncherItems(@NonNull final String defaultCategory, @NonNull final LauncherItem... items) {
+    private Map<String, List<LauncherItem>> categorizeItems(@NonNull final String defaultCategory, @NonNull final LauncherItem... items) {
         final Map<String, List<LauncherItem>> itemsByCategory = new HashMap<>();
         for (final LauncherItem item : items) {
             final String categoryName = getItemCategory(item, defaultCategory);
@@ -160,7 +160,7 @@ public class Launcher {
     /**
      * @return true if the category's last item was removed
      */
-    public boolean removeLauncherItem(@NonNull final LauncherItem item, final boolean permanent) {
+    public boolean removeItem(@NonNull final LauncherItem item, final boolean permanent) {
         final String categoryName = getItemCategory(item); // TODO: handle null categoryName
         final Category category = adapter.categories.get(categoryName);
 
@@ -179,16 +179,16 @@ public class Launcher {
         }
     }
 
-    public void moveLauncherItem(@NonNull final LauncherItem item, @NonNull final String categoryName, final boolean followItem) {
+    public void moveItem(@NonNull final LauncherItem item, @NonNull final String categoryName, final boolean followItem) {
         final String oldCategoryName = getItemCategory(item);
 
         boolean lastRemoved = false;
         if (oldCategoryName != null) {
-            lastRemoved = removeLauncherItem(item, false);
+            lastRemoved = removeItem(item, false);
         }
 
         setItemCategory(item, categoryName);
-        addLauncherItemsToCategory(categoryName, item);
+        addItemsToCategory(categoryName, item);
         if (followItem && lastRemoved) {
             showCategory(categoryName);
         }
