@@ -27,7 +27,6 @@ import android.view.WindowManager;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.core.util.Predicate;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.viewpager.widget.ViewPager;
@@ -121,25 +120,22 @@ public class MainActivity extends FragmentActivity implements
         launcher.showCategory("HOME");
 
         // immediate reaction to drag end
-        findViewById(android.R.id.content).setOnDragListener(new View.OnDragListener() {
-            @Override
-            public boolean onDrag(final View v, final DragEvent event) {
-                switch (event.getAction()) {
-                    case DragEvent.ACTION_DRAG_STARTED: {
-                        return draggedItem != null;
-                    }
-                    case DragEvent.ACTION_DROP: {
-                        onDragEnded1();
-                        return false;
-                    }
-                    case DragEvent.ACTION_DRAG_ENDED: {
-                        onDragEnded1();
-                        onDragEnded2();
-                        return true;
-                    }
-                    default: {
-                        return true;
-                    }
+        findViewById(android.R.id.content).setOnDragListener((v, event) -> {
+            switch (event.getAction()) {
+                case DragEvent.ACTION_DRAG_STARTED: {
+                    return draggedItem != null;
+                }
+                case DragEvent.ACTION_DROP: {
+                    onDragEnded1();
+                    return false;
+                }
+                case DragEvent.ACTION_DRAG_ENDED: {
+                    onDragEnded1();
+                    onDragEnded2();
+                    return true;
+                }
+                default: {
+                    return true;
                 }
             }
         });
@@ -368,12 +364,7 @@ public class MainActivity extends FragmentActivity implements
     private void cleanUnusedPrefKeysCategoryOrder() {
         final Launcher pager = launcher;
         final PrefMap categoryOrder = new PrefMap(this, "categoryorder");
-        categoryOrder.clean(new Predicate<String>() {
-            @Override
-            public boolean test(String s) {
-                return !pager.doesCategoryExist(s);
-            }
-        });
+        categoryOrder.clean(categoryName -> !pager.doesCategoryExist(categoryName));
     }
 
     private boolean doesPackageExist(String packageName) {
