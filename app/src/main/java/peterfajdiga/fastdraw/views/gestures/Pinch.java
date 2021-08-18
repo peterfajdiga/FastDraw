@@ -66,13 +66,17 @@ public class Pinch implements View.OnTouchListener {
 
     private boolean finishMaybe(final MotionEvent event) {
         final float delta = distSq(event) - startDistSq;
+
+        final boolean finished;
         if (delta * mult >= thresholdSq) {
-            cancel();
             listener.onGesture();
-            return true;
+            finished = true;
         } else {
-            return false;
+            finished = false;
         }
+
+        cancel();
+        return finished;
     }
 
     private static float distSq(final MotionEvent event) {

@@ -63,6 +63,7 @@ public class DoubleTap implements View.OnTouchListener {
 
     private void finish() {
         listener.onGesture();
+        cancel();
     }
 
     private float distSq(final PointF p0, final float x1, final float y1) {
