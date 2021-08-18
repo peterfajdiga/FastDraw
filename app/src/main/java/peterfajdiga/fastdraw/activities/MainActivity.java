@@ -263,7 +263,7 @@ public class MainActivity extends FragmentActivity implements
         // App installation BroadcastReceivers
         unregisterReceiver(installAppReceiver);
 
-        cleanUnusedPrefKeysAppsCategories();
+        // cleanUnusedPrefKeysAppsCategories(); // This is disabled as a test to see if apps' categories stop being forgotten // TODO: re-enable eventually
     }
 
     @Override
