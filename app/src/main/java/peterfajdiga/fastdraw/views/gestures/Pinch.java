@@ -42,8 +42,9 @@ public class Pinch implements View.OnTouchListener {
             case MotionEvent.ACTION_MOVE:
                 if (!started()) {
                     start(event);
-                    return false;
                 }
+                return false;
+            case MotionEvent.ACTION_POINTER_UP:
                 return finishMaybe(event);
             default:
                 cancel();
