@@ -15,6 +15,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.Executors;
 
 import peterfajdiga.fastdraw.PrefMap;
@@ -23,6 +24,8 @@ import peterfajdiga.fastdraw.launcher.item.LauncherItem;
 import peterfajdiga.fastdraw.launcher.item.Loadable;
 
 public class Launcher {
+    private static final String HOME_CATEGORY_NAME = "HOME";
+
     private final PrefMap itemCategoryMap;
     private final LaunchManager launchManager;
     private final Listener listener;
@@ -94,11 +97,25 @@ public class Launcher {
     public void addItems(@NonNull final String defaultCategory, @NonNull final LauncherItem... items) {
         final Map<String, List<LauncherItem>> itemsByCategory = categorizeItems(defaultCategory, items);
         for (final Map.Entry<String, List<LauncherItem>> entry : itemsByCategory.entrySet()) {
-            addItemsToCategory(entry.getKey(), entry.getValue().toArray(new LauncherItem[0]));
+            addItemsToCategory(entry.getKey(), false, entry.getValue().toArray(new LauncherItem[0]));
         }
     }
 
-    private void addItemsToCategory(@NonNull final String categoryName, @NonNull final LauncherItem... items) {
+    public void addItemsStartup(@NonNull final String defaultCategory, @NonNull final LauncherItem... items) {
+        final Map<String, List<LauncherItem>> itemsByCategory = categorizeItems(defaultCategory, items);
+        createCategories(itemsByCategory.keySet());
+        final String initialCategoryName = getInitialCategory();
+        for (final Map.Entry<String, List<LauncherItem>> entry : itemsByCategory.entrySet()) {
+            final String categoryName = entry.getKey();
+            addItemsToCategory(
+                entry.getKey(),
+                categoryName.equals(initialCategoryName),
+                entry.getValue().toArray(new LauncherItem[0])
+            );
+        }
+    }
+
+    private void addItemsToCategory(@NonNull final String categoryName, final boolean immediate, @NonNull final LauncherItem... items) {
         if (Preferences.hideHidden && categoryName.equals("HIDDEN")) {
             return;
         }
@@ -111,20 +128,21 @@ public class Launcher {
             adapter.notifyDataSetChanged();
         }
 
-        addItemsToCategory(category, items);
+        loadAndAddItems(category, immediate, items);
     }
 
-    private void addItemsToCategory(@NonNull final Category category, @NonNull final LauncherItem... items) {
-        loadAndAddItems(category, items);
-    }
-
-    private void loadAndAddItems(@NonNull final Category category, @NonNull final LauncherItem... items) {
+    private void loadAndAddItems(@NonNull final Category category, final boolean immediate, @NonNull final LauncherItem... items) {
         final Context context = pager.getContext();
-        final Handler handler = new Handler(Looper.getMainLooper());
-        Executors.newSingleThreadExecutor().execute(() -> {
+        if (immediate) {
             loadItems(context, items);
-            handler.post(() -> category.addItems(items));
-        });
+            category.addItems(items);
+        } else {
+            final Handler handler = new Handler(Looper.getMainLooper());
+            Executors.newSingleThreadExecutor().execute(() -> {
+                loadItems(context, items);
+                handler.post(() -> category.addItems(items));
+            });
+        }
     }
 
     private static void loadItems(final Context context, @NonNull final LauncherItem... items) {
@@ -155,6 +173,26 @@ public class Launcher {
             categoryItems.add(item);
         }
         return itemsByCategory;
+    }
+
+    private void createCategories(@NonNull final Set<String> categories) {
+        for (final String categoryName : categories) {
+            if (adapter.categories.containsKey(categoryName)) {
+                continue;
+            }
+            final Category category = new Category(pager.getContext(), listener, launchManager);
+            adapter.categories.put(categoryName, category);
+        }
+        adapter.notifyDataSetChanged();
+    }
+
+    private String getInitialCategory() {
+        final Category homeCategory = adapter.categories.get(HOME_CATEGORY_NAME);
+        if (homeCategory != null) {
+            return HOME_CATEGORY_NAME;
+        } else {
+            return adapter.categories.firstKey();
+        }
     }
 
     /**
@@ -188,7 +226,7 @@ public class Launcher {
         }
 
         setItemCategory(item, categoryName);
-        addItemsToCategory(categoryName, item);
+        addItemsToCategory(categoryName, false, item);
         if (followItem && lastRemoved) {
             showCategory(categoryName);
         }

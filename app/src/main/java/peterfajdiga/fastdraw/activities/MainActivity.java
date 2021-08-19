@@ -290,10 +290,10 @@ public class MainActivity extends FragmentActivity implements
 
     private void loadLauncherItems() {
         final AppItem[] appItems = AppItemManager.getAppItems(getPackageManager());
-        launcher.addItems(getString(R.string.default_category), appItems);
+        launcher.addItemsStartup(getString(R.string.default_category), appItems);
 
         final List<LauncherItem> shortcutItems = ShortcutItemManager.getShortcutItems(this);
-        launcher.addItems("LOST&FOUND", shortcutItems.toArray(new LauncherItem[0]));
+        launcher.addItemsStartup("LOST&FOUND", shortcutItems.toArray(new LauncherItem[0]));
     }
 
     /**
