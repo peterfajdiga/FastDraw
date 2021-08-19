@@ -24,7 +24,7 @@ import peterfajdiga.fastdraw.launcher.item.LauncherItem;
 import peterfajdiga.fastdraw.launcher.item.Loadable;
 
 public class Launcher {
-    private static final String HOME_CATEGORY_NAME = "HOME";
+    public static final String HOME_CATEGORY_NAME = "HOME";
 
     private final PrefMap itemCategoryMap;
     private final LaunchManager launchManager;

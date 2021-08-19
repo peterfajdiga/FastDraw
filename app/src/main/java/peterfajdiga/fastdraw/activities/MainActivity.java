@@ -117,7 +117,7 @@ public class MainActivity extends FragmentActivity implements
         tabContainer.setupWithViewPager(appsPager);
 
         loadLauncherItems();
-        launcher.showCategory("HOME");
+        launcher.showCategory(Launcher.HOME_CATEGORY_NAME);
 
         // immediate reaction to drag end
         findViewById(android.R.id.content).setOnDragListener((v, event) -> {
@@ -307,9 +307,8 @@ public class MainActivity extends FragmentActivity implements
      * Always successful
      */
     private void addAppToHome(@NonNull final AppItem appItem) {
-        final String category = "HOME";
         final PrefMap categoriesMap = new PrefMap(this, "categories");
-        categoriesMap.putString(appItem.getID(), category);
+        categoriesMap.putString(appItem.getID(), Launcher.HOME_CATEGORY_NAME);
     }
 
     /**
