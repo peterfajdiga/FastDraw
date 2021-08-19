@@ -486,7 +486,7 @@ public class MainActivity extends FragmentActivity implements
     @Override
     public void onAppInstall(String packageName) {
         final AppItem[] appItems = AppItemManager.getAppItems(getPackageManager(), packageName);
-        launcher.addItems(getString(R.string.default_category), appItems); // TODO (BUG): app item may already be there. check before adding
+        launcher.addItems(getString(R.string.default_category), appItems);
     }
 
     @Override
