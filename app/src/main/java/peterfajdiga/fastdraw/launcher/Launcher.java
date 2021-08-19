@@ -46,18 +46,15 @@ public class Launcher {
         pager.setAdapter(this.adapter);
     }
 
-    /**
-     * @return true if category exists and was selected
-     */
-    public boolean showCategory(@NonNull final String categoryName) {
+    public void showCategory(@NonNull final String categoryName) {
         final String[] categoryNames = getCategoryNames();
         for (int i = 0; i < categoryNames.length; i++) {
             if (categoryNames[i].equals(categoryName)) {
                 pager.setCurrentItem(i);
-                return true;
+                return;
             }
         }
-        return false;
+        Log.w("Launcher", "Trying to show nonexistent category " + categoryName);
     }
 
     public void showInitialCategory() {
