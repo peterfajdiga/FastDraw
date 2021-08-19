@@ -68,7 +68,7 @@ public class MainActivity extends FragmentActivity implements
     DropZoneCategory.Owner<LauncherItem>,
     DropZoneNewCategory.Owner<LauncherItem>,
     NewCategoryDialog.Listener,
-    RenameCategoryDialog.Owner {
+    RenameCategoryDialog.Listener {
 
     public static final int INSTALL_SHORTCUT_REQUEST = 2143;
 
@@ -415,6 +415,7 @@ public class MainActivity extends FragmentActivity implements
 
     public void renameCurrentCategory() {
         final RenameCategoryDialog dialog = new RenameCategoryDialog(
+            this,
             launcher.getCurrentCategoryName(),
             getString(R.string.rename_category),
             getString(R.string.rename)

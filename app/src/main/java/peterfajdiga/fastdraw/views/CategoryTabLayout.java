@@ -12,11 +12,9 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.fragment.app.FragmentActivity;
-import androidx.viewpager.widget.ViewPager;
 
 import com.google.android.material.tabs.TabLayout;
 
@@ -38,10 +36,6 @@ public class CategoryTabLayout extends TabLayout {
 
     public CategoryTabLayout(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-    }
-
-    public void setupWithViewPager(@Nullable final ViewPager viewPager, final OnDragListener onDragListener) {
-        super.setupWithViewPager(viewPager);
     }
 
     @Override
@@ -99,18 +93,16 @@ public class CategoryTabLayout extends TabLayout {
         if (Preferences.mainLayoutResource == R.layout.activity_main_headertop) {
             tabView.setPadding(0, getResources().getDimensionPixelSize(R.dimen.status_bar_height), 0, 0);
         }
-        tabView.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View view) {
-                view.performHapticFeedback(HapticFeedbackConstants.LONG_PRESS);
-                RenameCategoryDialog dialog = new RenameCategoryDialog(
-                    categoryName,
-                    getContext().getString(R.string.rename_category),
-                    getContext().getString(R.string.rename)
-                );
-                dialog.show(activity.getSupportFragmentManager(), "RenameCategoryDialog");
-                return false;
-            }
+        tabView.setOnLongClickListener(view -> {
+            view.performHapticFeedback(HapticFeedbackConstants.LONG_PRESS);
+            RenameCategoryDialog dialog = new RenameCategoryDialog(
+                (RenameCategoryDialog.Listener)activity, // TODO: pass listener from outside
+                categoryName,
+                getContext().getString(R.string.rename_category),
+                getContext().getString(R.string.rename)
+            );
+            dialog.show(activity.getSupportFragmentManager(), "RenameCategoryDialog");
+            return false;
         });
         tabView.setTag(categoryName);
         tabView.setOnDragListener(new DropZoneCategory());

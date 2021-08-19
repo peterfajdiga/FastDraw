@@ -1,32 +1,21 @@
 package peterfajdiga.fastdraw.dialogs;
 
-import android.app.Activity;
-
 import androidx.annotation.NonNull;
 
 public class RenameCategoryDialog extends CategoryInputDialog {
-    public RenameCategoryDialog() {}
+    private final RenameCategoryDialog.Listener listener;
 
-    public RenameCategoryDialog(@NonNull final String initialCategoryName, @NonNull final String title, @NonNull final String positiveButtonText) {
+    public RenameCategoryDialog(@NonNull final RenameCategoryDialog.Listener listener, @NonNull final String initialCategoryName, @NonNull final String title, @NonNull final String positiveButtonText) {
+        this.listener = listener;
         setup(initialCategoryName, title, positiveButtonText);
     }
 
     @Override
     public void onPositiveButton(@NonNull final String initialCategoryName, @NonNull final String inputtedCategoryName) {
-        getOwner().onRenameCategoryDialogSuccess(initialCategoryName, inputtedCategoryName);
+        listener.onRenameCategoryDialogSuccess(initialCategoryName, inputtedCategoryName);
     }
 
-    protected Owner getOwner() {
-        final Activity activity = getActivity();
-        if (activity instanceof Owner) {
-            return (Owner)activity;
-        } else {
-            throw new RuntimeException(activity.toString()
-                + " must implement NewCategoryDialog.Owner");
-        }
-    }
-
-    public interface Owner {
+    public interface Listener {
         void onRenameCategoryDialogSuccess(String oldCategoryName, String newCategoryName);
     }
 }
