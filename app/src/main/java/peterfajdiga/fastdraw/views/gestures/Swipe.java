@@ -7,7 +7,7 @@ import android.view.MotionEvent;
 import android.view.View;
 
 public class Swipe implements View.OnTouchListener {
-    private static final float THRESHOLD_DP = 200f;
+    private static final float THRESHOLD_DP = 60f;
 
     private final float threshold;
     private final Direction direction;
