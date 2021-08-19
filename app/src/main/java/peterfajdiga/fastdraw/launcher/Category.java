@@ -19,6 +19,7 @@ import peterfajdiga.fastdraw.views.gestures.DoubleTap;
 import peterfajdiga.fastdraw.views.gestures.LongPress;
 import peterfajdiga.fastdraw.views.gestures.OnTouchListenerMux;
 import peterfajdiga.fastdraw.views.gestures.Pinch;
+import peterfajdiga.fastdraw.views.gestures.Swipe;
 
 public class Category {
     private final CategoryAdapter adapter;
@@ -82,7 +83,9 @@ public class Category {
             new LongPress(displayMetrics, listener::onLongpress),
             new DoubleTap(displayMetrics, listener::onDoubletap),
             new Pinch(displayMetrics, false, listener::onPinch),
-            new Pinch(displayMetrics, true, listener::onUnpinch)
+            new Pinch(displayMetrics, true, listener::onUnpinch),
+            new Swipe(displayMetrics, Swipe.Direction.UP, 2, listener::onSwipeUp2F),
+            new Swipe(displayMetrics, Swipe.Direction.DOWN, 2, listener::onSwipeDown2F)
         ));
         return containerView;
     }

@@ -39,4 +39,22 @@
         android:positiveButtonText="@null"
         android:title="@string/pref_title_action_unpinch" />
 
+    <ListPreference
+        android:defaultValue="@string/default_action_swipe_up_2f"
+        android:entries="@array/pref_actions_titles"
+        android:entryValues="@array/pref_actions_values"
+        android:key="action_swipe_up_2f"
+        android:negativeButtonText="@null"
+        android:positiveButtonText="@null"
+        android:title="@string/pref_title_action_swipe_up_2f" />
+
+    <ListPreference
+        android:defaultValue="@string/default_action_swipe_down_2f"
+        android:entries="@array/pref_actions_titles"
+        android:entryValues="@array/pref_actions_values"
+        android:key="action_swipe_down_2f"
+        android:negativeButtonText="@null"
+        android:positiveButtonText="@null"
+        android:title="@string/pref_title_action_swipe_down_2f" />
+
 </PreferenceScreen>

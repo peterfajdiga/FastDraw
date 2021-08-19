@@ -222,6 +222,8 @@ public class Launcher {
         void onDoubletap();
         void onPinch();
         void onUnpinch();
+        void onSwipeUp2F();
+        void onSwipeDown2F();
         void onDragStarted(@NonNull View draggedView, @NonNull LauncherItem draggedItem);
     }
 }

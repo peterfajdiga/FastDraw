@@ -471,6 +471,15 @@ public class MainActivity extends FragmentActivity implements
         performAction(Preferences.unpinchAction);
     }
 
+    @Override
+    public void onSwipeUp2F() {
+        performAction(Preferences.swipeUpAction2F);
+    }
+
+    @Override
+    public void onSwipeDown2F() {
+        performAction(Preferences.swipeDownAction2F);
+    }
 
     // app management
 
