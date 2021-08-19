@@ -218,10 +218,10 @@ public class Launcher {
     }
 
     public interface Owner {
-        void onPagerLongpress();
-        void onPagerDoubletap();
-        void onPagerPinch();
-        void onPagerUnpinch();
+        void onLongpress();
+        void onDoubletap();
+        void onPinch();
+        void onUnpinch();
         void onDragStarted(@NonNull View draggedView, @NonNull LauncherItem draggedItem);
     }
 }

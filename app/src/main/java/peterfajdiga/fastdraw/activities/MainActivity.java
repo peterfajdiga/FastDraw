@@ -451,22 +451,22 @@ public class MainActivity extends FragmentActivity implements
     }
 
     @Override
-    public void onPagerLongpress() {
+    public void onLongpress() {
         performAction(Preferences.longclickAction);
     }
 
     @Override
-    public void onPagerDoubletap() {
+    public void onDoubletap() {
         performAction(Preferences.doubleclickAction);
     }
 
     @Override
-    public void onPagerPinch() {
+    public void onPinch() {
         performAction(Preferences.pinchAction);
     }
 
     @Override
-    public void onPagerUnpinch() {
+    public void onUnpinch() {
         performAction(Preferences.unpinchAction);
     }
 
