@@ -21,12 +21,12 @@ import peterfajdiga.fastdraw.R;
 import peterfajdiga.fastdraw.launcher.item.LauncherItem;
 
 public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ItemViewHolder> {
-    private final Launcher.Owner owner;
+    private final Launcher.Listener listener;
     private final LaunchManager launchManager;
     private final SortedList<LauncherItem> items;
 
-    public CategoryAdapter(@NonNull final Launcher.Owner owner, @NonNull final LaunchManager launchManager) {
-        this.owner = owner;
+    public CategoryAdapter(@NonNull final Launcher.Listener listener, @NonNull final LaunchManager launchManager) {
+        this.listener = listener;
         this.launchManager = launchManager;
         this.items = new SortedList<>(LauncherItem.class, new SortedList.Callback<LauncherItem>() {
             @Override
@@ -119,7 +119,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ItemVi
             } else {
                 view.startDragAndDrop(null, shadow, null, 0);
             }
-            owner.onDragStarted(view, item);
+            listener.onDragStarted(view, item);
 
             return false;
         });

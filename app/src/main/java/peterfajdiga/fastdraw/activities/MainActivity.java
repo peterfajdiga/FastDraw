@@ -62,7 +62,7 @@ import peterfajdiga.fastdraw.receivers.InstallAppReceiver;
 import peterfajdiga.fastdraw.views.CategoryTabLayout;
 
 public class MainActivity extends FragmentActivity implements
-    Launcher.Owner,
+    Launcher.Listener,
     InstallAppReceiver.Owner,
     DropZoneRemoveShortcut.Owner<LauncherItem>,
     DropZoneCategory.Owner<LauncherItem>,

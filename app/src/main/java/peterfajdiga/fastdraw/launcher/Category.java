@@ -24,9 +24,9 @@ public class Category {
     private final CategoryAdapter adapter;
     private final View view;
 
-    public Category(final Context context, final Launcher.Owner owner, final LaunchManager launchManager) {
-        this.adapter = new CategoryAdapter(owner, launchManager);
-        view = createView(context, owner, adapter);
+    public Category(final Context context, final Launcher.Listener listener, final LaunchManager launchManager) {
+        this.adapter = new CategoryAdapter(listener, launchManager);
+        view = createView(context, listener, adapter);
     }
 
     public View getView() {
@@ -57,7 +57,7 @@ public class Category {
     @SuppressLint("ClickableViewAccessibility")
     private View createView(
         final Context context,
-        final Launcher.Owner owner,
+        final Launcher.Listener listener,
         final CategoryAdapter adapter
     ) {
         final RecyclerView containerView = new RecyclerView(context);
@@ -79,10 +79,10 @@ public class Category {
 
         final DisplayMetrics displayMetrics = context.getResources().getDisplayMetrics();
         containerView.setOnTouchListener(new OnTouchListenerMux(
-            new LongPress(displayMetrics, owner::onLongpress),
-            new DoubleTap(displayMetrics, owner::onDoubletap),
-            new Pinch(displayMetrics, false, owner::onPinch),
-            new Pinch(displayMetrics, true, owner::onUnpinch)
+            new LongPress(displayMetrics, listener::onLongpress),
+            new DoubleTap(displayMetrics, listener::onDoubletap),
+            new Pinch(displayMetrics, false, listener::onPinch),
+            new Pinch(displayMetrics, true, listener::onUnpinch)
         ));
         return containerView;
     }

@@ -25,19 +25,19 @@ import peterfajdiga.fastdraw.launcher.item.Loadable;
 public class Launcher {
     private final PrefMap itemCategoryMap;
     private final LaunchManager launchManager;
-    private final Owner owner;
+    private final Listener listener;
     private final ViewPager pager;
     private final LauncherPagerAdapter adapter;
 
     public Launcher(
         @NonNull final LaunchManager launchManager,
-        @NonNull final Owner owner,
+        @NonNull final Listener listener,
         @NonNull final ViewPager pager
     ) {
         final Context context = pager.getContext();
         this.itemCategoryMap = new PrefMap(context, "categories"); // TODO: pass from outside
         this.launchManager = launchManager;
-        this.owner = owner;
+        this.listener = listener;
         this.pager = pager;
         this.adapter = new LauncherPagerAdapter(context);
         pager.setAdapter(this.adapter);
@@ -106,7 +106,7 @@ public class Launcher {
         Category category = adapter.categories.get(categoryName);
         if (category == null) {
             final Context context = pager.getContext();
-            category = new Category(context, owner, launchManager);
+            category = new Category(context, listener, launchManager);
             adapter.categories.put(categoryName, category);
             adapter.notifyDataSetChanged();
         }
@@ -217,7 +217,7 @@ public class Launcher {
         itemCategoryMap.remove(item.getID());
     }
 
-    public interface Owner {
+    public interface Listener {
         void onLongpress();
         void onDoubletap();
         void onPinch();
