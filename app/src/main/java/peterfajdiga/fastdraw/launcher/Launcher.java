@@ -60,8 +60,8 @@ public class Launcher {
         return false;
     }
 
-    public void showFirstCategory() {
-        pager.setCurrentItem(0);
+    public void showInitialCategory() {
+        showCategory(getInitialCategory());
     }
 
     public boolean doesCategoryExist(@NonNull final String categoryName) {
@@ -72,7 +72,7 @@ public class Launcher {
         return adapter.getPageTitle(pager.getCurrentItem());
     }
 
-    public String[] getCategoryNames() {
+    private String[] getCategoryNames() {
         final Object[] names = adapter.categories.keySet().toArray();
         String[] retval = new String[names.length];
         for (int i = 0; i < names.length; i++) {

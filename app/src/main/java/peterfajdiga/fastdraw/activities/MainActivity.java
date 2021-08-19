@@ -240,9 +240,7 @@ public class MainActivity extends FragmentActivity implements
 
             // show home category
             final Launcher pager = launcher;
-            if (!pager.showCategory("HOME")) {
-                pager.showFirstCategory();
-            }
+            pager.showInitialCategory();
         }
     }
 
