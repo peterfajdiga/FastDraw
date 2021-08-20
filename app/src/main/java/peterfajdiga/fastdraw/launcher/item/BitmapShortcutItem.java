@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -22,11 +21,13 @@ import peterfajdiga.fastdraw.launcher.launchable.Launchable;
 public class BitmapShortcutItem implements LauncherItem, Saveable {
     public static final String TYPE_KEY = "bitmap";
 
+    private final BitmapDrawable icon;
     private final Intent intent;
     private final String salt;
     private final DisplayItem displayItem;
 
-    public BitmapShortcutItem(final Intent intent, final String salt, final String label, final Drawable icon) { // TODO: receive BitmapDrawable
+    public BitmapShortcutItem(final Intent intent, final String salt, final String label, final BitmapDrawable icon) {
+        this.icon = icon;
         this.intent = intent;
         this.salt = salt;
         final Launchable launchable = new IntentLaunchable(intent);
@@ -60,10 +61,7 @@ public class BitmapShortcutItem implements LauncherItem, Saveable {
         final FileOutputStream fos = new FileOutputStream(file); // filename contains salt
         Saveable.writeString(fos, uri);
         Saveable.writeString(fos, displayItem.getLabel().toString());
-        final Drawable icon = displayItem.getIcon();
-        if (icon instanceof BitmapDrawable) {
-            ((BitmapDrawable)icon).getBitmap().compress(Bitmap.CompressFormat.PNG, 100, fos);
-        }
+        icon.getBitmap().compress(Bitmap.CompressFormat.PNG, 100, fos);
         fos.close();
     }
 
@@ -77,7 +75,7 @@ public class BitmapShortcutItem implements LauncherItem, Saveable {
         final Intent intent = Intent.parseUri(Saveable.readString(fis), 0);
         final String label = Saveable.readString(fis);
 
-        final Drawable icon = new BitmapDrawable(context.getResources(), BitmapFactory.decodeFileDescriptor(fis.getFD()));
+        final BitmapDrawable icon = new BitmapDrawable(context.getResources(), BitmapFactory.decodeFileDescriptor(fis.getFD()));
         fis.close();
 
         return new BitmapShortcutItem(intent, salt, label, icon);

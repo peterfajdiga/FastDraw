@@ -6,7 +6,6 @@ import android.content.pm.LauncherApps;
 import android.content.pm.ShortcutInfo;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.util.Log;
 
@@ -108,7 +107,7 @@ public class ShortcutItemManager {
         final Bitmap bmp = data.getParcelableExtra(Intent.EXTRA_SHORTCUT_ICON);
 
         if (bmp != null) {
-            final Drawable icon = new BitmapDrawable(context.getResources(), bmp);
+            final BitmapDrawable icon = new BitmapDrawable(context.getResources(), bmp);
             return new BitmapShortcutItem(launchIntent, generateSalt(), name, icon);
         } else {
             final Intent.ShortcutIconResource iconResource = data.getParcelableExtra(Intent.EXTRA_SHORTCUT_ICON_RESOURCE);
