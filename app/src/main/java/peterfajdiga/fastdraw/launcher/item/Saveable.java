@@ -8,8 +8,8 @@ import java.io.InputStream;
 import java.nio.ByteBuffer;
 
 public interface Saveable {
-    void toFile(File file) throws java.io.IOException;
     String getFilename();
+    void toFile(File file) throws java.io.IOException;
 
     static void writeString(@NonNull final FileOutputStream fos, @NonNull final String string) throws java.io.IOException {
         final byte[] stringBytes = string.getBytes();

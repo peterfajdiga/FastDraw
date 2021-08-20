@@ -12,6 +12,7 @@ import androidx.core.content.ContextCompat;
 import androidx.core.content.res.ResourcesCompat;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 
 import peterfajdiga.fastdraw.R;
@@ -21,8 +22,7 @@ import peterfajdiga.fastdraw.launcher.launchable.Launchable;
 
 // TODO: split into two classes
 public class ResShortcutItem implements LauncherItem, Saveable {
-    public static final String TYPE_KEY = "shortcut";
-    public static final String ICON_TYPE_RES = "r";
+    public static final String TYPE_KEY = "res";
 
     private final String label;
     private final String iconPackageName;
@@ -63,29 +63,6 @@ public class ResShortcutItem implements LauncherItem, Saveable {
         return displayItem;
     }
 
-    private static Drawable iconFromResource(final Context context, final String packageName, final String resourceName) throws PackageManager.NameNotFoundException, Resources.NotFoundException {
-        final Resources resources = context.getPackageManager().getResourcesForApplication(packageName);
-        final int id = resources.getIdentifier(resourceName, null, null);
-        return ResourcesCompat.getDrawable(resources, id, context.getTheme());
-    }
-
-    @Override
-    public void toFile(@NonNull final File file) throws java.io.IOException {
-        final String uri = intent.toUri(0);
-        final FileOutputStream fos = new FileOutputStream(file); // filename contains salt
-        Saveable.writeString(fos, uri);
-        Saveable.writeString(fos, label);
-        Saveable.writeString(fos, ICON_TYPE_RES);
-        Saveable.writeString(fos, iconPackageName);
-        Saveable.writeString(fos, iconResourceName);
-        fos.close();
-    }
-
-    @Override
-    public String getFilename() {
-        return getID().replace('\0', '_');
-    }
-
     private Drawable loadIcon(@NonNull final Context context) {
         try {
             try {
@@ -96,5 +73,44 @@ public class ResShortcutItem implements LauncherItem, Saveable {
         } catch (PackageManager.NameNotFoundException e) {
             return ContextCompat.getDrawable(context, R.drawable.ic_item_shortcut_leftover);
         }
+    }
+
+    private static Drawable iconFromResource(final Context context, final String packageName, final String resourceName) throws PackageManager.NameNotFoundException, Resources.NotFoundException {
+        final Resources resources = context.getPackageManager().getResourcesForApplication(packageName);
+        final int id = resources.getIdentifier(resourceName, null, null);
+        return ResourcesCompat.getDrawable(resources, id, context.getTheme());
+    }
+
+    @Override
+    public String getFilename() {
+        return getID().replace('\0', '_');
+    }
+
+    @Override
+    public void toFile(@NonNull final File file) throws java.io.IOException {
+        final String uri = intent.toUri(0);
+        final FileOutputStream fos = new FileOutputStream(file); // filename contains salt
+        Saveable.writeString(fos, uri);
+        Saveable.writeString(fos, label);
+        Saveable.writeString(fos, iconPackageName);
+        Saveable.writeString(fos, iconResourceName);
+        fos.close();
+    }
+
+    public static ResShortcutItem fromFile(@NonNull final Context context, @NonNull final File file) throws java.io.IOException, java.net.URISyntaxException {
+        final FileInputStream fis = new FileInputStream(file);
+
+        final String filename = file.getName();
+        final int saltIndex = filename.lastIndexOf('_') + 1;
+        final String salt = filename.substring(saltIndex); // salt is in filename
+
+        final Intent intent = Intent.parseUri(Saveable.readString(fis), 0);
+        final String label = Saveable.readString(fis);
+
+        final String iconPackageName = Saveable.readString(fis);
+        final String iconResourceName = Saveable.readString(fis);
+        fis.close();
+
+        return new ResShortcutItem(intent, salt, label, iconPackageName, iconResourceName);
     }
 }

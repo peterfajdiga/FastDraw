@@ -51,16 +51,16 @@ public class OreoShortcutItem implements LauncherItem, Saveable {
     }
 
     @Override
+    public String getFilename() {
+        return getID().replace('\0', '_');
+    }
+
+    @Override
     public void toFile(@NonNull final File file) throws IOException {
         final FileOutputStream fos = new FileOutputStream(file);
         Saveable.writeString(fos, packageName);
         Saveable.writeString(fos, oreoShortcutId);
         fos.close();
-    }
-
-    @Override
-    public String getFilename() {
-        return getID().replace('\0', '_');
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)

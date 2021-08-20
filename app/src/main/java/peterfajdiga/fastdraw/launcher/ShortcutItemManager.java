@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.content.pm.LauncherApps;
 import android.content.pm.ShortcutInfo;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
@@ -16,7 +15,6 @@ import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
@@ -27,8 +25,8 @@ import peterfajdiga.fastdraw.launcher.item.BitmapShortcutItem;
 import peterfajdiga.fastdraw.launcher.item.LauncherItem;
 import peterfajdiga.fastdraw.launcher.item.OreoShortcutItem;
 import peterfajdiga.fastdraw.launcher.item.OreoShortcuts;
-import peterfajdiga.fastdraw.launcher.item.Saveable;
 import peterfajdiga.fastdraw.launcher.item.ResShortcutItem;
+import peterfajdiga.fastdraw.launcher.item.Saveable;
 
 public class ShortcutItemManager {
     private ShortcutItemManager() {}
@@ -56,8 +54,10 @@ public class ShortcutItemManager {
     private static LauncherItem readLauncherItem(@NonNull final Context context, @NonNull final File file) throws IOException, URISyntaxException {
         final String typeKey = getTypeKey(file);
         switch (typeKey) {
+            case BitmapShortcutItem.TYPE_KEY:
+                return BitmapShortcutItem.fromFile(context, file);
             case ResShortcutItem.TYPE_KEY:
-                return readShortcutItem(context, file);
+                return ResShortcutItem.fromFile(context, file);
             case OreoShortcutItem.TYPE_KEY:
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                     try {
@@ -72,53 +72,6 @@ public class ShortcutItemManager {
             default:
                 Log.w("ShortcutItemManager", "Unknown file type key: " + typeKey);
                 return null;
-        }
-    }
-
-    public static LauncherItem readShortcutItem(@NonNull final Context context, @NonNull final File file) throws java.io.IOException, java.net.URISyntaxException {
-        final FileInputStream fis = new FileInputStream(file);
-
-        final String filename = file.getName();
-        final int saltIndex = filename.lastIndexOf('_') + 1;
-        final String salt = filename.substring(saltIndex); // salt is in filename
-
-        final Intent intent = Intent.parseUri(Saveable.readString(fis), 0);
-        final String name = Saveable.readString(fis);
-
-        final LauncherItem shortcutItem = readShortcutItemIcon(context, file, fis, intent, name, salt, true);
-        fis.close();
-        return shortcutItem;
-    }
-
-    private static LauncherItem readShortcutItemIcon(
-        @NonNull final Context context,
-        @NonNull final File file,
-        @NonNull final FileInputStream fis,
-        @NonNull final Intent intent,
-        @NonNull final String name,
-        @NonNull final String salt,
-        final boolean tryOldFormat
-    ) throws java.io.IOException {
-        final String iconType = Saveable.readString(fis);
-        switch (iconType) {
-            case BitmapShortcutItem.ICON_TYPE_BITMAP:
-                return new BitmapShortcutItem(intent, salt, name,
-                    new BitmapDrawable(context.getResources(), BitmapFactory.decodeFileDescriptor(fis.getFD()))
-                );
-            case ResShortcutItem.ICON_TYPE_RES:
-                return new ResShortcutItem(intent, salt, name, Saveable.readString(fis), Saveable.readString(fis));
-            case BitmapShortcutItem.ICON_TYPE_NONE:
-                return new BitmapShortcutItem(intent, salt, name, null);
-            default:
-                if (!tryOldFormat) {
-                    return new BitmapShortcutItem(intent, salt, name, null);
-                }
-                // We have probably read the category name (from the old format) instead of iconType.
-                // In the old format, iconType followed category, so let's read again and this time we should get the iconType.
-                final LauncherItem item = readShortcutItemIcon(context, file, fis, intent, name, salt, false);
-                file.delete(); // delete the old file
-                ShortcutItemManager.saveShortcut(context, (Saveable)item); // save it in the new format
-                return item;
         }
     }
 

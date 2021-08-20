@@ -54,6 +54,7 @@ import peterfajdiga.fastdraw.launcher.LaunchManager;
 import peterfajdiga.fastdraw.launcher.Launcher;
 import peterfajdiga.fastdraw.launcher.ShortcutItemManager;
 import peterfajdiga.fastdraw.launcher.item.AppItem;
+import peterfajdiga.fastdraw.launcher.item.BitmapShortcutItem;
 import peterfajdiga.fastdraw.launcher.item.LauncherItem;
 import peterfajdiga.fastdraw.launcher.item.OreoShortcutItem;
 import peterfajdiga.fastdraw.launcher.item.Saveable;
@@ -347,6 +348,7 @@ public class MainActivity extends FragmentActivity implements
                 case AppItem.TYPE_KEY:
                     final String packageName = tail.substring(0, tail.indexOf('\0'));
                     return !doesPackageExist(packageName);
+                case BitmapShortcutItem.TYPE_KEY:
                 case ResShortcutItem.TYPE_KEY:
                 case OreoShortcutItem.TYPE_KEY:
                     return false;
