@@ -57,7 +57,7 @@ import peterfajdiga.fastdraw.launcher.item.AppItem;
 import peterfajdiga.fastdraw.launcher.item.LauncherItem;
 import peterfajdiga.fastdraw.launcher.item.OreoShortcutItem;
 import peterfajdiga.fastdraw.launcher.item.Saveable;
-import peterfajdiga.fastdraw.launcher.item.ShortcutItem;
+import peterfajdiga.fastdraw.launcher.item.ResShortcutItem;
 import peterfajdiga.fastdraw.receivers.InstallAppReceiver;
 import peterfajdiga.fastdraw.views.CategoryTabLayout;
 
@@ -270,14 +270,16 @@ public class MainActivity extends FragmentActivity implements
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == INSTALL_SHORTCUT_REQUEST && resultCode == RESULT_OK) {
-            final ShortcutItem newShortcut = ShortcutItemManager.shortcutFromIntent(this, data);
+            final LauncherItem newShortcut = ShortcutItemManager.shortcutFromIntent(this, data);
             addShortcut(newShortcut, launcher.getCurrentCategoryName());
         }
         super.onActivityResult(requestCode, resultCode, data);
     }
 
-    private void addShortcut(@NonNull final ShortcutItem shortcutItem, @NonNull final String categoryName) {
-        ShortcutItemManager.saveShortcut(this, shortcutItem);
+    private void addShortcut(@NonNull final LauncherItem shortcutItem, @NonNull final String categoryName) {
+        if (shortcutItem instanceof Saveable) {
+            ShortcutItemManager.saveShortcut(this, (Saveable)shortcutItem);
+        }
         launcher.moveItem(shortcutItem, categoryName, false);
     }
 
@@ -345,7 +347,7 @@ public class MainActivity extends FragmentActivity implements
                 case AppItem.TYPE_KEY:
                     final String packageName = tail.substring(0, tail.indexOf('\0'));
                     return !doesPackageExist(packageName);
-                case ShortcutItem.TYPE_KEY:
+                case ResShortcutItem.TYPE_KEY:
                 case OreoShortcutItem.TYPE_KEY:
                     return false;
                 default:
@@ -499,7 +501,7 @@ public class MainActivity extends FragmentActivity implements
         AppItemManager.removePackageItems(this, launcher, packageName, true);
     }
 
-    public void onShortcutReceived(final ShortcutItem newShortcut) {
+    public void onShortcutReceived(final LauncherItem newShortcut) {
         launcher.addItems(getString(R.string.default_shortcut_category), newShortcut);
     }
 

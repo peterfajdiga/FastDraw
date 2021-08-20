@@ -18,7 +18,6 @@ import peterfajdiga.fastdraw.launcher.itemdisplay.DisplayItem;
 import peterfajdiga.fastdraw.launcher.launchable.Launchable;
 import peterfajdiga.fastdraw.launcher.launchable.OreoShortcutLaunchable;
 
-@RequiresApi(api = Build.VERSION_CODES.O)
 public class OreoShortcutItem implements LauncherItem, Saveable {
     public static final String TYPE_KEY = "oreo";
 
@@ -27,6 +26,7 @@ public class OreoShortcutItem implements LauncherItem, Saveable {
     private final DisplayItem displayItem;
 
     // TODO: load label and icon in getDisplayItem
+    @RequiresApi(api = Build.VERSION_CODES.O)
     public OreoShortcutItem(@NonNull final String packageName, @NonNull final String oreoShortcutId, @NonNull final CharSequence label, @NonNull final Drawable icon) {
         this.packageName = packageName;
         this.oreoShortcutId = oreoShortcutId;
@@ -63,6 +63,7 @@ public class OreoShortcutItem implements LauncherItem, Saveable {
         return getID().replace('\0', '_');
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Nullable
     public static OreoShortcutItem fromFile(@NonNull final Context context, @NonNull final File file) throws java.io.IOException, LeftoverException {
         final FileInputStream fis = new FileInputStream(file);

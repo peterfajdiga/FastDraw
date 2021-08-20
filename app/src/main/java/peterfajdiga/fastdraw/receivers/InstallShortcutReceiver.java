@@ -6,14 +6,16 @@ import android.content.Intent;
 
 import peterfajdiga.fastdraw.activities.MainActivity;
 import peterfajdiga.fastdraw.launcher.ShortcutItemManager;
-import peterfajdiga.fastdraw.launcher.item.ShortcutItem;
+import peterfajdiga.fastdraw.launcher.item.LauncherItem;
+import peterfajdiga.fastdraw.launcher.item.Saveable;
 
 public class InstallShortcutReceiver extends BroadcastReceiver {
-
     @Override
     public void onReceive(Context context, Intent data) {
-        final ShortcutItem newShortcutItem = ShortcutItemManager.shortcutFromIntent(context, data);
-        ShortcutItemManager.saveShortcut(context, newShortcutItem);
+        final LauncherItem newShortcutItem = ShortcutItemManager.shortcutFromIntent(context, data);
+        if (newShortcutItem instanceof Saveable) {
+            ShortcutItemManager.saveShortcut(context, (Saveable)newShortcutItem);
+        }
 
         // TODO?: save SHORTCUT category? Now it'll probably show up in LOST&FOUND if MainActivity == null
         // final String category = context.getString(R.string.default_shortcut_category);
