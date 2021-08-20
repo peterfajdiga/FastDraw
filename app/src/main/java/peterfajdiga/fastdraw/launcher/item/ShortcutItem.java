@@ -25,7 +25,7 @@ import peterfajdiga.fastdraw.launcher.launchable.IntentLaunchable;
 import peterfajdiga.fastdraw.launcher.launchable.Launchable;
 
 // TODO: split into two classes
-public class ShortcutItem extends LauncherItem implements Saveable {
+public class ShortcutItem implements LauncherItem, Saveable {
     public static final String TYPE_KEY = "shortcut";
 
     private final String label;

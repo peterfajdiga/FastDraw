@@ -14,7 +14,7 @@ import peterfajdiga.fastdraw.launcher.itemdisplay.DisplayItem;
 import peterfajdiga.fastdraw.launcher.launchable.IntentLaunchable;
 import peterfajdiga.fastdraw.launcher.launchable.Launchable;
 
-public class AppItem extends LauncherItem {
+public class AppItem implements LauncherItem {
     public static final String TYPE_KEY = "app";
 
     private final ActivityInfo info;
