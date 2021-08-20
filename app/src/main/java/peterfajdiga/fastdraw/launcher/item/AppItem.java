@@ -5,66 +5,35 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
-import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
-import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 
 import peterfajdiga.fastdraw.launcher.AppItemManager;
-import peterfajdiga.fastdraw.launcher.LaunchManager;
+import peterfajdiga.fastdraw.launcher.itemdisplay.DisplayItem;
+import peterfajdiga.fastdraw.launcher.launchable.IntentLaunchable;
+import peterfajdiga.fastdraw.launcher.launchable.Launchable;
 
-public class AppItem extends LauncherItem implements Loadable {
+public class AppItem extends LauncherItem {
     public static final String TYPE_KEY = "app";
 
-    private String label;
-    private Drawable icon;
-    private final String packageName;
-    private final String activityName;
+    private final ActivityInfo info;
+    private DisplayItem displayItem = null;
 
-    public AppItem(final ActivityInfo info) {
-        packageName = info.packageName;
-        activityName = info.name;
+    public AppItem(@NonNull final ActivityInfo info) {
         this.info = info;
     }
 
     @Override
     @NonNull
     public String getID() {
-        return TYPE_KEY + "\0" + packageName + "\0" + activityName;
-    }
-
-    @Override
-    @NonNull
-    public CharSequence getLabel() {
-        if (isLoaded()) {
-            return label;
-        } else {
-            return "Loading...";
-        }
-    }
-
-    @Override
-    public Drawable getIcon() {
-        return icon;
-    }
-
-    @Override
-    public void launch(
-        final Context context,
-        final LaunchManager launchManager,
-        final Bundle opts,
-        final Rect clipBounds
-    ) {
-        final Intent intent = getIntent();
-        intent.setSourceBounds(clipBounds);
-        launchManager.launch(intent, opts);
+        return TYPE_KEY + "\0" + info.packageName + "\0" + info.name;
     }
 
     @NonNull
     private Intent getIntent() {
         final Intent intent = new Intent(Intent.ACTION_MAIN);
-        intent.setComponent(new ComponentName(packageName, activityName));
+        intent.setComponent(new ComponentName(info.packageName, info.name));
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         return intent;
     }
@@ -72,30 +41,25 @@ public class AppItem extends LauncherItem implements Loadable {
     @Override
     @NonNull
     public String getPackageName() {
-        return packageName;
+        return info.packageName;
+    }
+
+    @Override
+    public DisplayItem getDisplayItem(final Context context) {
+        if (displayItem != null) {
+            return displayItem;
+        }
+
+        final PackageManager packageManager = context.getPackageManager();
+        final CharSequence label = info.loadLabel(packageManager).toString();
+        final Drawable icon = info.loadIcon(packageManager);
+
+        final Launchable launchable = new IntentLaunchable(getIntent());
+        displayItem = new DisplayItem(getID(), label, icon, launchable, this);
+        return displayItem;
     }
 
     public void openAppDetails(final Context context) {
-        AppItemManager.showPackageDetails(context, packageName);
-    }
-
-
-    /* loading */
-
-    private ActivityInfo info;
-
-    @Override
-    public void load(@NonNull final Context context) {
-        if (info != null) {
-            final PackageManager packageManager = context.getPackageManager();
-            label = info.loadLabel(packageManager).toString();
-            icon = info.loadIcon(packageManager);
-            info = null;
-        }
-    }
-
-    @Override
-    public boolean isLoaded() {
-        return info == null;
+        AppItemManager.showPackageDetails(context, info.packageName);
     }
 }

@@ -6,10 +6,8 @@ import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Rect;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
-import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -21,10 +19,13 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 
 import peterfajdiga.fastdraw.R;
-import peterfajdiga.fastdraw.launcher.LaunchManager;
 import peterfajdiga.fastdraw.launcher.ShortcutItemManager;
+import peterfajdiga.fastdraw.launcher.itemdisplay.DisplayItem;
+import peterfajdiga.fastdraw.launcher.launchable.IntentLaunchable;
+import peterfajdiga.fastdraw.launcher.launchable.Launchable;
 
-public class ShortcutItem extends LauncherItem implements Loadable, Saveable {
+// TODO: split into two classes
+public class ShortcutItem extends LauncherItem implements Saveable {
     public static final String TYPE_KEY = "shortcut";
 
     private final String label;
@@ -33,19 +34,18 @@ public class ShortcutItem extends LauncherItem implements Loadable, Saveable {
     private String iconPackageName = null;
     private String iconResourceName = null;
     private final String salt;
+    private DisplayItem displayItem = null;
 
     public ShortcutItem(final Intent intent, final String salt, final String label, final Drawable icon) {
         this.intent = intent;
         this.salt = salt;
         this.label = label;
         this.icon = icon;
-        this.isLoaded = true;
     }
     public ShortcutItem(final Intent intent, final String salt, final String label, final String iconPackageName, final String iconResourceName) {
         this(intent, salt, label, null);
         this.iconPackageName = iconPackageName;
         this.iconResourceName = iconResourceName;
-        this.isLoaded = false;
     }
 
     @Override
@@ -55,29 +55,22 @@ public class ShortcutItem extends LauncherItem implements Loadable, Saveable {
     }
 
     @Override
-    public CharSequence getLabel() {
-        return label;
-    }
-
-    @Override
-    public Drawable getIcon() {
-        return icon;
-    }
-
-    @Override
-    public void launch(
-        final Context context,
-        final LaunchManager launchManager,
-        final Bundle opts,
-        final Rect clipBounds
-    ) {
-        launchManager.launch(intent, opts);
-    }
-
-    @Override
     @Nullable
     public String getPackageName() {
         return intent.getPackage();
+    }
+
+    @Override
+    public DisplayItem getDisplayItem(final Context context) {
+        if (displayItem != null) {
+            return displayItem;
+        }
+
+        loadIcon(context);
+
+        final Launchable launchable = new IntentLaunchable(intent);
+        displayItem = new DisplayItem(getID(), label, icon, launchable, this);
+        return displayItem;
     }
 
     private static Drawable iconFromResource(final Context context, final String packageName, final String resourceName) throws PackageManager.NameNotFoundException, Resources.NotFoundException {
@@ -161,29 +154,19 @@ public class ShortcutItem extends LauncherItem implements Loadable, Saveable {
         }
     }
 
-
-    /* loading */
-
-    private boolean isLoaded;
-
-    @Override
-    public void load(@NonNull final Context context) {
-        if (!isLoaded()) {
-            try {
-                try {
-                    icon = iconFromResource(context, iconPackageName, iconResourceName);
-                } catch (final Resources.NotFoundException e) {
-                    icon = context.getPackageManager().getApplicationIcon(iconPackageName);
-                }
-            } catch (PackageManager.NameNotFoundException e) {
-                icon = ContextCompat.getDrawable(context, R.drawable.ic_item_shortcut_leftover);
-            }
-            isLoaded = true;
+    private void loadIcon(@NonNull final Context context) {
+        if (icon != null) {
+            return;
         }
-    }
 
-    @Override
-    public boolean isLoaded() {
-        return isLoaded;
+        try {
+            try {
+                icon = iconFromResource(context, iconPackageName, iconResourceName);
+            } catch (final Resources.NotFoundException e) {
+                icon = context.getPackageManager().getApplicationIcon(iconPackageName);
+            }
+        } catch (PackageManager.NameNotFoundException e) {
+            icon = ContextCompat.getDrawable(context, R.drawable.ic_item_shortcut_leftover);
+        }
     }
 }

@@ -9,12 +9,14 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.SortedList;
 
 import java.util.Arrays;
 
 import peterfajdiga.fastdraw.Preferences;
 import peterfajdiga.fastdraw.R;
 import peterfajdiga.fastdraw.launcher.item.LauncherItem;
+import peterfajdiga.fastdraw.launcher.itemdisplay.DisplayItem;
 import peterfajdiga.fastdraw.views.gestures.DoubleTap;
 import peterfajdiga.fastdraw.views.gestures.LongPress;
 import peterfajdiga.fastdraw.views.gestures.OnTouchListenerMux;
@@ -38,19 +40,25 @@ public class Category {
         return adapter.getItemCount();
     }
 
-    public void addItems(final LauncherItem... launcherItems) {
-        adapter.getItems().addAll(Arrays.asList(launcherItems));
+    public void addItems(final DisplayItem... displayItems) {
+        adapter.getItems().addAll(Arrays.asList(displayItems));
     }
 
-    public void removeItem(final LauncherItem launcherItem) {
-        adapter.getItems().remove(launcherItem);
+    public void removeItem(final String id) {
+        final SortedList<DisplayItem> items = adapter.getItems();
+        for (int i = 0; i < items.size(); i++) {
+            if (items.get(i).getID().equals(id)) {
+                items.removeItemAt(i);
+                return;
+            }
+        }
     }
 
     @NonNull
     public LauncherItem[] getItems() {
         final LauncherItem[] items = new LauncherItem[getItemCount()];
         for (int i = 0; i < items.length; i++) {
-            items[i] = adapter.getItems().get(i);
+            items[i] = adapter.getItems().get(i).getLauncherItem();
         }
         return items;
     }

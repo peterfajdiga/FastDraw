@@ -21,7 +21,7 @@ import java.util.concurrent.Executors;
 import peterfajdiga.fastdraw.PrefMap;
 import peterfajdiga.fastdraw.Preferences;
 import peterfajdiga.fastdraw.launcher.item.LauncherItem;
-import peterfajdiga.fastdraw.launcher.item.Loadable;
+import peterfajdiga.fastdraw.launcher.itemdisplay.DisplayItem;
 
 public class Launcher {
     public static final String HOME_CATEGORY_NAME = "HOME";
@@ -129,29 +129,23 @@ public class Launcher {
     }
 
     private void loadAndAddItems(@NonNull final Category category, final boolean immediate, @NonNull final LauncherItem... items) {
-        final Context context = pager.getContext();
         if (immediate) {
-            loadItems(context, items);
-            category.addItems(items);
+            category.addItems(createDisplayItems(items));
         } else {
             final Handler handler = new Handler(Looper.getMainLooper());
             Executors.newSingleThreadExecutor().execute(() -> {
-                loadItems(context, items);
-                handler.post(() -> category.addItems(items));
+                final DisplayItem[] displayItems = createDisplayItems(items);
+                handler.post(() -> category.addItems(displayItems));
             });
         }
     }
 
-    private static void loadItems(final Context context, @NonNull final LauncherItem... items) {
-        for (final LauncherItem item : items) {
-            if (item instanceof Loadable) {
-                try {
-                    ((Loadable)item).load(context);
-                } catch (final Exception e) {
-                    Log.e("Category", "Failed to load item of package " + item.getPackageName(), e);
-                }
-            }
+    private DisplayItem[] createDisplayItems(@NonNull final LauncherItem... items) {
+        final DisplayItem[] displayItems = new DisplayItem[items.length];
+        for (int i = 0; i < items.length; i++) {
+            displayItems[i] = items[i].getDisplayItem(pager.getContext());
         }
+        return displayItems;
     }
 
     private Map<String, List<LauncherItem>> categorizeItems(@NonNull final String defaultCategory, @NonNull final LauncherItem... items) {
@@ -209,7 +203,7 @@ public class Launcher {
             return true;
         } else {
             // remove item from category
-            category.removeItem(item);
+            category.removeItem(item.getID());
             return false;
         }
     }

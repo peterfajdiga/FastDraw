@@ -18,19 +18,19 @@ import androidx.recyclerview.widget.SortedList;
 
 import peterfajdiga.fastdraw.Preferences;
 import peterfajdiga.fastdraw.R;
-import peterfajdiga.fastdraw.launcher.item.LauncherItem;
+import peterfajdiga.fastdraw.launcher.itemdisplay.DisplayItem;
 
 public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ItemViewHolder> {
     private final Launcher.Listener listener;
     private final LaunchManager launchManager;
-    private final SortedList<LauncherItem> items;
+    private final SortedList<DisplayItem> items;
 
     public CategoryAdapter(@NonNull final Launcher.Listener listener, @NonNull final LaunchManager launchManager) {
         this.listener = listener;
         this.launchManager = launchManager;
-        this.items = new SortedList<>(LauncherItem.class, new SortedList.Callback<LauncherItem>() {
+        this.items = new SortedList<>(DisplayItem.class, new SortedList.Callback<DisplayItem>() {
             @Override
-            public int compare(final LauncherItem o1, final LauncherItem o2) {
+            public int compare(final DisplayItem o1, final DisplayItem o2) {
                 return o1.compareTo(o2);
             }
 
@@ -40,13 +40,13 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ItemVi
             }
 
             @Override
-            public boolean areContentsTheSame(final LauncherItem oldItem, final LauncherItem newItem) {
+            public boolean areContentsTheSame(final DisplayItem oldItem, final DisplayItem newItem) {
                 return oldItem.equals(newItem);
             }
 
             @Override
-            public boolean areItemsTheSame(final LauncherItem item1, final LauncherItem item2) {
-                return item1.equals(item2);
+            public boolean areItemsTheSame(final DisplayItem item1, final DisplayItem item2) {
+                return item1.getID().equals(item2.getID());
             }
 
             @Override
@@ -66,7 +66,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ItemVi
         });
     }
 
-    SortedList<LauncherItem> getItems() {
+    SortedList<DisplayItem> getItems() {
         return items;
     }
 
@@ -81,7 +81,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ItemVi
     @SuppressLint("ClickableViewAccessibility")
     @Override
     public void onBindViewHolder(@NonNull final ItemViewHolder holder, final int position) {
-        final LauncherItem item = items.get(position);
+        final DisplayItem item = items.get(position);
 
         final ImageView appIcon = holder.view.findViewById(R.id.app_item_icon);
         appIcon.setImageDrawable(item.getIcon());
@@ -119,7 +119,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ItemVi
             } else {
                 view.startDragAndDrop(null, shadow, null, 0);
             }
-            listener.onDragStarted(view, item);
+            listener.onDragStarted(view, item.getLauncherItem());
 
             return false;
         });
