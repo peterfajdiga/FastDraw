@@ -73,11 +73,11 @@ public class OreoShortcutItem implements LauncherItem, Saveable {
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Nullable
-    public static OreoShortcutItem fromFile(@NonNull final Context context, @NonNull final File file) throws java.io.IOException, LeftoverException {
-        final String filename = file.getName();
-        final int uuidIndex = filename.lastIndexOf('_') + 1;
-        final String uuid = filename.substring(uuidIndex); // uuid is in filename
-
+    public static OreoShortcutItem fromFile(
+        @NonNull final Context context,
+        @NonNull final File file,
+        @NonNull final String uuid
+    ) throws java.io.IOException, LeftoverException {
         final FileInputStream fis = new FileInputStream(file);
         final String packageName = Saveable.readString(fis);
         final String oreoShortcutId = Saveable.readString(fis);

@@ -51,16 +51,23 @@ public class ShortcutItemManager {
 
     @Nullable
     private static LauncherItem readLauncherItem(@NonNull final Context context, @NonNull final File file) throws IOException, URISyntaxException {
-        final String typeKey = getTypeKey(file);
+        final String[] filenameParts = file.getName().split("_", 2);
+        if (filenameParts.length != 2) {
+            Log.w("ShortcutItemManager", "Invalid filename: " + file.getName());
+            return null;
+        }
+        final String typeKey = filenameParts[0];
+        final String uuid = filenameParts[1];
+
         switch (typeKey) {
             case BitmapShortcutItem.TYPE_KEY:
-                return BitmapShortcutItem.fromFile(context, file);
+                return BitmapShortcutItem.fromFile(context, file, uuid);
             case ResShortcutItem.TYPE_KEY:
-                return ResShortcutItem.fromFile(context, file);
+                return ResShortcutItem.fromFile(context, file, uuid);
             case OreoShortcutItem.TYPE_KEY:
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                     try {
-                        return OreoShortcutItem.fromFile(context, file);
+                        return OreoShortcutItem.fromFile(context, file, uuid);
                     } catch (final Saveable.LeftoverException e) {
                         file.delete();
                         return null;

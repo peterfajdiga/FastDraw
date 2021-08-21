@@ -103,11 +103,11 @@ public class ResShortcutItem implements LauncherItem, Saveable {
         fos.close();
     }
 
-    public static ResShortcutItem fromFile(@NonNull final Context context, @NonNull final File file) throws java.io.IOException, java.net.URISyntaxException {
-        final String filename = file.getName();
-        final int uuidIndex = filename.lastIndexOf('_') + 1;
-        final String uuid = filename.substring(uuidIndex); // uuid is in filename
-
+    public static ResShortcutItem fromFile(
+        @NonNull final Context context,
+        @NonNull final File file,
+        @NonNull final String uuid
+    ) throws java.io.IOException, java.net.URISyntaxException {
         final FileInputStream fis = new FileInputStream(file);
         final Intent intent = Intent.parseUri(Saveable.readString(fis), 0);
         final String label = Saveable.readString(fis);
