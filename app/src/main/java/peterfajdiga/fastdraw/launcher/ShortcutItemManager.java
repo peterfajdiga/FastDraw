@@ -22,11 +22,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-import peterfajdiga.fastdraw.launcher.item.BitmapShortcutItem;
-import peterfajdiga.fastdraw.launcher.item.OreoShortcutItem;
-import peterfajdiga.fastdraw.launcher.item.ResShortcutItem;
-import peterfajdiga.fastdraw.launcher.item.Saveable;
-import peterfajdiga.fastdraw.launcher.item.ShortcutItem;
+import peterfajdiga.fastdraw.launcher.launcheritem.BitmapShortcutItem;
+import peterfajdiga.fastdraw.launcher.launcheritem.OreoShortcutItem;
+import peterfajdiga.fastdraw.launcher.launcheritem.ResShortcutItem;
+import peterfajdiga.fastdraw.launcher.launcheritem.Saveable;
+import peterfajdiga.fastdraw.launcher.launcheritem.ShortcutItem;
 
 public class ShortcutItemManager {
     private ShortcutItemManager() {}

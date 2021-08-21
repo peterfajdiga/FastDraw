@@ -11,9 +11,9 @@ import androidx.annotation.NonNull;
 
 import java.util.List;
 
-import peterfajdiga.fastdraw.launcher.item.AppItem;
-import peterfajdiga.fastdraw.launcher.item.LauncherItem;
-import peterfajdiga.fastdraw.launcher.item.Saveable;
+import peterfajdiga.fastdraw.launcher.launcheritem.AppItem;
+import peterfajdiga.fastdraw.launcher.launcheritem.LauncherItem;
+import peterfajdiga.fastdraw.launcher.launcheritem.Saveable;
 
 public class AppItemManager {
     private AppItemManager() {}

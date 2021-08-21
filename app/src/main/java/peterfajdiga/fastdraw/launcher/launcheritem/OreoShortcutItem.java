@@ -1,4 +1,4 @@
-package peterfajdiga.fastdraw.launcher.item;
+package peterfajdiga.fastdraw.launcher.launcheritem;
 
 import android.content.Context;
 import android.content.pm.ShortcutInfo;

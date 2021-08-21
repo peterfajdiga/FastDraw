@@ -23,7 +23,7 @@ import java.util.Collections;
 import java.util.List;
 
 import peterfajdiga.fastdraw.R;
-import peterfajdiga.fastdraw.launcher.item.Saveable;
+import peterfajdiga.fastdraw.launcher.launcheritem.Saveable;
 
 public class OreoShortcuts {
     private OreoShortcuts() {}

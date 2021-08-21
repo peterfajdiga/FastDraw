@@ -8,7 +8,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 
 import peterfajdiga.fastdraw.launcher.LaunchManager;
-import peterfajdiga.fastdraw.launcher.item.LauncherItem;
+import peterfajdiga.fastdraw.launcher.launcheritem.LauncherItem;
 import peterfajdiga.fastdraw.launcher.launchable.Launchable;
 
 public class DisplayItem implements Comparable<DisplayItem> {

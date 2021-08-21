@@ -15,7 +15,7 @@ import java.util.Arrays;
 
 import peterfajdiga.fastdraw.Preferences;
 import peterfajdiga.fastdraw.R;
-import peterfajdiga.fastdraw.launcher.item.LauncherItem;
+import peterfajdiga.fastdraw.launcher.launcheritem.LauncherItem;
 import peterfajdiga.fastdraw.launcher.displayitem.DisplayItem;
 import peterfajdiga.fastdraw.views.gestures.DoubleTap;
 import peterfajdiga.fastdraw.views.gestures.LongPress;

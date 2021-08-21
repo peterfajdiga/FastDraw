@@ -1,3 +1,3 @@
-package peterfajdiga.fastdraw.launcher.item;
+package peterfajdiga.fastdraw.launcher.launcheritem;
 
 public interface ShortcutItem extends LauncherItem, Saveable {}
