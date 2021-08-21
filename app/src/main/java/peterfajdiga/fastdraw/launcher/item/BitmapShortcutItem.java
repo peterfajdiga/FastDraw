@@ -60,7 +60,7 @@ public class BitmapShortcutItem implements ShortcutItem {
     }
 
     @Override
-    public void toFile(final OutputStream out) throws IOException {
+    public void save(final OutputStream out) throws IOException {
         final String uri = intent.toUri(0);
         Saveable.writeString(out, uri);
         Saveable.writeString(out, displayItem.getLabel().toString());

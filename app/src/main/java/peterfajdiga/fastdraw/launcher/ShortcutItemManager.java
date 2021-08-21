@@ -98,7 +98,7 @@ public class ShortcutItemManager {
         try {
             final File file = new File(getShortcutsDir(context), item.getFilename());
             try (final FileOutputStream out = new FileOutputStream(file)) {
-                item.toFile(out);
+                item.save(out);
             }
         } catch (final IOException e) {
             Log.e("ShortcutItemManager", "Failed to save shortcut " + item.getFilename(), e); // TODO: handle? how?

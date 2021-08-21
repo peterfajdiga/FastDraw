@@ -92,7 +92,7 @@ public class ResShortcutItem implements ShortcutItem {
     }
 
     @Override
-    public void toFile(@NonNull final OutputStream out) throws java.io.IOException {
+    public void save(@NonNull final OutputStream out) throws java.io.IOException {
         final String uri = intent.toUri(0);
         Saveable.writeString(out, uri);
         Saveable.writeString(out, label);

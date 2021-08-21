@@ -64,7 +64,7 @@ public class OreoShortcutItem implements ShortcutItem {
     }
 
     @Override
-    public void toFile(@NonNull final OutputStream out) throws IOException {
+    public void save(@NonNull final OutputStream out) throws IOException {
         Saveable.writeString(out, packageName);
         Saveable.writeString(out, oreoShortcutId);
     }
