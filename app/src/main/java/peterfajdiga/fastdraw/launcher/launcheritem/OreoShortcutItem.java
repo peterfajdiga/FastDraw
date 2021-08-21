@@ -55,7 +55,7 @@ public class OreoShortcutItem implements ShortcutItem {
 
         final CharSequence label = OreoShortcuts.getLabel(info);
         final Drawable icon = OreoShortcuts.getIcon(context, info);
-        final Launchable launchable = new OreoShortcutLaunchable(info.getPackage(), info.getId());
+        final Launchable launchable = new OreoShortcutLaunchable(info);
         this.displayItem = new DisplayItem(getID(), label, icon, this, launchable);
         return displayItem;
     }
