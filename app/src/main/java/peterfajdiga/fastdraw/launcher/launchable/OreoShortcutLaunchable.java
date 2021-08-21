@@ -53,6 +53,5 @@ public class OreoShortcutLaunchable implements Launchable {
         }
 
         launcherApps.startShortcut(packageName, oreoShortcutId, clipBounds, opts, user);
-
     }
 }
