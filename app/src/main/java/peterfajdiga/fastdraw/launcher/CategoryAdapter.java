@@ -18,7 +18,7 @@ import androidx.recyclerview.widget.SortedList;
 
 import peterfajdiga.fastdraw.Preferences;
 import peterfajdiga.fastdraw.R;
-import peterfajdiga.fastdraw.launcher.itemdisplay.DisplayItem;
+import peterfajdiga.fastdraw.launcher.displayitem.DisplayItem;
 
 public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ItemViewHolder> {
     private final Launcher.Listener listener;

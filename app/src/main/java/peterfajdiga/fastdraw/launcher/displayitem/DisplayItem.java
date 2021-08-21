@@ -1,4 +1,4 @@
-package peterfajdiga.fastdraw.launcher.itemdisplay;
+package peterfajdiga.fastdraw.launcher.displayitem;
 
 import android.content.Context;
 import android.graphics.Rect;

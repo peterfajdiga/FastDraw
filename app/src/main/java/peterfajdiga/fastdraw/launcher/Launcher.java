@@ -21,7 +21,7 @@ import java.util.concurrent.Executors;
 import peterfajdiga.fastdraw.PrefMap;
 import peterfajdiga.fastdraw.Preferences;
 import peterfajdiga.fastdraw.launcher.item.LauncherItem;
-import peterfajdiga.fastdraw.launcher.itemdisplay.DisplayItem;
+import peterfajdiga.fastdraw.launcher.displayitem.DisplayItem;
 
 public class Launcher {
     public static final String HOME_CATEGORY_NAME = "HOME";
