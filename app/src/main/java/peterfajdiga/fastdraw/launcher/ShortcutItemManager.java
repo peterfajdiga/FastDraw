@@ -66,10 +66,9 @@ public class ShortcutItemManager {
         final String typeKey = filenameParts[0];
         final String uuid = filenameParts[1];
 
-        final FileInputStream in = new FileInputStream(file);
-        final ShortcutItem item = readShortcutItem(context, in, typeKey, uuid);
-        in.close();
-        return item;
+        try (final FileInputStream in = new FileInputStream(file)) {
+            return readShortcutItem(context, in, typeKey, uuid);
+        }
     }
 
     @Nullable private static ShortcutItem readShortcutItem(
@@ -98,9 +97,9 @@ public class ShortcutItemManager {
     public static void saveShortcut(@NonNull final Context context, @NonNull final Saveable item) {
         try {
             final File file = new File(getShortcutsDir(context), item.getFilename());
-            final FileOutputStream out = new FileOutputStream(file);
-            item.toFile(out);
-            out.close();
+            try (final FileOutputStream out = new FileOutputStream(file)) {
+                item.toFile(out);
+            }
         } catch (final IOException e) {
             Log.e("ShortcutItemManager", "Failed to save shortcut " + item.getFilename(), e); // TODO: handle? how?
         }
