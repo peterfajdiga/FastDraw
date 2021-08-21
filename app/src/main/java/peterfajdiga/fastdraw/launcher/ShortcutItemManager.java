@@ -23,7 +23,6 @@ import java.util.List;
 import java.util.UUID;
 
 import peterfajdiga.fastdraw.launcher.item.BitmapShortcutItem;
-import peterfajdiga.fastdraw.launcher.item.LauncherItem;
 import peterfajdiga.fastdraw.launcher.item.OreoShortcutItem;
 import peterfajdiga.fastdraw.launcher.item.ResShortcutItem;
 import peterfajdiga.fastdraw.launcher.item.Saveable;
@@ -33,13 +32,13 @@ public class ShortcutItemManager {
     private ShortcutItemManager() {}
 
     @NonNull
-    public static List<LauncherItem> getShortcutItems(@NonNull final Context context) {
-        final List<LauncherItem> shortcuts = new ArrayList<>();
+    public static List<ShortcutItem> getShortcutItems(@NonNull final Context context) {
+        final List<ShortcutItem> shortcuts = new ArrayList<>();
         final File shortcutsDir = getShortcutsDir(context);
         shortcutsDir.mkdir();
         for (final File file : shortcutsDir.listFiles()) {
             try {
-                final LauncherItem item = readLauncherItem(context, file);
+                final ShortcutItem item = readShortcutItem(context, file);
                 if (item == null) {
                     continue;
                 }
@@ -55,7 +54,7 @@ public class ShortcutItemManager {
     }
 
     @Nullable
-    private static LauncherItem readLauncherItem(
+    private static ShortcutItem readShortcutItem(
         @NonNull final Context context,
         @NonNull final File file
     ) throws IOException, URISyntaxException, Saveable.LeftoverException {
@@ -68,12 +67,12 @@ public class ShortcutItemManager {
         final String uuid = filenameParts[1];
 
         final FileInputStream in = new FileInputStream(file);
-        final LauncherItem item = readLauncherItem(context, in, typeKey, uuid);
+        final ShortcutItem item = readShortcutItem(context, in, typeKey, uuid);
         in.close();
         return item;
     }
 
-    @Nullable private static LauncherItem readLauncherItem(
+    @Nullable private static ShortcutItem readShortcutItem(
         @NonNull final Context context,
         @NonNull final FileInputStream in,
         @NonNull final String typeKey,

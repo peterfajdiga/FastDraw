@@ -295,8 +295,8 @@ public class MainActivity extends FragmentActivity implements
         final AppItem[] appItems = AppItemManager.getAppItems(getPackageManager());
         launcher.addItemsStartup(getString(R.string.default_category), appItems);
 
-        final List<LauncherItem> shortcutItems = ShortcutItemManager.getShortcutItems(this);
-        launcher.addItemsStartup("LOST&FOUND", shortcutItems.toArray(new LauncherItem[0]));
+        final List<ShortcutItem> shortcutItems = ShortcutItemManager.getShortcutItems(this);
+        launcher.addItemsStartup("LOST&FOUND", shortcutItems.toArray(new ShortcutItem[0]));
     }
 
     /**
@@ -505,7 +505,7 @@ public class MainActivity extends FragmentActivity implements
         AppItemManager.removePackageItems(this, launcher, packageName, true);
     }
 
-    public void onShortcutReceived(final LauncherItem newShortcut) {
+    public void onShortcutReceived(final ShortcutItem newShortcut) {
         launcher.addItems(getString(R.string.default_shortcut_category), newShortcut);
     }
 
