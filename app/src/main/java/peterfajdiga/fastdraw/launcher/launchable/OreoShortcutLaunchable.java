@@ -16,7 +16,7 @@ import androidx.annotation.RequiresApi;
 
 import peterfajdiga.fastdraw.R;
 import peterfajdiga.fastdraw.launcher.LaunchManager;
-import peterfajdiga.fastdraw.launcher.item.OreoShortcuts;
+import peterfajdiga.fastdraw.launcher.OreoShortcuts;
 
 @RequiresApi(api = Build.VERSION_CODES.O)
 public class OreoShortcutLaunchable implements Launchable {

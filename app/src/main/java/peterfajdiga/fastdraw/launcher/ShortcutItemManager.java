@@ -25,7 +25,6 @@ import java.util.UUID;
 import peterfajdiga.fastdraw.launcher.item.BitmapShortcutItem;
 import peterfajdiga.fastdraw.launcher.item.LauncherItem;
 import peterfajdiga.fastdraw.launcher.item.OreoShortcutItem;
-import peterfajdiga.fastdraw.launcher.item.OreoShortcuts;
 import peterfajdiga.fastdraw.launcher.item.ResShortcutItem;
 import peterfajdiga.fastdraw.launcher.item.Saveable;
 import peterfajdiga.fastdraw.launcher.item.ShortcutItem;

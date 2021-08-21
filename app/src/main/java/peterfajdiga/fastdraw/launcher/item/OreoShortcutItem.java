@@ -13,6 +13,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
+import peterfajdiga.fastdraw.launcher.OreoShortcuts;
 import peterfajdiga.fastdraw.launcher.itemdisplay.DisplayItem;
 import peterfajdiga.fastdraw.launcher.launchable.Launchable;
 import peterfajdiga.fastdraw.launcher.launchable.OreoShortcutLaunchable;

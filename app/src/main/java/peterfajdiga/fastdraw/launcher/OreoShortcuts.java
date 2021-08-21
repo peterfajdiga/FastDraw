@@ -1,4 +1,4 @@
-package peterfajdiga.fastdraw.launcher.item;
+package peterfajdiga.fastdraw.launcher;
 
 import static android.content.pm.LauncherApps.ShortcutQuery.FLAG_MATCH_DYNAMIC;
 import static android.content.pm.LauncherApps.ShortcutQuery.FLAG_MATCH_MANIFEST;
@@ -23,6 +23,7 @@ import java.util.Collections;
 import java.util.List;
 
 import peterfajdiga.fastdraw.R;
+import peterfajdiga.fastdraw.launcher.item.Saveable;
 
 public class OreoShortcuts {
     private OreoShortcuts() {}
