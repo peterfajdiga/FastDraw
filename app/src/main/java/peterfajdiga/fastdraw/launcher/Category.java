@@ -17,6 +17,7 @@ import peterfajdiga.fastdraw.Preferences;
 import peterfajdiga.fastdraw.R;
 import peterfajdiga.fastdraw.launcher.launcheritem.LauncherItem;
 import peterfajdiga.fastdraw.launcher.displayitem.DisplayItem;
+import peterfajdiga.fastdraw.views.AutoGridLayoutManager;
 import peterfajdiga.fastdraw.views.gestures.DoubleTap;
 import peterfajdiga.fastdraw.views.gestures.LongPress;
 import peterfajdiga.fastdraw.views.gestures.OnTouchListenerMux;
@@ -73,11 +74,9 @@ public class Category {
         containerView.setAdapter(adapter);
 
         if (Preferences.appItemResource == R.layout.app_item_grid) {
-            if (Preferences.stackFromBottom) {
-                containerView.setLayoutManager(new GridLayoutManager(context, 4, GridLayoutManager.VERTICAL, true)); // TODO: configurable or automatic column count
-            } else {
-                containerView.setLayoutManager(new GridLayoutManager(context, 4)); // TODO: configurable or automatic column count
-            }
+            final int spanWidth = context.getResources().getDimensionPixelSize(R.dimen.app_item_grid_icon_size) +
+                context.getResources().getDimensionPixelSize(R.dimen.app_item_grid_icon_padding) * 2;
+            containerView.setLayoutManager(new AutoGridLayoutManager(context, spanWidth, GridLayoutManager.VERTICAL, Preferences.stackFromBottom));
             final int padding = Math.round(context.getResources().getDimensionPixelSize(R.dimen.app_item_grid_container_padding));
             containerView.setPadding(padding, padding, padding, padding);
             containerView.setClipToPadding(false);
