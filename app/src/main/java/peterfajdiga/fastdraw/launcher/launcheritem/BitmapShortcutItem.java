@@ -20,6 +20,7 @@ import peterfajdiga.fastdraw.launcher.launchable.Launchable;
 public class BitmapShortcutItem implements ShortcutItem {
     public static final String TYPE_KEY = "bitmap";
 
+    private final String label;
     private final BitmapDrawable icon;
     private final Intent intent;
     private final String uuid;
@@ -31,6 +32,7 @@ public class BitmapShortcutItem implements ShortcutItem {
         final Intent intent,
         final String uuid
     ) {
+        this.label = label;
         this.icon = icon;
         this.intent = intent;
         this.uuid = uuid;
@@ -60,7 +62,7 @@ public class BitmapShortcutItem implements ShortcutItem {
     public void save(final OutputStream out) throws IOException {
         final String uri = intent.toUri(0);
         Saveable.writeString(out, uri);
-        Saveable.writeString(out, displayItem.getLabel().toString());
+        Saveable.writeString(out, label);
         icon.getBitmap().compress(Bitmap.CompressFormat.PNG, 100, out);
     }
 
