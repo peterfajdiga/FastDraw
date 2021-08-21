@@ -65,7 +65,7 @@ public class ResShortcutItem implements ShortcutItem {
 
         final Drawable icon = loadIcon(context);
         final Launchable launchable = new IntentLaunchable(intent);
-        displayItem = new DisplayItem(getID(), label, icon, launchable, this);
+        displayItem = new DisplayItem(getID(), label, icon, this, launchable);
         return displayItem;
     }
 

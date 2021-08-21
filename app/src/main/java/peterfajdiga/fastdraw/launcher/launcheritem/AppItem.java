@@ -56,7 +56,7 @@ public class AppItem implements LauncherItem {
         final Drawable icon = info.loadIcon(packageManager);
 
         final Launchable launchable = new IntentLaunchable(getIntent());
-        displayItem = new DisplayItem(getID(), label, icon, launchable, this);
+        displayItem = new DisplayItem(getID(), label, icon, this, launchable);
         return displayItem;
     }
 

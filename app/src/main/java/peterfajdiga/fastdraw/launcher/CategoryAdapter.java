@@ -46,7 +46,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ItemVi
 
             @Override
             public boolean areItemsTheSame(final DisplayItem item1, final DisplayItem item2) {
-                return item1.getID().equals(item2.getID());
+                return item1.id.equals(item2.id);
             }
 
             @Override
@@ -84,10 +84,10 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ItemVi
         final DisplayItem item = items.get(position);
 
         final ImageView appIcon = holder.view.findViewById(R.id.app_item_icon);
-        appIcon.setImageDrawable(item.getIcon());
+        appIcon.setImageDrawable(item.icon);
 
         final TextView appLabel = holder.view.findViewById(R.id.app_item_name);
-        appLabel.setText(item.getLabel());
+        appLabel.setText(item.label);
 
         holder.view.setOnClickListener(view -> {
             final ActivityOptions opts;
@@ -98,7 +98,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ItemVi
             }
 
             final Context context = holder.view.getContext();
-            item.launch(context, launchManager, opts.toBundle(), view.getClipBounds());
+            item.launchable.launch(context, launchManager, opts.toBundle(), view.getClipBounds());
         });
 
         final PointF touchPoint = new PointF();
@@ -119,7 +119,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ItemVi
             } else {
                 view.startDragAndDrop(null, shadow, null, 0);
             }
-            listener.onDragStarted(view, item.getLauncherItem());
+            listener.onDragStarted(view, item.source);
 
             return false;
         });

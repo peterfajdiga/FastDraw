@@ -37,7 +37,7 @@ public class BitmapShortcutItem implements ShortcutItem {
         this.intent = intent;
         this.uuid = uuid;
         final Launchable launchable = new IntentLaunchable(intent);
-        this.displayItem = new DisplayItem(getID(), label, icon, launchable, this);
+        this.displayItem = new DisplayItem(getID(), label, icon, this, launchable);
     }
 
     @NonNull

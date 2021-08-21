@@ -39,7 +39,7 @@ public class OreoShortcutItem implements ShortcutItem {
         this.oreoShortcutId = oreoShortcutId;
         this.uuid = uuid;
         final Launchable launchable = new OreoShortcutLaunchable(packageName, oreoShortcutId);
-        this.displayItem = new DisplayItem(getID(), label, icon, launchable, this);
+        this.displayItem = new DisplayItem(getID(), label, icon, this, launchable);
     }
 
     @NonNull

@@ -47,7 +47,7 @@ public class Category {
     public void removeItem(final String id) {
         final SortedList<DisplayItem> items = adapter.getItems();
         for (int i = 0; i < items.size(); i++) {
-            if (items.get(i).getID().equals(id)) {
+            if (items.get(i).id.equals(id)) {
                 items.removeItemAt(i);
                 return;
             }
@@ -58,7 +58,7 @@ public class Category {
     public LauncherItem[] getItems() {
         final LauncherItem[] items = new LauncherItem[getItemCount()];
         for (int i = 0; i < items.length; i++) {
-            items[i] = adapter.getItems().get(i).getLauncherItem();
+            items[i] = adapter.getItems().get(i).source;
         }
         return items;
     }
