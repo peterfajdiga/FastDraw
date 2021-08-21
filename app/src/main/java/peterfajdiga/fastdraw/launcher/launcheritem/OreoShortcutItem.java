@@ -18,7 +18,6 @@ import peterfajdiga.fastdraw.launcher.displayitem.DisplayItem;
 import peterfajdiga.fastdraw.launcher.launchable.Launchable;
 import peterfajdiga.fastdraw.launcher.launchable.OreoShortcutLaunchable;
 
-// TODO: implement update listener
 public class OreoShortcutItem implements ShortcutItem {
     public static final String TYPE_KEY = "oreo";
 
