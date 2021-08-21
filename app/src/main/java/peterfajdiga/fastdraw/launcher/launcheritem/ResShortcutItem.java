@@ -23,25 +23,25 @@ import peterfajdiga.fastdraw.launcher.launchable.Launchable;
 public class ResShortcutItem implements ShortcutItem {
     public static final String TYPE_KEY = "res";
 
+    private final String uuid;
+    private final Intent intent;
     private final String label;
     private final String iconPackageName;
     private final String iconResourceName;
-    private final Intent intent;
-    private final String uuid;
     private DisplayItem displayItem = null;
 
     public ResShortcutItem(
+        final String uuid,
+        final Intent intent,
         final String label,
         final String iconPackageName,
-        final String iconResourceName,
-        final Intent intent,
-        final String uuid
+        final String iconResourceName
     ) {
+        this.uuid = uuid;
+        this.intent = intent;
         this.label = label;
         this.iconPackageName = iconPackageName;
         this.iconResourceName = iconResourceName;
-        this.intent = intent;
-        this.uuid = uuid;
     }
 
     @Override
@@ -117,6 +117,6 @@ public class ResShortcutItem implements ShortcutItem {
         final String label = Saveable.readString(in);
         final String iconPackageName = Saveable.readString(in);
         final String iconResourceName = Saveable.readString(in);
-        return new ResShortcutItem(label, iconPackageName, iconResourceName, intent, uuid);
+        return new ResShortcutItem(uuid, intent, label, iconPackageName, iconResourceName);
     }
 }

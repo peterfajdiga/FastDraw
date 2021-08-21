@@ -21,23 +21,23 @@ import peterfajdiga.fastdraw.launcher.launchable.OreoShortcutLaunchable;
 public class OreoShortcutItem implements ShortcutItem {
     public static final String TYPE_KEY = "oreo";
 
+    private final String uuid;
     private final String packageName;
     private final String oreoShortcutId;
-    private final String uuid;
     private final DisplayItem displayItem;
 
     // TODO: load label and icon in getDisplayItem
     @RequiresApi(api = Build.VERSION_CODES.O)
     public OreoShortcutItem(
+        @NonNull final String uuid,
         @NonNull final String packageName,
         @NonNull final String oreoShortcutId,
         @NonNull final CharSequence label,
-        @NonNull final Drawable icon,
-        @NonNull final String uuid
+        @NonNull final Drawable icon
     ) {
+        this.uuid = uuid;
         this.packageName = packageName;
         this.oreoShortcutId = oreoShortcutId;
-        this.uuid = uuid;
         final Launchable launchable = new OreoShortcutLaunchable(packageName, oreoShortcutId);
         this.displayItem = new DisplayItem(getID(), label, icon, this, launchable);
     }
@@ -94,11 +94,10 @@ public class OreoShortcutItem implements ShortcutItem {
         }
 
         return new OreoShortcutItem(
-            packageName,
+            uuid, packageName,
             oreoShortcutId,
             OreoShortcuts.getLabel(shortcutInfo),
-            OreoShortcuts.getIcon(context, shortcutInfo),
-            uuid
+            OreoShortcuts.getIcon(context, shortcutInfo)
         );
     }
 }

@@ -20,22 +20,22 @@ import peterfajdiga.fastdraw.launcher.launchable.Launchable;
 public class BitmapShortcutItem implements ShortcutItem {
     public static final String TYPE_KEY = "bitmap";
 
+    private final String uuid;
+    private final Intent intent;
     private final String label;
     private final BitmapDrawable icon;
-    private final Intent intent;
-    private final String uuid;
     private final DisplayItem displayItem;
 
     public BitmapShortcutItem(
-        final String label,
-        final BitmapDrawable icon,
+        final String uuid,
         final Intent intent,
-        final String uuid
+        final String label,
+        final BitmapDrawable icon
     ) {
+        this.uuid = uuid;
+        this.intent = intent;
         this.label = label;
         this.icon = icon;
-        this.intent = intent;
-        this.uuid = uuid;
         final Launchable launchable = new IntentLaunchable(intent);
         this.displayItem = new DisplayItem(getID(), label, icon, this, launchable);
     }
@@ -86,6 +86,6 @@ public class BitmapShortcutItem implements ShortcutItem {
         final Intent intent = Intent.parseUri(Saveable.readString(in), 0);
         final String label = Saveable.readString(in);
         final BitmapDrawable icon = new BitmapDrawable(context.getResources(), BitmapFactory.decodeFileDescriptor(in.getFD()));
-        return new BitmapShortcutItem(label, icon, intent, uuid);
+        return new BitmapShortcutItem(uuid, intent, label, icon);
     }
 }
