@@ -181,7 +181,7 @@ public class MainActivity extends FragmentActivity implements
         if (intent != null) {
             final String action = intent.getAction();
             if (action.equals(LauncherApps.ACTION_CONFIRM_PIN_SHORTCUT) && android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-                final OreoShortcutItem newShortcut = ShortcutItemManager.oreoShortcutFromIntent(this, intent);
+                final OreoShortcutItem newShortcut = ShortcutItemManager.oreoShortcutFromIntent(intent);
                 if (newShortcut != null) {
                     final String shortcutCategoryName = getString(R.string.default_shortcut_category);
                     addOreoShortcut(newShortcut, shortcutCategoryName);

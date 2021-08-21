@@ -3,7 +3,6 @@ package peterfajdiga.fastdraw.launcher;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.LauncherApps;
-import android.content.pm.ShortcutInfo;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Build;
@@ -134,19 +133,12 @@ public class ShortcutItemManager {
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Nullable
-    public static OreoShortcutItem oreoShortcutFromIntent(@NonNull final Context context, @NonNull final Intent data) {
+    public static OreoShortcutItem oreoShortcutFromIntent(@NonNull final Intent data) {
         final LauncherApps.PinItemRequest pinItemRequest = data.getParcelableExtra(LauncherApps.EXTRA_PIN_ITEM_REQUEST);
         if (!pinItemRequest.accept()) {
             return null;
         }
-        final ShortcutInfo shortcutInfo = pinItemRequest.getShortcutInfo();
-
-        return new OreoShortcutItem(
-            generateUUID(), shortcutInfo.getPackage(),
-            shortcutInfo.getId(),
-            OreoShortcuts.getLabel(shortcutInfo),
-            OreoShortcuts.getIcon(context, shortcutInfo)
-        );
+        return new OreoShortcutItem(generateUUID(), pinItemRequest.getShortcutInfo());
     }
 
     @NonNull

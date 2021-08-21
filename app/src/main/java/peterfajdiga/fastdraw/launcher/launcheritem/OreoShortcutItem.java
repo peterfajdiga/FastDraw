@@ -18,28 +18,18 @@ import peterfajdiga.fastdraw.launcher.displayitem.DisplayItem;
 import peterfajdiga.fastdraw.launcher.launchable.Launchable;
 import peterfajdiga.fastdraw.launcher.launchable.OreoShortcutLaunchable;
 
+// TODO: implement update listener
 public class OreoShortcutItem implements ShortcutItem {
     public static final String TYPE_KEY = "oreo";
 
     private final String uuid;
-    private final String packageName;
-    private final String oreoShortcutId;
-    private final DisplayItem displayItem;
+    private final ShortcutInfo info;
+    private DisplayItem displayItem = null;
 
-    // TODO: load label and icon in getDisplayItem
     @RequiresApi(api = Build.VERSION_CODES.O)
-    public OreoShortcutItem(
-        @NonNull final String uuid,
-        @NonNull final String packageName,
-        @NonNull final String oreoShortcutId,
-        @NonNull final CharSequence label,
-        @NonNull final Drawable icon
-    ) {
+    public OreoShortcutItem(@NonNull final String uuid, @NonNull final ShortcutInfo info) {
         this.uuid = uuid;
-        this.packageName = packageName;
-        this.oreoShortcutId = oreoShortcutId;
-        final Launchable launchable = new OreoShortcutLaunchable(packageName, oreoShortcutId);
-        this.displayItem = new DisplayItem(getID(), label, icon, this, launchable);
+        this.info = info;
     }
 
     @NonNull
@@ -48,22 +38,33 @@ public class OreoShortcutItem implements ShortcutItem {
         return TYPE_KEY + "\0" + uuid;
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.N_MR1)
     @Override
     @NonNull
     public String getPackageName() {
-        return packageName;
+        return info.getPackage();
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @NonNull
     @Override
     public DisplayItem getDisplayItem(final Context context) {
+        if (displayItem != null) {
+            return displayItem;
+        }
+
+        final CharSequence label = OreoShortcuts.getLabel(info);
+        final Drawable icon = OreoShortcuts.getIcon(context, info);
+        final Launchable launchable = new OreoShortcutLaunchable(info.getPackage(), info.getId());
+        this.displayItem = new DisplayItem(getID(), label, icon, this, launchable);
         return displayItem;
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.N_MR1)
     @Override
     public void save(@NonNull final OutputStream out) throws IOException {
-        Saveable.writeString(out, packageName);
-        Saveable.writeString(out, oreoShortcutId);
+        Saveable.writeString(out, info.getPackage());
+        Saveable.writeString(out, info.getId());
     }
 
     @NonNull
@@ -93,11 +94,6 @@ public class OreoShortcutItem implements ShortcutItem {
             return null;
         }
 
-        return new OreoShortcutItem(
-            uuid, packageName,
-            oreoShortcutId,
-            OreoShortcuts.getLabel(shortcutInfo),
-            OreoShortcuts.getIcon(context, shortcutInfo)
-        );
+        return new OreoShortcutItem(uuid, shortcutInfo);
     }
 }
