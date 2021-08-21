@@ -11,9 +11,8 @@ import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.res.ResourcesCompat;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
+import java.io.InputStream;
+import java.io.OutputStream;
 
 import peterfajdiga.fastdraw.R;
 import peterfajdiga.fastdraw.launcher.itemdisplay.DisplayItem;
@@ -93,28 +92,23 @@ public class ResShortcutItem implements LauncherItem, Saveable {
     }
 
     @Override
-    public void toFile(@NonNull final File file) throws java.io.IOException {
+    public void toFile(@NonNull final OutputStream out) throws java.io.IOException {
         final String uri = intent.toUri(0);
-        final FileOutputStream fos = new FileOutputStream(file); // filename contains uuid
-        Saveable.writeString(fos, uri);
-        Saveable.writeString(fos, label);
-        Saveable.writeString(fos, iconPackageName);
-        Saveable.writeString(fos, iconResourceName);
-        fos.close();
+        Saveable.writeString(out, uri);
+        Saveable.writeString(out, label);
+        Saveable.writeString(out, iconPackageName);
+        Saveable.writeString(out, iconResourceName);
     }
 
     public static ResShortcutItem fromFile(
         @NonNull final Context context,
-        @NonNull final File file,
+        @NonNull final InputStream in,
         @NonNull final String uuid
     ) throws java.io.IOException, java.net.URISyntaxException {
-        final FileInputStream fis = new FileInputStream(file);
-        final Intent intent = Intent.parseUri(Saveable.readString(fis), 0);
-        final String label = Saveable.readString(fis);
-        final String iconPackageName = Saveable.readString(fis);
-        final String iconResourceName = Saveable.readString(fis);
-        fis.close();
-
+        final Intent intent = Intent.parseUri(Saveable.readString(in), 0);
+        final String label = Saveable.readString(in);
+        final String iconPackageName = Saveable.readString(in);
+        final String iconResourceName = Saveable.readString(in);
         return new ResShortcutItem(label, iconPackageName, iconResourceName, intent, uuid);
     }
 }

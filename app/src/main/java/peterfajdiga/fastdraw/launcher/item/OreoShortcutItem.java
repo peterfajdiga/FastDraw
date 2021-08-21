@@ -9,10 +9,9 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 
 import peterfajdiga.fastdraw.launcher.itemdisplay.DisplayItem;
 import peterfajdiga.fastdraw.launcher.launchable.Launchable;
@@ -64,24 +63,20 @@ public class OreoShortcutItem implements LauncherItem, Saveable {
     }
 
     @Override
-    public void toFile(@NonNull final File file) throws IOException {
-        final FileOutputStream fos = new FileOutputStream(file);
-        Saveable.writeString(fos, packageName);
-        Saveable.writeString(fos, oreoShortcutId);
-        fos.close();
+    public void toFile(@NonNull final OutputStream out) throws IOException {
+        Saveable.writeString(out, packageName);
+        Saveable.writeString(out, oreoShortcutId);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Nullable
     public static OreoShortcutItem fromFile(
         @NonNull final Context context,
-        @NonNull final File file,
+        @NonNull final InputStream in,
         @NonNull final String uuid
     ) throws java.io.IOException, LeftoverException {
-        final FileInputStream fis = new FileInputStream(file);
-        final String packageName = Saveable.readString(fis);
-        final String oreoShortcutId = Saveable.readString(fis);
-        fis.close();
+        final String packageName = Saveable.readString(in);
+        final String oreoShortcutId = Saveable.readString(in);
 
         final ShortcutInfo shortcutInfo = OreoShortcuts.getShortcutInfo(context, packageName, oreoShortcutId);
         if (shortcutInfo == null) {

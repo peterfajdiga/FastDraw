@@ -9,10 +9,9 @@ import android.graphics.drawable.BitmapDrawable;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 
 import peterfajdiga.fastdraw.launcher.itemdisplay.DisplayItem;
 import peterfajdiga.fastdraw.launcher.launchable.IntentLaunchable;
@@ -61,26 +60,21 @@ public class BitmapShortcutItem implements LauncherItem, Saveable {
     }
 
     @Override
-    public void toFile(final File file) throws IOException {
+    public void toFile(final OutputStream out) throws IOException {
         final String uri = intent.toUri(0);
-        final FileOutputStream fos = new FileOutputStream(file); // filename contains uuid
-        Saveable.writeString(fos, uri);
-        Saveable.writeString(fos, displayItem.getLabel().toString());
-        icon.getBitmap().compress(Bitmap.CompressFormat.PNG, 100, fos);
-        fos.close();
+        Saveable.writeString(out, uri);
+        Saveable.writeString(out, displayItem.getLabel().toString());
+        icon.getBitmap().compress(Bitmap.CompressFormat.PNG, 100, out);
     }
 
     public static BitmapShortcutItem fromFile(
         @NonNull final Context context,
-        @NonNull final File file,
+        @NonNull final FileInputStream in,
         @NonNull final String uuid
     ) throws java.io.IOException, java.net.URISyntaxException {
-        final FileInputStream fis = new FileInputStream(file);
-        final Intent intent = Intent.parseUri(Saveable.readString(fis), 0);
-        final String label = Saveable.readString(fis);
-        final BitmapDrawable icon = new BitmapDrawable(context.getResources(), BitmapFactory.decodeFileDescriptor(fis.getFD()));
-        fis.close();
-
+        final Intent intent = Intent.parseUri(Saveable.readString(in), 0);
+        final String label = Saveable.readString(in);
+        final BitmapDrawable icon = new BitmapDrawable(context.getResources(), BitmapFactory.decodeFileDescriptor(in.getFD()));
         return new BitmapShortcutItem(label, icon, intent, uuid);
     }
 }

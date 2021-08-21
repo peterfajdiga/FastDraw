@@ -14,6 +14,8 @@ import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
@@ -44,13 +46,19 @@ public class ShortcutItemManager {
                 shortcuts.add(item);
             } catch (final IOException | URISyntaxException e) {
                 Log.e("ShortcutItemManager", "Failed to read shortcut " + file.getName(), e);
+            } catch (final Saveable.LeftoverException e) {
+                Log.i("ShortcutItemManager", "Leftover file " + file.getName());
+                file.delete();
             }
         }
         return shortcuts;
     }
 
     @Nullable
-    private static LauncherItem readLauncherItem(@NonNull final Context context, @NonNull final File file) throws IOException, URISyntaxException {
+    private static LauncherItem readLauncherItem(
+        @NonNull final Context context,
+        @NonNull final File file
+    ) throws IOException, URISyntaxException, Saveable.LeftoverException {
         final String[] filenameParts = file.getName().split("_", 2);
         if (filenameParts.length != 2) {
             Log.w("ShortcutItemManager", "Invalid filename: " + file.getName());
@@ -59,19 +67,26 @@ public class ShortcutItemManager {
         final String typeKey = filenameParts[0];
         final String uuid = filenameParts[1];
 
+        final FileInputStream in = new FileInputStream(file);
+        final LauncherItem item = readLauncherItem(context, in, typeKey, uuid);
+        in.close();
+        return item;
+    }
+
+    @Nullable private static LauncherItem readLauncherItem(
+        @NonNull final Context context,
+        @NonNull final FileInputStream in,
+        @NonNull final String typeKey,
+        @NonNull final String uuid
+    ) throws IOException, URISyntaxException, Saveable.LeftoverException {
         switch (typeKey) {
             case BitmapShortcutItem.TYPE_KEY:
-                return BitmapShortcutItem.fromFile(context, file, uuid);
+                return BitmapShortcutItem.fromFile(context, in, uuid);
             case ResShortcutItem.TYPE_KEY:
-                return ResShortcutItem.fromFile(context, file, uuid);
+                return ResShortcutItem.fromFile(context, in, uuid);
             case OreoShortcutItem.TYPE_KEY:
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                    try {
-                        return OreoShortcutItem.fromFile(context, file, uuid);
-                    } catch (final Saveable.LeftoverException e) {
-                        file.delete();
-                        return null;
-                    }
+                    return OreoShortcutItem.fromFile(context, in, uuid);
                 } else {
                     return null;
                 }
@@ -91,7 +106,9 @@ public class ShortcutItemManager {
     public static void saveShortcut(@NonNull final Context context, @NonNull final Saveable item) {
         try {
             final File file = new File(getShortcutsDir(context), item.getFilename());
-            item.toFile(file);
+            final FileOutputStream out = new FileOutputStream(file);
+            item.toFile(out);
+            out.close();
         } catch (final IOException e) {
             Log.e("ShortcutItemManager", "Failed to save shortcut " + item.getFilename(), e); // TODO: handle? how?
         }
