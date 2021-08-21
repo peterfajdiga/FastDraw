@@ -17,7 +17,7 @@ import peterfajdiga.fastdraw.launcher.itemdisplay.DisplayItem;
 import peterfajdiga.fastdraw.launcher.launchable.Launchable;
 import peterfajdiga.fastdraw.launcher.launchable.OreoShortcutLaunchable;
 
-public class OreoShortcutItem implements LauncherItem, Saveable {
+public class OreoShortcutItem implements ShortcutItem {
     public static final String TYPE_KEY = "oreo";
 
     private final String packageName;

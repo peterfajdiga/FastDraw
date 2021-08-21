@@ -15,6 +15,7 @@ import android.content.pm.ResolveInfo;
 import android.graphics.LightingColorFilter;
 import android.graphics.Paint;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.provider.ContactsContract;
@@ -27,6 +28,7 @@ import android.view.WindowManager;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.viewpager.widget.ViewPager;
@@ -59,6 +61,7 @@ import peterfajdiga.fastdraw.launcher.item.LauncherItem;
 import peterfajdiga.fastdraw.launcher.item.OreoShortcutItem;
 import peterfajdiga.fastdraw.launcher.item.Saveable;
 import peterfajdiga.fastdraw.launcher.item.ResShortcutItem;
+import peterfajdiga.fastdraw.launcher.item.ShortcutItem;
 import peterfajdiga.fastdraw.receivers.InstallAppReceiver;
 import peterfajdiga.fastdraw.views.CategoryTabLayout;
 
@@ -182,7 +185,7 @@ public class MainActivity extends FragmentActivity implements
                 final OreoShortcutItem newShortcut = ShortcutItemManager.oreoShortcutFromIntent(this, intent);
                 if (newShortcut != null) {
                     final String shortcutCategoryName = getString(R.string.default_shortcut_category);
-                    addShortcut(newShortcut, shortcutCategoryName);
+                    addOreoShortcut(newShortcut, shortcutCategoryName);
                     launcher.showCategory(shortcutCategoryName);
                 }
             }
@@ -271,20 +274,19 @@ public class MainActivity extends FragmentActivity implements
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == INSTALL_SHORTCUT_REQUEST && resultCode == RESULT_OK) {
-            final LauncherItem newShortcut = ShortcutItemManager.shortcutFromIntent(this, data);
+            final ShortcutItem newShortcut = ShortcutItemManager.shortcutFromIntent(this, data);
             addShortcut(newShortcut, launcher.getCurrentCategoryName());
         }
         super.onActivityResult(requestCode, resultCode, data);
     }
 
-    private void addShortcut(@NonNull final LauncherItem shortcutItem, @NonNull final String categoryName) {
-        if (shortcutItem instanceof Saveable) {
-            ShortcutItemManager.saveShortcut(this, (Saveable)shortcutItem);
-        }
+    private void addShortcut(@NonNull final ShortcutItem shortcutItem, @NonNull final String categoryName) {
+        ShortcutItemManager.saveShortcut(this, shortcutItem);
         launcher.moveItem(shortcutItem, categoryName, false);
     }
 
-    private void addShortcut(@NonNull final OreoShortcutItem shortcutItem, @NonNull final String categoryName) {
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    private void addOreoShortcut(@NonNull final OreoShortcutItem shortcutItem, @NonNull final String categoryName) {
         ShortcutItemManager.saveShortcut(this, shortcutItem);
         launcher.moveItem(shortcutItem, categoryName, false);
     }
@@ -578,10 +580,9 @@ public class MainActivity extends FragmentActivity implements
 
     @Override
     public void onDraggedItemRemove() {
-        assert draggedItem instanceof Saveable;
-        LauncherItem shortcutItem = draggedItem;
+        ShortcutItem shortcutItem = (ShortcutItem)draggedItem;
         launcher.removeItem(shortcutItem, true);
-        ShortcutItemManager.deleteShortcut(this, (Saveable)shortcutItem);
+        ShortcutItemManager.deleteShortcut(this, shortcutItem);
     }
 
     @Override

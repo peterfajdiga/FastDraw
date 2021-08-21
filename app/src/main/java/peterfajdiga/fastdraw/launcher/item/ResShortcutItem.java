@@ -20,7 +20,7 @@ import peterfajdiga.fastdraw.launcher.launchable.IntentLaunchable;
 import peterfajdiga.fastdraw.launcher.launchable.Launchable;
 
 // TODO: split into two classes
-public class ResShortcutItem implements LauncherItem, Saveable {
+public class ResShortcutItem implements ShortcutItem {
     public static final String TYPE_KEY = "res";
 
     private final String label;

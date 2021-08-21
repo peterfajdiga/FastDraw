@@ -28,6 +28,7 @@ import peterfajdiga.fastdraw.launcher.item.OreoShortcutItem;
 import peterfajdiga.fastdraw.launcher.item.OreoShortcuts;
 import peterfajdiga.fastdraw.launcher.item.ResShortcutItem;
 import peterfajdiga.fastdraw.launcher.item.Saveable;
+import peterfajdiga.fastdraw.launcher.item.ShortcutItem;
 
 public class ShortcutItemManager {
     private ShortcutItemManager() {}
@@ -125,7 +126,7 @@ public class ShortcutItemManager {
     }
 
     @NonNull
-    public static LauncherItem shortcutFromIntent(@NonNull final Context context, @NonNull final Intent data) {
+    public static ShortcutItem shortcutFromIntent(@NonNull final Context context, @NonNull final Intent data) {
         final Intent launchIntent = data.getParcelableExtra(Intent.EXTRA_SHORTCUT_INTENT);
         final String name = data.getStringExtra(Intent.EXTRA_SHORTCUT_NAME);
         final Bitmap bmp = data.getParcelableExtra(Intent.EXTRA_SHORTCUT_ICON);
