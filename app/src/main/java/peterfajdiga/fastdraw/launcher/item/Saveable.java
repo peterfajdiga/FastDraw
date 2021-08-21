@@ -17,7 +17,7 @@ public interface Saveable {
     }
 
     static String readString(@NonNull final InputStream in) throws java.io.IOException {
-        final byte[] stringLengthBytes = new byte[4];
+        final byte[] stringLengthBytes = new byte[4]; // 4 bytes to hold an int
         in.read(stringLengthBytes);
         int stringLength = ByteBuffer.wrap(stringLengthBytes).getInt();
 
