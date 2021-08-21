@@ -61,14 +61,21 @@ public class OreoShortcutItem implements ShortcutItem {
     }
 
     @Override
-    public String getFilename() {
-        return getID().replace('\0', '_');
-    }
-
-    @Override
     public void save(@NonNull final OutputStream out) throws IOException {
         Saveable.writeString(out, packageName);
         Saveable.writeString(out, oreoShortcutId);
+    }
+
+    @NonNull
+    @Override
+    public String getTypeKey() {
+        return TYPE_KEY;
+    }
+
+    @NonNull
+    @Override
+    public String getUUID() {
+        return uuid;
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)

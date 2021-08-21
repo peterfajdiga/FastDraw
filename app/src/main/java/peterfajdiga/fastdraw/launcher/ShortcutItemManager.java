@@ -94,19 +94,21 @@ public class ShortcutItemManager {
         }
     }
 
-    public static void saveShortcut(@NonNull final Context context, @NonNull final Saveable item) {
+    public static void saveShortcut(@NonNull final Context context, @NonNull final ShortcutItem item) {
+        final String filename = ShortcutItem.getFilename(item);
         try {
-            final File file = new File(getShortcutsDir(context), item.getFilename());
+            final File file = new File(getShortcutsDir(context), filename);
             try (final FileOutputStream out = new FileOutputStream(file)) {
                 item.save(out);
             }
         } catch (final IOException e) {
-            Log.e("ShortcutItemManager", "Failed to save shortcut " + item.getFilename(), e); // TODO: handle? how?
+            Log.e("ShortcutItemManager", "Failed to save shortcut " + filename, e); // TODO: handle? how?
         }
     }
 
-    public static void deleteShortcut(@NonNull final Context context, @NonNull final Saveable item) {
-        final File file = new File(getShortcutsDir(context), item.getFilename());
+    public static void deleteShortcut(@NonNull final Context context, @NonNull final ShortcutItem item) {
+        final String filename = ShortcutItem.getFilename(item);
+        final File file = new File(getShortcutsDir(context), filename);
         file.delete();
     }
 

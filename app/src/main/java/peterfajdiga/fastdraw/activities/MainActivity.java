@@ -59,7 +59,6 @@ import peterfajdiga.fastdraw.launcher.launcheritem.AppItem;
 import peterfajdiga.fastdraw.launcher.launcheritem.BitmapShortcutItem;
 import peterfajdiga.fastdraw.launcher.launcheritem.LauncherItem;
 import peterfajdiga.fastdraw.launcher.launcheritem.OreoShortcutItem;
-import peterfajdiga.fastdraw.launcher.launcheritem.Saveable;
 import peterfajdiga.fastdraw.launcher.launcheritem.ResShortcutItem;
 import peterfajdiga.fastdraw.launcher.launcheritem.ShortcutItem;
 import peterfajdiga.fastdraw.receivers.InstallAppReceiver;
@@ -529,7 +528,7 @@ public class MainActivity extends FragmentActivity implements
 
         // show type specific drop zones
         findViewById(R.id.drop_zone_app_info).setVisibility(draggedItem instanceof AppItem ? View.VISIBLE : View.GONE);
-        findViewById(R.id.drop_zone_remove_shortcut).setVisibility(draggedItem instanceof Saveable ? View.VISIBLE : View.GONE);
+        findViewById(R.id.drop_zone_remove_shortcut).setVisibility(draggedItem instanceof ShortcutItem ? View.VISIBLE : View.GONE);
 
         // set header background
         dragBgAnimator.start();

@@ -57,16 +57,23 @@ public class BitmapShortcutItem implements ShortcutItem {
     }
 
     @Override
-    public String getFilename() {
-        return getID().replace('\0', '_');
-    }
-
-    @Override
     public void save(final OutputStream out) throws IOException {
         final String uri = intent.toUri(0);
         Saveable.writeString(out, uri);
         Saveable.writeString(out, displayItem.getLabel().toString());
         icon.getBitmap().compress(Bitmap.CompressFormat.PNG, 100, out);
+    }
+
+    @NonNull
+    @Override
+    public String getTypeKey() {
+        return TYPE_KEY;
+    }
+
+    @NonNull
+    @Override
+    public String getUUID() {
+        return uuid;
     }
 
     public static BitmapShortcutItem fromFile(

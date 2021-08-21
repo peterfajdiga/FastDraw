@@ -69,6 +69,18 @@ public class ResShortcutItem implements ShortcutItem {
         return displayItem;
     }
 
+    @NonNull
+    @Override
+    public String getTypeKey() {
+        return TYPE_KEY;
+    }
+
+    @NonNull
+    @Override
+    public String getUUID() {
+        return uuid;
+    }
+
     private Drawable loadIcon(@NonNull final Context context) {
         try {
             try {
@@ -85,11 +97,6 @@ public class ResShortcutItem implements ShortcutItem {
         final Resources resources = context.getPackageManager().getResourcesForApplication(packageName);
         final int id = resources.getIdentifier(resourceName, null, null);
         return ResourcesCompat.getDrawable(resources, id, context.getTheme());
-    }
-
-    @Override
-    public String getFilename() {
-        return getID().replace('\0', '_');
     }
 
     @Override

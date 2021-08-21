@@ -13,7 +13,7 @@ import java.util.List;
 
 import peterfajdiga.fastdraw.launcher.launcheritem.AppItem;
 import peterfajdiga.fastdraw.launcher.launcheritem.LauncherItem;
-import peterfajdiga.fastdraw.launcher.launcheritem.Saveable;
+import peterfajdiga.fastdraw.launcher.launcheritem.ShortcutItem;
 
 public class AppItemManager {
     private AppItemManager() {}
@@ -46,10 +46,10 @@ public class AppItemManager {
 
     public static void removePackageItems(final Context context, final Launcher pager, final String packageName, final boolean permanent) {
         for (final LauncherItem item : pager.getItems()) {
-            if (packageName.equals(item.getPackageName()) && (permanent || !(item instanceof Saveable))) {
+            if (packageName.equals(item.getPackageName()) && (permanent || !(item instanceof ShortcutItem))) {
                 pager.removeItem(item, permanent);
-                if (item instanceof Saveable) {
-                    ShortcutItemManager.deleteShortcut(context, (Saveable)item);
+                if (item instanceof ShortcutItem) {
+                    ShortcutItemManager.deleteShortcut(context, (ShortcutItem)item);
                 }
             }
         }
