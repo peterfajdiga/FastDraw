@@ -108,10 +108,10 @@ public class ShortcutItemManager {
 
         if (bmp != null) {
             final BitmapDrawable icon = new BitmapDrawable(context.getResources(), bmp);
-            return new BitmapShortcutItem(launchIntent, generateSalt(), name, icon);
+            return new BitmapShortcutItem(name, icon, launchIntent, generateUUID());
         } else {
             final Intent.ShortcutIconResource iconResource = data.getParcelableExtra(Intent.EXTRA_SHORTCUT_ICON_RESOURCE);
-            return new ResShortcutItem(launchIntent, generateSalt(), name, iconResource.packageName, iconResource.resourceName);
+            return new ResShortcutItem(name, iconResource.packageName, iconResource.resourceName, launchIntent, generateUUID());
         }
     }
 
@@ -128,12 +128,13 @@ public class ShortcutItemManager {
             shortcutInfo.getPackage(),
             shortcutInfo.getId(),
             OreoShortcuts.getLabel(shortcutInfo),
-            OreoShortcuts.getIcon(context, shortcutInfo)
+            OreoShortcuts.getIcon(context, shortcutInfo),
+            generateUUID()
         );
     }
 
     @NonNull
-    private static String generateSalt() {
+    private static String generateUUID() {
         return UUID.randomUUID().toString();
     }
 }

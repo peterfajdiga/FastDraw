@@ -23,20 +23,25 @@ public class BitmapShortcutItem implements LauncherItem, Saveable {
 
     private final BitmapDrawable icon;
     private final Intent intent;
-    private final String salt;
+    private final String uuid;
     private final DisplayItem displayItem;
 
-    public BitmapShortcutItem(final Intent intent, final String salt, final String label, final BitmapDrawable icon) {
+    public BitmapShortcutItem(
+        final String label,
+        final BitmapDrawable icon,
+        final Intent intent,
+        final String uuid
+    ) {
         this.icon = icon;
         this.intent = intent;
-        this.salt = salt;
+        this.uuid = uuid;
         final Launchable launchable = new IntentLaunchable(intent);
         this.displayItem = new DisplayItem(getID(), label, icon, launchable, this);
     }
 
     @Override
     public String getID() {
-        return TYPE_KEY + "\0" + intent.toUri(0).hashCode() + "\0" + salt;
+        return TYPE_KEY + "\0" + uuid;
     }
 
     @Nullable
@@ -58,7 +63,7 @@ public class BitmapShortcutItem implements LauncherItem, Saveable {
     @Override
     public void toFile(final File file) throws IOException {
         final String uri = intent.toUri(0);
-        final FileOutputStream fos = new FileOutputStream(file); // filename contains salt
+        final FileOutputStream fos = new FileOutputStream(file); // filename contains uuid
         Saveable.writeString(fos, uri);
         Saveable.writeString(fos, displayItem.getLabel().toString());
         icon.getBitmap().compress(Bitmap.CompressFormat.PNG, 100, fos);
@@ -66,18 +71,16 @@ public class BitmapShortcutItem implements LauncherItem, Saveable {
     }
 
     public static BitmapShortcutItem fromFile(@NonNull final Context context, @NonNull final File file) throws java.io.IOException, java.net.URISyntaxException {
-        final FileInputStream fis = new FileInputStream(file);
-
         final String filename = file.getName();
-        final int saltIndex = filename.lastIndexOf('_') + 1;
-        final String salt = filename.substring(saltIndex); // salt is in filename
+        final int uuidIndex = filename.lastIndexOf('_') + 1;
+        final String uuid = filename.substring(uuidIndex);
 
+        final FileInputStream fis = new FileInputStream(file);
         final Intent intent = Intent.parseUri(Saveable.readString(fis), 0);
         final String label = Saveable.readString(fis);
-
         final BitmapDrawable icon = new BitmapDrawable(context.getResources(), BitmapFactory.decodeFileDescriptor(fis.getFD()));
         fis.close();
 
-        return new BitmapShortcutItem(intent, salt, label, icon);
+        return new BitmapShortcutItem(label, icon, intent, uuid);
     }
 }

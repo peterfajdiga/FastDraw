@@ -28,21 +28,27 @@ public class ResShortcutItem implements LauncherItem, Saveable {
     private final String iconPackageName;
     private final String iconResourceName;
     private final Intent intent;
-    private final String salt;
+    private final String uuid;
     private DisplayItem displayItem = null;
 
-    public ResShortcutItem(final Intent intent, final String salt, final String label, final String iconPackageName, final String iconResourceName) {
-        this.intent = intent;
-        this.salt = salt;
+    public ResShortcutItem(
+        final String label,
+        final String iconPackageName,
+        final String iconResourceName,
+        final Intent intent,
+        final String uuid
+    ) {
         this.label = label;
         this.iconPackageName = iconPackageName;
         this.iconResourceName = iconResourceName;
+        this.intent = intent;
+        this.uuid = uuid;
     }
 
     @Override
     @NonNull
     public String getID() {
-        return TYPE_KEY + "\0" + intent.toUri(0).hashCode() + "\0" + salt;
+        return TYPE_KEY + "\0" + uuid;
     }
 
     @Override
@@ -89,7 +95,7 @@ public class ResShortcutItem implements LauncherItem, Saveable {
     @Override
     public void toFile(@NonNull final File file) throws java.io.IOException {
         final String uri = intent.toUri(0);
-        final FileOutputStream fos = new FileOutputStream(file); // filename contains salt
+        final FileOutputStream fos = new FileOutputStream(file); // filename contains uuid
         Saveable.writeString(fos, uri);
         Saveable.writeString(fos, label);
         Saveable.writeString(fos, iconPackageName);
@@ -98,19 +104,17 @@ public class ResShortcutItem implements LauncherItem, Saveable {
     }
 
     public static ResShortcutItem fromFile(@NonNull final Context context, @NonNull final File file) throws java.io.IOException, java.net.URISyntaxException {
-        final FileInputStream fis = new FileInputStream(file);
-
         final String filename = file.getName();
-        final int saltIndex = filename.lastIndexOf('_') + 1;
-        final String salt = filename.substring(saltIndex); // salt is in filename
+        final int uuidIndex = filename.lastIndexOf('_') + 1;
+        final String uuid = filename.substring(uuidIndex); // uuid is in filename
 
+        final FileInputStream fis = new FileInputStream(file);
         final Intent intent = Intent.parseUri(Saveable.readString(fis), 0);
         final String label = Saveable.readString(fis);
-
         final String iconPackageName = Saveable.readString(fis);
         final String iconResourceName = Saveable.readString(fis);
         fis.close();
 
-        return new ResShortcutItem(intent, salt, label, iconPackageName, iconResourceName);
+        return new ResShortcutItem(label, iconPackageName, iconResourceName, intent, uuid);
     }
 }
