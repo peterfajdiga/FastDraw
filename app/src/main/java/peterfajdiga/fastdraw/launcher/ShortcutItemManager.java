@@ -96,13 +96,6 @@ public class ShortcutItemManager {
         }
     }
 
-    @NonNull
-    private static String getTypeKey(@NonNull final File file) {
-        final String filename = file.getName();
-        final int index = filename.indexOf("_");
-        return filename.substring(0, index);
-    }
-
     public static void saveShortcut(@NonNull final Context context, @NonNull final Saveable item) {
         try {
             final File file = new File(getShortcutsDir(context), item.getFilename());
