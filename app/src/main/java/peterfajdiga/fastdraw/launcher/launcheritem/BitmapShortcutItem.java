@@ -38,6 +38,7 @@ public class BitmapShortcutItem implements ShortcutItem {
         this.displayItem = new DisplayItem(getID(), label, icon, launchable, this);
     }
 
+    @NonNull
     @Override
     public String getID() {
         return TYPE_KEY + "\0" + uuid;
@@ -49,6 +50,7 @@ public class BitmapShortcutItem implements ShortcutItem {
         return intent.getPackage();
     }
 
+    @NonNull
     @Override
     public DisplayItem getDisplayItem(final Context context) {
         return displayItem;

@@ -56,6 +56,7 @@ public class ResShortcutItem implements ShortcutItem {
         return intent.getPackage();
     }
 
+    @NonNull
     @Override
     public DisplayItem getDisplayItem(final Context context) {
         if (displayItem != null) {

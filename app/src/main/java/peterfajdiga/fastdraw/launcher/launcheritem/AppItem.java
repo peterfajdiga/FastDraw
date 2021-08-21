@@ -44,6 +44,7 @@ public class AppItem implements LauncherItem {
         return info.packageName;
     }
 
+    @NonNull
     @Override
     public DisplayItem getDisplayItem(final Context context) {
         if (displayItem != null) {
