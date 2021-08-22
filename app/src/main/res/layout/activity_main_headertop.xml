@@ -1,58 +1,81 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<peterfajdiga.fastdraw.views.NestedScrollParent xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
-
-    <androidx.viewpager.widget.ViewPager
-        android:id="@+id/apps_pager"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="@dimen/pager_header_height_with_status_bar" />
+    android:layout_height="match_parent"
+    android:fillViewport="true">
 
     <LinearLayout
-        android:id="@+id/header"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:background="@android:color/transparent">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-        <peterfajdiga.fastdraw.views.CategoryTabLayout
-            android:id="@+id/tab_container"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/pager_header_height_with_status_bar"
-            style="@style/AppsTabLayout" />
-
-        <LinearLayout
-            android:id="@+id/category_drop_zone_container"
+        <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:visibility="gone"
-            android:orientation="horizontal"
-            android:gravity="top">
+            android:text="Hello, world!"
+            android:textSize="48sp"
+            android:textAlignment="center"
+            android:paddingVertical="120dp" />
 
-            <TextView
-                android:id="@+id/drop_zone_new_category"
-                android:text="@string/new_category"
-                style="@style/DropZone"/>
-
-            <TextView
-                android:id="@+id/drop_zone_app_info"
-                android:text="@string/app_info"
-                style="@style/DropZone"/>
-
-            <TextView
-                android:id="@+id/drop_zone_remove_shortcut"
-                android:text="@string/remove_shortcut"
-                style="@style/DropZone"/>
-        </LinearLayout>
-
-        <View
-            android:id="@+id/header_separator"
+        <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@android:color/white"
-            android:visibility="gone" />
+            android:layout_height="match_parent" >
+
+            <androidx.viewpager.widget.ViewPager
+                android:id="@+id/apps_pager"
+                android:layout_width="match_parent"
+                android:layout_marginTop="@dimen/pager_header_height"
+                android:layout_height="630dp" />
+            <!-- instead of 630dp, set height programmatically -->
+
+            <LinearLayout
+                android:id="@+id/header"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:background="@android:color/transparent">
+
+                <peterfajdiga.fastdraw.views.CategoryTabLayout
+                    android:id="@+id/tab_container"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/pager_header_height"
+                    style="@style/AppsTabLayout" />
+
+                <LinearLayout
+                    android:id="@+id/category_drop_zone_container"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone"
+                    android:orientation="horizontal"
+                    android:gravity="top">
+
+                    <TextView
+                        android:id="@+id/drop_zone_new_category"
+                        android:text="@string/new_category"
+                        style="@style/DropZone"/>
+
+                    <TextView
+                        android:id="@+id/drop_zone_app_info"
+                        android:text="@string/app_info"
+                        style="@style/DropZone"/>
+
+                    <TextView
+                        android:id="@+id/drop_zone_remove_shortcut"
+                        android:text="@string/remove_shortcut"
+                        style="@style/DropZone"/>
+                </LinearLayout>
+
+                <View
+                    android:id="@+id/header_separator"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@android:color/white"
+                    android:visibility="gone" />
+
+            </LinearLayout>
+
+        </FrameLayout>
 
     </LinearLayout>
 
-</FrameLayout>
+</peterfajdiga.fastdraw.views.NestedScrollParent>
