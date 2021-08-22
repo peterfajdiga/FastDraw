@@ -537,9 +537,7 @@ public class MainActivity extends FragmentActivity implements
         // hide status or navigation bar
         if (Preferences.mainLayoutResource == R.layout.activity_main_headertop) {
             getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        } /*else if (Preferences.mainLayoutResource == R.layout.activity_main_headerbtm) {
-            getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
-        }*/
+        }
     }
 
     public void onDragEnded1() {
