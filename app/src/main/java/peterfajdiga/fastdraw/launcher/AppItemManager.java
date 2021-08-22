@@ -10,6 +10,7 @@ import android.provider.Settings;
 import androidx.annotation.NonNull;
 
 import java.util.List;
+import java.util.stream.Stream;
 
 import peterfajdiga.fastdraw.launcher.launcheritem.AppItem;
 import peterfajdiga.fastdraw.launcher.launcheritem.LauncherItem;
@@ -19,26 +20,20 @@ public class AppItemManager {
     private AppItemManager() {}
 
     @NonNull
-    private static AppItem[] getAppItems(@NonNull final PackageManager packageManager, @NonNull final Intent launcherIntent) {
+    private static Stream<AppItem> getAppItems(@NonNull final PackageManager packageManager, @NonNull final Intent launcherIntent) {
         launcherIntent.addCategory(Intent.CATEGORY_LAUNCHER);
         final List<ResolveInfo> appActivities = packageManager.queryIntentActivities(launcherIntent, 0);
-
-        final AppItem[] apps = new AppItem[appActivities.size()];
-        for (int i = 0; i < apps.length; i++) {
-            apps[i] = new AppItem(appActivities.get(i).activityInfo);
-        }
-
-        return apps;
+        return appActivities.stream().map(resolveInfo -> new AppItem(resolveInfo.activityInfo));
     }
 
     @NonNull
-    public static AppItem[] getAppItems(@NonNull final PackageManager packageManager) {
+    public static Stream<AppItem> getAppItems(@NonNull final PackageManager packageManager) {
         final Intent launcherIntent = new Intent(Intent.ACTION_MAIN, null);
         return getAppItems(packageManager, launcherIntent);
     }
 
     @NonNull
-    public static AppItem[] getAppItems(@NonNull final PackageManager packageManager, @NonNull final String packageName) {
+    public static Stream<AppItem> getAppItems(@NonNull final PackageManager packageManager, @NonNull final String packageName) {
         final Intent launcherIntent = new Intent(Intent.ACTION_MAIN, null);
         launcherIntent.setPackage(packageName);
         return getAppItems(packageManager, launcherIntent);

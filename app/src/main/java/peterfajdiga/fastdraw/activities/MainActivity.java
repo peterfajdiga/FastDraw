@@ -37,7 +37,7 @@ import com.google.android.material.tabs.TabLayout;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.List;
+import java.util.stream.Stream;
 
 import peterfajdiga.fastdraw.NavigationBarAnimator;
 import peterfajdiga.fastdraw.PrefMap;
@@ -291,11 +291,12 @@ public class MainActivity extends FragmentActivity implements
     }
 
     private void loadLauncherItems() {
-        final AppItem[] appItems = AppItemManager.getAppItems(getPackageManager());
-        launcher.addItemsStartup(getString(R.string.default_category), appItems);
+        final LauncherItem[] items = Stream.concat(
+            AppItemManager.getAppItems(getPackageManager()),
+            ShortcutItemManager.getShortcutItems(this)
+        ).toArray(LauncherItem[]::new);
 
-        final List<ShortcutItem> shortcutItems = ShortcutItemManager.getShortcutItems(this);
-        launcher.addItemsStartup("LOST&FOUND", shortcutItems.toArray(new ShortcutItem[0]));
+        launcher.addItemsStartup("LOST&FOUND", items);
     }
 
     /**
@@ -487,7 +488,7 @@ public class MainActivity extends FragmentActivity implements
 
     @Override
     public void onAppInstall(String packageName) {
-        final AppItem[] appItems = AppItemManager.getAppItems(getPackageManager(), packageName);
+        final AppItem[] appItems = AppItemManager.getAppItems(getPackageManager(), packageName).toArray(AppItem[]::new);
         launcher.addItems(getString(R.string.default_category), appItems);
     }
 
@@ -495,7 +496,7 @@ public class MainActivity extends FragmentActivity implements
     public void onAppChange(String packageName) {
         AppItemManager.removePackageItems(this, launcher, packageName, false);
 
-        final AppItem[] appItems = AppItemManager.getAppItems(getPackageManager(), packageName);
+        final AppItem[] appItems = AppItemManager.getAppItems(getPackageManager(), packageName).toArray(AppItem[]::new);
         launcher.addItems(getString(R.string.default_category), appItems);
     }
 

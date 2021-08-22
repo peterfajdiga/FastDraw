@@ -17,9 +17,10 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.URISyntaxException;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Arrays;
+import java.util.Objects;
 import java.util.UUID;
+import java.util.stream.Stream;
 
 import peterfajdiga.fastdraw.launcher.launcheritem.BitmapShortcutItem;
 import peterfajdiga.fastdraw.launcher.launcheritem.OreoShortcutItem;
@@ -31,25 +32,20 @@ public class ShortcutItemManager {
     private ShortcutItemManager() {}
 
     @NonNull
-    public static List<ShortcutItem> getShortcutItems(@NonNull final Context context) {
-        final List<ShortcutItem> shortcuts = new ArrayList<>();
+    public static Stream<ShortcutItem> getShortcutItems(@NonNull final Context context) {
         final File shortcutsDir = getShortcutsDir(context);
         shortcutsDir.mkdir();
-        for (final File file : shortcutsDir.listFiles()) {
+        return Arrays.stream(shortcutsDir.listFiles()).map(file -> {
             try {
-                final ShortcutItem item = readShortcutItem(context, file);
-                if (item == null) {
-                    continue;
-                }
-                shortcuts.add(item);
+                return readShortcutItem(context, file);
             } catch (final IOException | URISyntaxException e) {
                 Log.e("ShortcutItemManager", "Failed to read shortcut " + file.getName(), e);
             } catch (final Saveable.LeftoverException e) {
                 Log.i("ShortcutItemManager", "Leftover file " + file.getName());
                 file.delete();
             }
-        }
-        return shortcuts;
+            return null;
+        }).filter(Objects::nonNull);
     }
 
     @Nullable
