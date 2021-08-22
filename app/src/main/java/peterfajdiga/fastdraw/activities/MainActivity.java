@@ -296,7 +296,7 @@ public class MainActivity extends FragmentActivity implements
             ShortcutItemManager.getShortcutItems(this)
         ).toArray(LauncherItem[]::new);
 
-        launcher.addItemsStartup("LOST&FOUND", items);
+        launcher.addItemsStartup(getString(R.string.default_category), items);
     }
 
     /**
