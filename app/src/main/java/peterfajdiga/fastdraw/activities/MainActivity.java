@@ -21,6 +21,7 @@ import android.preference.PreferenceManager;
 import android.provider.ContactsContract;
 import android.provider.Settings;
 import android.provider.Telephony;
+import android.util.Log;
 import android.view.DragEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -579,6 +580,7 @@ public class MainActivity extends FragmentActivity implements
     @Override
     public void onDraggedItemRemove() {
         ShortcutItem shortcutItem = (ShortcutItem)draggedItem;
+        Log.i("MainActivity", "Removing shortcut: " + shortcutItem.getID() + " of package " + shortcutItem.getPackageName());
         launcher.removeItem(shortcutItem, true);
         ShortcutItemManager.deleteShortcut(this, shortcutItem);
     }

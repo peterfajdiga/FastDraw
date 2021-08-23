@@ -6,6 +6,7 @@ import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.net.Uri;
 import android.provider.Settings;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 
@@ -42,6 +43,7 @@ public class AppItemManager {
     public static void removePackageItems(final Context context, final Launcher pager, final String packageName, final boolean permanent) {
         for (final LauncherItem item : pager.getItems()) {
             if (packageName.equals(item.getPackageName()) && (permanent || !(item instanceof ShortcutItem))) {
+                Log.i("AppItemManager", "Removing item: " + item.getID() + " of package " + item.getPackageName());
                 pager.removeItem(item, permanent);
                 if (item instanceof ShortcutItem) {
                     ShortcutItemManager.deleteShortcut(context, (ShortcutItem)item);
