@@ -43,7 +43,7 @@ public class AppItemManager {
     public static void removePackageItems(final Context context, final Launcher pager, final String packageName, final boolean permanent) {
         for (final LauncherItem item : pager.getItems()) {
             if (packageName.equals(item.getPackageName()) && (permanent || !(item instanceof ShortcutItem))) {
-                Log.i("AppItemManager", "Removing item: " + item.getID() + " of package " + item.getPackageName());
+                Log.i("AppItemManager", "Removing item: " + item.getID() + " of package " + item.getPackageName() + "; permanent: " + permanent);
                 pager.removeItem(item, permanent);
                 if (item instanceof ShortcutItem) {
                     ShortcutItemManager.deleteShortcut(context, (ShortcutItem)item);
