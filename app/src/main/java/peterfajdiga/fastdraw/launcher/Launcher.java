@@ -213,7 +213,7 @@ public class Launcher {
 
         boolean lastRemoved = false;
         if (oldCategoryName != null) {
-            Log.i("Launcher", "(Re)moving item: " + item.getID() + " of package " + item.getPackageName());
+            Log.d("LosingCategorizations", "Launcher.moveItem: (Re)moving item: " + item.getID() + " of package " + item.getPackageName());
             lastRemoved = removeItem(item, false);
         }
 
