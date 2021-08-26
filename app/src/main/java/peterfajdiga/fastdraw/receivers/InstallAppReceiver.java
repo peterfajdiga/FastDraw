@@ -3,6 +3,7 @@ package peterfajdiga.fastdraw.receivers;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 
 public class InstallAppReceiver extends BroadcastReceiver {
 
@@ -18,14 +19,17 @@ public class InstallAppReceiver extends BroadcastReceiver {
         String packageName = data.getData().getEncodedSchemeSpecificPart();
         switch (data.getAction()) {
             case Intent.ACTION_PACKAGE_REMOVED: {
+                Log.d("InstallAppReceiver", "removed package " + packageName);
                 owner.onAppRemove(packageName);
                 break;
             }
             case Intent.ACTION_PACKAGE_CHANGED: {
+                Log.d("InstallAppReceiver", "changed package " + packageName);
                 owner.onAppChange(packageName);
                 break;
             }
             case Intent.ACTION_PACKAGE_ADDED: {
+                Log.d("InstallAppReceiver", "added package " + packageName);
                 owner.onAppInstall(packageName);
                 break;
             }
