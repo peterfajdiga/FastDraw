@@ -506,7 +506,7 @@ public class MainActivity extends FragmentActivity implements
     @Override
     public void onAppRemove(String packageName) {
         Log.d("LosingCategorizations", "MainActivity.onAppRemove: " + packageName);
-        AppItemManager.removePackageItems(this, launcher, packageName, true);
+        AppItemManager.removePackageItems(this, launcher, packageName, false);
     }
 
     public void onShortcutReceived(final ShortcutItem newShortcut) {
