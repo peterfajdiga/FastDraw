@@ -16,7 +16,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 public class NestedScrollParent extends NestedScrollView {
     private final Rect targetVisibleRectTmp = new Rect();
-    private float lastY;
 
     public NestedScrollParent(@NonNull final Context context) {
         super(context);
@@ -32,7 +31,7 @@ public class NestedScrollParent extends NestedScrollView {
 
     @SuppressLint("ClickableViewAccessibility")
     @Override
-    public boolean onTouchEvent(final MotionEvent ev) {
+    public boolean onTouchEvent(final MotionEvent event) {
         return false; // disable direct scrolling // TODO: allow scrolling when sensible
     }
 
