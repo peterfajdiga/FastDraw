@@ -173,14 +173,14 @@ public class MainActivity extends FragmentActivity implements
         launcher.showCategory(Launcher.HOME_CATEGORY_NAME);
 
         final NestedScrollParent scrollParent = findViewById(R.id.scroll_parent);
-        scrollParent.setScrollChildView((RecyclerView)launcher.getCurrentCategoryView());
+        scrollParent.setScrollChildCalc(launcher.getUnscrolledHeightCalculator());
         appsPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(final int position, final float positionOffset, final int positionOffsetPixels) {}
 
             @Override
             public void onPageSelected(final int position) {
-                scrollParent.setScrollChildView((RecyclerView)launcher.getCurrentCategoryView());
+                scrollParent.setScrollChildCalc(launcher.getUnscrolledHeightCalculator());
             }
 
             @Override

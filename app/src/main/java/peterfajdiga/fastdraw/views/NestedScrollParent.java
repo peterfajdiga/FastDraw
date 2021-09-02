@@ -1,20 +1,15 @@
 package peterfajdiga.fastdraw.views;
 
 import android.content.Context;
-import android.graphics.Rect;
 import android.util.AttributeSet;
 import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.widget.NestedScrollView;
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 public class NestedScrollParent extends NestedScrollView {
-    private RecyclerView scrollChildView;
-    private final Rect targetVisibleRectTmp = new Rect();
+    private UnscrolledHeightCalculator scrollChildCalc;
 
     public NestedScrollParent(@NonNull final Context context) {
         super(context);
@@ -28,8 +23,8 @@ public class NestedScrollParent extends NestedScrollView {
         super(context, attrs, defStyleAttr);
     }
 
-    public void setScrollChildView(@Nullable final RecyclerView view) {
-        this.scrollChildView = view;
+    public void setScrollChildCalc(@Nullable final UnscrolledHeightCalculator scrollChildCalc) {
+        this.scrollChildCalc = scrollChildCalc;
     }
 
     @Override
@@ -41,9 +36,9 @@ public class NestedScrollParent extends NestedScrollView {
     @Override
     public void scrollTo(final int x, final int y) {
         final int dy = y - getScrollY();
-        if (dy > 0 && scrollChildView != null) {
+        if (dy > 0 && scrollChildCalc != null) {
             // prevent scrolling more than necessary to see all useful content in scrollChildView
-            final int maxScrollY = getUnscrolledHeight(scrollChildView);
+            final int maxScrollY = scrollChildCalc.getUnscrolledHeight();
             final int newScrollY = getScrollY() + Math.min(dy, maxScrollY);
             super.scrollTo(x, newScrollY);
         } else {
@@ -60,50 +55,5 @@ public class NestedScrollParent extends NestedScrollView {
             consumed[0] = dx;
             consumed[1] = y1 - y0;
         }
-    }
-
-    // bit hacky, but it works
-    private int getUnscrolledHeight(@NonNull final RecyclerView recyclerView) {
-        return getItemsHeight(recyclerView) - getVisibleHeight(recyclerView);
-    }
-
-    private static int getItemsHeight(@NonNull final RecyclerView recyclerView) {
-        final RecyclerView.LayoutManager layoutManager = recyclerView.getLayoutManager();
-        if (layoutManager == null) {
-            return 0;
-        }
-
-        final RecyclerView.Adapter adapter = recyclerView.getAdapter();
-        if (adapter == null) {
-            return 0;
-        }
-
-        final int itemCount = adapter.getItemCount();
-        if (itemCount == 0) {
-            return 0;
-        }
-        final int colCount = getSpanCount(layoutManager);
-        final int lineCount = (int)Math.ceil((double)itemCount / (double)colCount);
-
-        final View child = layoutManager.getChildAt(0);
-        if (child == null) {
-            return 0;
-        }
-        return lineCount * child.getHeight();
-    }
-
-    private static int getSpanCount(@NonNull final RecyclerView.LayoutManager layoutManager) {
-        if (layoutManager instanceof GridLayoutManager) {
-            return ((GridLayoutManager)layoutManager).getSpanCount();
-        } else if (layoutManager instanceof LinearLayoutManager) {
-            return 1;
-        } else {
-            return 0;
-        }
-    }
-
-    private int getVisibleHeight(@NonNull final View target) {
-        target.getGlobalVisibleRect(targetVisibleRectTmp);
-        return targetVisibleRectTmp.height();
     }
 }

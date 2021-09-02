@@ -22,6 +22,7 @@ import peterfajdiga.fastdraw.PrefMap;
 import peterfajdiga.fastdraw.Preferences;
 import peterfajdiga.fastdraw.launcher.launcheritem.LauncherItem;
 import peterfajdiga.fastdraw.launcher.displayitem.DisplayItem;
+import peterfajdiga.fastdraw.views.UnscrolledHeightCalculator;
 
 public class Launcher {
     public static final String HOME_CATEGORY_NAME = "HOME";
@@ -70,12 +71,12 @@ public class Launcher {
     }
 
     @Nullable
-    public View getCurrentCategoryView() {
+    public UnscrolledHeightCalculator getUnscrolledHeightCalculator() {
         final Category currentCategory = adapter.categories.get(getCurrentCategoryName());
         if (currentCategory == null) {
             return null;
         }
-        return currentCategory.getView();
+        return currentCategory.unscrolledHeightCalculator;
     }
 
     private String[] getCategoryNames() {

@@ -18,6 +18,7 @@ import peterfajdiga.fastdraw.R;
 import peterfajdiga.fastdraw.launcher.launcheritem.LauncherItem;
 import peterfajdiga.fastdraw.launcher.displayitem.DisplayItem;
 import peterfajdiga.fastdraw.views.AutoGridLayoutManager;
+import peterfajdiga.fastdraw.views.UnscrolledHeightCalculator;
 import peterfajdiga.fastdraw.views.gestures.DoubleTap;
 import peterfajdiga.fastdraw.views.gestures.LongPress;
 import peterfajdiga.fastdraw.views.gestures.OnTouchListenerMux;
@@ -25,12 +26,17 @@ import peterfajdiga.fastdraw.views.gestures.Pinch;
 import peterfajdiga.fastdraw.views.gestures.Swipe;
 
 public class Category {
+    public final UnscrolledHeightCalculator unscrolledHeightCalculator = new UnscrolledHeightCalculator();
     private final CategoryAdapter adapter;
     private final View view;
 
-    public Category(final Context context, final Launcher.Listener listener, final LaunchManager launchManager) {
+    public Category(
+        final Context context,
+        final Launcher.Listener listener,
+        final LaunchManager launchManager
+    ) {
         this.adapter = new CategoryAdapter(listener, launchManager);
-        view = createView(context, listener, adapter);
+        view = createView(context, listener, adapter, unscrolledHeightCalculator);
     }
 
     public View getView() {
@@ -83,7 +89,8 @@ public class Category {
     private View createView(
         final Context context,
         final Launcher.Listener listener,
-        final CategoryAdapter adapter
+        final CategoryAdapter adapter,
+        final UnscrolledHeightCalculator unscrolledHeightCalculator
     ) {
         final RecyclerView containerView = new RecyclerView(context);
         containerView.setAdapter(adapter);
@@ -91,13 +98,22 @@ public class Category {
         if (!Preferences.appsLinearList) {
             final int spanWidth = context.getResources().getDimensionPixelSize(R.dimen.app_item_grid_icon_size) +
                 context.getResources().getDimensionPixelSize(R.dimen.app_item_grid_icon_padding) * 2;
-            containerView.setLayoutManager(new AutoGridLayoutManager(context, spanWidth, GridLayoutManager.VERTICAL, Preferences.stackFromBottom));
+            final GridLayoutManager layoutManager = new AutoGridLayoutManager(context, spanWidth, GridLayoutManager.VERTICAL, Preferences.stackFromBottom);
+            containerView.setLayoutManager(layoutManager);
             final int padding = Math.round(context.getResources().getDimensionPixelSize(R.dimen.app_item_grid_container_padding));
             containerView.setPadding(padding, padding, padding, padding);
             containerView.setClipToPadding(false);
             containerView.setScrollBarStyle(View.SCROLLBARS_OUTSIDE_OVERLAY);
+
+            unscrolledHeightCalculator.setup(containerView, () -> {
+                final int lineCount = (int)Math.ceil((double)adapter.getItemCount() / (double)layoutManager.getSpanCount());
+                return lineCount * getItemHeight(layoutManager) + 2 * padding;
+            });
         } else {
-            containerView.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false));
+            final RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false);
+            containerView.setLayoutManager(layoutManager);
+
+            unscrolledHeightCalculator.setup(containerView, () -> adapter.getItemCount() * getItemHeight(layoutManager));
         }
 
         final DisplayMetrics displayMetrics = context.getResources().getDisplayMetrics();
@@ -110,5 +126,18 @@ public class Category {
             new Swipe(displayMetrics, Swipe.Direction.DOWN, 2, listener::onSwipeDown2F)
         ));
         return containerView;
+    }
+
+    private static int getItemHeight(@NonNull final RecyclerView.LayoutManager layoutManager) {
+        if (layoutManager.getChildCount() == 0) {
+            return 0;
+        }
+
+        final View child = layoutManager.getChildAt(0);
+        if (child == null) {
+            return 0;
+        }
+
+        return child.getHeight();
     }
 }
