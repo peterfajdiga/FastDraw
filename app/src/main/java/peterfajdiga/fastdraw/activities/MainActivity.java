@@ -491,7 +491,7 @@ public class MainActivity extends FragmentActivity implements
     public void onAppInstall(String packageName) {
         Log.d("LosingCategorizations", "MainActivity.onAppInstall: " + packageName);
         final AppItem[] appItems = AppItemManager.getAppItems(getPackageManager(), packageName).toArray(AppItem[]::new);
-        launcher.addItems(getString(R.string.default_category), appItems);
+        launcher.addItems("onAppInstall", appItems); // TODO: undo debug string onAppInstall
     }
 
     @Override
@@ -500,7 +500,7 @@ public class MainActivity extends FragmentActivity implements
         AppItemManager.removePackageItems(this, launcher, packageName, false);
 
         final AppItem[] appItems = AppItemManager.getAppItems(getPackageManager(), packageName).toArray(AppItem[]::new);
-        launcher.addItems(getString(R.string.default_category), appItems);
+        launcher.addItems("onAppChange", appItems); // TODO: undo debug string onAppChange
     }
 
     @Override
