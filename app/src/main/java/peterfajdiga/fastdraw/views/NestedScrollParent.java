@@ -40,10 +40,15 @@ public class NestedScrollParent extends NestedScrollView {
 
     @Override
     public void scrollTo(final int x, final int y) {
-        if (y > getScrollY() && scrollChildView != null && getItemsHeight(scrollChildView) < getVisibleHeight(scrollChildView)) {
-            return; // all items visible, don't scroll
+        final int dy = y - getScrollY();
+        if (dy > 0 && scrollChildView != null) {
+            // prevent scrolling more than necessary to see all useful content in scrollChildView
+            final int maxScrollY = getUnscrolledHeight(scrollChildView);
+            final int newScrollY = getScrollY() + Math.min(dy, maxScrollY);
+            super.scrollTo(x, newScrollY);
+        } else {
+            super.scrollTo(x, y);
         }
-        super.scrollTo(x, y);
     }
 
     @Override
@@ -58,6 +63,10 @@ public class NestedScrollParent extends NestedScrollView {
     }
 
     // bit hacky, but it works
+    private int getUnscrolledHeight(@NonNull final RecyclerView recyclerView) {
+        return getItemsHeight(recyclerView) - getVisibleHeight(recyclerView);
+    }
+
     private static int getItemsHeight(@NonNull final RecyclerView recyclerView) {
         final RecyclerView.LayoutManager layoutManager = recyclerView.getLayoutManager();
         if (layoutManager == null) {
