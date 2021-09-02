@@ -6,10 +6,9 @@ import android.content.Intent;
 import android.util.Log;
 
 public class InstallAppReceiver extends BroadcastReceiver {
+    private final Owner owner;
 
-    private Owner owner = null;
-
-    public InstallAppReceiver(Owner context) {
+    public InstallAppReceiver(final Owner context) {
         super();
         this.owner = context;
     }
