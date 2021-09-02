@@ -1,10 +1,8 @@
 package peterfajdiga.fastdraw.views;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Rect;
 import android.util.AttributeSet;
-import android.view.MotionEvent;
 import android.view.View;
 
 import androidx.annotation.NonNull;
@@ -15,6 +13,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 public class NestedScrollParent extends NestedScrollView {
+    private RecyclerView scrollChildView;
     private final Rect targetVisibleRectTmp = new Rect();
 
     public NestedScrollParent(@NonNull final Context context) {
@@ -29,21 +28,27 @@ public class NestedScrollParent extends NestedScrollView {
         super(context, attrs, defStyleAttr);
     }
 
-    @SuppressLint("ClickableViewAccessibility")
+    public void setScrollChildView(@Nullable final RecyclerView view) {
+        this.scrollChildView = view;
+    }
+
     @Override
-    public boolean onTouchEvent(final MotionEvent event) {
-        return false; // disable direct scrolling // TODO: allow scrolling when sensible
+    protected void onOverScrolled(final int scrollX, final int scrollY, final boolean clampedX, final boolean clampedY) {
+        // prevent superclass from calling `super.scrollTo`
+        scrollTo(scrollX, scrollY);
+    }
+
+    @Override
+    public void scrollTo(final int x, final int y) {
+        if (y > getScrollY() && scrollChildView != null && getItemsHeight(scrollChildView) < getVisibleHeight(scrollChildView)) {
+            return; // all items visible, don't scroll
+        }
+        super.scrollTo(x, y);
     }
 
     @Override
     public void onNestedPreScroll(@NonNull final View target, final int dx, final int dy, @NonNull final int[] consumed, final int type) {
         if (dy > 0) {
-            if (getItemsHeight(target) < getVisibleHeight(target)) {
-                // all items visible, don't scroll
-                consumed[0] = dx;
-                consumed[1] = dy;
-                return;
-            }
             final int y0 = getScrollY();
             scrollBy(dx, dy);
             final int y1 = getScrollY();
@@ -53,12 +58,7 @@ public class NestedScrollParent extends NestedScrollView {
     }
 
     // bit hacky, but it works
-    private static int getItemsHeight(@NonNull final View container) {
-        if (!(container instanceof RecyclerView)) {
-            return 0;
-        }
-
-        final RecyclerView recyclerView = (RecyclerView)container;
+    private static int getItemsHeight(@NonNull final RecyclerView recyclerView) {
         final RecyclerView.LayoutManager layoutManager = recyclerView.getLayoutManager();
         if (layoutManager == null) {
             return 0;

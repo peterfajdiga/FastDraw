@@ -34,6 +34,7 @@ import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.viewpager.widget.PagerAdapter;
+import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 
 import com.google.android.material.tabs.TabLayout;
@@ -65,6 +66,7 @@ import peterfajdiga.fastdraw.launcher.launcheritem.ResShortcutItem;
 import peterfajdiga.fastdraw.launcher.launcheritem.ShortcutItem;
 import peterfajdiga.fastdraw.receivers.InstallAppReceiver;
 import peterfajdiga.fastdraw.views.CategoryTabLayout;
+import peterfajdiga.fastdraw.views.NestedScrollParent;
 import peterfajdiga.fastdraw.views.animators.NavigationBarColorAnimator;
 import peterfajdiga.fastdraw.views.animators.ViewBgColorAnimator;
 import peterfajdiga.fastdraw.views.animators.ViewElevationAnimator;
@@ -169,6 +171,21 @@ public class MainActivity extends FragmentActivity implements
 
         loadLauncherItems();
         launcher.showCategory(Launcher.HOME_CATEGORY_NAME);
+
+        final NestedScrollParent scrollParent = findViewById(R.id.scroll_parent);
+        scrollParent.setScrollChildView((RecyclerView)launcher.getCurrentCategoryView());
+        appsPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(final int position, final float positionOffset, final int positionOffsetPixels) {}
+
+            @Override
+            public void onPageSelected(final int position) {
+                scrollParent.setScrollChildView((RecyclerView)launcher.getCurrentCategoryView());
+            }
+
+            @Override
+            public void onPageScrollStateChanged(final int state) {}
+        });
     }
 
     private void setupWallpaperMovement(final ViewPager pager) {

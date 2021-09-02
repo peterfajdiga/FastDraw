@@ -69,6 +69,15 @@ public class Launcher {
         return adapter.getPageTitle(pager.getCurrentItem());
     }
 
+    @Nullable
+    public View getCurrentCategoryView() {
+        final Category currentCategory = adapter.categories.get(getCurrentCategoryName());
+        if (currentCategory == null) {
+            return null;
+        }
+        return currentCategory.getView();
+    }
+
     private String[] getCategoryNames() {
         final Object[] names = adapter.categories.keySet().toArray();
         String[] retval = new String[names.length];

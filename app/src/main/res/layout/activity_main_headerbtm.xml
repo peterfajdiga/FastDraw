@@ -4,6 +4,7 @@
     android:layout_height="match_parent">
 
     <peterfajdiga.fastdraw.views.NestedScrollParent
+        android:id="@+id/scroll_parent"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginBottom="@dimen/pager_header_height">
