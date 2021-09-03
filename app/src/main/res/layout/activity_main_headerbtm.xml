@@ -22,11 +22,18 @@
                 android:textAlignment="center"
                 android:paddingVertical="120dp" />
 
-            <androidx.viewpager.widget.ViewPager
-                android:id="@+id/apps_pager"
+            <FrameLayout
+                android:id="@+id/scroll_expand"
                 android:layout_width="match_parent"
-                android:layout_height="630dp" />
-            <!-- instead of 630dp, set height programmatically -->
+                android:layout_height="0dp"
+                android:layout_weight="1">
+
+                <androidx.viewpager.widget.ViewPager
+                    android:id="@+id/apps_pager"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+
+            </FrameLayout>
 
         </LinearLayout>
 

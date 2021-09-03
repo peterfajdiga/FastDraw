@@ -186,6 +186,9 @@ public class MainActivity extends FragmentActivity implements
             @Override
             public void onPageScrollStateChanged(final int state) {}
         });
+
+        final View scrollExpand = findViewById(R.id.scroll_expand);
+        scrollParent.addOnLayoutChangeListener((v, left, top, right, bottom, oldLeft, oldTop, oldRight, oldBottom) -> scrollExpand.setMinimumHeight(scrollParent.getHeight()));
     }
 
     private void setupWallpaperMovement(final ViewPager pager) {
