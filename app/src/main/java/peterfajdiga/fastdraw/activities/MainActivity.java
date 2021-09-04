@@ -29,6 +29,7 @@ import android.view.WindowManager;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
@@ -36,6 +37,7 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.google.android.material.tabs.TabLayout;
 
+import java.lang.ref.WeakReference;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.stream.Stream;
@@ -82,15 +84,15 @@ public class MainActivity extends FragmentActivity implements
 
     private ValueAnimator dragBgAnimator;
 
-    private static MainActivity instance;
-    private LaunchManager launchManager = new LaunchManager(this);
+    private static WeakReference<MainActivity> instance;
+    private final LaunchManager launchManager = new LaunchManager(this);
     private Launcher launcher;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        instance = this;
+        instance = new WeakReference<>(this);
         onFirstRun();
         Preferences.loadPreferences(this);
         setContentView(Preferences.mainLayoutResource);
@@ -258,7 +260,7 @@ public class MainActivity extends FragmentActivity implements
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if (instance == this) { // should be the only one, because of singleInstance
+        if (instance != null && instance.get() == this) { // should be the only instance because of singleInstance
             instance = null;
         }
 
@@ -382,13 +384,17 @@ public class MainActivity extends FragmentActivity implements
 
     public static void forceFinish() {
         if (instance != null) {
-            instance.finish();
+            instance.get().finish();
             instance = null;
         }
     }
 
+    @Nullable
     public static MainActivity getInstance() {
-        return instance;
+        if (instance == null) {
+            return null;
+        }
+        return instance.get();
     }
 
     @Override
