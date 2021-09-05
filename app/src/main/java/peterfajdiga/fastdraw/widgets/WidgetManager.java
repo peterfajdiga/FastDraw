@@ -32,6 +32,14 @@ public class WidgetManager {
         this.widgetCreateRequestCode = widgetCreateRequestCode;
     }
 
+    public void startListening() {
+        widgetHost.startListening();
+    }
+
+    public void stopListening() {
+        widgetHost.stopListening();
+    }
+
     // TODO: use bottom sheet if possible
     public void pickWidget() {
         final int widgetId = widgetHost.allocateAppWidgetId();

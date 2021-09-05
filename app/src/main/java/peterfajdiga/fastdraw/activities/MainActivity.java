@@ -237,6 +237,7 @@ public class MainActivity extends FragmentActivity implements
         header.setLayoutTransition(lt);
 
         widgetManager = new WidgetManager(this, 1, PICK_WIDGET_REQUEST, CREATE_WIDGET_REQUEST);
+        widgetManager.startListening();
 
         // header animator
         dragBgAnimator = ValueAnimator.ofArgb(Preferences.headerBgColor, Preferences.headerBgColorExpanded);
@@ -340,6 +341,12 @@ public class MainActivity extends FragmentActivity implements
         unregisterReceiver(installAppReceiver);
 
         // cleanUnusedPrefKeysAppsCategories(); // This is disabled as a test to see if apps' categories stop being forgotten // TODO: re-enable eventually
+
+        try {
+            widgetManager.stopListening();
+        } catch (final NullPointerException ex) {
+            Log.w("MainActivity", "problem while stopping AppWidgetHost during Launcher destruction", ex);
+        }
     }
 
     @Override
