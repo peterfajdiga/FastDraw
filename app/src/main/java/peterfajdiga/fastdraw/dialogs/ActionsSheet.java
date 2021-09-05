@@ -18,39 +18,33 @@ public class ActionsSheet extends BottomSheetDialogFragment {
         dialog.setContentView(dialogView);
 
         final View actionWallpaperView = dialogView.findViewById(R.id.action_wallpaper);
-        actionWallpaperView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialog.cancel();
-                activity.openWallpaperPicker();
-            }
+        actionWallpaperView.setOnClickListener(v -> {
+            dialog.cancel();
+            activity.openWallpaperPicker();
         });
 
         final View actionShortcutView = dialogView.findViewById(R.id.action_shortcut);
-        actionShortcutView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialog.cancel();
-                activity.showCreateShortcutDialog();
-            }
+        actionShortcutView.setOnClickListener(v -> {
+            dialog.cancel();
+            activity.showCreateShortcutDialog();
+        });
+
+        final View actionWidgettView = dialogView.findViewById(R.id.action_widget);
+        actionWidgettView.setOnClickListener(v -> {
+            dialog.cancel();
+            activity.showCreateWidgetDialog();
         });
 
         final View actionRenameCategoryView = dialogView.findViewById(R.id.action_rename_category);
-        actionRenameCategoryView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialog.cancel();
-                activity.renameCurrentCategory();
-            }
+        actionRenameCategoryView.setOnClickListener(v -> {
+            dialog.cancel();
+            activity.renameCurrentCategory();
         });
 
         final View actionSettingsView = dialogView.findViewById(R.id.action_settings);
-        actionSettingsView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialog.cancel();
-                activity.openSettings();
-            }
+        actionSettingsView.setOnClickListener(v -> {
+            dialog.cancel();
+            activity.openSettings();
         });
     }
 }

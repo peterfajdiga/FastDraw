@@ -6,6 +6,8 @@ import android.animation.LayoutTransition;
 import android.animation.ValueAnimator;
 import android.annotation.SuppressLint;
 import android.app.WallpaperManager;
+import android.appwidget.AppWidgetHostView;
+import android.appwidget.AppWidgetManager;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
@@ -26,6 +28,7 @@ import android.view.DragEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.FrameLayout;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -34,7 +37,6 @@ import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.viewpager.widget.PagerAdapter;
-import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 
 import com.google.android.material.tabs.TabLayout;
@@ -67,6 +69,7 @@ import peterfajdiga.fastdraw.launcher.launcheritem.ShortcutItem;
 import peterfajdiga.fastdraw.receivers.InstallAppReceiver;
 import peterfajdiga.fastdraw.views.CategoryTabLayout;
 import peterfajdiga.fastdraw.views.NestedScrollParent;
+import peterfajdiga.fastdraw.widgets.WidgetManager;
 import peterfajdiga.fastdraw.views.animators.NavigationBarColorAnimator;
 import peterfajdiga.fastdraw.views.animators.ViewBgColorAnimator;
 import peterfajdiga.fastdraw.views.animators.ViewElevationAnimator;
@@ -81,6 +84,8 @@ public class MainActivity extends FragmentActivity implements
     RenameCategoryDialog.Listener {
 
     public static final int INSTALL_SHORTCUT_REQUEST = 2143;
+    public static final int PICK_WIDGET_REQUEST = 2144;
+    public static final int CREATE_WIDGET_REQUEST = 2145;
 
     private static final int DROPZONE_TRANSITION_DURATION = 200;
 
@@ -91,6 +96,7 @@ public class MainActivity extends FragmentActivity implements
     private static WeakReference<MainActivity> instance;
     private final LaunchManager launchManager = new LaunchManager(this);
     private Launcher launcher;
+    private WidgetManager widgetManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -230,6 +236,8 @@ public class MainActivity extends FragmentActivity implements
         lt.setDuration(LayoutTransition.CHANGE_DISAPPEARING, DROPZONE_TRANSITION_DURATION);
         header.setLayoutTransition(lt);
 
+        widgetManager = new WidgetManager(this, 1, PICK_WIDGET_REQUEST, CREATE_WIDGET_REQUEST);
+
         // header animator
         dragBgAnimator = ValueAnimator.ofArgb(Preferences.headerBgColor, Preferences.headerBgColorExpanded);
         dragBgAnimator.setDuration(DROPZONE_TRANSITION_DURATION);
@@ -338,12 +346,54 @@ public class MainActivity extends FragmentActivity implements
     public void onBackPressed() { }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == INSTALL_SHORTCUT_REQUEST && resultCode == RESULT_OK) {
-            final ShortcutItem newShortcut = ShortcutItemManager.shortcutFromIntent(this, data);
-            addShortcut(newShortcut, launcher.getCurrentCategoryName());
+    protected void onActivityResult(final int requestCode, final int resultCode, final Intent data) {
+        switch (requestCode) {
+            case INSTALL_SHORTCUT_REQUEST: {
+                if (resultCode == RESULT_OK) {
+                    final ShortcutItem newShortcut = ShortcutItemManager.shortcutFromIntent(this, data);
+                    addShortcut(newShortcut, launcher.getCurrentCategoryName());
+                }
+                return;
+            }
+            case PICK_WIDGET_REQUEST: {
+                final int widgetId = data.getExtras().getInt(AppWidgetManager.EXTRA_APPWIDGET_ID, -1);
+                assert widgetId > -1;
+                switch (resultCode) {
+                    case RESULT_OK: {
+                        final AppWidgetHostView widgetView = widgetManager.createOrConfigureWidget(widgetId);
+                        if (widgetView != null) {
+                            addWidget(widgetView);
+                        }
+                        break;
+                    }
+                    case RESULT_CANCELED:{
+                        widgetManager.deleteWidget(widgetId);
+                        break;
+                    }
+                }
+                return;
+            }
+            case CREATE_WIDGET_REQUEST: {
+                final int widgetId = data.getExtras().getInt(AppWidgetManager.EXTRA_APPWIDGET_ID, -1);
+                assert widgetId > -1;
+                switch (resultCode) {
+                    case RESULT_OK: {
+                        final AppWidgetHostView widgetView = widgetManager.createWidget(widgetId);
+                        if (widgetView != null) {
+                            addWidget(widgetView);
+                        }
+                        break;
+                    }
+                    case RESULT_CANCELED: {
+                        widgetManager.deleteWidget(widgetId);
+                        break;
+                    }
+                }
+                return;
+            }
+            default:
+                super.onActivityResult(requestCode, resultCode, data);
         }
-        super.onActivityResult(requestCode, resultCode, data);
     }
 
     private void addShortcut(@NonNull final ShortcutItem shortcutItem, @NonNull final String categoryName) {
@@ -355,6 +405,11 @@ public class MainActivity extends FragmentActivity implements
     private void addOreoShortcut(@NonNull final OreoShortcutItem shortcutItem, @NonNull final String categoryName) {
         ShortcutItemManager.saveShortcut(this, shortcutItem);
         launcher.moveItem(shortcutItem, categoryName, false);
+    }
+
+    private void addWidget(@NonNull AppWidgetHostView widgetView) {
+        final FrameLayout frameLayout = findViewById(R.id.widget_container);
+        frameLayout.addView(widgetView);
     }
 
     private void loadLauncherItems() {
@@ -486,6 +541,10 @@ public class MainActivity extends FragmentActivity implements
     public void showCreateShortcutDialog() {
         final Intent intent = new Intent(Intent.ACTION_CREATE_SHORTCUT);
         startActivityForResult(Intent.createChooser(intent, getString(R.string.add_shortcut)), MainActivity.INSTALL_SHORTCUT_REQUEST);
+    }
+
+    public void showCreateWidgetDialog() {
+        widgetManager.pickWidget();
     }
 
     public void renameCurrentCategory() {
