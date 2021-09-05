@@ -10,6 +10,7 @@ import androidx.core.widget.NestedScrollView;
 
 public class NestedScrollParent extends NestedScrollView {
     private UnscrolledHeightCalculator scrollChildCalc;
+    private OnMeasureListener onMeasureListener;
 
     public NestedScrollParent(@NonNull final Context context) {
         super(context);
@@ -25,6 +26,10 @@ public class NestedScrollParent extends NestedScrollView {
 
     public void setScrollChildCalc(@Nullable final UnscrolledHeightCalculator scrollChildCalc) {
         this.scrollChildCalc = scrollChildCalc;
+    }
+
+    public void setOnMeasureListener(@Nullable final OnMeasureListener onMeasureListener) {
+        this.onMeasureListener = onMeasureListener;
     }
 
     @Override
@@ -55,5 +60,17 @@ public class NestedScrollParent extends NestedScrollView {
             consumed[0] = dx;
             consumed[1] = y1 - y0;
         }
+    }
+
+    @Override
+    protected void onMeasure(final int widthMeasureSpec, final int heightMeasureSpec) {
+        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+        if (onMeasureListener != null) {
+            onMeasureListener.onMeasure();
+        }
+    }
+
+    public interface OnMeasureListener {
+        void onMeasure();
     }
 }

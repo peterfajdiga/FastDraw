@@ -188,7 +188,7 @@ public class MainActivity extends FragmentActivity implements
         });
 
         final View scrollExpand = findViewById(R.id.scroll_expand);
-        scrollParent.addOnLayoutChangeListener((v, left, top, right, bottom, oldLeft, oldTop, oldRight, oldBottom) -> scrollExpand.setMinimumHeight(scrollParent.getHeight()));
+        scrollParent.setOnMeasureListener(() -> scrollExpand.setMinimumHeight(scrollParent.getMeasuredHeight())); // TODO: handle orientation change
     }
 
     private void setupWallpaperMovement(final ViewPager pager) {
