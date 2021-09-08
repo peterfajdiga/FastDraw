@@ -2,6 +2,7 @@ package peterfajdiga.fastdraw.views;
 
 import android.content.Context;
 import android.util.AttributeSet;
+import android.view.MotionEvent;
 import android.view.View;
 
 import androidx.annotation.NonNull;
@@ -36,6 +37,12 @@ public class NestedScrollParent extends NestedScrollView {
     protected void onOverScrolled(final int scrollX, final int scrollY, final boolean clampedX, final boolean clampedY) {
         // prevent superclass from calling `super.scrollTo`
         scrollTo(scrollX, scrollY);
+    }
+
+    @Override
+    public boolean onInterceptTouchEvent(final MotionEvent ev) {
+        // prevent scrolling when interacting with widgets // TODO: allow scrolling from category tabs
+        return false;
     }
 
     @Override
