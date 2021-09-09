@@ -416,6 +416,11 @@ public class MainActivity extends FragmentActivity implements
 
     private void addWidget(@NonNull AppWidgetHostView widgetView) {
         final FrameLayout frameLayout = findViewById(R.id.widget_container);
+        if (frameLayout.getChildCount() > 0) {
+            final AppWidgetHostView oldWidgetView = (AppWidgetHostView)frameLayout.getChildAt(0);
+            widgetManager.deleteWidget(oldWidgetView.getAppWidgetId());
+            frameLayout.removeView(oldWidgetView);
+        }
         frameLayout.addView(widgetView);
     }
 
