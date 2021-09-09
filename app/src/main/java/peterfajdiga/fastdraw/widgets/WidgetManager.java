@@ -14,7 +14,6 @@ public class WidgetManager {
     private final Activity activity;
     private final AppWidgetHost widgetHost;
     private final AppWidgetManager widgetManager;
-    private final int widgetHostId; // TODO: remove?
     private final int widgetPickRequestCode;
     private final int widgetCreateRequestCode;
 
@@ -27,7 +26,6 @@ public class WidgetManager {
         this.activity = activity;
         this.widgetHost = new AppWidgetHost(activity, widgetHostId);
         this.widgetManager = AppWidgetManager.getInstance(activity);
-        this.widgetHostId = widgetHostId;
         this.widgetPickRequestCode = widgetPickRequestCode;
         this.widgetCreateRequestCode = widgetCreateRequestCode;
     }
