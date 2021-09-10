@@ -112,12 +112,8 @@ public class MainActivity extends FragmentActivity implements
 
         getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
 
-        widgetManager = new WidgetManager(this, 1, PICK_WIDGET_REQUEST, CREATE_WIDGET_REQUEST);
-        widgetManager.startListening();
-        loadPersistedWidget();
-
+        setupWidgets();
         setupAppsPager();
-
         setupInstallAppReceiver();
 
         final Intent intent = getIntent();
@@ -170,6 +166,24 @@ public class MainActivity extends FragmentActivity implements
 
             prefs.edit().putBoolean("firstRun", false).apply();
         }
+    }
+
+    private void setupWidgets() {
+        widgetManager = new WidgetManager(this, 1, PICK_WIDGET_REQUEST, CREATE_WIDGET_REQUEST);
+        widgetManager.startListening();
+
+        loadPersistedWidget();
+
+        final FrameLayout frameLayout = findViewById(R.id.widget_container);
+        frameLayout.addOnLayoutChangeListener((v, left, top, right, bottom, oldLeft, oldTop, oldRight, oldBottom) -> {
+            System.err.println("another layout change: " + System.currentTimeMillis());
+            final AppWidgetHostView widgetView = getCurrentWidgetView(frameLayout);
+            if (widgetView != null) {
+                final int width = frameLayout.getWidth();
+                final int height = frameLayout.getHeight();
+                widgetView.updateAppWidgetSize(null, width, 0, width, height);
+            }
+        });
     }
 
     private void setupAppsPager() {
@@ -433,13 +447,21 @@ public class MainActivity extends FragmentActivity implements
     }
 
     private void replaceWidgetView(@NonNull AppWidgetHostView widgetView) {
-        final FrameLayout frameLayout = findViewById(R.id.widget_container);
-        if (frameLayout.getChildCount() > 0) {
-            final AppWidgetHostView oldWidgetView = (AppWidgetHostView)frameLayout.getChildAt(0);
+        final FrameLayout widgetContainer = findViewById(R.id.widget_container);
+        final AppWidgetHostView oldWidgetView = getCurrentWidgetView(widgetContainer);
+        if (oldWidgetView != null) {
             widgetManager.deleteWidget(oldWidgetView.getAppWidgetId());
-            frameLayout.removeView(oldWidgetView);
+            widgetContainer.removeView(oldWidgetView);
         }
-        frameLayout.addView(widgetView);
+        widgetContainer.addView(widgetView);
+    }
+
+    @Nullable
+    private static AppWidgetHostView getCurrentWidgetView(final FrameLayout widgetContainer) {
+        if (widgetContainer.getChildCount() > 0) {
+            return (AppWidgetHostView)widgetContainer.getChildAt(0);
+        }
+        return null;
     }
 
     private void loadLauncherItems() {
