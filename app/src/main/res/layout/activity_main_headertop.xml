@@ -14,6 +14,7 @@
             android:id="@+id/widget_container"
             android:layout_width="match_parent"
             android:layout_height="300dp" />
+        <!-- TODO: make height adjustable -->
 
         <FrameLayout
             android:id="@+id/scroll_expand"
