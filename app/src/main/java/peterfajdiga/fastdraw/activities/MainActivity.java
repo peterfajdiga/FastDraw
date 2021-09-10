@@ -238,6 +238,7 @@ public class MainActivity extends FragmentActivity implements
 
         widgetManager = new WidgetManager(this, 1, PICK_WIDGET_REQUEST, CREATE_WIDGET_REQUEST);
         widgetManager.startListening();
+        loadPersistedWidget();
 
         // header animator
         dragBgAnimator = ValueAnimator.ofArgb(Preferences.headerBgColor, Preferences.headerBgColorExpanded);
@@ -306,6 +307,17 @@ public class MainActivity extends FragmentActivity implements
         registerReceiver(installAppReceiver, appChangeFilter);
     }
 
+    private void loadPersistedWidget() {
+        final PrefMap widgetPrefs = new PrefMap(this, "widgets");
+        final int widgetId = widgetPrefs.getInt("widget_id", -1);
+        if (widgetId != -1) {
+            final AppWidgetHostView widgetView = widgetManager.createWidgetView(widgetId);
+            if (widgetView != null) {
+                replaceWidgetView(widgetView);
+            }
+        }
+    }
+
     @Override
     protected void onNewIntent(final Intent intent) {
         super.onNewIntent(intent);
@@ -367,7 +379,7 @@ public class MainActivity extends FragmentActivity implements
                 assert widgetId > -1;
                 switch (resultCode) {
                     case RESULT_OK: {
-                        final AppWidgetHostView widgetView = widgetManager.createOrConfigureWidget(widgetId);
+                        final AppWidgetHostView widgetView = widgetManager.createOrConfigureWidgetView(widgetId);
                         if (widgetView != null) {
                             addWidget(widgetView);
                         }
@@ -385,7 +397,7 @@ public class MainActivity extends FragmentActivity implements
                 assert widgetId > -1;
                 switch (resultCode) {
                     case RESULT_OK: {
-                        final AppWidgetHostView widgetView = widgetManager.createWidget(widgetId);
+                        final AppWidgetHostView widgetView = widgetManager.createWidgetView(widgetId);
                         if (widgetView != null) {
                             addWidget(widgetView);
                         }
@@ -415,6 +427,12 @@ public class MainActivity extends FragmentActivity implements
     }
 
     private void addWidget(@NonNull AppWidgetHostView widgetView) {
+        replaceWidgetView(widgetView);
+        final PrefMap widgetPrefs = new PrefMap(this, "widgets"); // TODO: "widgets" constant
+        widgetPrefs.putInt("widget_id", widgetView.getAppWidgetId()); // TODO: "widget_id" constant
+    }
+
+    private void replaceWidgetView(@NonNull AppWidgetHostView widgetView) {
         final FrameLayout frameLayout = findViewById(R.id.widget_container);
         if (frameLayout.getChildCount() > 0) {
             final AppWidgetHostView oldWidgetView = (AppWidgetHostView)frameLayout.getChildAt(0);

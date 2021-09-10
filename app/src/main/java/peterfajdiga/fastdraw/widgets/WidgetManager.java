@@ -47,7 +47,7 @@ public class WidgetManager {
     }
 
     @Nullable
-    public AppWidgetHostView createOrConfigureWidget(final int widgetId) {
+    public AppWidgetHostView createOrConfigureWidgetView(final int widgetId) {
         final AppWidgetProviderInfo widgetInfo = widgetManager.getAppWidgetInfo(widgetId);
         if (widgetInfo.configure != null) {
             final Intent intent = new Intent(AppWidgetManager.ACTION_APPWIDGET_CONFIGURE);
@@ -56,12 +56,12 @@ public class WidgetManager {
             activity.startActivityForResult(intent, widgetCreateRequestCode);
             return null;
         } else {
-            return createWidget(widgetId);
+            return createWidgetView(widgetId);
         }
     }
 
     @Nullable
-    public AppWidgetHostView createWidget(final int widgetId) {
+    public AppWidgetHostView createWidgetView(final int widgetId) {
         final AppWidgetProviderInfo appWidgetInfo = widgetManager.getAppWidgetInfo(widgetId);
         final AppWidgetHostView view = widgetHost.createView(activity, widgetId, appWidgetInfo);
         view.setAppWidget(widgetId, appWidgetInfo);
