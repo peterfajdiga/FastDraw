@@ -102,83 +102,9 @@ public class MainActivity extends FragmentActivity implements
 
         getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
 
-        // custom (faster) animate layout changes
-        ViewGroup header = (ViewGroup)findViewById(R.id.header);
-        LayoutTransition lt = new LayoutTransition();
-        lt.setStartDelay(LayoutTransition.APPEARING, 0);
-        //lt.setStartDelay(LayoutTransition.CHANGE_APPEARING, DROPZONE_TRANSITION_DURATION);
-        lt.setDuration(LayoutTransition.CHANGE_APPEARING, DROPZONE_TRANSITION_DURATION);
-        lt.setStartDelay(LayoutTransition.CHANGE_DISAPPEARING, 0);
-        lt.setDuration(LayoutTransition.CHANGE_DISAPPEARING, DROPZONE_TRANSITION_DURATION);
-        header.setLayoutTransition(lt);
+        setupAppsPager();
 
-        findViewById(R.id.drop_zone_new_category).setOnDragListener(new DropZoneNewCategory());
-        findViewById(R.id.drop_zone_app_info).setOnDragListener(new DropZoneAppInfo());
-        findViewById(R.id.drop_zone_remove_shortcut).setOnDragListener(new DropZoneRemoveShortcut());
-
-        ViewPager appsPager = findViewById(R.id.apps_pager);
-        launcher = new Launcher(launchManager, this, appsPager);
-
-        CategoryTabLayout tabContainer = findViewById(R.id.tab_container);
-        tabContainer.setupWithViewPager(appsPager);
-
-        loadLauncherItems();
-        launcher.showCategory(Launcher.HOME_CATEGORY_NAME);
-
-        // immediate reaction to drag end
-        findViewById(android.R.id.content).setOnDragListener((v, event) -> {
-            switch (event.getAction()) {
-                case DragEvent.ACTION_DRAG_STARTED: {
-                    return draggedItem != null;
-                }
-                case DragEvent.ACTION_DROP: {
-                    onDragEnded1();
-                    return false;
-                }
-                case DragEvent.ACTION_DRAG_ENDED: {
-                    onDragEnded1();
-                    onDragEnded2();
-                    return true;
-                }
-                default: {
-                    return true;
-                }
-            }
-        });
-
-        // header color animator
-        dragBgAnimator = ValueAnimator.ofArgb(Preferences.headerBgColor, Preferences.headerBgColorExpanded);
-        dragBgAnimator.setDuration(DROPZONE_TRANSITION_DURATION);
-        dragBgAnimator.addUpdateListener(new ViewBgAnimator(header));
-        if (Preferences.mainLayoutResource == R.layout.activity_main_headerbtm) {
-            dragBgAnimator.addUpdateListener(new NavigationBarAnimator(getWindow()));
-            getWindow().setStatusBarColor(Preferences.headerBgColor);
-        } else {
-            getWindow().setNavigationBarColor(Preferences.headerBgColor);
-        }
-        dragBgAnimator.setCurrentPlayTime(0);
-
-        // header preferences
-        if (Preferences.scrollableTabs) {
-            tabContainer.setTabMode(TabLayout.MODE_SCROLLABLE);
-        }
-        if (Preferences.headerSeparator) {
-            findViewById(R.id.header_separator).setVisibility(View.VISIBLE);
-        }
-        if (!Preferences.headerShadow) {
-            header.setElevation(0);
-        }
-        if (Preferences.statusBarDarker) {
-            getWindow().setFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS, WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-        }
-
-        // App installation BroadcastReceiver
-        installAppReceiver = new InstallAppReceiver(this);
-        IntentFilter appChangeFilter = new IntentFilter(Intent.ACTION_PACKAGE_ADDED);
-        appChangeFilter.addAction(Intent.ACTION_PACKAGE_REMOVED);
-        appChangeFilter.addAction(Intent.ACTION_PACKAGE_CHANGED);
-        appChangeFilter.addDataScheme("package");
-        registerReceiver(installAppReceiver, appChangeFilter);
+        setupInstallAppReceiver();
 
         final Intent intent = getIntent();
         if (intent != null) {
@@ -197,7 +123,6 @@ public class MainActivity extends FragmentActivity implements
     private void onFirstRun() {
         final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
         if (prefs.getBoolean("firstRun", true)) {
-
             // Fast Draw Preferences
             final ActivityInfo fastdrawPrefsInfo = new ActivityInfo();
             fastdrawPrefsInfo.packageName = getPackageName();
@@ -231,6 +156,96 @@ public class MainActivity extends FragmentActivity implements
 
             prefs.edit().putBoolean("firstRun", false).apply();
         }
+    }
+
+    private void setupAppsPager() {
+        ViewPager appsPager = findViewById(R.id.apps_pager);
+        launcher = new Launcher(launchManager, this, appsPager);
+
+        setupHeader(appsPager);
+
+        loadLauncherItems();
+        launcher.showCategory(Launcher.HOME_CATEGORY_NAME);
+    }
+
+    private void setupHeader(final ViewPager appsPager) {
+        final CategoryTabLayout tabContainer = findViewById(R.id.tab_container);
+        tabContainer.setupWithViewPager(appsPager);
+
+        final ViewGroup header = findViewById(R.id.header);
+
+        // custom (faster) animate layout changes
+        LayoutTransition lt = new LayoutTransition();
+        lt.setStartDelay(LayoutTransition.APPEARING, 0);
+        //lt.setStartDelay(LayoutTransition.CHANGE_APPEARING, DROPZONE_TRANSITION_DURATION);
+        lt.setDuration(LayoutTransition.CHANGE_APPEARING, DROPZONE_TRANSITION_DURATION);
+        lt.setStartDelay(LayoutTransition.CHANGE_DISAPPEARING, 0);
+        lt.setDuration(LayoutTransition.CHANGE_DISAPPEARING, DROPZONE_TRANSITION_DURATION);
+        header.setLayoutTransition(lt);
+
+        // header color animator
+        dragBgAnimator = ValueAnimator.ofArgb(Preferences.headerBgColor, Preferences.headerBgColorExpanded);
+        dragBgAnimator.setDuration(DROPZONE_TRANSITION_DURATION);
+        dragBgAnimator.addUpdateListener(new ViewBgAnimator(header));
+        if (Preferences.mainLayoutResource == R.layout.activity_main_headerbtm) {
+            dragBgAnimator.addUpdateListener(new NavigationBarAnimator(getWindow()));
+            getWindow().setStatusBarColor(Preferences.headerBgColor);
+        } else {
+            getWindow().setNavigationBarColor(Preferences.headerBgColor);
+        }
+        dragBgAnimator.setCurrentPlayTime(0);
+
+        // header preferences
+        if (Preferences.scrollableTabs) {
+            tabContainer.setTabMode(TabLayout.MODE_SCROLLABLE);
+        }
+        if (Preferences.headerSeparator) {
+            findViewById(R.id.header_separator).setVisibility(View.VISIBLE);
+        }
+        if (!Preferences.headerShadow) {
+            header.setElevation(0);
+        }
+        if (Preferences.statusBarDarker) {
+            getWindow().setFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS, WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+        }
+
+        setupDropZones();
+    }
+
+    private void setupDropZones() {
+        findViewById(R.id.drop_zone_new_category).setOnDragListener(new DropZoneNewCategory());
+        findViewById(R.id.drop_zone_app_info).setOnDragListener(new DropZoneAppInfo());
+        findViewById(R.id.drop_zone_remove_shortcut).setOnDragListener(new DropZoneRemoveShortcut());
+
+        // immediate reaction to drag end
+        findViewById(android.R.id.content).setOnDragListener((v, event) -> {
+            switch (event.getAction()) {
+                case DragEvent.ACTION_DRAG_STARTED: {
+                    return draggedItem != null;
+                }
+                case DragEvent.ACTION_DROP: {
+                    onDragEnded1();
+                    return false;
+                }
+                case DragEvent.ACTION_DRAG_ENDED: {
+                    onDragEnded1();
+                    onDragEnded2();
+                    return true;
+                }
+                default: {
+                    return true;
+                }
+            }
+        });
+    }
+
+    private void setupInstallAppReceiver() {
+        installAppReceiver = new InstallAppReceiver(this);
+        IntentFilter appChangeFilter = new IntentFilter(Intent.ACTION_PACKAGE_ADDED);
+        appChangeFilter.addAction(Intent.ACTION_PACKAGE_REMOVED);
+        appChangeFilter.addAction(Intent.ACTION_PACKAGE_CHANGED);
+        appChangeFilter.addDataScheme("package");
+        registerReceiver(installAppReceiver, appChangeFilter);
     }
 
     @Override
