@@ -112,6 +112,10 @@ public class MainActivity extends FragmentActivity implements
 
         getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
 
+        widgetManager = new WidgetManager(this, 1, PICK_WIDGET_REQUEST, CREATE_WIDGET_REQUEST);
+        widgetManager.startListening();
+        loadPersistedWidget();
+
         setupAppsPager();
 
         setupInstallAppReceiver();
@@ -235,10 +239,6 @@ public class MainActivity extends FragmentActivity implements
         lt.setStartDelay(LayoutTransition.CHANGE_DISAPPEARING, 0);
         lt.setDuration(LayoutTransition.CHANGE_DISAPPEARING, DROPZONE_TRANSITION_DURATION);
         header.setLayoutTransition(lt);
-
-        widgetManager = new WidgetManager(this, 1, PICK_WIDGET_REQUEST, CREATE_WIDGET_REQUEST);
-        widgetManager.startListening();
-        loadPersistedWidget();
 
         // header animator
         dragBgAnimator = ValueAnimator.ofArgb(Preferences.headerBgColor, Preferences.headerBgColorExpanded);
