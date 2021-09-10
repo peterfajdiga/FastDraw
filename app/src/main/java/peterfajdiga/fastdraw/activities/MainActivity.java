@@ -381,7 +381,7 @@ public class MainActivity extends FragmentActivity implements
                     case RESULT_OK: {
                         final AppWidgetHostView widgetView = widgetManager.createOrConfigureWidgetView(widgetId);
                         if (widgetView != null) {
-                            addWidget(widgetView);
+                            setWidget(widgetView);
                         }
                         break;
                     }
@@ -399,7 +399,7 @@ public class MainActivity extends FragmentActivity implements
                     case RESULT_OK: {
                         final AppWidgetHostView widgetView = widgetManager.createWidgetView(widgetId);
                         if (widgetView != null) {
-                            addWidget(widgetView);
+                            setWidget(widgetView);
                         }
                         break;
                     }
@@ -426,7 +426,7 @@ public class MainActivity extends FragmentActivity implements
         launcher.moveItem(shortcutItem, categoryName, false);
     }
 
-    private void addWidget(@NonNull AppWidgetHostView widgetView) {
+    private void setWidget(@NonNull AppWidgetHostView widgetView) {
         replaceWidgetView(widgetView);
         final PrefMap widgetPrefs = new PrefMap(this, "widgets"); // TODO: "widgets" constant
         widgetPrefs.putInt("widget_id", widgetView.getAppWidgetId()); // TODO: "widget_id" constant
