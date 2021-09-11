@@ -25,6 +25,7 @@ import android.provider.ContactsContract;
 import android.provider.Settings;
 import android.provider.Telephony;
 import android.view.DragEvent;
+import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
@@ -453,7 +454,11 @@ public class MainActivity extends FragmentActivity implements
             widgetManager.deleteWidget(oldWidgetView.getAppWidgetId());
             widgetContainer.removeView(oldWidgetView);
         }
-        widgetContainer.addView(widgetView);
+        widgetContainer.addView(widgetView, new FrameLayout.LayoutParams(
+            FrameLayout.LayoutParams.MATCH_PARENT,
+            FrameLayout.LayoutParams.MATCH_PARENT,
+            Gravity.CENTER
+        ));
     }
 
     @Nullable
