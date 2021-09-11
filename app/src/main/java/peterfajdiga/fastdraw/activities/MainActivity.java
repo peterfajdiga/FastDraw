@@ -463,8 +463,12 @@ public class MainActivity extends FragmentActivity implements
 
     @Nullable
     private static AppWidgetHostView getCurrentWidgetView(final FrameLayout widgetContainer) {
-        if (widgetContainer.getChildCount() > 0) {
-            return (AppWidgetHostView)widgetContainer.getChildAt(0);
+        final int n = widgetContainer.getChildCount();
+        for (int i = 0; i < n; i++) {
+            final View child = widgetContainer.getChildAt(i);
+            if (child instanceof AppWidgetHostView) {
+                return (AppWidgetHostView)child;
+            }
         }
         return null;
     }
