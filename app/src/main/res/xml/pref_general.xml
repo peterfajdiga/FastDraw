@@ -1,4 +1,5 @@
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <SwitchPreference
         android:defaultValue="@bool/default_allowOrientation"
@@ -15,11 +16,19 @@
         android:positiveButtonText="@null"
         android:title="@string/pref_title_appItemResource" />
 
+    <SeekBarPreference
+        android:defaultValue="@integer/default_widgetHeight"
+        app:min="80"
+        android:max="560"
+        android:key="widgetHeight"
+        android:title="@string/pref_title_widgetHeight" />
+
     <SwitchPreference
         android:defaultValue="@bool/default_headerbtm"
         android:key="headerbtm"
         android:title="@string/pref_title_headerbtm"
         android:summary="@string/pref_description_headerbtm" />
+
     <SwitchPreference
         android:defaultValue="@bool/default_stackFromBottom"
         android:key="stackFromBottom"

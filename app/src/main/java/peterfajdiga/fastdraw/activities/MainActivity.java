@@ -24,6 +24,8 @@ import android.preference.PreferenceManager;
 import android.provider.ContactsContract;
 import android.provider.Settings;
 import android.provider.Telephony;
+import android.util.Log;
+import android.util.TypedValue;
 import android.view.DragEvent;
 import android.view.Gravity;
 import android.view.View;
@@ -454,9 +456,16 @@ public class MainActivity extends FragmentActivity implements
             widgetManager.deleteWidget(oldWidgetView.getAppWidgetId());
             widgetContainer.removeView(oldWidgetView);
         }
+
+        final float height = TypedValue.applyDimension(
+            TypedValue.COMPLEX_UNIT_DIP,
+            Preferences.widgetHeight,
+            getResources().getDisplayMetrics()
+        ); // TODO: limit max height
+
         widgetContainer.addView(widgetView, new FrameLayout.LayoutParams(
             FrameLayout.LayoutParams.MATCH_PARENT,
-            FrameLayout.LayoutParams.MATCH_PARENT,
+            Math.round(height),
             Gravity.CENTER
         ));
     }

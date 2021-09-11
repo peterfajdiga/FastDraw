@@ -38,6 +38,7 @@
     <string name="pref_title_allowOrientation">Allow rotation</string>
     <string name="pref_description_allowOrientation">Allow changing orientation between portrait and landscape</string>
     <string name="pref_title_appItemResource">App list layout</string>
+    <string name="pref_title_widgetHeight">Widget height</string>
     <string name="pref_title_headerbtm">Place tabs on bottom</string>
     <string name="pref_description_headerbtm">Place category tabs on the bottom of the screen instead of on the top</string>
     <string name="pref_title_stackFromBottom">Stack icons to the bottom</string>

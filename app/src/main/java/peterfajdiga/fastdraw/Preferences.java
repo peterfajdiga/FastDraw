@@ -33,6 +33,8 @@ public final class Preferences {
     public static int headerBgColor;
     public static int headerBgColorExpanded;
 
+    public static int widgetHeight;
+
     public static boolean statusBarDarker;
 
     public static int longclickAction;
@@ -69,5 +71,6 @@ public final class Preferences {
         swipeDownAction2F = Integer.parseInt(prefs.getString("action_swipe_down_2f", res.getString(R.string.default_action_swipe_down_2f)));
         headerBgColor                      = prefs.getInt("headerBgColor",           res.getInteger(R.integer.default_headerBgColor));
         headerBgColorExpanded              = prefs.getInt("headerBgColorExpanded",   res.getInteger(R.integer.default_headerBgColorExpanded));
+        widgetHeight                       = prefs.getInt("widgetHeight",            res.getInteger(R.integer.default_widgetHeight));
     }
 }
