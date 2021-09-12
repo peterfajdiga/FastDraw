@@ -1,19 +1,18 @@
 package peterfajdiga.fastdraw.views;
 
 import android.graphics.Rect;
-import android.view.View;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.recyclerview.widget.RecyclerView;
 
 public class UnscrolledHeightCalculator {
-    private View contentContainer;
+    private RecyclerView contentContainer;
     private ContentHeightGetter contentHeightGetter;
 
     private final Rect targetVisibleRectTmp = new Rect();
 
     public void setup(
-        @Nullable final View contentContainer,
+        @Nullable final RecyclerView contentContainer,
         @Nullable final ContentHeightGetter contentHeightGetter
     ) {
         this.contentHeightGetter = contentHeightGetter;
@@ -21,15 +20,29 @@ public class UnscrolledHeightCalculator {
     }
 
     public int getUnscrolledHeight() {
-        if (contentHeightGetter == null || contentContainer == null) {
-            return 0;
-        }
-        return Math.max(0, contentHeightGetter.getContentHeight() - getVisibleHeight(contentContainer));
+        return Math.max(0, getContentHeight() - getVisibleHeight());
     }
 
-    private int getVisibleHeight(@NonNull final View target) {
-        target.getGlobalVisibleRect(targetVisibleRectTmp);
+    public int getVisibleHeight() {
+        if (contentContainer == null) {
+            return 0;
+        }
+        contentContainer.getGlobalVisibleRect(targetVisibleRectTmp);
         return targetVisibleRectTmp.height();
+    }
+
+    public int getContentHeight() {
+        if (contentHeightGetter == null) {
+            return 0;
+        }
+        return contentHeightGetter.getContentHeight();
+    }
+
+    public int getVerticalScrollOffset() {
+        if (contentContainer == null) {
+            return 0;
+        }
+        return contentContainer.computeVerticalScrollOffset();
     }
 
     public interface ContentHeightGetter {

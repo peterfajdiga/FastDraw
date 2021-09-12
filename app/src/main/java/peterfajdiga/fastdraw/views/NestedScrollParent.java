@@ -67,6 +67,9 @@ public class NestedScrollParent extends NestedScrollView {
             consumed[0] = dx;
             consumed[1] = y1 - y0;
         }
+        if (!awakenScrollBars()) {
+            postInvalidateOnAnimation();
+        }
     }
 
     @Override
@@ -75,6 +78,30 @@ public class NestedScrollParent extends NestedScrollView {
         if (onMeasureListener != null) {
             onMeasureListener.onMeasure();
         }
+    }
+
+    @Override
+    public int computeVerticalScrollRange() {
+        if (scrollChildCalc == null) {
+            return 0;
+        }
+        return scrollChildCalc.getContentHeight();
+    }
+
+    @Override
+    public int computeVerticalScrollOffset() {
+        if (scrollChildCalc == null) {
+            return 0;
+        }
+        return scrollChildCalc.getVerticalScrollOffset();
+    }
+
+    @Override
+    public int computeVerticalScrollExtent() {
+        if (scrollChildCalc == null) {
+            return 0;
+        }
+        return scrollChildCalc.getVisibleHeight();
     }
 
     public interface OnMeasureListener {
