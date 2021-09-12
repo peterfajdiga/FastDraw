@@ -10,7 +10,7 @@ import androidx.annotation.Nullable;
 import androidx.core.widget.NestedScrollView;
 
 public class NestedScrollParent extends NestedScrollView {
-    private UnscrolledHeightCalculator scrollChildCalc;
+    private NestedScrollChildManager scrollChildManager;
     private OnMeasureListener onMeasureListener;
 
     public NestedScrollParent(@NonNull final Context context) {
@@ -25,8 +25,8 @@ public class NestedScrollParent extends NestedScrollView {
         super(context, attrs, defStyleAttr);
     }
 
-    public void setScrollChildCalc(@Nullable final UnscrolledHeightCalculator scrollChildCalc) {
-        this.scrollChildCalc = scrollChildCalc;
+    public void setScrollChildManager(@Nullable final NestedScrollChildManager scrollChild) {
+        this.scrollChildManager = scrollChild;
     }
 
     public void setOnMeasureListener(@Nullable final OnMeasureListener onMeasureListener) {
@@ -48,9 +48,9 @@ public class NestedScrollParent extends NestedScrollView {
     @Override
     public void scrollTo(final int x, final int y) {
         final int dy = y - getScrollY();
-        if (dy > 0 && scrollChildCalc != null) {
+        if (dy > 0 && scrollChildManager != null) {
             // prevent scrolling more than necessary to see all useful content in scrollChildView
-            final int maxScrollY = scrollChildCalc.getUnscrolledHeight();
+            final int maxScrollY = scrollChildManager.getUnscrolledHeight();
             final int newScrollY = getScrollY() + Math.min(dy, maxScrollY);
             super.scrollTo(x, newScrollY);
         } else {
@@ -82,26 +82,26 @@ public class NestedScrollParent extends NestedScrollView {
 
     @Override
     public int computeVerticalScrollRange() {
-        if (scrollChildCalc == null) {
+        if (scrollChildManager == null) {
             return 0;
         }
-        return scrollChildCalc.getContentHeight();
+        return scrollChildManager.getContentHeight();
     }
 
     @Override
     public int computeVerticalScrollOffset() {
-        if (scrollChildCalc == null) {
+        if (scrollChildManager == null) {
             return 0;
         }
-        return scrollChildCalc.getVerticalScrollOffset();
+        return scrollChildManager.getVerticalScrollOffset();
     }
 
     @Override
     public int computeVerticalScrollExtent() {
-        if (scrollChildCalc == null) {
+        if (scrollChildManager == null) {
             return 0;
         }
-        return scrollChildCalc.getVisibleHeight();
+        return scrollChildManager.getVisibleHeight();
     }
 
     public interface OnMeasureListener {

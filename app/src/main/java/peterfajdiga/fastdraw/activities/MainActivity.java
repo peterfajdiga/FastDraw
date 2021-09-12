@@ -204,7 +204,7 @@ public class MainActivity extends FragmentActivity implements
         launcher.showCategory(Launcher.HOME_CATEGORY_NAME);
 
         final NestedScrollParent scrollParent = findViewById(R.id.scroll_parent);
-        scrollParent.setScrollChildCalc(launcher.getUnscrolledHeightCalculator());
+        scrollParent.setScrollChildManager(launcher.getScrollChildManager());
 
         final SettableBoolean dirty = new SettableBoolean(false);
         appsPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
@@ -214,7 +214,7 @@ public class MainActivity extends FragmentActivity implements
             @Override
             public void onPageSelected(final int position) {
                 dirty.value = true;
-                scrollParent.setScrollChildCalc(launcher.getUnscrolledHeightCalculator());
+                scrollParent.setScrollChildManager(launcher.getScrollChildManager());
             }
 
             @Override

@@ -5,7 +5,7 @@ import android.graphics.Rect;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 
-public class UnscrolledHeightCalculator {
+public class NestedScrollChildManager {
     private RecyclerView contentContainer;
     private ContentHeightGetter contentHeightGetter;
 

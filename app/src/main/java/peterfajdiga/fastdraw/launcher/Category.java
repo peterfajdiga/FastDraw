@@ -18,7 +18,7 @@ import peterfajdiga.fastdraw.R;
 import peterfajdiga.fastdraw.launcher.launcheritem.LauncherItem;
 import peterfajdiga.fastdraw.launcher.displayitem.DisplayItem;
 import peterfajdiga.fastdraw.views.AutoGridLayoutManager;
-import peterfajdiga.fastdraw.views.UnscrolledHeightCalculator;
+import peterfajdiga.fastdraw.views.NestedScrollChildManager;
 import peterfajdiga.fastdraw.views.gestures.DoubleTap;
 import peterfajdiga.fastdraw.views.gestures.LongPress;
 import peterfajdiga.fastdraw.views.gestures.OnTouchListenerMux;
@@ -26,7 +26,7 @@ import peterfajdiga.fastdraw.views.gestures.Pinch;
 import peterfajdiga.fastdraw.views.gestures.Swipe;
 
 public class Category {
-    public final UnscrolledHeightCalculator unscrolledHeightCalculator = new UnscrolledHeightCalculator();
+    public final NestedScrollChildManager nestedScrollChildManager = new NestedScrollChildManager();
     private final CategoryAdapter adapter;
     private final View view;
 
@@ -36,7 +36,7 @@ public class Category {
         final LaunchManager launchManager
     ) {
         this.adapter = new CategoryAdapter(listener, launchManager);
-        view = createView(context, listener, adapter, unscrolledHeightCalculator);
+        view = createView(context, listener, adapter, nestedScrollChildManager);
     }
 
     public View getView() {
@@ -90,7 +90,7 @@ public class Category {
         final Context context,
         final Launcher.Listener listener,
         final CategoryAdapter adapter,
-        final UnscrolledHeightCalculator unscrolledHeightCalculator
+        final NestedScrollChildManager nestedScrollChildManager
     ) {
         final RecyclerView containerView = new RecyclerView(context);
         containerView.setAdapter(adapter);
@@ -105,7 +105,7 @@ public class Category {
             containerView.setClipToPadding(false);
             containerView.setScrollBarStyle(View.SCROLLBARS_OUTSIDE_OVERLAY);
 
-            unscrolledHeightCalculator.setup(containerView, () -> {
+            nestedScrollChildManager.setup(containerView, () -> {
                 final int lineCount = (int)Math.ceil((double)adapter.getItemCount() / (double)layoutManager.getSpanCount());
                 return lineCount * getItemHeight(layoutManager) + 2 * padding;
             });
@@ -113,7 +113,7 @@ public class Category {
             final RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false);
             containerView.setLayoutManager(layoutManager);
 
-            unscrolledHeightCalculator.setup(containerView, () -> adapter.getItemCount() * getItemHeight(layoutManager));
+            nestedScrollChildManager.setup(containerView, () -> adapter.getItemCount() * getItemHeight(layoutManager));
         }
 
         final DisplayMetrics displayMetrics = context.getResources().getDisplayMetrics();
