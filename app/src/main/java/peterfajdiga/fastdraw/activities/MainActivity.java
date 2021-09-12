@@ -181,9 +181,12 @@ public class MainActivity extends FragmentActivity implements
         frameLayout.addOnLayoutChangeListener((v, left, top, right, bottom, oldLeft, oldTop, oldRight, oldBottom) -> {
             final AppWidgetHostView widgetView = getCurrentWidgetView(frameLayout);
             if (widgetView != null) {
-                final int width = frameLayout.getWidth();
-                final int height = frameLayout.getHeight();
-                widgetView.updateAppWidgetSize(null, width, 0, width, height);
+                final int widthPx = frameLayout.getWidth() - frameLayout.getPaddingLeft() - frameLayout.getPaddingRight();
+                final int heightPx = frameLayout.getHeight() - frameLayout.getPaddingTop() - frameLayout.getPaddingBottom();
+                final float dp = getResources().getDisplayMetrics().density;
+                final int widthDp = Math.round(widthPx / dp);
+                final int heightDp = Math.round(heightPx / dp);
+                widgetView.updateAppWidgetSize(null, widthDp, heightDp, widthDp, heightDp);
             }
         });
     }
