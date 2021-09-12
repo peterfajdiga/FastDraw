@@ -179,7 +179,6 @@ public class MainActivity extends FragmentActivity implements
 
         final FrameLayout frameLayout = findViewById(R.id.widget_container);
         frameLayout.addOnLayoutChangeListener((v, left, top, right, bottom, oldLeft, oldTop, oldRight, oldBottom) -> {
-            System.err.println("another layout change: " + System.currentTimeMillis());
             final AppWidgetHostView widgetView = getCurrentWidgetView(frameLayout);
             if (widgetView != null) {
                 final int width = frameLayout.getWidth();
