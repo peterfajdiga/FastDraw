@@ -37,6 +37,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
+import androidx.core.widget.NestedScrollView;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.viewpager.widget.PagerAdapter;
@@ -52,6 +53,7 @@ import java.util.stream.Stream;
 import peterfajdiga.fastdraw.PrefMap;
 import peterfajdiga.fastdraw.Preferences;
 import peterfajdiga.fastdraw.R;
+import peterfajdiga.fastdraw.SettableBoolean;
 import peterfajdiga.fastdraw.dialogs.ActionsSheet;
 import peterfajdiga.fastdraw.dialogs.NewCategoryDialog;
 import peterfajdiga.fastdraw.dialogs.RenameCategoryDialog;
@@ -203,12 +205,15 @@ public class MainActivity extends FragmentActivity implements
 
         final NestedScrollParent scrollParent = findViewById(R.id.scroll_parent);
         scrollParent.setScrollChildCalc(launcher.getUnscrolledHeightCalculator());
+
+        final SettableBoolean dirty = new SettableBoolean(false);
         appsPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(final int position, final float positionOffset, final int positionOffsetPixels) {}
 
             @Override
             public void onPageSelected(final int position) {
+                dirty.value = true;
                 scrollParent.setScrollChildCalc(launcher.getUnscrolledHeightCalculator());
             }
 
@@ -218,6 +223,14 @@ public class MainActivity extends FragmentActivity implements
 
         final View scrollExpand = findViewById(R.id.scroll_expand);
         scrollParent.setOnMeasureListener(() -> scrollExpand.setMinimumHeight(scrollParent.getMeasuredHeight())); // TODO: handle orientation change
+        scrollParent.setOnScrollChangeListener((NestedScrollView.OnScrollChangeListener)(v, scrollX, scrollY, oldScrollX, oldScrollY) -> {
+            if (dirty.value) {
+                if (scrollY < oldScrollY) {
+                    launcher.scrollUpAllExceptCurrent();
+                }
+                dirty.value = false;
+            }
+        });
     }
 
     private void setupWallpaperMovement(final ViewPager pager) {
@@ -351,6 +364,11 @@ public class MainActivity extends FragmentActivity implements
             // show home category
             final Launcher pager = launcher;
             pager.showInitialCategory();
+
+            // scroll to top
+            final NestedScrollParent scrollParent = findViewById(R.id.scroll_parent);
+            scrollParent.smoothScrollTo(0, 0);
+            launcher.smoothScrollUpCurrent();
         }
     }
 

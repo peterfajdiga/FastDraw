@@ -8,6 +8,7 @@ import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 
 import java.util.ArrayList;
@@ -77,6 +78,31 @@ public class Launcher {
             return null;
         }
         return currentCategory.unscrolledHeightCalculator;
+    }
+
+    public void smoothScrollUpCurrent() {
+        final View categoryView = adapter.categories.values().toArray(new Category[0])[pager.getCurrentItem()].getView();
+        if (categoryView instanceof RecyclerView) {
+            ((RecyclerView)categoryView).smoothScrollToPosition(0);
+        } else {
+            categoryView.scrollTo(0, 0);
+        }
+    }
+
+    public void scrollUpAllExceptCurrent() {
+        final int currentItemPosition = pager.getCurrentItem();
+        int i = 0;
+        for (final Category category : adapter.categories.values()) {
+            if (i != currentItemPosition) {
+                final View categoryView = category.getView();
+                if (categoryView instanceof RecyclerView) {
+                    ((RecyclerView)categoryView).scrollToPosition(0);
+                } else {
+                    categoryView.scrollTo(0, 0);
+                }
+            }
+            i++;
+        }
     }
 
     private String[] getCategoryNames() {
