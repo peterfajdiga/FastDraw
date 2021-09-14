@@ -101,7 +101,15 @@ public class NestedScrollParent extends NestedScrollView {
         if (scrollChildManager == null) {
             return 0;
         }
-        return scrollChildManager.getVisibleHeight();
+
+        final int extent = scrollChildManager.getVisibleHeight();
+        if (getScrollY() > 0) {
+            final int range = computeVerticalScrollRange();
+            if (extent >= range) {
+                return range - 1; // prevent hiding the scroll bar when all the child's content has been scrolled into view
+            }
+        }
+        return extent;
     }
 
     public interface OnMeasureListener {
