@@ -34,7 +34,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:background="@android:color/transparent">
+                android:background="@drawable/bg_header">
 
                 <peterfajdiga.fastdraw.views.CategoryTabLayout
                     android:id="@+id/tab_container"

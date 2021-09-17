@@ -76,7 +76,7 @@ import peterfajdiga.fastdraw.views.CategoryTabLayout;
 import peterfajdiga.fastdraw.views.NestedScrollParent;
 import peterfajdiga.fastdraw.widgets.WidgetManager;
 import peterfajdiga.fastdraw.views.animators.NavigationBarColorAnimator;
-import peterfajdiga.fastdraw.views.animators.ViewBgColorAnimator;
+import peterfajdiga.fastdraw.views.animators.ViewBgTintAnimator;
 import peterfajdiga.fastdraw.views.animators.ViewElevationAnimator;
 
 public class MainActivity extends FragmentActivity implements
@@ -275,7 +275,7 @@ public class MainActivity extends FragmentActivity implements
         // header animator
         dragBgAnimator = ValueAnimator.ofArgb(Preferences.headerBgColor, Preferences.headerBgColorExpanded);
         dragBgAnimator.setDuration(DROPZONE_TRANSITION_DURATION);
-        dragBgAnimator.addUpdateListener(new ViewBgColorAnimator(header));
+        dragBgAnimator.addUpdateListener(new ViewBgTintAnimator(header));
         if (Preferences.headerOnBottom) {
             dragBgAnimator.addUpdateListener(new NavigationBarColorAnimator(getWindow()));
             getWindow().setStatusBarColor(Preferences.headerBgColor);
