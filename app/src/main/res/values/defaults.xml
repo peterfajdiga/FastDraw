@@ -13,7 +13,7 @@
     <bool name="default_statusBarDarker">false</bool>
     <integer name="default_headerBgColor">0x80000000</integer>
     <integer name="default_headerBgColorExpanded">0xB0000000</integer>
-    <integer name="default_widgetHeight">240</integer>
+    <integer name="default_widgetHeight">260</integer>
     <string name="default_action_longclick">1</string>
     <string name="default_action_doubleclick">3</string>
     <string name="default_action_pinch">1</string>
