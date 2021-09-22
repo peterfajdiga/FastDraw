@@ -746,6 +746,7 @@ public class MainActivity extends FragmentActivity implements
 
         // show drop zones
         findViewById(R.id.apps_pager).animate().alpha(0.2f);
+        findViewById(R.id.widget_container).animate().alpha(0.2f);
         findViewById(R.id.category_drop_zone_container).setVisibility(View.VISIBLE);
 
         // show type specific drop zones
@@ -770,6 +771,7 @@ public class MainActivity extends FragmentActivity implements
         if (draggedItem != null) {
             // hide drop zones
             findViewById(R.id.apps_pager).animate().alpha(1.0f);
+            findViewById(R.id.widget_container).animate().alpha(1.0f);
             findViewById(R.id.category_drop_zone_container).setVisibility(View.GONE);
             draggedItem = null;
 
