@@ -17,6 +17,8 @@ import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.graphics.LightingColorFilter;
 import android.graphics.Paint;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.TransitionDrawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -752,6 +754,11 @@ public class MainActivity extends FragmentActivity implements
 
         // set header background
         dragBgAnimator.start();
+        final Drawable background = findViewById(R.id.header).getBackground();
+        if (background instanceof TransitionDrawable) {
+            final TransitionDrawable backgroundTransition = (TransitionDrawable)background;
+            backgroundTransition.startTransition(DROPZONE_TRANSITION_DURATION);
+        }
 
         // hide status or navigation bar
         if (!Preferences.headerOnBottom) {
@@ -768,6 +775,11 @@ public class MainActivity extends FragmentActivity implements
 
             // reset header background
             dragBgAnimator.reverse();
+            final Drawable background = findViewById(R.id.header).getBackground();
+            if (background instanceof TransitionDrawable) {
+                final TransitionDrawable backgroundTransition = (TransitionDrawable)background;
+                backgroundTransition.reverseTransition(DROPZONE_TRANSITION_DURATION);
+            }
 
             // show status or navigation bar
             if (!Preferences.headerOnBottom) {
