@@ -42,11 +42,9 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.stream.Stream;
 
-import peterfajdiga.fastdraw.NavigationBarAnimator;
 import peterfajdiga.fastdraw.PrefMap;
 import peterfajdiga.fastdraw.Preferences;
 import peterfajdiga.fastdraw.R;
-import peterfajdiga.fastdraw.ViewBgAnimator;
 import peterfajdiga.fastdraw.dialogs.ActionsSheet;
 import peterfajdiga.fastdraw.dialogs.NewCategoryDialog;
 import peterfajdiga.fastdraw.dialogs.RenameCategoryDialog;
@@ -66,6 +64,8 @@ import peterfajdiga.fastdraw.launcher.launcheritem.ResShortcutItem;
 import peterfajdiga.fastdraw.launcher.launcheritem.ShortcutItem;
 import peterfajdiga.fastdraw.receivers.InstallAppReceiver;
 import peterfajdiga.fastdraw.views.CategoryTabLayout;
+import peterfajdiga.fastdraw.views.animators.NavigationBarColorAnimator;
+import peterfajdiga.fastdraw.views.animators.ViewBgColorAnimator;
 
 public class MainActivity extends FragmentActivity implements
     Launcher.Listener,
@@ -183,12 +183,12 @@ public class MainActivity extends FragmentActivity implements
         lt.setDuration(LayoutTransition.CHANGE_DISAPPEARING, DROPZONE_TRANSITION_DURATION);
         header.setLayoutTransition(lt);
 
-        // header color animator
+        // header animator
         dragBgAnimator = ValueAnimator.ofArgb(Preferences.headerBgColor, Preferences.headerBgColorExpanded);
         dragBgAnimator.setDuration(DROPZONE_TRANSITION_DURATION);
-        dragBgAnimator.addUpdateListener(new ViewBgAnimator(header));
+        dragBgAnimator.addUpdateListener(new ViewBgColorAnimator(header));
         if (Preferences.mainLayoutResource == R.layout.activity_main_headerbtm) {
-            dragBgAnimator.addUpdateListener(new NavigationBarAnimator(getWindow()));
+            dragBgAnimator.addUpdateListener(new NavigationBarColorAnimator(getWindow()));
             getWindow().setStatusBarColor(Preferences.headerBgColor);
         } else {
             getWindow().setNavigationBarColor(Preferences.headerBgColor);

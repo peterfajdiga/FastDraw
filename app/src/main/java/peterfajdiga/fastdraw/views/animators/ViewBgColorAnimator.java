@@ -1,13 +1,12 @@
-package peterfajdiga.fastdraw;
+package peterfajdiga.fastdraw.views.animators;
 
 import android.animation.ValueAnimator;
 import android.view.View;
 
-public class ViewBgAnimator implements ValueAnimator.AnimatorUpdateListener {
+public class ViewBgColorAnimator implements ValueAnimator.AnimatorUpdateListener {
+    private final View view;
 
-    private View view;
-
-    public ViewBgAnimator(View view) {
+    public ViewBgColorAnimator(final View view) {
         this.view = view;
     }
 
