@@ -6,6 +6,7 @@
     <dimen name="pager_header_height">56dp</dimen>
     <dimen name="pager_header_height_with_status_bar">80dp</dimen>
     <dimen name="pager_header_elevation">4dp</dimen>
+    <dimen name="pager_header_expanded_elevation">24dp</dimen>
 
     <!--doesn't work with api 25, returns 48dp-->
     <!--TODO: do something better or make sure it's 24dp everywhere-->

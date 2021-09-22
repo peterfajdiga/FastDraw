@@ -66,6 +66,7 @@ import peterfajdiga.fastdraw.receivers.InstallAppReceiver;
 import peterfajdiga.fastdraw.views.CategoryTabLayout;
 import peterfajdiga.fastdraw.views.animators.NavigationBarColorAnimator;
 import peterfajdiga.fastdraw.views.animators.ViewBgColorAnimator;
+import peterfajdiga.fastdraw.views.animators.ViewElevationAnimator;
 
 public class MainActivity extends FragmentActivity implements
     Launcher.Listener,
@@ -193,6 +194,11 @@ public class MainActivity extends FragmentActivity implements
         } else {
             getWindow().setNavigationBarColor(Preferences.headerBgColor);
         }
+        if (Preferences.headerShadow) {
+            final float elevationStart = getResources().getDimension(R.dimen.pager_header_elevation);
+            final float elevationEnd = getResources().getDimension(R.dimen.pager_header_expanded_elevation);
+            dragBgAnimator.addUpdateListener(new ViewElevationAnimator(header, elevationStart, elevationEnd));
+        }
         dragBgAnimator.setCurrentPlayTime(0);
 
         // header preferences
@@ -201,9 +207,6 @@ public class MainActivity extends FragmentActivity implements
         }
         if (Preferences.headerSeparator) {
             findViewById(R.id.header_separator).setVisibility(View.VISIBLE);
-        }
-        if (!Preferences.headerShadow) {
-            header.setElevation(0);
         }
         if (Preferences.statusBarDarker) {
             getWindow().setFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS, WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
