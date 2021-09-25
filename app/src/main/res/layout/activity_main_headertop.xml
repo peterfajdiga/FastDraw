@@ -33,8 +33,7 @@
                 android:id="@+id/header"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:background="@drawable/bg_header">
+                android:orientation="vertical">
 
                 <peterfajdiga.fastdraw.views.CategoryTabLayout
                     android:id="@+id/tab_container"

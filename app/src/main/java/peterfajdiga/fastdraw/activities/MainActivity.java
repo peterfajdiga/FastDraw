@@ -15,6 +15,7 @@ import android.content.pm.ActivityInfo;
 import android.content.pm.LauncherApps;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
+import android.graphics.Color;
 import android.graphics.LightingColorFilter;
 import android.graphics.Paint;
 import android.graphics.drawable.Drawable;
@@ -75,11 +76,11 @@ import peterfajdiga.fastdraw.launcher.launcheritem.ResShortcutItem;
 import peterfajdiga.fastdraw.launcher.launcheritem.ShortcutItem;
 import peterfajdiga.fastdraw.receivers.InstallAppReceiver;
 import peterfajdiga.fastdraw.views.CategoryTabLayout;
+import peterfajdiga.fastdraw.views.Drawables;
 import peterfajdiga.fastdraw.views.NestedScrollParent;
-import peterfajdiga.fastdraw.widgets.WidgetManager;
 import peterfajdiga.fastdraw.views.animators.NavigationBarColorAnimator;
-import peterfajdiga.fastdraw.views.animators.ViewBgTintAnimator;
 import peterfajdiga.fastdraw.views.animators.ViewElevationAnimator;
+import peterfajdiga.fastdraw.widgets.WidgetManager;
 
 public class MainActivity extends FragmentActivity implements
     Launcher.Listener,
@@ -274,10 +275,17 @@ public class MainActivity extends FragmentActivity implements
         lt.setDuration(LayoutTransition.CHANGE_DISAPPEARING, DROPZONE_TRANSITION_DURATION);
         header.setLayoutTransition(lt);
 
+        header.setBackground(Drawables.createHeaderBackground(
+            getResources(),
+            Preferences.headerBgColor,
+            Preferences.headerBgColorExpanded,
+            !Preferences.headerOnBottom,
+            Preferences.headerSeparator && !Preferences.headerOnBottom
+        ));
+
         // header animator
         dragBgAnimator = ValueAnimator.ofArgb(Preferences.headerBgColor, Preferences.headerBgColorExpanded);
         dragBgAnimator.setDuration(DROPZONE_TRANSITION_DURATION);
-        dragBgAnimator.addUpdateListener(new ViewBgTintAnimator(header));
         if (Preferences.headerOnBottom) {
             dragBgAnimator.addUpdateListener(new NavigationBarColorAnimator(getWindow()));
             getWindow().setStatusBarColor(Preferences.headerBgColor);
@@ -738,7 +746,7 @@ public class MainActivity extends FragmentActivity implements
     @Override
     public void onDragStarted(@NonNull final View draggedView, @NonNull final LauncherItem draggedItem) {
         final Paint silhouettePaint = new Paint();
-        silhouettePaint.setColorFilter(new LightingColorFilter(0xff000000, 0xff000000));
+        silhouettePaint.setColorFilter(new LightingColorFilter(Color.BLACK, Color.BLACK));
         draggedView.setLayerType(View.LAYER_TYPE_SOFTWARE, silhouettePaint);
 
         this.draggedView = draggedView;
