@@ -15,9 +15,9 @@ public final class Preferences {
 
     public static boolean allowOrientation;
 
-    public static int appItemResource;
+    public static boolean appsLinearList;
 
-    public static int mainLayoutResource;
+    public static boolean headerOnBottom;
     public static boolean stackFromBottom;
 
     public static boolean scrollableTabs;
@@ -48,11 +48,11 @@ public final class Preferences {
 
         switch (prefs.getString("appItemResource", res.getString(R.string.default_appItemResource))) {
             default:
-            case "0": appItemResource = R.layout.app_item_grid; break;
-            case "1": appItemResource = R.layout.app_item_list; break;
+            case "0": appsLinearList = false; break;
+            case "1": appsLinearList = true; break;
         }
         allowOrientation                   = prefs.getBoolean("allowOrientation",    res.getBoolean(R.bool.default_allowOrientation));
-        mainLayoutResource                 = prefs.getBoolean("headerbtm",           res.getBoolean(R.bool.default_headerbtm)) ? R.layout.activity_main_headerbtm : R.layout.activity_main_headertop;
+        headerOnBottom                     = prefs.getBoolean("headerbtm",           res.getBoolean(R.bool.default_headerbtm));
         stackFromBottom                    = prefs.getBoolean("stackFromBottom",     res.getBoolean(R.bool.default_stackFromBottom));
         scrollableTabs                     = prefs.getBoolean("scrollableTabs",      res.getBoolean(R.bool.default_scrollableTabs));
         hideHidden                         = prefs.getBoolean("hideHidden",          res.getBoolean(R.bool.default_hideHidden));

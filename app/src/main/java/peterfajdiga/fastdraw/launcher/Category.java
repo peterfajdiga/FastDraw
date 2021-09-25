@@ -73,7 +73,7 @@ public class Category {
         final RecyclerView containerView = new RecyclerView(context);
         containerView.setAdapter(adapter);
 
-        if (Preferences.appItemResource == R.layout.app_item_grid) {
+        if (!Preferences.appsLinearList) {
             final int spanWidth = context.getResources().getDimensionPixelSize(R.dimen.app_item_grid_icon_size) +
                 context.getResources().getDimensionPixelSize(R.dimen.app_item_grid_icon_padding) * 2;
             containerView.setLayoutManager(new AutoGridLayoutManager(context, spanWidth, GridLayoutManager.VERTICAL, Preferences.stackFromBottom));

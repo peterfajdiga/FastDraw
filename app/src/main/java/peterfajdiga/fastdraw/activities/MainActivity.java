@@ -96,7 +96,7 @@ public class MainActivity extends FragmentActivity implements
         instance = new WeakReference<>(this);
         onFirstRun();
         Preferences.loadPreferences(this);
-        setContentView(Preferences.mainLayoutResource);
+        setContentView(Preferences.headerOnBottom ? R.layout.activity_main_headerbtm : R.layout.activity_main_headertop);
         if (Preferences.allowOrientation) {
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED);
         }
@@ -188,7 +188,7 @@ public class MainActivity extends FragmentActivity implements
         dragBgAnimator = ValueAnimator.ofArgb(Preferences.headerBgColor, Preferences.headerBgColorExpanded);
         dragBgAnimator.setDuration(DROPZONE_TRANSITION_DURATION);
         dragBgAnimator.addUpdateListener(new ViewBgColorAnimator(header));
-        if (Preferences.mainLayoutResource == R.layout.activity_main_headerbtm) {
+        if (Preferences.headerOnBottom) {
             dragBgAnimator.addUpdateListener(new NavigationBarColorAnimator(getWindow()));
             getWindow().setStatusBarColor(Preferences.headerBgColor);
         } else {
@@ -563,7 +563,7 @@ public class MainActivity extends FragmentActivity implements
         dragBgAnimator.start();
 
         // hide status or navigation bar
-        if (Preferences.mainLayoutResource == R.layout.activity_main_headertop) {
+        if (!Preferences.headerOnBottom) {
             getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
         }
     }
@@ -579,15 +579,8 @@ public class MainActivity extends FragmentActivity implements
             dragBgAnimator.reverse();
 
             // show status or navigation bar
-            switch (Preferences.mainLayoutResource) {
-                case R.layout.activity_main_headertop: {
-                    getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
-                    break;
-                }
-                /*case R.layout.activity_main_headerbtm: {
-                    getWindow().getDecorView().setSystemUiVisibility(0);
-                    break;
-                }*/
+            if (!Preferences.headerOnBottom) {
+                getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
             }
         }
     }

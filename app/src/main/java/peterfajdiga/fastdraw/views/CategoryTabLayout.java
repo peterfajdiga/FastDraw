@@ -90,7 +90,7 @@ public class CategoryTabLayout extends TabLayout {
         final ViewGroup tabContainer = (ViewGroup)getChildAt(0);
         final View tabView = tabContainer.getChildAt(tab.getPosition());
 
-        if (Preferences.mainLayoutResource == R.layout.activity_main_headertop) {
+        if (!Preferences.headerOnBottom) {
             tabView.setPadding(0, getResources().getDimensionPixelSize(R.dimen.status_bar_height), 0, 0);
         }
         tabView.setOnLongClickListener(view -> {
