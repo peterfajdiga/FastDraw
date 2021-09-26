@@ -78,7 +78,6 @@ import peterfajdiga.fastdraw.receivers.InstallAppReceiver;
 import peterfajdiga.fastdraw.views.CategoryTabLayout;
 import peterfajdiga.fastdraw.views.Drawables;
 import peterfajdiga.fastdraw.views.NestedScrollParent;
-import peterfajdiga.fastdraw.views.animators.NavigationBarColorAnimator;
 import peterfajdiga.fastdraw.views.animators.ViewElevationAnimator;
 import peterfajdiga.fastdraw.widgets.WidgetManager;
 
@@ -284,19 +283,16 @@ public class MainActivity extends FragmentActivity implements
             Preferences.headerBgColor,
             Preferences.headerBgColorExpanded,
             !Preferences.headerOnBottom,
-            Preferences.headerSeparator && !Preferences.headerOnBottom
+            Preferences.headerSeparator
         ));
 
         // header animator
         dragBgAnimator = ValueAnimator.ofArgb(Preferences.headerBgColor, Preferences.headerBgColorExpanded);
         dragBgAnimator.setDuration(DROPZONE_TRANSITION_DURATION);
-        if (Preferences.headerOnBottom) {
-            dragBgAnimator.addUpdateListener(new NavigationBarColorAnimator(getWindow()));
-        }
         if (Preferences.headerShadow) {
             final float elevationStart = getResources().getDimension(R.dimen.pager_header_elevation);
             final float elevationEnd = getResources().getDimension(R.dimen.pager_header_expanded_elevation);
-            dragBgAnimator.addUpdateListener(new ViewElevationAnimator(header, elevationStart, elevationEnd));
+            dragBgAnimator.addUpdateListener(new ViewElevationAnimator(header, elevationStart, elevationEnd)); // TODO: refactor
         }
         dragBgAnimator.setCurrentPlayTime(0);
 
@@ -316,7 +312,7 @@ public class MainActivity extends FragmentActivity implements
         scrollParent.setBackground(Drawables.createScrimBackground(
             getResources(),
             Preferences.headerBgColor,
-            !Preferences.headerOnBottom && (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q || hasNavigationBar())
+            Preferences.headerOnBottom || Build.VERSION.SDK_INT < Build.VERSION_CODES.Q || hasNavigationBar()
         ));
     }
 
