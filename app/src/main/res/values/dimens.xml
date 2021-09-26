@@ -9,6 +9,8 @@
 
     <dimen name="system_bar_scrim_height">128dp</dimen>
 
+    <dimen name="pager_header_extra_height">72dp</dimen>
+
     <dimen name="app_item_grid_padding_vertical">16dp</dimen>
     <dimen name="app_item_grid_padding_below_label">3dp</dimen><!--app_item_padding_vertical - app_label_text_size-->
     <dimen name="app_item_grid_icon_padding">16dp</dimen>

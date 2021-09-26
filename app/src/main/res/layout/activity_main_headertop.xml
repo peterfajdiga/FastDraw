@@ -44,7 +44,7 @@
                 <LinearLayout
                     android:id="@+id/category_drop_zone_container"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="@dimen/pager_header_extra_height"
                     android:visibility="gone"
                     android:orientation="horizontal"
                     android:gravity="top">

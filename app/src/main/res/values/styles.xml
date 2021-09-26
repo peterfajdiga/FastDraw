@@ -31,14 +31,12 @@
     <style name="DropZone" parent="@android:style/TextAppearance.DeviceDefault.Widget">
         <item name="android:layout_width">0dp</item>
         <item name="android:layout_weight">1</item>
-        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_height">match_parent</item>
         <item name="android:layout_gravity">center</item>
         <item name="android:gravity">center</item>
         <item name="android:textAlignment">center</item>
         <item name="android:ellipsize">end</item>
         <item name="android:maxLines">1</item>
-        <item name="android:paddingTop">32dp</item>
-        <item name="android:paddingBottom">32dp</item>
     </style>
 
     <style name="AppsTabLayout" parent="@style/Widget.Design.TabLayout">
