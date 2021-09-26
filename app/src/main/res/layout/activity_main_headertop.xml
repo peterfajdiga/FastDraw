@@ -3,7 +3,7 @@
     android:id="@+id/scroll_parent"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginTop="@dimen/status_bar_height"
+    android:paddingTop="@dimen/status_bar_height"
     android:scrollbars="vertical">
 
     <LinearLayout

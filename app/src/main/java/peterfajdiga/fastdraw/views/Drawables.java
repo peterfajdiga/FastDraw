@@ -13,6 +13,8 @@ import android.view.Gravity;
 import androidx.annotation.ColorInt;
 import androidx.annotation.NonNull;
 
+import peterfajdiga.fastdraw.R;
+
 public class Drawables {
     private Drawables() {}
 
@@ -66,5 +68,32 @@ public class Drawables {
         } else {
             return new ColorDrawable(color);
         }
+    }
+
+    public static Drawable createShadowBackground(
+        @NonNull final Resources res,
+        @ColorInt final int color,
+        final boolean withBottom
+    ) {
+        final int[] gradientColors = new int[]{
+            Color.TRANSPARENT,
+            color,
+        };
+
+        final int shadowHeight = Math.round(res.getDimension(R.dimen.shadow_height));
+
+        final LayerDrawable layers = new LayerDrawable(new Drawable[]{
+            new GradientDrawable(GradientDrawable.Orientation.BOTTOM_TOP, gradientColors),
+        });
+        layers.setLayerHeight(0, shadowHeight);
+        layers.setLayerGravity(0, Gravity.TOP);
+
+        if (withBottom) {
+            layers.addLayer(new GradientDrawable(GradientDrawable.Orientation.TOP_BOTTOM, gradientColors));
+            layers.setLayerHeight(1, shadowHeight);
+            layers.setLayerGravity(1, Gravity.BOTTOM);
+        }
+
+        return layers;
     }
 }

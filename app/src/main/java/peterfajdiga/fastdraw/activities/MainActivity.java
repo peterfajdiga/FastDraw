@@ -33,6 +33,7 @@ import android.view.DragEvent;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowInsets;
 import android.view.WindowManager;
 import android.widget.FrameLayout;
 import android.widget.Toast;
@@ -225,7 +226,9 @@ public class MainActivity extends FragmentActivity implements
         });
 
         final View scrollExpand = findViewById(R.id.scroll_expand);
-        scrollParent.setOnMeasureListener(() -> scrollExpand.setMinimumHeight(scrollParent.getMeasuredHeight())); // TODO: handle orientation change
+        scrollParent.setOnMeasureListener(() -> scrollExpand.setMinimumHeight(
+            scrollParent.getMeasuredHeight() - scrollParent.getPaddingTop() - scrollParent.getPaddingBottom()
+        )); // TODO: handle orientation change
         scrollParent.setOnScrollChangeListener((NestedScrollView.OnScrollChangeListener)(v, scrollX, scrollY, oldScrollX, oldScrollY) -> {
             if (dirty.value) {
                 if (scrollY < oldScrollY) {
@@ -306,11 +309,35 @@ public class MainActivity extends FragmentActivity implements
         if (Preferences.headerSeparator) {
             findViewById(R.id.header_separator).setVisibility(View.VISIBLE);
         }
-        if (Preferences.statusBarDarker) {
-            getWindow().setFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS, WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+        if (Preferences.statusBarDarker) { // TODO: remove
+            getWindow().setFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS, 1);
         }
 
         setupDropZones();
+    }
+
+    private void setupSystemBars() {
+        final View scrollParent = findViewById(R.id.scroll_parent);
+        scrollParent.setBackground(Drawables.createShadowBackground(
+            getResources(),
+            Preferences.headerBgColor,
+            !Preferences.headerOnBottom && (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q || hasNavigationBar())
+        ));
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.Q)
+    private boolean hasNavigationBar() {
+        final WindowInsets windowInsets = getWindow().getDecorView().getRootWindowInsets();
+        if (windowInsets == null) {
+            throw new RuntimeException("Window is not attached");
+        }
+        return windowInsets.getTappableElementInsets().bottom > 0;
+    }
+
+    @Override
+    public void onAttachedToWindow() {
+        super.onAttachedToWindow();
+        setupSystemBars();
     }
 
     private void setupDropZones() {
