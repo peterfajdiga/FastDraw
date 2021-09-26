@@ -34,7 +34,6 @@ import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowInsets;
-import android.view.WindowManager;
 import android.widget.FrameLayout;
 import android.widget.Toast;
 
@@ -119,7 +118,9 @@ public class MainActivity extends FragmentActivity implements
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED);
         }
 
-        getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
+        getWindow().getDecorView().setSystemUiVisibility(
+            View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+        );
 
         setupWidgets();
         setupAppsPager();
@@ -291,9 +292,6 @@ public class MainActivity extends FragmentActivity implements
         dragBgAnimator.setDuration(DROPZONE_TRANSITION_DURATION);
         if (Preferences.headerOnBottom) {
             dragBgAnimator.addUpdateListener(new NavigationBarColorAnimator(getWindow()));
-            getWindow().setStatusBarColor(Preferences.headerBgColor);
-        } else {
-            getWindow().setNavigationBarColor(Preferences.headerBgColor);
         }
         if (Preferences.headerShadow) {
             final float elevationStart = getResources().getDimension(R.dimen.pager_header_elevation);
@@ -314,7 +312,7 @@ public class MainActivity extends FragmentActivity implements
     }
 
     private void setupSystemBars() {
-        final View scrollParent = findViewById(R.id.scroll_parent);
+        final View scrollParent = findViewById(android.R.id.content);
         scrollParent.setBackground(Drawables.createShadowBackground(
             getResources(),
             Preferences.headerBgColor,

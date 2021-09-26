@@ -4,16 +4,10 @@
     <!--<dimen name="activity_vertical_margin">16dp</dimen>-->
 
     <dimen name="pager_header_height">56dp</dimen>
-    <dimen name="pager_header_height_with_status_bar">80dp</dimen>
     <dimen name="pager_header_elevation">4dp</dimen>
     <dimen name="pager_header_expanded_elevation">24dp</dimen>
 
     <dimen name="shadow_height">56dp</dimen>
-
-    <!--doesn't work with api 25, returns 48dp-->
-    <!--TODO: do something better or make sure it's 24dp everywhere-->
-    <!--<dimen name="status_bar_height">@*android:dimen/status_bar_height</dimen>-->
-    <dimen name="status_bar_height">24dp</dimen>
 
     <dimen name="app_item_grid_padding_vertical">16dp</dimen>
     <dimen name="app_item_grid_padding_below_label">3dp</dimen><!--app_item_padding_vertical - app_label_text_size-->
