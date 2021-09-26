@@ -311,9 +311,9 @@ public class MainActivity extends FragmentActivity implements
         setupDropZones();
     }
 
-    private void setupSystemBars() {
+    private void setupSystemBarsScrim() {
         final View scrollParent = findViewById(android.R.id.content);
-        scrollParent.setBackground(Drawables.createShadowBackground(
+        scrollParent.setBackground(Drawables.createScrimBackground(
             getResources(),
             Preferences.headerBgColor,
             !Preferences.headerOnBottom && (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q || hasNavigationBar())
@@ -332,7 +332,7 @@ public class MainActivity extends FragmentActivity implements
     @Override
     public void onAttachedToWindow() {
         super.onAttachedToWindow();
-        setupSystemBars();
+        setupSystemBarsScrim();
     }
 
     private void setupDropZones() {

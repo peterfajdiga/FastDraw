@@ -70,7 +70,7 @@ public class Drawables {
         }
     }
 
-    public static Drawable createShadowBackground(
+    public static Drawable createScrimBackground(
         @NonNull final Resources res,
         @ColorInt final int color,
         final boolean withBottom
@@ -80,17 +80,17 @@ public class Drawables {
             color,
         };
 
-        final int shadowHeight = Math.round(res.getDimension(R.dimen.shadow_height));
+        final int scrimHeight = Math.round(res.getDimension(R.dimen.system_bar_scrim_height));
 
         final LayerDrawable layers = new LayerDrawable(new Drawable[]{
             new GradientDrawable(GradientDrawable.Orientation.BOTTOM_TOP, gradientColors),
         });
-        layers.setLayerHeight(0, shadowHeight);
+        layers.setLayerHeight(0, scrimHeight);
         layers.setLayerGravity(0, Gravity.TOP);
 
         if (withBottom) {
             layers.addLayer(new GradientDrawable(GradientDrawable.Orientation.TOP_BOTTOM, gradientColors));
-            layers.setLayerHeight(1, shadowHeight);
+            layers.setLayerHeight(1, scrimHeight);
             layers.setLayerGravity(1, Gravity.BOTTOM);
         }
 
