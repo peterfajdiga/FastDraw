@@ -309,9 +309,6 @@ public class MainActivity extends FragmentActivity implements
         if (Preferences.headerSeparator) {
             findViewById(R.id.header_separator).setVisibility(View.VISIBLE);
         }
-        if (Preferences.statusBarDarker) { // TODO: remove
-            getWindow().setFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS, 1);
-        }
 
         setupDropZones();
     }

@@ -35,10 +35,4 @@
         android:title="@string/pref_title_headerBgColorExpanded"
         app:editAlpha="true" />
 
-    <SwitchPreference
-        android:defaultValue="@bool/default_statusBarDarker"
-        android:key="statusBarDarker"
-        android:title="@string/pref_title_statusBarDarker"
-        android:summary="@string/pref_description_statusBarDarker" />
-
 </PreferenceScreen>

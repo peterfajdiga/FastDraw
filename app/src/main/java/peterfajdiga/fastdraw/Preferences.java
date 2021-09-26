@@ -35,8 +35,6 @@ public final class Preferences {
 
     public static int widgetHeight;
 
-    public static boolean statusBarDarker;
-
     public static int longclickAction;
     public static int doubleclickAction;
     public static int pinchAction;
@@ -62,7 +60,6 @@ public final class Preferences {
         largeSingle                        = prefs.getBoolean("largeSingle",         res.getBoolean(R.bool.default_largeSingle));
         headerSeparator                    = prefs.getBoolean("headerSeparator",     res.getBoolean(R.bool.default_headerSeparator));
         headerShadow                       = prefs.getBoolean("headerShadow",        res.getBoolean(R.bool.default_headerShadow));
-        statusBarDarker                    = prefs.getBoolean("statusBarDarker",     res.getBoolean(R.bool.default_statusBarDarker));
         longclickAction   = Integer.parseInt(prefs.getString("action_longclick",     res.getString(R.string.default_action_longclick)));
         doubleclickAction = Integer.parseInt(prefs.getString("action_doubleclick",   res.getString(R.string.default_action_doubleclick)));
         pinchAction       = Integer.parseInt(prefs.getString("action_pinch",         res.getString(R.string.default_action_pinch)));
