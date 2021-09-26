@@ -95,6 +95,8 @@ public class Category {
         final RecyclerView containerView = new RecyclerView(context);
         containerView.setAdapter(adapter);
 
+        containerView.setOverScrollMode(View.OVER_SCROLL_NEVER);
+
         if (!Preferences.appsLinearList) {
             final int spanWidth = context.getResources().getDimensionPixelSize(R.dimen.app_item_grid_icon_size) +
                 context.getResources().getDimensionPixelSize(R.dimen.app_item_grid_icon_padding) * 2;
