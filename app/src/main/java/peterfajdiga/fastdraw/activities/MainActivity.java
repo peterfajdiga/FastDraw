@@ -792,11 +792,6 @@ public class MainActivity extends FragmentActivity implements
             final TransitionDrawable backgroundTransition = (TransitionDrawable)background;
             backgroundTransition.startTransition(DROPZONE_TRANSITION_DURATION);
         }
-
-        // hide status or navigation bar
-        if (!Preferences.headerOnBottom) {
-            getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        }
     }
 
     public void onDragEnded1() {
@@ -813,11 +808,6 @@ public class MainActivity extends FragmentActivity implements
             if (background instanceof TransitionDrawable) {
                 final TransitionDrawable backgroundTransition = (TransitionDrawable)background;
                 backgroundTransition.reverseTransition(DROPZONE_TRANSITION_DURATION);
-            }
-
-            // show status or navigation bar
-            if (!Preferences.headerOnBottom) {
-                getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
             }
         }
     }
