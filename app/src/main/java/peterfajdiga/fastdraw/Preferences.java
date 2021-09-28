@@ -14,14 +14,9 @@ public final class Preferences {
     public static final int ACTION_NOTIFICATIONS = 6;
 
     public static boolean allowOrientation;
-
     public static boolean appsLinearList;
-
     public static boolean headerOnBottom;
-    public static boolean stackFromBottom;
-
     public static boolean scrollableTabs;
-
     public static boolean hideHidden;
 
     public static boolean showIcons;
@@ -53,7 +48,6 @@ public final class Preferences {
         }
         allowOrientation                   = prefs.getBoolean("allowOrientation",    res.getBoolean(R.bool.default_allowOrientation));
         headerOnBottom                     = prefs.getBoolean("headerbtm",           res.getBoolean(R.bool.default_headerbtm));
-        stackFromBottom                    = prefs.getBoolean("stackFromBottom",     res.getBoolean(R.bool.default_stackFromBottom));
         scrollableTabs                     = prefs.getBoolean("scrollableTabs",      res.getBoolean(R.bool.default_scrollableTabs));
         hideHidden                         = prefs.getBoolean("hideHidden",          res.getBoolean(R.bool.default_hideHidden));
         showIcons                          = prefs.getBoolean("showIcons",           res.getBoolean(R.bool.default_showIcons));

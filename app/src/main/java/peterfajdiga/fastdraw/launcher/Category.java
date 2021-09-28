@@ -100,7 +100,7 @@ public class Category {
         if (!Preferences.appsLinearList) {
             final int spanWidth = context.getResources().getDimensionPixelSize(R.dimen.app_item_grid_icon_size) +
                 context.getResources().getDimensionPixelSize(R.dimen.app_item_grid_icon_padding) * 2;
-            final GridLayoutManager layoutManager = new AutoGridLayoutManager(context, spanWidth, GridLayoutManager.VERTICAL, Preferences.stackFromBottom);
+            final GridLayoutManager layoutManager = new AutoGridLayoutManager(context, spanWidth, GridLayoutManager.VERTICAL, false);
             containerView.setLayoutManager(layoutManager);
             final int padding = Math.round(context.getResources().getDimensionPixelSize(R.dimen.app_item_grid_container_padding));
             containerView.setPadding(padding, padding, padding, padding);

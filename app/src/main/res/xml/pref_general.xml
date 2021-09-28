@@ -30,12 +30,6 @@
         android:summary="@string/pref_description_headerbtm" />
 
     <SwitchPreference
-        android:defaultValue="@bool/default_stackFromBottom"
-        android:key="stackFromBottom"
-        android:title="@string/pref_title_stackFromBottom"
-        android:summary="@string/pref_description_stackFromBottom" />
-
-    <SwitchPreference
         android:defaultValue="@bool/default_scrollableTabs"
         android:key="scrollableTabs"
         android:title="@string/pref_title_scrollableTabs"
