@@ -110,7 +110,7 @@ public class MainActivity extends FragmentActivity implements
         final Intent intent = getIntent();
         if (intent != null) {
             final String action = intent.getAction();
-            if (action.equals(LauncherApps.ACTION_CONFIRM_PIN_SHORTCUT) && android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+            if (action != null && action.equals(LauncherApps.ACTION_CONFIRM_PIN_SHORTCUT) && android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
                 final OreoShortcutItem newShortcut = ShortcutItemManager.oreoShortcutFromIntent(intent);
                 if (newShortcut != null) {
                     final String shortcutCategoryName = getString(R.string.default_shortcut_category);
