@@ -521,10 +521,8 @@ public class MainActivity extends FragmentActivity implements
     @Override
     public void onAppChange(String packageName) {
         Log.d("LosingCategorizations", "MainActivity.onAppChange: " + packageName);
-        AppItemManager.removePackageItems(this, launcher, packageName, false);
-
-        final AppItem[] appItems = AppItemManager.getAppItems(getPackageManager(), packageName).toArray(AppItem[]::new);
-        launcher.addItems("onAppChange", appItems); // TODO: undo debug string onAppChange
+        final Stream<AppItem> updatedAppItems = AppItemManager.getAppItems(getPackageManager(), packageName);
+        AppItemManager.updatePackageItems(launcher, packageName, updatedAppItems);
     }
 
     @Override

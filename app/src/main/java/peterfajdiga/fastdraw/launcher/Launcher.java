@@ -208,6 +208,12 @@ public class Launcher {
         }
     }
 
+    public void updateItem(@NonNull final LauncherItem existingItem, @NonNull final LauncherItem updatedItem) {
+        final String categoryName = getItemCategory(existingItem);
+        final Category category = adapter.categories.get(categoryName);
+        category.updateItem(existingItem.getID(), updatedItem.getDisplayItem(pager.getContext()));
+    }
+
     public void moveItem(@NonNull final LauncherItem item, @NonNull final String categoryName, final boolean followItem) {
         final String oldCategoryName = getItemCategory(item);
 

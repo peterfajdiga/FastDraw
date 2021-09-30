@@ -47,12 +47,27 @@ public class Category {
 
     public void removeItem(final String id) {
         final SortedList<DisplayItem> items = adapter.getItems();
+        final int index = findItemIndex(items, id);
+        if (index != -1) {
+            items.removeItemAt(index);
+        }
+    }
+
+    public void updateItem(final String id, final DisplayItem updatedItem) {
+        final SortedList<DisplayItem> items = adapter.getItems();
+        final int index = findItemIndex(items, id);
+        if (index != -1) {
+            items.updateItemAt(index, updatedItem);
+        }
+    }
+
+    private static int findItemIndex(SortedList<DisplayItem> items, final String id) {
         for (int i = 0; i < items.size(); i++) {
             if (items.get(i).id.equals(id)) {
-                items.removeItemAt(i);
-                return;
+                return i;
             }
         }
+        return -1;
     }
 
     @NonNull
