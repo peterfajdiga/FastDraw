@@ -18,11 +18,6 @@
         android:key="headerSeparator"
         android:title="@string/pref_title_headerSeparator"
         android:summary="@string/pref_description_headerSeparator" />
-    <SwitchPreference
-        android:defaultValue="@bool/default_headerShadow"
-        android:key="headerShadow"
-        android:title="@string/pref_title_headerShadow"
-        android:summary="@string/pref_description_headerShadow" />
 
     <peterfajdiga.colorpickerhex.ColorPreference
         android:defaultValue="@integer/default_headerBgColor"

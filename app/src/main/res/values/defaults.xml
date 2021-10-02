@@ -8,7 +8,6 @@
     <bool name="default_showIcons">true</bool>
     <bool name="default_largeSingle">false</bool>
     <bool name="default_headerSeparator">false</bool>
-    <bool name="default_headerShadow">true</bool>
     <integer name="default_headerBgColor">0x80000000</integer>
     <integer name="default_headerBgColorExpanded">0xB0000000</integer>
     <integer name="default_widgetHeight">260</integer>

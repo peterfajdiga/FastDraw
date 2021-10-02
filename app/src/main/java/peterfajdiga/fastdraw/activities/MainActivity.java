@@ -101,7 +101,7 @@ public class MainActivity extends FragmentActivity implements
 
     private InstallAppReceiver installAppReceiver;
 
-    private ValueAnimator dragBgAnimator;
+    private ValueAnimator dragHeaderElevationAnimator;
 
     private static WeakReference<MainActivity> instance;
     private final LaunchManager launchManager = new LaunchManager(this);
@@ -283,15 +283,11 @@ public class MainActivity extends FragmentActivity implements
 
         setupHeaderBackground(header);
 
-        // header animator
-        dragBgAnimator = ValueAnimator.ofArgb(Preferences.headerBgColor, Preferences.headerBgColorExpanded);
-        dragBgAnimator.setDuration(DROPZONE_TRANSITION_DURATION);
-        if (Preferences.headerShadow) {
-            final float elevationStart = getResources().getDimension(R.dimen.pager_header_elevation);
-            final float elevationEnd = getResources().getDimension(R.dimen.pager_header_expanded_elevation);
-            dragBgAnimator.addUpdateListener(new ViewElevationAnimator(header, elevationStart, elevationEnd)); // TODO: refactor
-        }
-        dragBgAnimator.setCurrentPlayTime(0);
+        // header elevation animator
+        dragHeaderElevationAnimator = ValueAnimator.ofFloat(0.0f, getResources().getDimension(R.dimen.pager_header_expanded_elevation));
+        dragHeaderElevationAnimator.setDuration(DROPZONE_TRANSITION_DURATION);
+        dragHeaderElevationAnimator.addUpdateListener(new ViewElevationAnimator(header));
+        dragHeaderElevationAnimator.setCurrentPlayTime(0);
 
         // header preferences
         if (Preferences.scrollableTabs) {
@@ -379,7 +375,7 @@ public class MainActivity extends FragmentActivity implements
         header.setBackground(Drawables.createHeaderBackground(
             getResources(),
             Preferences.headerBgColor,
-            expandedColor, // TODO: add elevation, even if shadow disabled
+            expandedColor,
             !Preferences.headerOnBottom,
             Preferences.headerSeparator
         ));
@@ -807,7 +803,7 @@ public class MainActivity extends FragmentActivity implements
         findViewById(R.id.drop_zone_remove_shortcut).setVisibility(draggedItem instanceof ShortcutItem ? View.VISIBLE : View.GONE);
 
         // set header background
-        dragBgAnimator.start();
+        dragHeaderElevationAnimator.start();
         final Drawable background = findViewById(R.id.header).getBackground();
         if (background instanceof TransitionDrawable) {
             final TransitionDrawable backgroundTransition = (TransitionDrawable)background;
@@ -834,7 +830,7 @@ public class MainActivity extends FragmentActivity implements
             draggedItem = null;
 
             // reset header background
-            dragBgAnimator.reverse();
+            dragHeaderElevationAnimator.reverse();
             final Drawable background = findViewById(R.id.header).getBackground();
             if (background instanceof TransitionDrawable) {
                 final TransitionDrawable backgroundTransition = (TransitionDrawable)background;
