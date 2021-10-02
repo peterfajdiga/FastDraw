@@ -5,6 +5,7 @@ import static peterfajdiga.fastdraw.launcher.LaunchManager.PERMISSION_REQUEST_CO
 import android.animation.LayoutTransition;
 import android.animation.ValueAnimator;
 import android.annotation.SuppressLint;
+import android.app.WallpaperColors;
 import android.app.WallpaperManager;
 import android.appwidget.AppWidgetHostView;
 import android.appwidget.AppWidgetManager;
@@ -37,6 +38,7 @@ import android.view.WindowInsets;
 import android.widget.FrameLayout;
 import android.widget.Toast;
 
+import androidx.annotation.ColorInt;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
@@ -57,6 +59,7 @@ import peterfajdiga.fastdraw.PrefMap;
 import peterfajdiga.fastdraw.Preferences;
 import peterfajdiga.fastdraw.R;
 import peterfajdiga.fastdraw.SettableBoolean;
+import peterfajdiga.fastdraw.WallpaperColorUtils;
 import peterfajdiga.fastdraw.dialogs.ActionsSheet;
 import peterfajdiga.fastdraw.dialogs.NewCategoryDialog;
 import peterfajdiga.fastdraw.dialogs.RenameCategoryDialog;
@@ -278,13 +281,7 @@ public class MainActivity extends FragmentActivity implements
         lt.setDuration(LayoutTransition.CHANGE_DISAPPEARING, DROPZONE_TRANSITION_DURATION);
         header.setLayoutTransition(lt);
 
-        header.setBackground(Drawables.createHeaderBackground(
-            getResources(),
-            Preferences.headerBgColor,
-            Preferences.headerBgColorExpanded,
-            !Preferences.headerOnBottom,
-            Preferences.headerSeparator
-        ));
+        setupHeaderBackground(header);
 
         // header animator
         dragBgAnimator = ValueAnimator.ofArgb(Preferences.headerBgColor, Preferences.headerBgColorExpanded);
@@ -356,6 +353,36 @@ public class MainActivity extends FragmentActivity implements
                 }
             }
         });
+    }
+
+    private void setupHeaderBackground(@NonNull final View header) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O_MR1) {
+            final WallpaperManager wallpaperManager = (WallpaperManager)getSystemService(WALLPAPER_SERVICE);
+            final WallpaperColors wallpaperColors = wallpaperManager.getWallpaperColors(WallpaperManager.FLAG_SYSTEM);
+            updateHeaderColor(header, WallpaperColorUtils.getDarkColor(wallpaperColors));
+            setupWallpaperColorListener(header, wallpaperManager);
+        } else {
+            updateHeaderColor(header, Color.BLACK);
+        }
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.O_MR1)
+    private void setupWallpaperColorListener(@NonNull final View header, @NonNull final WallpaperManager wallpaperManager) {
+        wallpaperManager.addOnColorsChangedListener((colors, which) -> {
+            if ((which & WallpaperManager.FLAG_SYSTEM) != 0) {
+                updateHeaderColor(header, WallpaperColorUtils.getDarkColor(colors));
+            }
+        }, null);
+    }
+
+    private void updateHeaderColor(@NonNull final View header, @ColorInt final int expandedColor) {
+        header.setBackground(Drawables.createHeaderBackground(
+            getResources(),
+            Preferences.headerBgColor,
+            expandedColor, // TODO: add elevation, even if shadow disabled
+            !Preferences.headerOnBottom,
+            Preferences.headerSeparator
+        ));
     }
 
     private void setupInstallAppReceiver() {
