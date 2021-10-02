@@ -10,7 +10,7 @@ import android.view.ViewConfiguration;
 
 public class LongPress implements View.OnTouchListener {
     private static final int LONG_PRESS_TIME = ViewConfiguration.getLongPressTimeout();
-    private static final float MOVE_TOLERANCE_DP = 2f;
+    private static final float MOVE_TOLERANCE_DP = 8f;
 
     private final float moveToleranceSq;
     private final GestureListener listener;
