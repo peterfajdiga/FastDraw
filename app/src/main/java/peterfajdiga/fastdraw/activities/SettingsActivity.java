@@ -44,6 +44,8 @@ import peterfajdiga.fastdraw.categoryorder.ReorderHelperCallback;
  * API Guide</a> for more information on developing a Settings UI.
  */
 public class SettingsActivity extends AppCompatPreferenceActivity implements SharedPreferences.OnSharedPreferenceChangeListener {
+    private Menu optionsMenu;
+
     /**
      * A preference value change listener that updates the preference's summary
      * to reflect its new value.
@@ -269,12 +271,21 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
     }
 
     @Override
+    public boolean onPrepareOptionsMenu(final Menu menu) {
+        this.optionsMenu = menu;
+        return super.onPrepareOptionsMenu(menu);
+    }
+
+    @Override
     public void onBackPressed() {
         if (isShowingHeaderList()) {
             final Intent mainActivityIntent = new Intent(this, MainActivity.class);
             startActivity(mainActivityIntent);
             finish();
         } else {
+            if (optionsMenu != null) {
+                optionsMenu.clear();
+            }
             super.onBackPressed();
         }
     }
