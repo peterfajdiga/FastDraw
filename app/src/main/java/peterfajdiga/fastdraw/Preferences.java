@@ -25,7 +25,6 @@ public final class Preferences {
     public static boolean headerSeparator;
 
     public static int headerBgColor;
-    public static int headerBgColorExpanded;
 
     public static int widgetHeight;
 
@@ -59,7 +58,6 @@ public final class Preferences {
         swipeUpAction2F   = Integer.parseInt(prefs.getString("action_swipe_up_2f",   res.getString(R.string.default_action_swipe_up_2f)));
         swipeDownAction2F = Integer.parseInt(prefs.getString("action_swipe_down_2f", res.getString(R.string.default_action_swipe_down_2f)));
         headerBgColor                      = prefs.getInt("headerBgColor",           res.getInteger(R.integer.default_headerBgColor));
-        headerBgColorExpanded              = prefs.getInt("headerBgColorExpanded",   res.getInteger(R.integer.default_headerBgColorExpanded));
         widgetHeight                       = prefs.getInt("widgetHeight",            res.getInteger(R.integer.default_widgetHeight));
     }
 }

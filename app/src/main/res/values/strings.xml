@@ -54,7 +54,6 @@
     <string name="pref_title_headerSeparator">Show tabs separator</string>
     <string name="pref_description_headerSeparator">Display a white line between the tabs and the apps</string>
     <string name="pref_title_headerBgColor">Normal color</string>
-    <string name="pref_title_headerBgColorExpanded">Expanded color</string>
 
     <string name="pref_header_gestures">Gestures</string>
     <string-array name="pref_actions_titles">
