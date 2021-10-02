@@ -433,6 +433,7 @@ public class MainActivity extends FragmentActivity implements
 
     public void openWallpaperPicker() {
         final Intent intent = new Intent(Intent.ACTION_SET_WALLPAPER);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_DOCUMENT); // don't keep wallpaper picker in recent apps
         startActivity(Intent.createChooser(intent, getString(R.string.select_wallpaper)));
     }
 
