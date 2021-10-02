@@ -63,7 +63,8 @@ public class AppItemManager {
     public static void updatePackageItems(
         final Launcher launcher,
         final String packageName,
-        final Stream<AppItem> updatedAppItemsStream
+        final Stream<AppItem> updatedAppItemsStream,
+        final String defaultCategoryName
     ) {
         final Map<String, AppItem> updatedAppItems = updatedAppItemsStream.collect(Collectors.toMap(AppItem::getID, Function.identity()));
 
@@ -83,7 +84,7 @@ public class AppItemManager {
         if (!updatedAppItems.isEmpty()) {
             Log.d("PackageAppItemUpdate", "Adding new items");
         }
-        launcher.addItems("onAppChange", updatedAppItems.values().toArray(new AppItem[0])); // TODO: undo debug string onAppChange
+        launcher.addItems(defaultCategoryName, updatedAppItems.values().toArray(new AppItem[0]));
     }
 
     public static void showPackageDetails(final Context context, final String packageName) {
