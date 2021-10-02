@@ -514,21 +514,18 @@ public class MainActivity extends FragmentActivity implements
 
     @Override
     public void onAppInstall(String packageName) {
-        Log.d("LosingCategorizations", "MainActivity.onAppInstall: " + packageName);
         final AppItem[] appItems = AppItemManager.getAppItems(getPackageManager(), packageName).toArray(AppItem[]::new);
         launcher.addItems(getString(R.string.default_category), appItems);
     }
 
     @Override
     public void onAppChange(String packageName) {
-        Log.d("LosingCategorizations", "MainActivity.onAppChange: " + packageName);
         final Stream<AppItem> updatedAppItems = AppItemManager.getAppItems(getPackageManager(), packageName);
         AppItemManager.updatePackageItems(launcher, packageName, updatedAppItems, getString(R.string.default_category));
     }
 
     @Override
     public void onAppRemove(String packageName) {
-        Log.d("LosingCategorizations", "MainActivity.onAppRemove: " + packageName);
         AppItemManager.removePackageItems(this, launcher, packageName, false);
     }
 
@@ -599,7 +596,6 @@ public class MainActivity extends FragmentActivity implements
     @Override
     public void onDraggedItemRemove() {
         ShortcutItem shortcutItem = (ShortcutItem)draggedItem;
-        Log.d("LosingCategorizations", "MainActivity.onDraggedItemRemove: Removing shortcut: " + shortcutItem.getID() + " of package " + shortcutItem.getPackageName());
         launcher.removeItem(shortcutItem, true);
         ShortcutItemManager.deleteShortcut(this, shortcutItem);
     }

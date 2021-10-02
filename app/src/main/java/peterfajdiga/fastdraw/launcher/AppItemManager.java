@@ -51,7 +51,6 @@ public class AppItemManager {
     ) {
         for (final LauncherItem item : launcher.getItems()) {
             if (packageName.equals(item.getPackageName()) && (permanent || !(item instanceof ShortcutItem))) {
-                Log.d("LosingCategorizations", "AppItemManager.removePackageItems: Removing item: " + item.getID() + " of package " + item.getPackageName() + "; permanent: " + permanent);
                 launcher.removeItem(item, permanent);
                 if (item instanceof ShortcutItem) {
                     ShortcutItemManager.deleteShortcut(context, (ShortcutItem)item);
@@ -72,18 +71,13 @@ public class AppItemManager {
             if (existingItem instanceof AppItem && packageName.equals(existingItem.getPackageName())) {
                 final AppItem updatedAppItem = updatedAppItems.remove(existingItem.getID());
                 if (updatedAppItem == null) {
-                    Log.d("PackageAppItemUpdate", "Removing item " + existingItem.getID());
                     launcher.removeItem(existingItem, true);
                 } else {
-                    Log.d("PackageAppItemUpdate", "Updating item " + existingItem.getID());
                     launcher.updateItem(existingItem, updatedAppItem);
                 }
             }
         }
 
-        if (!updatedAppItems.isEmpty()) {
-            Log.d("PackageAppItemUpdate", "Adding new items");
-        }
         launcher.addItems(defaultCategoryName, updatedAppItems.values().toArray(new AppItem[0]));
     }
 
