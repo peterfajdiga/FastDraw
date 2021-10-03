@@ -5,6 +5,7 @@ import static peterfajdiga.fastdraw.launcher.LaunchManager.PERMISSION_REQUEST_CO
 import android.animation.LayoutTransition;
 import android.animation.ValueAnimator;
 import android.annotation.SuppressLint;
+import android.app.WallpaperManager;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
@@ -32,6 +33,7 @@ import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
+import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
 import com.google.android.material.tabs.TabLayout;
@@ -162,10 +164,35 @@ public class MainActivity extends FragmentActivity implements
         ViewPager appsPager = findViewById(R.id.apps_pager);
         launcher = new Launcher(launchManager, this, appsPager);
 
+        setupWallpaperMovement(appsPager);
         setupHeader(appsPager);
 
         loadLauncherItems();
         launcher.showCategory(Launcher.HOME_CATEGORY_NAME);
+    }
+
+    private void setupWallpaperMovement(final ViewPager pager) {
+        final WallpaperManager wallpaperManager = WallpaperManager.getInstance(this);
+
+        pager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(final int position, final float positionOffset, final int positionOffsetPixels) {
+                final PagerAdapter adapter = pager.getAdapter();
+                final float xOffset;
+                if (adapter == null || adapter.getCount() <= 1) {
+                    xOffset = 0.5f;
+                } else {
+                    xOffset = (position + positionOffset) / (adapter.getCount() - 1.0f);
+                }
+                wallpaperManager.setWallpaperOffsets(pager.getWindowToken(), xOffset, 0.5f);
+            }
+
+            @Override
+            public void onPageSelected(final int position) {}
+
+            @Override
+            public void onPageScrollStateChanged(final int state) {}
+        });
     }
 
     private void setupHeader(final ViewPager appsPager) {
