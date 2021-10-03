@@ -13,8 +13,6 @@ import android.view.Gravity;
 import androidx.annotation.ColorInt;
 import androidx.annotation.NonNull;
 
-import peterfajdiga.fastdraw.R;
-
 public class Drawables {
     private Drawables() {}
 
@@ -71,27 +69,29 @@ public class Drawables {
     }
 
     public static Drawable createScrimBackground(
-        @NonNull final Resources res,
         @ColorInt final int color,
-        final boolean withBottom
+        final int heightTop,
+        final int heightBottom
     ) {
         final int[] gradientColors = new int[]{
             Color.TRANSPARENT,
             color,
         };
 
-        final int scrimHeight = Math.round(res.getDimension(R.dimen.system_bar_scrim_height));
+        final LayerDrawable layers = new LayerDrawable(new Drawable[2]);
 
-        final LayerDrawable layers = new LayerDrawable(new Drawable[]{
-            new GradientDrawable(GradientDrawable.Orientation.BOTTOM_TOP, gradientColors),
-        });
-        layers.setLayerHeight(0, scrimHeight);
-        layers.setLayerGravity(0, Gravity.TOP);
+        if (heightTop > 0) {
+            final int index = layers.getNumberOfLayers();
+            layers.addLayer(new GradientDrawable(GradientDrawable.Orientation.BOTTOM_TOP, gradientColors));
+            layers.setLayerHeight(index, heightTop);
+            layers.setLayerGravity(index, Gravity.TOP);
+        }
 
-        if (withBottom) {
+        if (heightBottom > 0) {
+            final int index = layers.getNumberOfLayers();
             layers.addLayer(new GradientDrawable(GradientDrawable.Orientation.TOP_BOTTOM, gradientColors));
-            layers.setLayerHeight(1, scrimHeight);
-            layers.setLayerGravity(1, Gravity.BOTTOM);
+            layers.setLayerHeight(index, heightBottom);
+            layers.setLayerGravity(index, Gravity.BOTTOM);
         }
 
         return layers;

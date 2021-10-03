@@ -16,6 +16,7 @@ import android.content.pm.ActivityInfo;
 import android.content.pm.LauncherApps;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
+import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.LightingColorFilter;
 import android.graphics.Paint;
@@ -319,11 +320,21 @@ public class MainActivity extends FragmentActivity implements
     }
 
     private void setupSystemBarsScrim() {
-        final View scrollParent = findViewById(android.R.id.content);
-        scrollParent.setBackground(Drawables.createScrimBackground(
-            getResources(),
+        final Resources res = getResources();
+        final int scrimHeight = Math.round(res.getDimension(R.dimen.system_bar_scrim_height));
+
+        final boolean hasNavigationBar = Build.VERSION.SDK_INT < Build.VERSION_CODES.Q || hasNavigationBar();
+        final int scrimHeightBottom = hasNavigationBar ? (
+            Preferences.headerOnBottom ? Math.round(res.getDimension(R.dimen.system_bar_scrim_height_large)) : scrimHeight
+        ) : (
+            Preferences.headerOnBottom ? scrimHeight : 0
+        );
+
+        final View contentView = findViewById(android.R.id.content);
+        contentView.setBackground(Drawables.createScrimBackground(
             Preferences.headerBgColor,
-            Preferences.headerOnBottom || Build.VERSION.SDK_INT < Build.VERSION_CODES.Q || hasNavigationBar()
+            scrimHeight,
+            scrimHeightBottom
         ));
     }
 
