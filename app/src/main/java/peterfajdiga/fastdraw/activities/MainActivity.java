@@ -374,10 +374,10 @@ public class MainActivity extends FragmentActivity implements
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O_MR1) {
             final WallpaperManager wallpaperManager = (WallpaperManager)getSystemService(WALLPAPER_SERVICE);
             final WallpaperColors wallpaperColors = wallpaperManager.getWallpaperColors(WallpaperManager.FLAG_SYSTEM);
-            updateHeaderColor(header, WallpaperColorUtils.getDarkColor(wallpaperColors));
+            updateHeaderBackground(header, WallpaperColorUtils.getDarkColor(wallpaperColors));
             setupWallpaperColorListener(header, wallpaperManager);
         } else {
-            updateHeaderColor(header, Color.BLACK);
+            updateHeaderBackground(header, Color.BLACK);
         }
     }
 
@@ -385,12 +385,12 @@ public class MainActivity extends FragmentActivity implements
     private void setupWallpaperColorListener(@NonNull final View header, @NonNull final WallpaperManager wallpaperManager) {
         wallpaperManager.addOnColorsChangedListener((colors, which) -> {
             if ((which & WallpaperManager.FLAG_SYSTEM) != 0) {
-                updateHeaderColor(header, WallpaperColorUtils.getDarkColor(colors));
+                updateHeaderBackground(header, WallpaperColorUtils.getDarkColor(colors));
             }
         }, null);
     }
 
-    private void updateHeaderColor(@NonNull final View header, @ColorInt final int expandedColor) {
+    private void updateHeaderBackground(@NonNull final View header, @ColorInt final int expandedColor) {
         header.setBackground(Drawables.createHeaderBackground(
             getResources(),
             Preferences.headerBgColor,
