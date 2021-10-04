@@ -558,11 +558,14 @@ public class MainActivity extends FragmentActivity implements
             widgetContainer.removeView(oldWidgetView);
         }
 
-        final float height = TypedValue.applyDimension(
-            TypedValue.COMPLEX_UNIT_DIP,
-            Preferences.widgetHeight,
-            getResources().getDisplayMetrics()
-        ); // TODO: limit max height
+        final float height = Math.min(
+            TypedValue.applyDimension(
+                TypedValue.COMPLEX_UNIT_DIP,
+                Preferences.widgetHeight,
+                getResources().getDisplayMetrics()
+            ),
+            getResources().getDisplayMetrics().heightPixels * 0.75f // TODO: handle landscape orientation
+        );
 
         widgetContainer.addView(widgetView, new FrameLayout.LayoutParams(
             FrameLayout.LayoutParams.MATCH_PARENT,
