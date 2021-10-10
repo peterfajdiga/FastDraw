@@ -29,8 +29,8 @@ public class ActionsSheet extends BottomSheetDialogFragment {
             activity.showCreateShortcutDialog();
         });
 
-        final View actionWidgettView = dialogView.findViewById(R.id.action_widget);
-        actionWidgettView.setOnClickListener(v -> {
+        final View actionWidgetView = dialogView.findViewById(R.id.action_widget);
+        actionWidgetView.setOnClickListener(v -> {
             dialog.cancel();
             activity.showCreateWidgetDialog();
         });
