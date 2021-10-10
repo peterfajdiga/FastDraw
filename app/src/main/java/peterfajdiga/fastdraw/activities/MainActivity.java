@@ -426,7 +426,8 @@ public class MainActivity extends FragmentActivity implements
         if (widgetId != -1) {
             final AppWidgetHostView widgetView = widgetManager.createWidgetView(widgetId);
             if (widgetView != null) {
-                replaceWidgetView(widgetView);
+                final ViewGroup widgetContainer = findViewById(R.id.widget_container);
+                replaceWidgetView(widgetContainer, widgetView);
             }
         }
     }
@@ -545,18 +546,14 @@ public class MainActivity extends FragmentActivity implements
     }
 
     private void setWidget(@NonNull AppWidgetHostView widgetView) {
-        replaceWidgetView(widgetView);
+        final ViewGroup widgetContainer = findViewById(R.id.widget_container);
+        replaceWidgetView(widgetContainer, widgetView);
         final PrefMap widgetPrefs = new PrefMap(this, "widgets"); // TODO: "widgets" constant
         widgetPrefs.putInt("widget_id", widgetView.getAppWidgetId()); // TODO: "widget_id" constant
     }
 
-    private void replaceWidgetView(@NonNull AppWidgetHostView widgetView) {
-        final FrameLayout widgetContainer = findViewById(R.id.widget_container);
-        final AppWidgetHostView oldWidgetView = getCurrentWidgetView(widgetContainer);
-        if (oldWidgetView != null) {
-            widgetManager.deleteWidget(oldWidgetView.getAppWidgetId());
-            widgetContainer.removeView(oldWidgetView);
-        }
+    private void replaceWidgetView(@NonNull final ViewGroup widgetContainer, @NonNull final AppWidgetHostView widgetView) {
+        removeWidgetView(widgetContainer);
 
         final float height = Math.min(
             TypedValue.applyDimension(
@@ -574,8 +571,16 @@ public class MainActivity extends FragmentActivity implements
         ));
     }
 
+    private void removeWidgetView(@NonNull final ViewGroup widgetContainer) {
+        final AppWidgetHostView oldWidgetView = getCurrentWidgetView(widgetContainer);
+        if (oldWidgetView != null) {
+            widgetManager.deleteWidget(oldWidgetView.getAppWidgetId());
+            widgetContainer.removeView(oldWidgetView);
+        }
+    }
+
     @Nullable
-    private static AppWidgetHostView getCurrentWidgetView(final FrameLayout widgetContainer) {
+    private static AppWidgetHostView getCurrentWidgetView(final ViewGroup widgetContainer) {
         final int n = widgetContainer.getChildCount();
         for (int i = 0; i < n; i++) {
             final View child = widgetContainer.getChildAt(i);
