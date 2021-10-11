@@ -555,20 +555,28 @@ public class MainActivity extends FragmentActivity implements
     private void replaceWidgetView(@NonNull final ViewGroup widgetContainer, @NonNull final AppWidgetHostView widgetView) {
         removeWidgetView(widgetContainer);
 
+        final Resources res = getResources();
         final float height = Math.min(
             TypedValue.applyDimension(
                 TypedValue.COMPLEX_UNIT_DIP,
                 Preferences.widgetHeight,
-                getResources().getDisplayMetrics()
+                res.getDisplayMetrics()
             ),
-            getResources().getDisplayMetrics().heightPixels * 0.75f // TODO: handle landscape orientation
+            res.getDisplayMetrics().heightPixels * 0.75f // TODO: handle landscape orientation
         );
+        final int margin = Math.round(res.getDimension(R.dimen.widget_margin));
 
-        widgetContainer.addView(widgetView, new FrameLayout.LayoutParams(
+        final FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(
             FrameLayout.LayoutParams.MATCH_PARENT,
             Math.round(height),
             Gravity.CENTER
-        ));
+        );
+        layoutParams.topMargin = margin;
+        layoutParams.bottomMargin = margin;
+        layoutParams.leftMargin = margin;
+        layoutParams.rightMargin = margin;
+
+        widgetContainer.addView(widgetView, layoutParams);
     }
 
     private void removeWidgetView(@NonNull final ViewGroup widgetContainer) {

@@ -18,8 +18,7 @@
             <FrameLayout
                 android:id="@+id/widget_container"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="@dimen/app_item_grid_container_padding" />
+                android:layout_height="wrap_content" />
 
             <FrameLayout
                 android:id="@+id/scroll_expand"
