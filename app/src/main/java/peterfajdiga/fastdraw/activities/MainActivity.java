@@ -29,6 +29,7 @@ import android.preference.PreferenceManager;
 import android.provider.ContactsContract;
 import android.provider.Settings;
 import android.provider.Telephony;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.DragEvent;
@@ -83,10 +84,15 @@ import peterfajdiga.fastdraw.views.CategoryTabLayout;
 import peterfajdiga.fastdraw.views.Drawables;
 import peterfajdiga.fastdraw.views.NestedScrollParent;
 import peterfajdiga.fastdraw.views.animators.ViewElevationAnimator;
+import peterfajdiga.fastdraw.views.gestures.DoubleTap;
+import peterfajdiga.fastdraw.views.gestures.LongPress;
+import peterfajdiga.fastdraw.views.gestures.OnTouchListenerMux;
+import peterfajdiga.fastdraw.views.gestures.Pinch;
+import peterfajdiga.fastdraw.views.gestures.Swipe;
 import peterfajdiga.fastdraw.widgets.WidgetManager;
 
 public class MainActivity extends FragmentActivity implements
-    Launcher.Listener,
+    Launcher.ItemDragListener,
     InstallAppReceiver.Owner,
     DropZoneRemoveShortcut.Owner<LauncherItem>,
     DropZoneCategory.Owner<LauncherItem>,
@@ -202,8 +208,18 @@ public class MainActivity extends FragmentActivity implements
     }
 
     private void setupAppsPager() {
+        final DisplayMetrics displayMetrics = getResources().getDisplayMetrics();
+        final View.OnTouchListener backgroundTouchListener = new OnTouchListenerMux(
+            new LongPress(displayMetrics, this::onLongpress),
+            new DoubleTap(displayMetrics, this::onDoubletap),
+            new Pinch(displayMetrics, false, this::onPinch),
+            new Pinch(displayMetrics, true, this::onUnpinch),
+            new Swipe(displayMetrics, Swipe.Direction.UP, 2, this::onSwipeUp2F),
+            new Swipe(displayMetrics, Swipe.Direction.DOWN, 2, this::onSwipeDown2F)
+        );
+
         ViewPager appsPager = findViewById(R.id.apps_pager);
-        launcher = new Launcher(launchManager, this, appsPager);
+        launcher = new Launcher(launchManager, this, backgroundTouchListener, appsPager);
 
         setupWallpaperMovement(appsPager);
         setupHeader(appsPager);
@@ -779,33 +795,27 @@ public class MainActivity extends FragmentActivity implements
         }
     }
 
-    @Override
-    public void onLongpress() {
+    private void onLongpress() {
         performAction(Preferences.longclickAction);
     }
 
-    @Override
-    public void onDoubletap() {
+    private void onDoubletap() {
         performAction(Preferences.doubleclickAction);
     }
 
-    @Override
-    public void onPinch() {
+    private void onPinch() {
         performAction(Preferences.pinchAction);
     }
 
-    @Override
-    public void onUnpinch() {
+    private void onUnpinch() {
         performAction(Preferences.unpinchAction);
     }
 
-    @Override
-    public void onSwipeUp2F() {
+    private void onSwipeUp2F() {
         performAction(Preferences.swipeUpAction2F);
     }
 
-    @Override
-    public void onSwipeDown2F() {
+    private void onSwipeDown2F() {
         performAction(Preferences.swipeDownAction2F);
     }
 

@@ -30,19 +30,22 @@ public class Launcher {
 
     private final PrefMap itemCategoryMap;
     private final LaunchManager launchManager;
-    private final Listener listener;
+    private final ItemDragListener itemDragListener;
+    private final View.OnTouchListener backgroundTouchListener;
     private final ViewPager pager;
     private final LauncherPagerAdapter adapter;
 
     public Launcher(
         @NonNull final LaunchManager launchManager,
-        @NonNull final Listener listener,
+        @NonNull final ItemDragListener itemDragListener,
+        @NonNull final View.OnTouchListener backgroundTouchListener,
         @NonNull final ViewPager pager
     ) {
         final Context context = pager.getContext();
         this.itemCategoryMap = new PrefMap(context, "categories"); // TODO: pass from outside
         this.launchManager = launchManager;
-        this.listener = listener;
+        this.itemDragListener = itemDragListener;
+        this.backgroundTouchListener = backgroundTouchListener;
         this.pager = pager;
         this.adapter = new LauncherPagerAdapter(context);
         pager.setAdapter(this.adapter);
@@ -156,7 +159,7 @@ public class Launcher {
         Category category = adapter.categories.get(categoryName);
         if (category == null) {
             final Context context = pager.getContext();
-            category = new Category(context, listener, launchManager);
+            category = new Category(context, itemDragListener, backgroundTouchListener, launchManager);
             adapter.categories.put(categoryName, category);
             adapter.notifyDataSetChanged();
         }
@@ -207,7 +210,7 @@ public class Launcher {
             if (adapter.categories.containsKey(categoryName)) {
                 continue;
             }
-            final Category category = new Category(pager.getContext(), listener, launchManager);
+            final Category category = new Category(pager.getContext(), itemDragListener, backgroundTouchListener, launchManager);
             adapter.categories.put(categoryName, category);
         }
         adapter.notifyDataSetChanged();
@@ -288,13 +291,7 @@ public class Launcher {
         itemCategoryMap.remove(item.getID());
     }
 
-    public interface Listener {
-        void onLongpress();
-        void onDoubletap();
-        void onPinch();
-        void onUnpinch();
-        void onSwipeUp2F();
-        void onSwipeDown2F();
+    public interface ItemDragListener {
         void onDragStarted(@NonNull View draggedView, @NonNull LauncherItem draggedItem);
     }
 }

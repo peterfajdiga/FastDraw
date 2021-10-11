@@ -2,7 +2,6 @@ package peterfajdiga.fastdraw.launcher;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.util.DisplayMetrics;
 import android.view.View;
 
 import androidx.annotation.NonNull;
@@ -15,15 +14,10 @@ import java.util.Arrays;
 
 import peterfajdiga.fastdraw.Preferences;
 import peterfajdiga.fastdraw.R;
-import peterfajdiga.fastdraw.launcher.launcheritem.LauncherItem;
 import peterfajdiga.fastdraw.launcher.displayitem.DisplayItem;
+import peterfajdiga.fastdraw.launcher.launcheritem.LauncherItem;
 import peterfajdiga.fastdraw.views.AutoGridLayoutManager;
 import peterfajdiga.fastdraw.views.NestedScrollChildManager;
-import peterfajdiga.fastdraw.views.gestures.DoubleTap;
-import peterfajdiga.fastdraw.views.gestures.LongPress;
-import peterfajdiga.fastdraw.views.gestures.OnTouchListenerMux;
-import peterfajdiga.fastdraw.views.gestures.Pinch;
-import peterfajdiga.fastdraw.views.gestures.Swipe;
 
 public class Category {
     public final NestedScrollChildManager nestedScrollChildManager = new NestedScrollChildManager();
@@ -32,11 +26,12 @@ public class Category {
 
     public Category(
         final Context context,
-        final Launcher.Listener listener,
+        final Launcher.ItemDragListener itemDragListener,
+        final View.OnTouchListener backgroundTouchListener,
         final LaunchManager launchManager
     ) {
-        this.adapter = new CategoryAdapter(listener, launchManager);
-        view = createView(context, listener, adapter, nestedScrollChildManager);
+        this.adapter = new CategoryAdapter(itemDragListener, launchManager);
+        view = createView(context, backgroundTouchListener, adapter, nestedScrollChildManager);
     }
 
     public View getView() {
@@ -88,7 +83,7 @@ public class Category {
     @SuppressLint("ClickableViewAccessibility")
     private View createView(
         final Context context,
-        final Launcher.Listener listener,
+        final View.OnTouchListener backgroundTouchListener,
         final CategoryAdapter adapter,
         final NestedScrollChildManager nestedScrollChildManager
     ) {
@@ -118,15 +113,7 @@ public class Category {
             nestedScrollChildManager.setup(containerView, () -> adapter.getItemCount() * getItemHeight(layoutManager));
         }
 
-        final DisplayMetrics displayMetrics = context.getResources().getDisplayMetrics();
-        containerView.setOnTouchListener(new OnTouchListenerMux(
-            new LongPress(displayMetrics, listener::onLongpress),
-            new DoubleTap(displayMetrics, listener::onDoubletap),
-            new Pinch(displayMetrics, false, listener::onPinch),
-            new Pinch(displayMetrics, true, listener::onUnpinch),
-            new Swipe(displayMetrics, Swipe.Direction.UP, 2, listener::onSwipeUp2F),
-            new Swipe(displayMetrics, Swipe.Direction.DOWN, 2, listener::onSwipeDown2F)
-        ));
+        containerView.setOnTouchListener(backgroundTouchListener);
         return containerView;
     }
 
