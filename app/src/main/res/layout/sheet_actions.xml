@@ -32,6 +32,12 @@
             android:drawableStart="@drawable/ic_action_widget" />
 
         <TextView
+            android:id="@+id/action_remove_widget"
+            style="@style/SheetItem"
+            android:text="@string/action_remove_widget"
+            android:drawableStart="@drawable/ic_action_widget" />
+
+        <TextView
             android:id="@+id/action_rename_category"
             style="@style/SheetItem"
             android:text="@string/action_rename_category"

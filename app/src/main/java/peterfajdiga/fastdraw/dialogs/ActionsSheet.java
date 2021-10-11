@@ -29,10 +29,17 @@ public class ActionsSheet extends BottomSheetDialogFragment {
             activity.showCreateShortcutDialog();
         });
 
+        // TODO: only display the Remove widget button if there is a widget to remove
         final View actionWidgetView = dialogView.findViewById(R.id.action_widget);
         actionWidgetView.setOnClickListener(v -> {
             dialog.cancel();
             activity.showCreateWidgetDialog();
+        });
+
+        final View actionRemoveWidgetView = dialogView.findViewById(R.id.action_remove_widget);
+        actionRemoveWidgetView.setOnClickListener(v -> {
+            dialog.cancel();
+            activity.removeWidget();
         });
 
         final View actionRenameCategoryView = dialogView.findViewById(R.id.action_rename_category);

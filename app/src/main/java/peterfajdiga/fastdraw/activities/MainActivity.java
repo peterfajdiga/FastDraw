@@ -552,6 +552,13 @@ public class MainActivity extends FragmentActivity implements
         widgetPrefs.putInt("widget_id", widgetView.getAppWidgetId()); // TODO: "widget_id" constant
     }
 
+    public void removeWidget() {
+        final ViewGroup widgetContainer = findViewById(R.id.widget_container);
+        removeWidgetView(widgetContainer);
+        final PrefMap widgetPrefs = new PrefMap(this, "widgets"); // TODO: "widgets" constant
+        widgetPrefs.remove("widget_id"); // TODO: "widget_id" constant
+    }
+
     private void replaceWidgetView(@NonNull final ViewGroup widgetContainer, @NonNull final AppWidgetHostView widgetView) {
         removeWidgetView(widgetContainer);
 
