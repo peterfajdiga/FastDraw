@@ -85,6 +85,8 @@ import peterfajdiga.fastdraw.views.Drawables;
 import peterfajdiga.fastdraw.views.NestedScrollParent;
 import peterfajdiga.fastdraw.views.animators.ViewElevationAnimator;
 import peterfajdiga.fastdraw.views.gestures.LongPress;
+import peterfajdiga.fastdraw.views.gestures.OnTouchListenerMux;
+import peterfajdiga.fastdraw.views.gestures.Swipe;
 import peterfajdiga.fastdraw.widgets.WidgetManager;
 
 public class MainActivity extends FragmentActivity implements
@@ -204,8 +206,12 @@ public class MainActivity extends FragmentActivity implements
     }
 
     private void setupAppsPager() {
+        final NestedScrollParent scrollParent = findViewById(R.id.scroll_parent);
         final DisplayMetrics displayMetrics = getResources().getDisplayMetrics();
-        final View.OnTouchListener backgroundTouchListener = new LongPress(displayMetrics, this::openActionsMenu);
+        final View.OnTouchListener backgroundTouchListener = new OnTouchListenerMux(
+            new LongPress(displayMetrics, this::openActionsMenu),
+            new Swipe(displayMetrics, Swipe.Direction.DOWN, this::expandNotificationsPanel, () -> scrollParent.getScrollY() == 0)
+        );
 
         ViewPager appsPager = findViewById(R.id.apps_pager);
         launcher = new Launcher(launchManager, this, backgroundTouchListener, appsPager);
@@ -216,7 +222,6 @@ public class MainActivity extends FragmentActivity implements
         loadLauncherItems();
         launcher.showCategory(Launcher.HOME_CATEGORY_NAME);
 
-        final NestedScrollParent scrollParent = findViewById(R.id.scroll_parent);
         scrollParent.setScrollChildManager(launcher.getScrollChildManager());
 
         final SettableBoolean dirty = new SettableBoolean(false);
