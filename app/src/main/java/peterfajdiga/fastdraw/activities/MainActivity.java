@@ -191,12 +191,12 @@ public class MainActivity extends FragmentActivity implements
 
         loadPersistedWidget();
 
-        final FrameLayout frameLayout = findViewById(R.id.widget_container);
-        frameLayout.addOnLayoutChangeListener((v, left, top, right, bottom, oldLeft, oldTop, oldRight, oldBottom) -> {
-            final AppWidgetHostView widgetView = getCurrentWidgetView(frameLayout);
+        final ViewGroup widgetContainer = findViewById(R.id.widget_container);
+        widgetContainer.addOnLayoutChangeListener((v, left, top, right, bottom, oldLeft, oldTop, oldRight, oldBottom) -> {
+            final AppWidgetHostView widgetView = getCurrentWidgetView(widgetContainer);
             if (widgetView != null) {
-                final int widthPx = frameLayout.getWidth() - frameLayout.getPaddingLeft() - frameLayout.getPaddingRight();
-                final int heightPx = frameLayout.getHeight() - frameLayout.getPaddingTop() - frameLayout.getPaddingBottom();
+                final int widthPx = widgetContainer.getWidth() - widgetContainer.getPaddingLeft() - widgetContainer.getPaddingRight();
+                final int heightPx = widgetContainer.getHeight() - widgetContainer.getPaddingTop() - widgetContainer.getPaddingBottom();
                 final float dp = getResources().getDisplayMetrics().density;
                 final int widthDp = Math.round(widthPx / dp);
                 final int heightDp = Math.round(heightPx / dp);
