@@ -82,6 +82,7 @@ import peterfajdiga.fastdraw.launcher.launcheritem.ShortcutItem;
 import peterfajdiga.fastdraw.receivers.InstallAppReceiver;
 import peterfajdiga.fastdraw.views.CategoryTabLayout;
 import peterfajdiga.fastdraw.views.Drawables;
+import peterfajdiga.fastdraw.views.GestureInterceptor;
 import peterfajdiga.fastdraw.views.NestedScrollParent;
 import peterfajdiga.fastdraw.views.animators.ViewElevationAnimator;
 import peterfajdiga.fastdraw.views.gestures.LongPress;
@@ -129,8 +130,15 @@ public class MainActivity extends FragmentActivity implements
             View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
         );
 
-        setupWidgets();
-        setupAppsPager();
+        final NestedScrollParent scrollParent = findViewById(R.id.scroll_parent);
+        final DisplayMetrics displayMetrics = getResources().getDisplayMetrics();
+        final View.OnTouchListener gesturesListener = new OnTouchListenerMux(
+            new LongPress(displayMetrics, this::openActionsMenu),
+            new Swipe(displayMetrics, Swipe.Direction.DOWN, this::expandNotificationsPanel, () -> scrollParent.getScrollY() == 0)
+        );
+
+        setupWidgets(gesturesListener);
+        setupAppsPager(gesturesListener);
         setupInstallAppReceiver();
 
         final Intent intent = getIntent();
@@ -185,13 +193,13 @@ public class MainActivity extends FragmentActivity implements
         }
     }
 
-    private void setupWidgets() {
+    private void setupWidgets(final View.OnTouchListener gesturesListener) {
         widgetManager = new WidgetManager(this, 1, PICK_WIDGET_REQUEST, CREATE_WIDGET_REQUEST);
         widgetManager.startListening();
 
         loadPersistedWidget();
 
-        final ViewGroup widgetContainer = findViewById(R.id.widget_container);
+        final GestureInterceptor widgetContainer = findViewById(R.id.widget_container);
         widgetContainer.addOnLayoutChangeListener((v, left, top, right, bottom, oldLeft, oldTop, oldRight, oldBottom) -> {
             final AppWidgetHostView widgetView = getCurrentWidgetView(widgetContainer);
             if (widgetView != null) {
@@ -203,17 +211,11 @@ public class MainActivity extends FragmentActivity implements
                 widgetView.updateAppWidgetSize(null, widthDp, heightDp, widthDp, heightDp);
             }
         });
+        widgetContainer.setOnInterceptTouchListener(gesturesListener);
     }
 
     @SuppressLint("ClickableViewAccessibility")
-    private void setupAppsPager() {
-        final NestedScrollParent scrollParent = findViewById(R.id.scroll_parent);
-        final DisplayMetrics displayMetrics = getResources().getDisplayMetrics();
-        final View.OnTouchListener gesturesListener = new OnTouchListenerMux(
-            new LongPress(displayMetrics, this::openActionsMenu),
-            new Swipe(displayMetrics, Swipe.Direction.DOWN, this::expandNotificationsPanel, () -> scrollParent.getScrollY() == 0)
-        );
-
+    private void setupAppsPager(final View.OnTouchListener gesturesListener) {
         ViewPager appsPager = findViewById(R.id.apps_pager);
         launcher = new Launcher(launchManager, this, gesturesListener, appsPager);
 
@@ -223,6 +225,7 @@ public class MainActivity extends FragmentActivity implements
         loadLauncherItems();
         launcher.showCategory(Launcher.HOME_CATEGORY_NAME);
 
+        final NestedScrollParent scrollParent = findViewById(R.id.scroll_parent);
         scrollParent.setScrollChildManager(launcher.getScrollChildManager());
         scrollParent.setOnTouchListener(gesturesListener);
 
