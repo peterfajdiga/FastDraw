@@ -209,13 +209,13 @@ public class MainActivity extends FragmentActivity implements
     private void setupAppsPager() {
         final NestedScrollParent scrollParent = findViewById(R.id.scroll_parent);
         final DisplayMetrics displayMetrics = getResources().getDisplayMetrics();
-        final View.OnTouchListener backgroundTouchListener = new OnTouchListenerMux(
+        final View.OnTouchListener gesturesListener = new OnTouchListenerMux(
             new LongPress(displayMetrics, this::openActionsMenu),
             new Swipe(displayMetrics, Swipe.Direction.DOWN, this::expandNotificationsPanel, () -> scrollParent.getScrollY() == 0)
         );
 
         ViewPager appsPager = findViewById(R.id.apps_pager);
-        launcher = new Launcher(launchManager, this, backgroundTouchListener, appsPager);
+        launcher = new Launcher(launchManager, this, gesturesListener, appsPager);
 
         setupWallpaperMovement(appsPager);
         setupHeader(appsPager);
@@ -224,7 +224,7 @@ public class MainActivity extends FragmentActivity implements
         launcher.showCategory(Launcher.HOME_CATEGORY_NAME);
 
         scrollParent.setScrollChildManager(launcher.getScrollChildManager());
-        scrollParent.setOnTouchListener(backgroundTouchListener);
+        scrollParent.setOnTouchListener(gesturesListener);
 
         final SettableBoolean dirty = new SettableBoolean(false);
         appsPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
