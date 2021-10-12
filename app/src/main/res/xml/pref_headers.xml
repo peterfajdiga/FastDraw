@@ -11,11 +11,6 @@
         android:title="@string/pref_header_appearance" />
 
     <header
-        android:fragment="peterfajdiga.fastdraw.activities.SettingsActivity$GesturesPreferenceFragment"
-        android:icon="@drawable/ic_pref_gestures"
-        android:title="@string/pref_header_gestures" />
-
-    <header
         android:fragment="peterfajdiga.fastdraw.activities.SettingsActivity$CategoryOrderPreferenceFragment"
         android:icon="@drawable/ic_pref_categoryorder"
         android:title="@string/pref_header_categoryorder" />

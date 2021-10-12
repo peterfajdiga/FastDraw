@@ -56,32 +56,6 @@
     <string name="pref_description_headerSeparator">Display a white line between the tabs and the apps</string>
     <string name="pref_title_headerBgColor">Background scrim color</string>
 
-    <string name="pref_header_gestures">Gestures</string>
-    <string-array name="pref_actions_titles">
-        <item>Do nothing</item>
-        <item>Open actions menu</item>
-        <item>@string/action_wallpaper</item>
-        <item>@string/action_shortcut</item>
-        <item>@string/action_rename_category</item>
-        <item>@string/action_settings</item>
-        <item>@string/action_notifications</item>
-    </string-array>
-    <string-array name="pref_actions_values">
-        <item>0</item>
-        <item>1</item>
-        <item>2</item>
-        <item>3</item>
-        <item>4</item>
-        <item>5</item>
-        <item>6</item>
-    </string-array>
-    <string name="pref_title_action_longclick">Longpress action</string>
-    <string name="pref_title_action_doubleclick">Double tap action</string>
-    <string name="pref_title_action_pinch">Pinch action</string>
-    <string name="pref_title_action_unpinch">Zoom action</string>
-    <string name="pref_title_action_swipe_up_2f">Two finger swipe up action</string>
-    <string name="pref_title_action_swipe_down_2f">Two finger swipe down action</string>
-
     <string name="pref_header_categoryorder">Order of categories</string>
     <string name="pref_title_orderreset">Order alphabetically</string>
 

@@ -149,7 +149,6 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
     protected boolean isValidFragment(String fragmentName) {
         return PreferenceFragment.class.getName().equals(fragmentName)
             || GeneralPreferenceFragment.class.getName().equals(fragmentName)
-            || GesturesPreferenceFragment.class.getName().equals(fragmentName)
             || AppearancePreferenceFragment.class.getName().equals(fragmentName)
             || CategoryOrderPreferenceFragment.class.getName().equals(fragmentName);
     }
@@ -179,31 +178,6 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
             super.onCreate(savedInstanceState);
             addPreferencesFromResource(R.xml.pref_appearance);
             setHasOptionsMenu(false);
-        }
-    }
-
-    /**
-     * This fragment shows data and sync preferences only. It is used when the
-     * activity is showing a two-pane settings UI.
-     */
-    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
-    public static class GesturesPreferenceFragment extends PreferenceFragment {
-        @Override
-        public void onCreate(Bundle savedInstanceState) {
-            super.onCreate(savedInstanceState);
-            addPreferencesFromResource(R.xml.pref_gestures);
-            setHasOptionsMenu(false);
-
-            // Bind the summaries of EditText/List/Dialog/Ringtone preferences
-            // to their values. When their values change, their summaries are
-            // updated to reflect the new value, per the Android Design
-            // guidelines.
-            bindPreferenceSummaryToValue(findPreference("action_longclick"));
-            bindPreferenceSummaryToValue(findPreference("action_doubleclick"));
-            bindPreferenceSummaryToValue(findPreference("action_pinch"));
-            bindPreferenceSummaryToValue(findPreference("action_unpinch"));
-            bindPreferenceSummaryToValue(findPreference("action_swipe_up_2f"));
-            bindPreferenceSummaryToValue(findPreference("action_swipe_down_2f"));
         }
     }
 

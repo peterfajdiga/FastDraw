@@ -84,11 +84,7 @@ import peterfajdiga.fastdraw.views.CategoryTabLayout;
 import peterfajdiga.fastdraw.views.Drawables;
 import peterfajdiga.fastdraw.views.NestedScrollParent;
 import peterfajdiga.fastdraw.views.animators.ViewElevationAnimator;
-import peterfajdiga.fastdraw.views.gestures.DoubleTap;
 import peterfajdiga.fastdraw.views.gestures.LongPress;
-import peterfajdiga.fastdraw.views.gestures.OnTouchListenerMux;
-import peterfajdiga.fastdraw.views.gestures.Pinch;
-import peterfajdiga.fastdraw.views.gestures.Swipe;
 import peterfajdiga.fastdraw.widgets.WidgetManager;
 
 public class MainActivity extends FragmentActivity implements
@@ -209,14 +205,7 @@ public class MainActivity extends FragmentActivity implements
 
     private void setupAppsPager() {
         final DisplayMetrics displayMetrics = getResources().getDisplayMetrics();
-        final View.OnTouchListener backgroundTouchListener = new OnTouchListenerMux(
-            new LongPress(displayMetrics, this::onLongpress),
-            new DoubleTap(displayMetrics, this::onDoubletap),
-            new Pinch(displayMetrics, false, this::onPinch),
-            new Pinch(displayMetrics, true, this::onUnpinch),
-            new Swipe(displayMetrics, Swipe.Direction.UP, 2, this::onSwipeUp2F),
-            new Swipe(displayMetrics, Swipe.Direction.DOWN, 2, this::onSwipeDown2F)
-        );
+        final View.OnTouchListener backgroundTouchListener = new LongPress(displayMetrics, this::openActionsMenu);
 
         ViewPager appsPager = findViewById(R.id.apps_pager);
         launcher = new Launcher(launchManager, this, backgroundTouchListener, appsPager);
@@ -782,41 +771,6 @@ public class MainActivity extends FragmentActivity implements
             e.printStackTrace();
             Toast.makeText(this, R.string.error_expand_notifications_panel, Toast.LENGTH_LONG).show();
         }
-    }
-
-    public void performAction(final int action) {
-        switch (action) {
-            case Preferences.ACTION_MENU:            openActionsMenu(); break;
-            case Preferences.ACTION_WALLPAPER:       openWallpaperPicker(); break;
-            case Preferences.ACTION_SHORTCUT:        showCreateShortcutDialog(); break;
-            case Preferences.ACTION_RENAME_CATEGORY: renameCurrentCategory(); break;
-            case Preferences.ACTION_SETTINGS:        openSettings(); break;
-            case Preferences.ACTION_NOTIFICATIONS:   expandNotificationsPanel(); break;
-        }
-    }
-
-    private void onLongpress() {
-        performAction(Preferences.longclickAction);
-    }
-
-    private void onDoubletap() {
-        performAction(Preferences.doubleclickAction);
-    }
-
-    private void onPinch() {
-        performAction(Preferences.pinchAction);
-    }
-
-    private void onUnpinch() {
-        performAction(Preferences.unpinchAction);
-    }
-
-    private void onSwipeUp2F() {
-        performAction(Preferences.swipeUpAction2F);
-    }
-
-    private void onSwipeDown2F() {
-        performAction(Preferences.swipeDownAction2F);
     }
 
     // app management

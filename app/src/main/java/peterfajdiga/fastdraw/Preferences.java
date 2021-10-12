@@ -28,13 +28,6 @@ public final class Preferences {
 
     public static int widgetHeight;
 
-    public static int longclickAction;
-    public static int doubleclickAction;
-    public static int pinchAction;
-    public static int unpinchAction;
-    public static int swipeUpAction2F;
-    public static int swipeDownAction2F;
-
     public static void loadPreferences(final Context context) {
         final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
         final Resources res = context.getResources();
@@ -51,12 +44,6 @@ public final class Preferences {
         showIcons                          = prefs.getBoolean("showIcons",           res.getBoolean(R.bool.default_showIcons));
         largeSingle                        = prefs.getBoolean("largeSingle",         res.getBoolean(R.bool.default_largeSingle));
         headerSeparator                    = prefs.getBoolean("headerSeparator",     res.getBoolean(R.bool.default_headerSeparator));
-        longclickAction   = Integer.parseInt(prefs.getString("action_longclick",     res.getString(R.string.default_action_longclick)));
-        doubleclickAction = Integer.parseInt(prefs.getString("action_doubleclick",   res.getString(R.string.default_action_doubleclick)));
-        pinchAction       = Integer.parseInt(prefs.getString("action_pinch",         res.getString(R.string.default_action_pinch)));
-        unpinchAction     = Integer.parseInt(prefs.getString("action_unpinch",       res.getString(R.string.default_action_unpinch)));
-        swipeUpAction2F   = Integer.parseInt(prefs.getString("action_swipe_up_2f",   res.getString(R.string.default_action_swipe_up_2f)));
-        swipeDownAction2F = Integer.parseInt(prefs.getString("action_swipe_down_2f", res.getString(R.string.default_action_swipe_down_2f)));
         headerBgColor                      = prefs.getInt("headerBgColor",           res.getInteger(R.integer.default_headerBgColor));
         widgetHeight                       = prefs.getInt("widgetHeight",            res.getInteger(R.integer.default_widgetHeight));
     }
