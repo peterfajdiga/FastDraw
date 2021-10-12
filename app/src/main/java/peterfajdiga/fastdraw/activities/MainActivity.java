@@ -205,6 +205,7 @@ public class MainActivity extends FragmentActivity implements
         });
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     private void setupAppsPager() {
         final NestedScrollParent scrollParent = findViewById(R.id.scroll_parent);
         final DisplayMetrics displayMetrics = getResources().getDisplayMetrics();
@@ -223,6 +224,7 @@ public class MainActivity extends FragmentActivity implements
         launcher.showCategory(Launcher.HOME_CATEGORY_NAME);
 
         scrollParent.setScrollChildManager(launcher.getScrollChildManager());
+        scrollParent.setOnTouchListener(backgroundTouchListener);
 
         final SettableBoolean dirty = new SettableBoolean(false);
         appsPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
