@@ -6,13 +6,6 @@ import android.content.res.Resources;
 import android.preference.PreferenceManager;
 
 public final class Preferences {
-    public static final int ACTION_MENU = 1;
-    public static final int ACTION_WALLPAPER = 2;
-    public static final int ACTION_SHORTCUT = 3;
-    public static final int ACTION_RENAME_CATEGORY = 4;
-    public static final int ACTION_SETTINGS = 5;
-    public static final int ACTION_NOTIFICATIONS = 6;
-
     public static boolean allowOrientation;
     public static boolean appsLinearList;
     public static boolean headerOnBottom;
