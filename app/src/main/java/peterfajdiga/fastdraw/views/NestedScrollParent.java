@@ -74,10 +74,10 @@ public class NestedScrollParent extends NestedScrollView {
 
     @Override
     protected void onMeasure(final int widthMeasureSpec, final int heightMeasureSpec) {
-        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
         if (onMeasureListener != null) {
-            onMeasureListener.onMeasure();
+            onMeasureListener.onMeasure(widthMeasureSpec, heightMeasureSpec);
         }
+        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
     }
 
     @Override
@@ -113,6 +113,6 @@ public class NestedScrollParent extends NestedScrollView {
     }
 
     public interface OnMeasureListener {
-        void onMeasure();
+        void onMeasure(int widthMeasureSpec, int heightMeasureSpec);
     }
 }

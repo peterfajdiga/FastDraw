@@ -245,9 +245,10 @@ public class MainActivity extends FragmentActivity implements
         });
 
         final View scrollExpand = findViewById(R.id.scroll_expand);
-        scrollParent.setOnMeasureListener(() -> scrollExpand.setMinimumHeight(
-            scrollParent.getMeasuredHeight() - scrollParent.getPaddingTop() - scrollParent.getPaddingBottom()
-        )); // TODO: handle orientation change
+        scrollParent.setOnMeasureListener((widthMeasureSpec, heightMeasureSpec) -> scrollExpand.setMinimumHeight(
+            View.MeasureSpec.getSize(heightMeasureSpec) - scrollParent.getPaddingTop() - scrollParent.getPaddingBottom()
+        ));
+
         scrollParent.setOnScrollChangeListener((NestedScrollView.OnScrollChangeListener)(v, scrollX, scrollY, oldScrollX, oldScrollY) -> {
             if (dirty.value) {
                 if (scrollY < oldScrollY) {
