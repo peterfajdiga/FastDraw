@@ -12,6 +12,8 @@ import androidx.core.widget.NestedScrollView;
 public class NestedScrollParent extends NestedScrollView {
     private NestedScrollChildManager scrollChildManager;
     private OnMeasureListener onMeasureListener;
+    private OnOverScrollUpListener onOverScrollUpListener;
+    private boolean allowOverScrollUpEvent;
 
     public NestedScrollParent(@NonNull final Context context) {
         super(context);
@@ -33,16 +35,33 @@ public class NestedScrollParent extends NestedScrollView {
         this.onMeasureListener = onMeasureListener;
     }
 
+    public void setOnOverScrollUpListener(@Nullable final OnOverScrollUpListener onOverScrollUpListener) {
+        this.onOverScrollUpListener = onOverScrollUpListener;
+    }
+
     @Override
     protected void onOverScrolled(final int scrollX, final int scrollY, final boolean clampedX, final boolean clampedY) {
-        // prevent superclass from calling `super.scrollTo`
-        scrollTo(scrollX, scrollY);
+        if (scrollY == 0) {
+            onOverScrollUpMaybe();
+        } else {
+            allowOverScrollUpEvent = false;
+        }
+
+        scrollTo(scrollX, scrollY); // prevent superclass from calling `super.scrollTo`
     }
 
     @Override
     public boolean onInterceptTouchEvent(final MotionEvent ev) {
-        // prevent scrolling when interacting with widgets // TODO: allow scrolling from category tabs
-        return false;
+        if (ev.getAction() == MotionEvent.ACTION_DOWN) {
+            allowOverScrollUpEvent = getScrollY() == 0;
+        }
+        return false; // don't call super to prevent scrolling when interacting with widgets // TODO: allow scrolling from category tabs
+    }
+
+    private void onOverScrollUpMaybe() {
+        if (allowOverScrollUpEvent && onOverScrollUpListener != null && getScrollY() == 0) {
+            onOverScrollUpListener.onOverScrollUp();
+        }
     }
 
     @Override
@@ -66,6 +85,10 @@ public class NestedScrollParent extends NestedScrollView {
             final int y1 = getScrollY();
             consumed[0] = dx;
             consumed[1] = y1 - y0;
+
+            allowOverScrollUpEvent = false;
+        } else if (dy < 0) {
+            onOverScrollUpMaybe();
         }
         if (!awakenScrollBars()) {
             postInvalidateOnAnimation();
@@ -114,5 +137,9 @@ public class NestedScrollParent extends NestedScrollView {
 
     public interface OnMeasureListener {
         void onMeasure(int widthMeasureSpec, int heightMeasureSpec);
+    }
+
+    public interface OnOverScrollUpListener {
+        void onOverScrollUp();
     }
 }

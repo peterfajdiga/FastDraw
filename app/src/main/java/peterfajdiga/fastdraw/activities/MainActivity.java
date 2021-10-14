@@ -132,13 +132,14 @@ public class MainActivity extends FragmentActivity implements
 
         final NestedScrollParent scrollParent = findViewById(R.id.scroll_parent);
         final DisplayMetrics displayMetrics = getResources().getDisplayMetrics();
+        final View.OnTouchListener longPressListener = new LongPress(displayMetrics, this::openActionsMenu);
         final View.OnTouchListener gesturesListener = new OnTouchListenerMux(
-            new LongPress(displayMetrics, this::openActionsMenu),
+            longPressListener,
             new Swipe(displayMetrics, Swipe.Direction.DOWN, this::expandNotificationsPanel, () -> scrollParent.getScrollY() == 0)
         );
 
         setupWidgets(gesturesListener);
-        setupAppsPager(gesturesListener);
+        setupAppsPager(longPressListener);
         setupInstallAppReceiver();
 
         final Intent intent = getIntent();
@@ -215,9 +216,9 @@ public class MainActivity extends FragmentActivity implements
     }
 
     @SuppressLint("ClickableViewAccessibility")
-    private void setupAppsPager(final View.OnTouchListener gesturesListener) {
+    private void setupAppsPager(final View.OnTouchListener longPressListener) {
         ViewPager appsPager = findViewById(R.id.apps_pager);
-        launcher = new Launcher(launchManager, this, gesturesListener, appsPager);
+        launcher = new Launcher(launchManager, this, longPressListener, appsPager);
 
         setupWallpaperMovement(appsPager);
         setupHeader(appsPager);
@@ -227,7 +228,8 @@ public class MainActivity extends FragmentActivity implements
 
         final NestedScrollParent scrollParent = findViewById(R.id.scroll_parent);
         scrollParent.setScrollChildManager(launcher.getScrollChildManager());
-        scrollParent.setOnTouchListener(gesturesListener);
+        scrollParent.setOnTouchListener(longPressListener);
+        scrollParent.setOnOverScrollUpListener(this::expandNotificationsPanel);
 
         final SettableBoolean dirty = new SettableBoolean(false);
         appsPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
