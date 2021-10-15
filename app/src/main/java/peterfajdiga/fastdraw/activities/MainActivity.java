@@ -224,7 +224,7 @@ public class MainActivity extends FragmentActivity implements
         setupHeader(appsPager);
 
         loadLauncherItems();
-        launcher.showCategory(Launcher.HOME_CATEGORY_NAME);
+        launcher.showInitialCategory();
 
         final NestedScrollParent scrollParent = findViewById(R.id.scroll_parent);
         scrollParent.setScrollChildManager(launcher.getScrollChildManager());
@@ -462,8 +462,7 @@ public class MainActivity extends FragmentActivity implements
             }
 
             // show home category
-            final Launcher pager = launcher;
-            pager.showInitialCategory();
+            launcher.showInitialCategory();
 
             // scroll to top
             final NestedScrollParent scrollParent = findViewById(R.id.scroll_parent);
