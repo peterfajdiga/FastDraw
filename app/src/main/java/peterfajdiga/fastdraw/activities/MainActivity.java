@@ -142,7 +142,7 @@ public class MainActivity extends FragmentActivity implements
         );
 
         setupWidgets(gesturesListener);
-        setupAppsPager(longPressListener);
+        setupAppsPager(scrollParent, longPressListener);
         setupInstallAppReceiver();
 
         final Intent intent = getIntent();
@@ -219,7 +219,7 @@ public class MainActivity extends FragmentActivity implements
     }
 
     @SuppressLint("ClickableViewAccessibility")
-    private void setupAppsPager(final View.OnTouchListener longPressListener) {
+    private void setupAppsPager(final NestedScrollParent scrollParent, final View.OnTouchListener longPressListener) {
         ViewPager appsPager = findViewById(R.id.apps_pager);
         launcher = new Launcher(launchManager, this, longPressListener, appsPager);
 
@@ -229,7 +229,6 @@ public class MainActivity extends FragmentActivity implements
         loadLauncherItems();
         launcher.showInitialCategory();
 
-        final NestedScrollParent scrollParent = findViewById(R.id.scroll_parent);
         scrollParent.setScrollChildManager(launcher.getScrollChildManager());
         scrollParent.setOnTouchListener(longPressListener);
         scrollParent.setOnOverScrollUpListener(this::expandNotificationsPanel);
