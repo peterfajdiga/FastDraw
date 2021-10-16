@@ -103,6 +103,9 @@ public class MainActivity extends FragmentActivity implements
     public static final int PICK_WIDGET_REQUEST = 2144;
     public static final int CREATE_WIDGET_REQUEST = 2145;
 
+    private static final String PREFS_WIDGETS = "widgets";
+    private static final String PREF_KEY_WIDGET_ID = "widget_id";
+
     private static final int DROPZONE_TRANSITION_DURATION = 200;
 
     private InstallAppReceiver installAppReceiver;
@@ -439,8 +442,8 @@ public class MainActivity extends FragmentActivity implements
     }
 
     private void loadPersistedWidget() {
-        final PrefMap widgetPrefs = new PrefMap(this, "widgets");
-        final int widgetId = widgetPrefs.getInt("widget_id", -1);
+        final PrefMap widgetPrefs = new PrefMap(this, PREFS_WIDGETS);
+        final int widgetId = widgetPrefs.getInt(PREF_KEY_WIDGET_ID, -1);
         if (widgetId != -1) {
             final AppWidgetHostView widgetView = widgetManager.createWidgetView(widgetId);
             if (widgetView != null) {
@@ -565,15 +568,15 @@ public class MainActivity extends FragmentActivity implements
     private void setWidget(@NonNull AppWidgetHostView widgetView) {
         final ViewGroup widgetContainer = findViewById(R.id.widget_container);
         replaceWidgetView(widgetContainer, widgetView);
-        final PrefMap widgetPrefs = new PrefMap(this, "widgets"); // TODO: "widgets" constant
-        widgetPrefs.putInt("widget_id", widgetView.getAppWidgetId()); // TODO: "widget_id" constant
+        final PrefMap widgetPrefs = new PrefMap(this, PREFS_WIDGETS);
+        widgetPrefs.putInt(PREF_KEY_WIDGET_ID, widgetView.getAppWidgetId());
     }
 
     public void removeWidget() {
         final ViewGroup widgetContainer = findViewById(R.id.widget_container);
         removeWidgetView(widgetContainer);
-        final PrefMap widgetPrefs = new PrefMap(this, "widgets"); // TODO: "widgets" constant
-        widgetPrefs.remove("widget_id"); // TODO: "widget_id" constant
+        final PrefMap widgetPrefs = new PrefMap(this, PREFS_WIDGETS);
+        widgetPrefs.remove(PREF_KEY_WIDGET_ID);
     }
 
     private void replaceWidgetView(@NonNull final ViewGroup widgetContainer, @NonNull final AppWidgetHostView widgetView) {
