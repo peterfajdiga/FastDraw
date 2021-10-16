@@ -19,7 +19,6 @@ import peterfajdiga.fastdraw.launcher.displayitem.DisplayItem;
 import peterfajdiga.fastdraw.launcher.launchable.IntentLaunchable;
 import peterfajdiga.fastdraw.launcher.launchable.Launchable;
 
-// TODO: split into two classes
 public class ResShortcutItem implements ShortcutItem {
     public static final String TYPE_KEY = "res";
 
