@@ -71,31 +71,36 @@ public class CategoryOrderAdapter extends RecyclerView.Adapter<CategoryOrderAdap
     @SuppressLint("ClickableViewAccessibility")
     @Override
     public void onBindViewHolder(final CategoryViewHolder holder, final int position) {
-        final Context context = holder.view.getContext();
         final String categoryName = categories[position];
 
-        final TextView itemText = (TextView)holder.view.findViewById(R.id.text);
-        itemText.setText(categoryName);
-
-        final ImageView itemIcon = (ImageView)holder.view.findViewById(R.id.icon);
-        itemIcon.setImageDrawable(Common.getCategoryIcon(context, categoryName));
-        itemIcon.setColorFilter(context.getResources().getColor(R.color.bottomSheetIcon));
-
-        final View itemHandle = holder.view.findViewById(R.id.handle);
-        itemHandle.setOnTouchListener((v, event) -> {
-            if (itemTouchHelper != null && MotionEventCompat.getActionMasked(event) == MotionEvent.ACTION_DOWN) {
-                itemTouchHelper.startDrag(holder);
+        holder.bind(
+            categoryName,
+            (v, event) -> {
+                if (itemTouchHelper != null && MotionEventCompat.getActionMasked(event) == MotionEvent.ACTION_DOWN) {
+                    itemTouchHelper.startDrag(holder);
+                }
+                return false;
             }
-            return false;
-        });
+        );
     }
 
     static class CategoryViewHolder extends RecyclerView.ViewHolder {
-        final ViewGroup view;
+        private final TextView label;
+        private final ImageView icon;
+        private final View handle;
 
         CategoryViewHolder(final View itemView) {
             super(itemView);
-            view = (ViewGroup)itemView;
+            label = itemView.findViewById(R.id.text);
+            icon = itemView.findViewById(R.id.icon);
+            icon.setColorFilter(itemView.getContext().getResources().getColor(R.color.bottomSheetIcon));
+            handle = itemView.findViewById(R.id.handle);
+        }
+
+        void bind(final String categoryName, final View.OnTouchListener onTouchListener) {
+            this.label.setText(categoryName);
+            this.icon.setImageDrawable(Common.getCategoryIcon(this.icon.getContext(), categoryName));
+            this.handle.setOnTouchListener(onTouchListener);
         }
     }
 
