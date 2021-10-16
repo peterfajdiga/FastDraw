@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.core.view.MotionEventCompat;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
@@ -61,46 +62,44 @@ public class CategoryOrderAdapter extends RecyclerView.Adapter<CategoryOrderAdap
         return categories.length;
     }
 
+    @NonNull
     @Override
     public CategoryViewHolder onCreateViewHolder(final ViewGroup parent, final int viewType) {
         final View view = LayoutInflater.from(parent.getContext())
             .inflate(R.layout.categoryorder_item, parent, false);
-        return new CategoryViewHolder(view);
+        return new CategoryViewHolder(view, itemTouchHelper);
     }
 
-    @SuppressLint("ClickableViewAccessibility")
     @Override
     public void onBindViewHolder(final CategoryViewHolder holder, final int position) {
-        final String categoryName = categories[position];
-
-        holder.bind(
-            categoryName,
-            (v, event) -> {
-                if (itemTouchHelper != null && MotionEventCompat.getActionMasked(event) == MotionEvent.ACTION_DOWN) {
-                    itemTouchHelper.startDrag(holder);
-                }
-                return false;
-            }
-        );
+        holder.bind(categories[position]);
     }
 
     static class CategoryViewHolder extends RecyclerView.ViewHolder {
         private final TextView label;
         private final ImageView icon;
-        private final View handle;
 
-        CategoryViewHolder(final View itemView) {
+        @SuppressLint("ClickableViewAccessibility")
+        CategoryViewHolder(final View itemView, final ItemTouchHelper itemTouchHelper) {
             super(itemView);
+
             label = itemView.findViewById(R.id.text);
+
             icon = itemView.findViewById(R.id.icon);
             icon.setColorFilter(itemView.getContext().getResources().getColor(R.color.bottomSheetIcon));
-            handle = itemView.findViewById(R.id.handle);
+
+            final View handle = itemView.findViewById(R.id.handle);
+            handle.setOnTouchListener((v, event) -> {
+                if (itemTouchHelper != null && MotionEventCompat.getActionMasked(event) == MotionEvent.ACTION_DOWN) {
+                    itemTouchHelper.startDrag(this);
+                }
+                return false;
+            });
         }
 
-        void bind(final String categoryName, final View.OnTouchListener onTouchListener) {
+        void bind(final String categoryName) {
             this.label.setText(categoryName);
             this.icon.setImageDrawable(Common.getCategoryIcon(this.icon.getContext(), categoryName));
-            this.handle.setOnTouchListener(onTouchListener);
         }
     }
 
