@@ -325,12 +325,11 @@ public class MainActivity extends FragmentActivity implements
      * use this instead of fitsSystemWindows=true, which causes weird glitches on
      * Samsung Galaxy S20 FE, Android 11 (perhaps on other devices as well)
      */
-    private void setupSystemBarsPadding() {
+    private void setupSystemBarsPadding(final View contentView) {
         final WindowInsets windowInsets = getWindow().getDecorView().getRootWindowInsets();
         if (windowInsets == null) {
             throw new RuntimeException("Window is not attached");
         }
-        final View contentView = findViewById(android.R.id.content);
         contentView.setPadding(
             windowInsets.getSystemWindowInsetLeft(),
             windowInsets.getSystemWindowInsetTop(),
@@ -339,7 +338,7 @@ public class MainActivity extends FragmentActivity implements
         );
     }
 
-    private void setupSystemBarsScrim() {
+    private void setupSystemBarsScrim(final View contentView) {
         final Resources res = getResources();
         final int scrimHeight = Math.round(res.getDimension(R.dimen.system_bar_scrim_height));
 
@@ -350,7 +349,6 @@ public class MainActivity extends FragmentActivity implements
             Preferences.headerOnBottom ? scrimHeight : 0
         );
 
-        final View contentView = findViewById(android.R.id.content);
         contentView.setBackground(Drawables.createScrimBackground(
             Preferences.headerBgColor,
             scrimHeight,
@@ -370,8 +368,9 @@ public class MainActivity extends FragmentActivity implements
     @Override
     public void onAttachedToWindow() {
         super.onAttachedToWindow();
-        setupSystemBarsPadding();
-        setupSystemBarsScrim();
+        final View contentView = findViewById(android.R.id.content);
+        setupSystemBarsPadding(contentView);
+        setupSystemBarsScrim(contentView);
     }
 
     private void setupDropZones() {
