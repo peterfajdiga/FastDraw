@@ -97,7 +97,7 @@ public class ShortcutItemManager {
                 item.save(out);
             }
         } catch (final IOException e) {
-            Log.e("ShortcutItemManager", "Failed to save shortcut " + filename, e); // TODO: handle? how?
+            Log.e("ShortcutItemManager", "Failed to save shortcut " + filename, e);
         }
     }
 
