@@ -19,6 +19,8 @@ public final class Common {
         switch (categoryName) {
             case "ANDROID":
             case "AOSP":
+            case "DEVEL":
+            case "DEVELOPMENT":
             case "SYSTEM":      return ContextCompat.getDrawable(context, R.drawable.ic_category_android);
             case "CASH":
             case "FINANCE":
@@ -47,11 +49,13 @@ public final class Common {
             case "TRASH":       return ContextCompat.getDrawable(context, R.drawable.ic_category_delete);
             case "BUS":
             case "TRANSPORT":   return ContextCompat.getDrawable(context, R.drawable.ic_category_bus);
+            case "AUTO":
             case "CAR":
             case "CARS":        return ContextCompat.getDrawable(context, R.drawable.ic_category_car);
             case "COMPASS":
             case "EXPLORE":
             case "EXPLORATION":
+            case "MAPS":
             case "NAVIGATE":
             case "NAVIGATION":  return ContextCompat.getDrawable(context, R.drawable.ic_category_explore);
             case "ADDONS":
