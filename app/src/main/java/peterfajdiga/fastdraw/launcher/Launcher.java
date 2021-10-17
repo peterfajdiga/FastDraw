@@ -21,6 +21,7 @@ import java.util.concurrent.Executors;
 
 import peterfajdiga.fastdraw.PrefMap;
 import peterfajdiga.fastdraw.Preferences;
+import peterfajdiga.fastdraw.categoryorder.CategoryComparator;
 import peterfajdiga.fastdraw.launcher.launcheritem.LauncherItem;
 import peterfajdiga.fastdraw.launcher.displayitem.DisplayItem;
 import peterfajdiga.fastdraw.views.NestedScrollChildManager;
@@ -29,6 +30,7 @@ public class Launcher {
     public static final String HOME_CATEGORY_NAME = "HOME";
 
     private final PrefMap itemCategoryMap;
+    private final PrefMap categoriesOrderMap;
     private final LaunchManager launchManager;
     private final ItemDragListener itemDragListener;
     private final View.OnTouchListener backgroundTouchListener;
@@ -43,6 +45,7 @@ public class Launcher {
     ) {
         final Context context = pager.getContext();
         this.itemCategoryMap = new PrefMap(context, "categories"); // TODO: pass from outside
+        this.categoriesOrderMap = new PrefMap(context, "categoryorder"); // TODO: pass from outside
         this.launchManager = launchManager;
         this.itemDragListener = itemDragListener;
         this.backgroundTouchListener = backgroundTouchListener;
@@ -160,6 +163,7 @@ public class Launcher {
         if (category == null) {
             final Context context = pager.getContext();
             category = new Category(context, itemDragListener, backgroundTouchListener, launchManager);
+            categoriesOrderMap.getIntCreate(categoryName, CategoryComparator.UNORDERED); // make sure the new category is added to the categoryorder prefs
             adapter.categories.put(categoryName, category);
             adapter.notifyDataSetChanged();
         }
