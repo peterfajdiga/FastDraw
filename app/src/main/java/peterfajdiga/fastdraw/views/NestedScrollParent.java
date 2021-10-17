@@ -1,5 +1,6 @@
 package peterfajdiga.fastdraw.views;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
@@ -12,8 +13,7 @@ import androidx.core.widget.NestedScrollView;
 public class NestedScrollParent extends NestedScrollView {
     private NestedScrollChildManager scrollChildManager;
     private OnMeasureListener onMeasureListener;
-    private OnOverScrollUpListener onOverScrollUpListener;
-    private boolean allowOverScrollUpEvent;
+    private final OverScrollUpController overScrollUpController = new OverScrollUpController();
 
     public NestedScrollParent(@NonNull final Context context) {
         super(context);
@@ -36,15 +36,15 @@ public class NestedScrollParent extends NestedScrollView {
     }
 
     public void setOnOverScrollUpListener(@Nullable final OnOverScrollUpListener onOverScrollUpListener) {
-        this.onOverScrollUpListener = onOverScrollUpListener;
+        this.overScrollUpController.setListener(onOverScrollUpListener);
     }
 
     @Override
     protected void onOverScrolled(final int scrollX, final int scrollY, final boolean clampedX, final boolean clampedY) {
         if (scrollY == 0) {
-            onOverScrollUpMaybe();
+            overScrollUpController.overScroll();
         } else {
-            allowOverScrollUpEvent = false;
+            overScrollUpController.cancel();
         }
 
         scrollTo(scrollX, scrollY); // prevent superclass from calling `super.scrollTo`
@@ -52,16 +52,27 @@ public class NestedScrollParent extends NestedScrollView {
 
     @Override
     public boolean onInterceptTouchEvent(final MotionEvent ev) {
-        if (ev.getAction() == MotionEvent.ACTION_DOWN) {
-            allowOverScrollUpEvent = getScrollY() == 0;
+        switch (ev.getAction()) {
+            case MotionEvent.ACTION_DOWN:
+                if (getScrollY() == 0) {
+                    overScrollUpController.press();
+                }
+                break;
+            case MotionEvent.ACTION_UP:
+                overScrollUpController.release();
+                break;
         }
+
         return false; // don't call super to prevent scrolling when interacting with widgets // TODO: allow scrolling from category tabs
     }
 
-    private void onOverScrollUpMaybe() {
-        if (allowOverScrollUpEvent && onOverScrollUpListener != null && getScrollY() == 0) {
-            onOverScrollUpListener.onOverScrollUp();
+    @SuppressLint("ClickableViewAccessibility")
+    @Override
+    public boolean onTouchEvent(final MotionEvent ev) {
+        if (ev.getAction() == MotionEvent.ACTION_UP) {
+            overScrollUpController.release();
         }
+        return super.onTouchEvent(ev);
     }
 
     @Override
@@ -86,10 +97,12 @@ public class NestedScrollParent extends NestedScrollView {
             consumed[0] = dx;
             consumed[1] = y1 - y0;
 
-            allowOverScrollUpEvent = false;
+            overScrollUpController.cancel();
         } else if (dy < 0) {
-            onOverScrollUpMaybe();
+            overScrollUpController.overScroll();
         }
+
+        // update scroll bar
         if (!awakenScrollBars()) {
             postInvalidateOnAnimation();
         }
@@ -141,5 +154,52 @@ public class NestedScrollParent extends NestedScrollView {
 
     public interface OnOverScrollUpListener {
         void onOverScrollUp();
+    }
+
+    private static class OverScrollUpController {
+        private OnOverScrollUpListener listener;
+
+        public void setListener(final OnOverScrollUpListener listener) {
+            this.listener = listener;
+        }
+
+        private enum State {
+            INACTIVE,
+            PRESSED,
+            OVER_SCROLLED,
+        }
+
+        private State state = State.INACTIVE;
+
+        void cancel() {
+            System.err.println("cancel");
+            System.err.println("cancelled");
+            state = State.INACTIVE;
+        }
+
+        void press() {
+            System.err.println("press");
+            if (state == State.INACTIVE) {
+                System.err.println("pressed");
+                state = State.PRESSED;
+            }
+        }
+
+        void overScroll() {
+            System.err.println("overScroll");
+            if (state == State.PRESSED) {
+                System.err.println("overScrolled");
+                state = State.OVER_SCROLLED;
+            }
+        }
+
+        void release() {
+            System.err.println("release");
+            if (state == State.OVER_SCROLLED && listener != null) {
+                System.err.println("released");
+                listener.onOverScrollUp();
+            }
+            cancel();
+        }
     }
 }
