@@ -4,7 +4,6 @@ import android.annotation.SuppressLint;
 import android.app.ActivityOptions;
 import android.content.Context;
 import android.graphics.PointF;
-import android.os.Build;
 import android.util.Log;
 import android.view.HapticFeedbackConstants;
 import android.view.LayoutInflater;
@@ -113,11 +112,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ItemVi
 
             view.setOnClickListener(view -> {
                 final ActivityOptions opts;
-                if (Build.VERSION.SDK_INT >= 23) {
-                    opts = ActivityOptions.makeClipRevealAnimation(view, 0, 0, view.getWidth(), view.getHeight());
-                } else {
-                    opts = ActivityOptions.makeScaleUpAnimation(view, 0, 0, view.getWidth(), view.getHeight());
-                }
+                opts = ActivityOptions.makeClipRevealAnimation(view, 0, 0, view.getWidth(), view.getHeight());
 
                 final Context context = view.getContext();
 
@@ -142,11 +137,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ItemVi
 
                 // start drag
                 final View.DragShadowBuilder shadow = new OffsetDragShadowBuilder(view, x, y);
-                if (Build.VERSION.SDK_INT < 24) {
-                    view.startDrag(null, shadow, null, 0);
-                } else {
-                    view.startDragAndDrop(null, shadow, null, 0);
-                }
+                view.startDragAndDrop(null, shadow, null, 0);
                 itemDragListener.onDragStarted(view, item.source);
 
                 return false;
