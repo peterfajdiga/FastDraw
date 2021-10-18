@@ -172,31 +172,23 @@ public class NestedScrollParent extends NestedScrollView {
         private State state = State.INACTIVE;
 
         void cancel() {
-            System.err.println("cancel");
-            System.err.println("cancelled");
             state = State.INACTIVE;
         }
 
         void press() {
-            System.err.println("press");
             if (state == State.INACTIVE) {
-                System.err.println("pressed");
                 state = State.PRESSED;
             }
         }
 
         void overScroll() {
-            System.err.println("overScroll");
             if (state == State.PRESSED) {
-                System.err.println("overScrolled");
                 state = State.OVER_SCROLLED;
             }
         }
 
         void release() {
-            System.err.println("release");
             if (state == State.OVER_SCROLLED && listener != null) {
-                System.err.println("released");
                 listener.onOverScrollUp();
             }
             cancel();
