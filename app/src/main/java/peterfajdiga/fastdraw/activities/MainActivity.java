@@ -220,10 +220,9 @@ public class MainActivity extends FragmentActivity implements
 
     @SuppressLint("ClickableViewAccessibility")
     private void setupAppsPager(final NestedScrollParent scrollParent, final View.OnTouchListener longPressListener) {
-        ViewPager appsPager = findViewById(R.id.apps_pager);
+        final ViewPager appsPager = findViewById(R.id.apps_pager);
         launcher = new Launcher(launchManager, this, longPressListener, appsPager);
 
-        setupWallpaperMovement(appsPager);
         setupHeader(appsPager);
 
         loadLauncherItems();
@@ -263,28 +262,32 @@ public class MainActivity extends FragmentActivity implements
         });
     }
 
-    private void setupWallpaperMovement(final ViewPager pager) {
+    private void setupWallpaperParallax(final ViewPager pager) {
         final WallpaperManager wallpaperManager = WallpaperManager.getInstance(this);
 
-        pager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-            @Override
-            public void onPageScrolled(final int position, final float positionOffset, final int positionOffsetPixels) {
-                final PagerAdapter adapter = pager.getAdapter();
-                final float xOffset;
-                if (adapter == null || adapter.getCount() <= 1) {
-                    xOffset = 0.5f;
-                } else {
-                    xOffset = (position + positionOffset) / (adapter.getCount() - 1.0f);
+        if (Preferences.wallpaperParallax) {
+            pager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+                @Override
+                public void onPageScrolled(final int position, final float positionOffset, final int positionOffsetPixels) {
+                    final PagerAdapter adapter = pager.getAdapter();
+                    final float xOffset;
+                    if (adapter == null || adapter.getCount() <= 1) {
+                        xOffset = 0.5f;
+                    } else {
+                        xOffset = (position + positionOffset)/(adapter.getCount() - 1.0f);
+                    }
+                    wallpaperManager.setWallpaperOffsets(pager.getWindowToken(), xOffset, 0.5f);
                 }
-                wallpaperManager.setWallpaperOffsets(pager.getWindowToken(), xOffset, 0.5f);
-            }
 
-            @Override
-            public void onPageSelected(final int position) {}
+                @Override
+                public void onPageSelected(final int position) {}
 
-            @Override
-            public void onPageScrollStateChanged(final int state) {}
-        });
+                @Override
+                public void onPageScrollStateChanged(final int state) {}
+            });
+        } else {
+            pager.post(() -> wallpaperManager.setWallpaperOffsets(pager.getWindowToken(), 0.5f, 0.5f));
+        }
     }
 
     private void setupHeader(final ViewPager appsPager) {
@@ -371,6 +374,9 @@ public class MainActivity extends FragmentActivity implements
         final View contentView = findViewById(android.R.id.content);
         setupSystemBarsPadding(contentView);
         setupSystemBarsScrim(contentView);
+
+        final ViewPager appsPager = findViewById(R.id.apps_pager);
+        setupWallpaperParallax(appsPager);
     }
 
     private void setupDropZones() {

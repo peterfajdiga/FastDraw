@@ -48,6 +48,8 @@
     <string name="pref_description_hideHidden">If there\'s a category called HIDDEN, hide it</string>
 
     <string name="pref_header_appearance">Appearance</string>
+    <string name="pref_title_wallpaperParallax">Wallpaper parallax</string>
+    <string name="pref_description_wallpaperParallax">Move wallpaper when switching categories</string>
     <string name="pref_title_showIcons">Show icons</string>
     <string name="pref_description_showIcons">Replace certain category names with icons</string>
     <string name="pref_title_largeSingle">Enlarge single letters</string>

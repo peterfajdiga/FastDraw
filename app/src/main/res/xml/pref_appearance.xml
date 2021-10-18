@@ -2,10 +2,17 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <SwitchPreference
+        android:defaultValue="@bool/default_wallpaperParallax"
+        android:key="wallpaperParallax"
+        android:title="@string/pref_title_wallpaperParallax"
+        android:summary="@string/pref_description_wallpaperParallax" />
+
+    <SwitchPreference
         android:defaultValue="@bool/default_showIcons"
         android:key="showIcons"
         android:title="@string/pref_title_showIcons"
         android:summary="@string/pref_description_showIcons" />
+
     <SwitchPreference
         android:defaultValue="@bool/default_largeSingle"
         android:key="largeSingle"
