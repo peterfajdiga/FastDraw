@@ -350,7 +350,7 @@ public class MainActivity extends FragmentActivity implements
 
     @ColorInt
     private int applyScrimOpacity(@ColorInt final int color) {
-        return color & (Preferences.scrimOpacity << 24);
+        return color & ((Preferences.scrimOpacity << 24) | 0xffffff);
     }
 
     private void setupSystemBarsScrim(final View contentView) {
