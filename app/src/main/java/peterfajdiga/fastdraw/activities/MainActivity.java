@@ -850,16 +850,6 @@ public class MainActivity extends FragmentActivity implements
             final TransitionDrawable backgroundTransition = (TransitionDrawable)background;
             backgroundTransition.startTransition(DROPZONE_TRANSITION_DURATION);
         }
-
-        final ViewGroup dropZoneContainer = findViewById(R.id.category_drop_zone_container);
-        Log.d("MissingDropZones", String.format(
-            "onDragStarted; Children: %d, Visibility: %d; Height: %d; Measured height: %d; Alpha: %f",
-            dropZoneContainer.getChildCount(),
-            dropZoneContainer.getVisibility(),
-            dropZoneContainer.getHeight(),
-            dropZoneContainer.getMeasuredHeight(),
-            dropZoneContainer.getAlpha()
-        ));
     }
 
     public void onDragEnded1() {
@@ -877,16 +867,6 @@ public class MainActivity extends FragmentActivity implements
                 final TransitionDrawable backgroundTransition = (TransitionDrawable)background;
                 backgroundTransition.reverseTransition(DROPZONE_TRANSITION_DURATION);
             }
-
-            final ViewGroup dropZoneContainer = findViewById(R.id.category_drop_zone_container);
-            Log.d("MissingDropZones", String.format(
-                "onDragEnded1; Children: %d, Visibility: %d; Height: %d; Measured height: %d; Alpha: %f",
-                dropZoneContainer.getChildCount(),
-                dropZoneContainer.getVisibility(),
-                dropZoneContainer.getHeight(),
-                dropZoneContainer.getMeasuredHeight(),
-                dropZoneContainer.getAlpha()
-            ));
         }
     }
 
