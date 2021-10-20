@@ -5,8 +5,6 @@ import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.preference.PreferenceManager;
 
-import androidx.annotation.ColorInt;
-
 public final class Preferences {
     public static boolean allowOrientation;
     public static boolean appsLinearList;
@@ -20,7 +18,7 @@ public final class Preferences {
     public static boolean largeSingle;
     public static boolean headerSeparator;
     public static boolean scrimColorFromWallpaper;
-    @ColorInt public static int headerBgColor;
+    public static int scrimOpacity;
 
     public static void loadPreferences(final Context context) {
         final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
@@ -41,6 +39,6 @@ public final class Preferences {
         largeSingle                        = prefs.getBoolean("largeSingle",             res.getBoolean(R.bool.default_largeSingle));
         headerSeparator                    = prefs.getBoolean("headerSeparator",         res.getBoolean(R.bool.default_headerSeparator));
         scrimColorFromWallpaper            = prefs.getBoolean("scrimColorFromWallpaper", res.getBoolean(R.bool.default_scrimColorFromWallpaper));
-        headerBgColor                      = prefs.getInt("headerBgColor",               res.getInteger(R.integer.default_headerBgColor));
+        scrimOpacity                       = prefs.getInt("scrimOpacity",                res.getInteger(R.integer.default_scrimOpacity));
     }
 }

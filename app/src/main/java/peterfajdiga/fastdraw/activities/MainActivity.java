@@ -348,13 +348,18 @@ public class MainActivity extends FragmentActivity implements
         );
     }
 
+    @ColorInt
+    private int applyScrimOpacity(@ColorInt final int color) {
+        return color & (Preferences.scrimOpacity << 24);
+    }
+
     private void setupSystemBarsScrim(final View contentView) {
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O_MR1 && Preferences.scrimColorFromWallpaper) {
             final WallpaperManager wallpaperManager = (WallpaperManager)getSystemService(WALLPAPER_SERVICE);
             final WallpaperColors wallpaperColors = wallpaperManager.getWallpaperColors(WallpaperManager.FLAG_SYSTEM);
-            updateSystemBarsScrimColor(contentView, WallpaperColorUtils.getDarkScrimColor(wallpaperColors));
+            updateSystemBarsScrimColor(contentView, applyScrimOpacity(WallpaperColorUtils.getDarkColor(wallpaperColors)));
         } else {
-            updateSystemBarsScrimColor(contentView, Preferences.headerBgColor);
+            updateSystemBarsScrimColor(contentView, applyScrimOpacity(Color.BLACK));
         }
     }
 
@@ -424,14 +429,16 @@ public class MainActivity extends FragmentActivity implements
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O_MR1) {
             final WallpaperManager wallpaperManager = (WallpaperManager)getSystemService(WALLPAPER_SERVICE);
             final WallpaperColors wallpaperColors = wallpaperManager.getWallpaperColors(WallpaperManager.FLAG_SYSTEM);
-            @ColorInt final int scrimColor = Preferences.scrimColorFromWallpaper ?
-                WallpaperColorUtils.getDarkScrimColor(wallpaperColors) :
-                Preferences.headerBgColor;
+            @ColorInt final int scrimColor = applyScrimOpacity(
+                Preferences.scrimColorFromWallpaper ?
+                WallpaperColorUtils.getDarkColor(wallpaperColors) :
+                Color.BLACK
+            );
             @ColorInt final int expandedHeaderColor = WallpaperColorUtils.getDarkAccentColor(wallpaperColors);
             updateHeaderColor(header, scrimColor, expandedHeaderColor);
             setupWallpaperColorListener(header, wallpaperManager);
         } else {
-            updateHeaderColor(header, Preferences.headerBgColor, Color.BLACK); // TODO: constant
+            updateHeaderColor(header, Color.BLACK, Color.BLACK); // TODO: constant
         }
     }
 
@@ -439,9 +446,11 @@ public class MainActivity extends FragmentActivity implements
     private void setupWallpaperColorListener(@NonNull final View header, @NonNull final WallpaperManager wallpaperManager) {
         wallpaperManager.addOnColorsChangedListener((colors, which) -> {
             if ((which & WallpaperManager.FLAG_SYSTEM) != 0) {
-                @ColorInt final int scrimColor = Preferences.scrimColorFromWallpaper ?
-                    WallpaperColorUtils.getDarkScrimColor(colors) :
-                    Preferences.headerBgColor;
+                @ColorInt final int scrimColor = applyScrimOpacity(
+                    Preferences.scrimColorFromWallpaper ?
+                    WallpaperColorUtils.getDarkColor(colors) :
+                    Color.BLACK
+                );
                 @ColorInt final int expandedHeaderColor = WallpaperColorUtils.getDarkAccentColor(colors);
                 updateHeaderColor(header, scrimColor, expandedHeaderColor);
                 updateSystemBarsScrimColor(findViewById(android.R.id.content), scrimColor);

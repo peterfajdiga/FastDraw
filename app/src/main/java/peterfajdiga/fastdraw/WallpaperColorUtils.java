@@ -59,9 +59,4 @@ public class WallpaperColorUtils {
     private static boolean isColorDark(@Nullable final Color color) {
         return color != null && color.luminance() < 0.5f;
     }
-
-    @ColorInt
-    public static int getDarkScrimColor(@Nullable final WallpaperColors wallpaperColors) {
-        return 0x60ffffff & getDarkColor(wallpaperColors);
-    }
 }

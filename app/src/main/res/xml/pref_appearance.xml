@@ -33,11 +33,11 @@
         android:title="@string/pref_title_scrimColorFromWallpaper"
         android:summary="@string/pref_description_scrimColorFromWallpaper" />
 
-    <peterfajdiga.colorpickerhex.ColorPreference
-        android:defaultValue="@integer/default_headerBgColor"
-        android:key="headerBgColor"
-        android:dependency="scrimColorFromWallpaper"
-        android:title="@string/pref_title_headerBgColor"
-        app:editAlpha="true" />
+    <SeekBarPreference
+        android:defaultValue="@integer/default_scrimOpacity"
+        app:min="0"
+        android:max="255"
+        android:key="scrimOpacity"
+        android:title="@string/pref_title_scrimOpacity" />
 
 </PreferenceScreen>
