@@ -145,6 +145,12 @@ public class MainActivity extends FragmentActivity implements
         setupAppsPager(scrollParent, longPressListener);
         setupInstallAppReceiver();
 
+        final View contentView = findViewById(android.R.id.content);
+        if (contentView.isAttachedToWindow()) {
+            setupSystemBarsPadding(contentView);
+            setupSystemBarsScrim(contentView);
+        }
+
         final Intent intent = getIntent();
         if (intent != null) {
             final String action = intent.getAction();
@@ -372,6 +378,7 @@ public class MainActivity extends FragmentActivity implements
     @Override
     public void onAttachedToWindow() {
         super.onAttachedToWindow();
+
         final View contentView = findViewById(android.R.id.content);
         setupSystemBarsPadding(contentView);
         setupSystemBarsScrim(contentView);
