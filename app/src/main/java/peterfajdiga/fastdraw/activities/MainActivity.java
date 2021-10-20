@@ -148,10 +148,12 @@ public class MainActivity extends FragmentActivity implements
         setupInstallAppReceiver();
 
         final View contentView = findViewById(android.R.id.content);
-        if (contentView.isAttachedToWindow()) {
-            setupSystemBarsPadding(contentView);
-            setupSystemBarsScrim(contentView);
-        }
+        contentView.post(() -> {
+            if (contentView.isAttachedToWindow()) {
+                setupSystemBarsPadding(contentView);
+                setupSystemBarsScrim(contentView);
+            }
+        });
 
         final Intent intent = getIntent();
         if (intent != null) {
