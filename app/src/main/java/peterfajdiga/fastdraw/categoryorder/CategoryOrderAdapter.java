@@ -82,12 +82,8 @@ public class CategoryOrderAdapter extends RecyclerView.Adapter<CategoryOrderAdap
         @SuppressLint("ClickableViewAccessibility")
         CategoryViewHolder(final View itemView, final ItemTouchHelper itemTouchHelper) {
             super(itemView);
-
             label = itemView.findViewById(R.id.text);
-
             icon = itemView.findViewById(R.id.icon);
-            icon.setColorFilter(itemView.getContext().getResources().getColor(R.color.bottomSheetIcon));
-
             final View handle = itemView.findViewById(R.id.handle);
             handle.setOnTouchListener((v, event) -> {
                 if (itemTouchHelper != null && MotionEventCompat.getActionMasked(event) == MotionEvent.ACTION_DOWN) {

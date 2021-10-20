@@ -5,15 +5,20 @@
         <item name="android:colorBackgroundCacheHint">@null</item>
         <item name="android:windowShowWallpaper">true</item>
 
-        <item name="android:colorEdgeEffect">@android:color/white</item>
-
         <item name="android:statusBarColor">@android:color/transparent</item>
         <item name="android:navigationBarColor">@android:color/transparent</item>
         <item name="android:enforceNavigationBarContrast" tools:targetApi="29">false</item>
     </style>
 
-    <style name="FloatingText" parent="@android:style/TextAppearance.DeviceDefault.Widget">
+    <style name="AppTheme.Wallpaper.Dark" parent="AppTheme.Wallpaper">
+        <item name="android:colorEdgeEffect">@android:color/white</item>
+        <item name="android:textColorPrimary">@android:color/white</item>
+        <item name="textColorPrimaryInactive">#80FFFFFF</item>
+        <item name="scrimColor">@android:color/black</item>
         <item name="android:shadowColor">@android:color/black</item>
+    </style>
+
+    <style name="FloatingText" parent="@android:style/TextAppearance.DeviceDefault.Widget">
         <item name="android:shadowDx">0</item>
         <item name="android:shadowDy">2</item>
         <item name="android:shadowRadius">6</item>
@@ -32,15 +37,13 @@
 
     <style name="AppsTabLayout" parent="@style/Widget.Design.TabLayout">
         <item name="tabTextAppearance">@style/AppsTabLayoutText</item>
-        <item name="tabIndicatorColor">@color/foregroundActive</item>
+        <item name="tabIndicatorColor">?android:attr/textColorPrimary</item>
         <item name="tabIndicatorHeight">3dp</item>
         <item name="tabMode">fixed</item>
         <item name="tabGravity">fill</item>
         <item name="tabMaxWidth">0dp</item>
         <item name="tabPaddingStart">0dp</item>
         <item name="tabPaddingEnd">0dp</item>
-        <item name="android:color">#ff00ff00</item>
-        <!--<item name="android:paddingTop">@*android:dimen/status_bar_height</item>-->
     </style>
 
     <style name="AppsTabLayoutText" parent="@style/TextAppearance.Design.Tab">
@@ -55,17 +58,24 @@
         <item name="android:paddingLeft">16dp</item>
         <item name="android:paddingRight">16dp</item>
         <item name="android:drawablePadding">32dp</item>
-        <item name="android:textColor">@color/bottomSheetText</item>
+        <item name="android:textColor">?android:textColorPrimary</item>
         <item name="android:textSize">16sp</item>
         <item name="android:background">?attr/selectableItemBackground</item>
         <item name="android:maxLines">2</item>
         <item name="android:ellipsize">end</item>
     </style>
 
+    <style name="BottomSheetTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:textColorPrimary">@color/textColorPrimary</item>
+        <item name="android:textColorSecondary">@color/textColorSecondary</item>
+    </style>
+
     <style name="AppTheme.Settings" parent="Theme.AppCompat.Light.DarkActionBar">
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
+        <item name="colorPrimary">#546e7a</item>
+        <item name="colorPrimaryDark">#455a64</item>
+        <item name="colorAccent">#fdd835</item>
+        <item name="android:textColorPrimary">@color/textColorPrimary</item>
+        <item name="android:textColorSecondary">@color/textColorSecondary</item>
     </style>
 
 </resources>

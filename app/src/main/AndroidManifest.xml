@@ -20,7 +20,7 @@
             android:excludeFromRecents="true"
             android:screenOrientation="nosensor"
             android:configChanges="orientation|screenSize"
-            android:theme="@style/AppTheme.Wallpaper">
+            android:theme="@style/AppTheme.Wallpaper.Dark">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.HOME" />
