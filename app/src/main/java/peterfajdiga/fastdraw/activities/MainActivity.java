@@ -50,6 +50,7 @@ import androidx.fragment.app.FragmentActivity;
 import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
+import com.google.android.material.color.MaterialColors;
 import com.google.android.material.tabs.TabLayout;
 
 import java.lang.ref.WeakReference;
@@ -359,8 +360,13 @@ public class MainActivity extends FragmentActivity implements
             final WallpaperColors wallpaperColors = wallpaperManager.getWallpaperColors(WallpaperManager.FLAG_SYSTEM);
             updateSystemBarsScrimColor(contentView, applyScrimOpacity(WallpaperColorUtils.getDarkColor(wallpaperColors)));
         } else {
-            updateSystemBarsScrimColor(contentView, applyScrimOpacity(Color.BLACK));
+            updateSystemBarsScrimColor(contentView, applyScrimOpacity(getScrimColor()));
         }
+    }
+
+    @ColorInt
+    private int getScrimColor() {
+        return MaterialColors.getColor(this, R.attr.scrimColor, Color.GRAY);
     }
 
     private void updateSystemBarsScrimColor(final View contentView, @ColorInt final int color) {
@@ -432,13 +438,14 @@ public class MainActivity extends FragmentActivity implements
             @ColorInt final int scrimColor = applyScrimOpacity(
                 Preferences.scrimColorFromWallpaper ?
                 WallpaperColorUtils.getDarkColor(wallpaperColors) :
-                Color.BLACK
+                getScrimColor()
             );
             @ColorInt final int expandedHeaderColor = WallpaperColorUtils.getDarkAccentColor(wallpaperColors);
             updateHeaderColor(header, scrimColor, expandedHeaderColor);
             setupWallpaperColorListener(header, wallpaperManager);
         } else {
-            updateHeaderColor(header, Color.BLACK, Color.BLACK); // TODO: constant
+            @ColorInt final int scrimColor = getScrimColor();
+            updateHeaderColor(header, scrimColor, scrimColor); // TODO: constant
         }
     }
 
@@ -449,7 +456,7 @@ public class MainActivity extends FragmentActivity implements
                 @ColorInt final int scrimColor = applyScrimOpacity(
                     Preferences.scrimColorFromWallpaper ?
                     WallpaperColorUtils.getDarkColor(colors) :
-                    Color.BLACK
+                    getScrimColor()
                 );
                 @ColorInt final int expandedHeaderColor = WallpaperColorUtils.getDarkAccentColor(colors);
                 updateHeaderColor(header, scrimColor, expandedHeaderColor);
