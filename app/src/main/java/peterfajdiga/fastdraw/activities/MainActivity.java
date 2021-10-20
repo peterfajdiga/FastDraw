@@ -223,6 +223,7 @@ public class MainActivity extends FragmentActivity implements
         final ViewPager appsPager = findViewById(R.id.apps_pager);
         launcher = new Launcher(launchManager, this, longPressListener, appsPager);
 
+        setupWallpaperParallax(appsPager);
         setupHeader(appsPager);
 
         loadLauncherItems();
@@ -374,9 +375,6 @@ public class MainActivity extends FragmentActivity implements
         final View contentView = findViewById(android.R.id.content);
         setupSystemBarsPadding(contentView);
         setupSystemBarsScrim(contentView);
-
-        final ViewPager appsPager = findViewById(R.id.apps_pager);
-        setupWallpaperParallax(appsPager);
     }
 
     private void setupDropZones() {
