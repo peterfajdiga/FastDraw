@@ -19,6 +19,7 @@ public final class Preferences {
     public static boolean showIcons;
     public static boolean largeSingle;
     public static boolean headerSeparator;
+    public static boolean scrimColorFromWallpaper;
     @ColorInt public static int headerBgColor;
 
     public static void loadPreferences(final Context context) {
@@ -30,15 +31,16 @@ public final class Preferences {
             case "0": appsLinearList = false; break;
             case "1": appsLinearList = true; break;
         }
-        allowOrientation                   = prefs.getBoolean("allowOrientation",    res.getBoolean(R.bool.default_allowOrientation));
-        widgetHeight                       = prefs.getInt("widgetHeight",            res.getInteger(R.integer.default_widgetHeight));
-        headerOnBottom                     = prefs.getBoolean("headerbtm",           res.getBoolean(R.bool.default_headerbtm));
-        scrollableTabs                     = prefs.getBoolean("scrollableTabs",      res.getBoolean(R.bool.default_scrollableTabs));
-        hideHidden                         = prefs.getBoolean("hideHidden",          res.getBoolean(R.bool.default_hideHidden));
-        wallpaperParallax                  = prefs.getBoolean("wallpaperParallax",   res.getBoolean(R.bool.default_wallpaperParallax));
-        showIcons                          = prefs.getBoolean("showIcons",           res.getBoolean(R.bool.default_showIcons));
-        largeSingle                        = prefs.getBoolean("largeSingle",         res.getBoolean(R.bool.default_largeSingle));
-        headerSeparator                    = prefs.getBoolean("headerSeparator",     res.getBoolean(R.bool.default_headerSeparator));
-        headerBgColor                      = prefs.getInt("headerBgColor",           res.getInteger(R.integer.default_headerBgColor));
+        allowOrientation                   = prefs.getBoolean("allowOrientation",        res.getBoolean(R.bool.default_allowOrientation));
+        widgetHeight                       = prefs.getInt("widgetHeight",                res.getInteger(R.integer.default_widgetHeight));
+        headerOnBottom                     = prefs.getBoolean("headerbtm",               res.getBoolean(R.bool.default_headerbtm));
+        scrollableTabs                     = prefs.getBoolean("scrollableTabs",          res.getBoolean(R.bool.default_scrollableTabs));
+        hideHidden                         = prefs.getBoolean("hideHidden",              res.getBoolean(R.bool.default_hideHidden));
+        wallpaperParallax                  = prefs.getBoolean("wallpaperParallax",       res.getBoolean(R.bool.default_wallpaperParallax));
+        showIcons                          = prefs.getBoolean("showIcons",               res.getBoolean(R.bool.default_showIcons));
+        largeSingle                        = prefs.getBoolean("largeSingle",             res.getBoolean(R.bool.default_largeSingle));
+        headerSeparator                    = prefs.getBoolean("headerSeparator",         res.getBoolean(R.bool.default_headerSeparator));
+        scrimColorFromWallpaper            = prefs.getBoolean("scrimColorFromWallpaper", res.getBoolean(R.bool.default_scrimColorFromWallpaper));
+        headerBgColor                      = prefs.getInt("headerBgColor",               res.getInteger(R.integer.default_headerBgColor));
     }
 }

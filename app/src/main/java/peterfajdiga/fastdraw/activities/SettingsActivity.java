@@ -178,6 +178,13 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
             super.onCreate(savedInstanceState);
             addPreferencesFromResource(R.xml.pref_appearance);
             setHasOptionsMenu(false);
+            removeUnsupportedPreferences();
+        }
+
+        private void removeUnsupportedPreferences() {
+            if (android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.O_MR1) {
+                findPreference("scrimColorFromWallpaper").setEnabled(false);
+            }
         }
     }
 

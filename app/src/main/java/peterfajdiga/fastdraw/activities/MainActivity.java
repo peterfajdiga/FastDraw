@@ -349,6 +349,16 @@ public class MainActivity extends FragmentActivity implements
     }
 
     private void setupSystemBarsScrim(final View contentView) {
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O_MR1 && Preferences.scrimColorFromWallpaper) {
+            final WallpaperManager wallpaperManager = (WallpaperManager)getSystemService(WALLPAPER_SERVICE);
+            final WallpaperColors wallpaperColors = wallpaperManager.getWallpaperColors(WallpaperManager.FLAG_SYSTEM);
+            updateSystemBarsScrimColor(contentView, WallpaperColorUtils.getDarkScrimColor(wallpaperColors));
+        } else {
+            updateSystemBarsScrimColor(contentView, Preferences.headerBgColor);
+        }
+    }
+
+    private void updateSystemBarsScrimColor(final View contentView, @ColorInt final int color) {
         final Resources res = getResources();
         final int scrimHeight = Math.round(res.getDimension(R.dimen.system_bar_scrim_height));
 
@@ -360,7 +370,7 @@ public class MainActivity extends FragmentActivity implements
         );
 
         contentView.setBackground(Drawables.createScrimBackground(
-            Preferences.headerBgColor,
+            color,
             scrimHeight,
             scrimHeightBottom
         ));
@@ -378,7 +388,6 @@ public class MainActivity extends FragmentActivity implements
     @Override
     public void onAttachedToWindow() {
         super.onAttachedToWindow();
-
         final View contentView = findViewById(android.R.id.content);
         setupSystemBarsPadding(contentView);
         setupSystemBarsScrim(contentView);
@@ -415,10 +424,14 @@ public class MainActivity extends FragmentActivity implements
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O_MR1) {
             final WallpaperManager wallpaperManager = (WallpaperManager)getSystemService(WALLPAPER_SERVICE);
             final WallpaperColors wallpaperColors = wallpaperManager.getWallpaperColors(WallpaperManager.FLAG_SYSTEM);
-            updateHeaderBackground(header, WallpaperColorUtils.getDarkColor(wallpaperColors));
+            @ColorInt final int scrimColor = Preferences.scrimColorFromWallpaper ?
+                WallpaperColorUtils.getDarkScrimColor(wallpaperColors) :
+                Preferences.headerBgColor;
+            @ColorInt final int expandedHeaderColor = WallpaperColorUtils.getDarkAccentColor(wallpaperColors);
+            updateHeaderColor(header, scrimColor, expandedHeaderColor);
             setupWallpaperColorListener(header, wallpaperManager);
         } else {
-            updateHeaderBackground(header, Color.BLACK);
+            updateHeaderColor(header, Preferences.headerBgColor, Color.BLACK); // TODO: constant
         }
     }
 
@@ -426,15 +439,20 @@ public class MainActivity extends FragmentActivity implements
     private void setupWallpaperColorListener(@NonNull final View header, @NonNull final WallpaperManager wallpaperManager) {
         wallpaperManager.addOnColorsChangedListener((colors, which) -> {
             if ((which & WallpaperManager.FLAG_SYSTEM) != 0) {
-                updateHeaderBackground(header, WallpaperColorUtils.getDarkColor(colors));
+                @ColorInt final int scrimColor = Preferences.scrimColorFromWallpaper ?
+                    WallpaperColorUtils.getDarkScrimColor(colors) :
+                    Preferences.headerBgColor;
+                @ColorInt final int expandedHeaderColor = WallpaperColorUtils.getDarkAccentColor(colors);
+                updateHeaderColor(header, scrimColor, expandedHeaderColor);
+                updateSystemBarsScrimColor(findViewById(android.R.id.content), scrimColor);
             }
         }, null);
     }
 
-    private void updateHeaderBackground(@NonNull final View header, @ColorInt final int expandedColor) {
+    private void updateHeaderColor(@NonNull final View header, @ColorInt final int scrimColor, @ColorInt final int expandedColor) {
         header.setBackground(Drawables.createHeaderBackground(
             getResources(),
-            Preferences.headerBgColor,
+            scrimColor,
             expandedColor,
             !Preferences.headerOnBottom,
             Preferences.headerSeparator

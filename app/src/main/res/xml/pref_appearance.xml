@@ -26,9 +26,17 @@
         android:title="@string/pref_title_headerSeparator"
         android:summary="@string/pref_description_headerSeparator" />
 
+    <SwitchPreference
+        android:defaultValue="@bool/default_scrimColorFromWallpaper"
+        android:key="scrimColorFromWallpaper"
+        android:disableDependentsState="true"
+        android:title="@string/pref_title_scrimColorFromWallpaper"
+        android:summary="@string/pref_description_scrimColorFromWallpaper" />
+
     <peterfajdiga.colorpickerhex.ColorPreference
         android:defaultValue="@integer/default_headerBgColor"
         android:key="headerBgColor"
+        android:dependency="scrimColorFromWallpaper"
         android:title="@string/pref_title_headerBgColor"
         app:editAlpha="true" />
 
