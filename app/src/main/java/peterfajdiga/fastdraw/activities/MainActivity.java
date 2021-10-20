@@ -463,7 +463,9 @@ public class MainActivity extends FragmentActivity implements
                 );
                 @ColorInt final int expandedHeaderColor = WallpaperColorUtils.getDarkAccentColor(colors);
                 updateHeaderColor(header, scrimColor, expandedHeaderColor);
-                updateSystemBarsScrimColor(findViewById(android.R.id.content), scrimColor);
+                if (header.isAttachedToWindow()) {
+                    updateSystemBarsScrimColor(findViewById(android.R.id.content), scrimColor);
+                }
             }
         }, null);
     }
