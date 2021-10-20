@@ -130,8 +130,9 @@ public class MainActivity extends FragmentActivity implements
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED);
         }
 
-        getWindow().getDecorView().setSystemUiVisibility(
-            View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+        final View decorView = getWindow().getDecorView();
+        decorView.setSystemUiVisibility(
+            decorView.getSystemUiVisibility() | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
         );
 
         final NestedScrollParent scrollParent = findViewById(R.id.scroll_parent);
