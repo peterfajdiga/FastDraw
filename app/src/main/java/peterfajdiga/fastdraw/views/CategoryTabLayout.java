@@ -1,7 +1,6 @@
 package peterfajdiga.fastdraw.views;
 
 import android.content.Context;
-import android.content.res.ColorStateList;
 import android.graphics.drawable.Drawable;
 import android.text.Spannable;
 import android.text.SpannableString;
@@ -12,8 +11,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
-import androidx.core.content.ContextCompat;
-import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.fragment.app.FragmentActivity;
 
 import com.google.android.material.tabs.TabLayout;
@@ -69,7 +66,6 @@ public class CategoryTabLayout extends TabLayout {
         }
         //assert getContext() instanceof Activity;
         final FragmentActivity activity = (FragmentActivity)getContext();
-        final ColorStateList iconColors = ContextCompat.getColorStateList(getContext(), R.color.tab);
         final String categoryName = tab.getText().toString();
         final Drawable icon = Common.getCategoryIcon(getContext(), categoryName);
 
@@ -77,7 +73,6 @@ public class CategoryTabLayout extends TabLayout {
             if (icon != null) {
                 tab.setIcon(icon);
                 tab.setText("");
-                DrawableCompat.setTintList(DrawableCompat.wrap(icon), iconColors);
             } else if (categoryName.length() == 1 && Preferences.largeSingle) {
                 SpannableString tabString = new SpannableString(categoryName);
                 tabString.setSpan(new AbsoluteSizeSpan(19, true), 0, 1, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);

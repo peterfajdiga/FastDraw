@@ -48,7 +48,7 @@
 
     <style name="AppsTabLayoutText" parent="@style/TextAppearance.Design.Tab">
         <item name="android:textAllCaps">false</item>
-        <item name="android:textColor">@color/tab</item>
+        <item name="android:textColor">?android:attr/textColorPrimary</item>
     </style>
 
     <style name="SheetItem">
