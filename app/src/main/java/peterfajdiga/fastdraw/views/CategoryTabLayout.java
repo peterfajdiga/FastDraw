@@ -18,6 +18,7 @@ import com.google.android.material.tabs.TabLayout;
 import peterfajdiga.fastdraw.Common;
 import peterfajdiga.fastdraw.Preferences;
 import peterfajdiga.fastdraw.R;
+import peterfajdiga.fastdraw.ShadowDrawable;
 import peterfajdiga.fastdraw.dialogs.RenameCategoryDialog;
 import peterfajdiga.fastdraw.dragdrop.DropZoneCategory;
 
@@ -71,7 +72,8 @@ public class CategoryTabLayout extends TabLayout {
 
         if (Preferences.showIcons) {
             if (icon != null) {
-                tab.setIcon(icon);
+                final ShadowDrawable iconWithShadow = new ShadowDrawable(icon);
+                tab.setIcon(iconWithShadow);
                 tab.setText("");
             } else if (categoryName.length() == 1 && Preferences.largeSingle) {
                 SpannableString tabString = new SpannableString(categoryName);
