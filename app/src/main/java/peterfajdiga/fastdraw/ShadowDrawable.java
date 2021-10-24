@@ -4,22 +4,26 @@ import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.DrawableWrapper;
 
+import androidx.annotation.ColorInt;
 import androidx.annotation.NonNull;
 
 public class ShadowDrawable extends DrawableWrapper {
-    public ShadowDrawable(@NonNull final Drawable foreground) {
+    @ColorInt private final int shadowTint;
+
+    public ShadowDrawable(@NonNull final Drawable foreground, @ColorInt int shadowTint) {
         super(foreground);
+        this.shadowTint = shadowTint;
     }
 
     @Override
     public void draw(@NonNull final Canvas canvas) {
         canvas.save();
         canvas.translate(0, 2);
-        super.setTint(0x80000000);
+        super.setTint(shadowTint);
         super.draw(canvas);
         canvas.restore();
 
-        super.setTint(0xffffffff);
+        super.setTintList(null);
         super.draw(canvas);
     }
 }

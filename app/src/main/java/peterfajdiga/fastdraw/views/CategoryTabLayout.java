@@ -10,9 +10,11 @@ import android.view.HapticFeedbackConstants;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.annotation.ColorInt;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentActivity;
 
+import com.google.android.material.color.MaterialColors;
 import com.google.android.material.tabs.TabLayout;
 
 import peterfajdiga.fastdraw.Common;
@@ -23,17 +25,25 @@ import peterfajdiga.fastdraw.dialogs.RenameCategoryDialog;
 import peterfajdiga.fastdraw.dragdrop.DropZoneCategory;
 
 public class CategoryTabLayout extends TabLayout {
+    @ColorInt private int shadowColor;
 
     public CategoryTabLayout(Context context) {
         this(context, null);
+        initColors();
     }
 
     public CategoryTabLayout(Context context, AttributeSet attrs) {
         this(context, attrs, 0);
+        initColors();
     }
 
     public CategoryTabLayout(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
+        initColors();
+    }
+
+    private void initColors() {
+        shadowColor = MaterialColors.getColor(this, R.attr.hardShadowColor);
     }
 
     @Override
@@ -72,7 +82,7 @@ public class CategoryTabLayout extends TabLayout {
 
         if (Preferences.showIcons) {
             if (icon != null) {
-                final ShadowDrawable iconWithShadow = new ShadowDrawable(icon);
+                final ShadowDrawable iconWithShadow = new ShadowDrawable(icon, shadowColor);
                 tab.setIcon(iconWithShadow);
                 tab.setText("");
             } else if (categoryName.length() == 1 && Preferences.largeSingle) {
