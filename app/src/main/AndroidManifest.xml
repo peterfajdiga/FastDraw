@@ -20,7 +20,8 @@
             android:excludeFromRecents="true"
             android:screenOrientation="nosensor"
             android:configChanges="orientation|screenSize"
-            android:theme="@style/AppTheme.Wallpaper.Dark">
+            android:theme="@style/AppTheme.Wallpaper.Dark"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.HOME" />
@@ -34,7 +35,8 @@
 
         <receiver
             android:name=".receivers.InstallShortcutReceiver"
-            android:permission="com.android.launcher.permission.INSTALL_SHORTCUT">
+            android:permission="com.android.launcher.permission.INSTALL_SHORTCUT"
+            android:exported="false">
             <intent-filter>
                 <action android:name="com.android.launcher.action.INSTALL_SHORTCUT" />
             </intent-filter>
@@ -48,7 +50,8 @@
             android:stateNotNeeded="true"
             android:excludeFromRecents="false"
             android:configChanges="orientation|screenSize"
-            android:theme="@style/AppTheme.Settings">
+            android:theme="@style/AppTheme.Settings"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <action android:name="android.intent.action.APPLICATION_PREFERENCES" />
