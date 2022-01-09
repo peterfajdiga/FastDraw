@@ -113,24 +113,25 @@ public class ShortcutItemManager {
     }
 
     @NonNull
-    public static ShortcutItem shortcutFromIntent(@NonNull final Context context, @NonNull final Intent data) {
-        final Intent launchIntent = data.getParcelableExtra(Intent.EXTRA_SHORTCUT_INTENT);
-        final String name = data.getStringExtra(Intent.EXTRA_SHORTCUT_NAME);
-        final Bitmap bmp = data.getParcelableExtra(Intent.EXTRA_SHORTCUT_ICON);
+    public static ShortcutItem shortcutFromIntent(@NonNull final Context context, @NonNull final Intent intent) {
+        final Intent launchIntent = intent.getParcelableExtra(Intent.EXTRA_SHORTCUT_INTENT);
+        final String name = intent.getStringExtra(Intent.EXTRA_SHORTCUT_NAME);
+        final Bitmap bmp = intent.getParcelableExtra(Intent.EXTRA_SHORTCUT_ICON);
 
         if (bmp != null) {
             final BitmapDrawable icon = new BitmapDrawable(context.getResources(), bmp);
             return new BitmapShortcutItem(generateUUID(), launchIntent, name, icon);
         } else {
-            final Intent.ShortcutIconResource iconResource = data.getParcelableExtra(Intent.EXTRA_SHORTCUT_ICON_RESOURCE);
+            final Intent.ShortcutIconResource iconResource = intent.getParcelableExtra(Intent.EXTRA_SHORTCUT_ICON_RESOURCE);
             return new ResShortcutItem(generateUUID(), launchIntent, name, iconResource.packageName, iconResource.resourceName);
         }
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Nullable
-    public static OreoShortcutItem oreoShortcutFromIntent(@NonNull final Intent data) {
-        final LauncherApps.PinItemRequest pinItemRequest = data.getParcelableExtra(LauncherApps.EXTRA_PIN_ITEM_REQUEST);
+    public static OreoShortcutItem oreoShortcutFromIntent(final Context context, @NonNull final Intent intent) {
+        @NonNull final LauncherApps launcherApps = (LauncherApps)context.getSystemService(Context.LAUNCHER_APPS_SERVICE);
+        final LauncherApps.PinItemRequest pinItemRequest = launcherApps.getPinItemRequest(intent);
         if (!pinItemRequest.accept()) {
             return null;
         }
