@@ -97,7 +97,6 @@ public class MainActivity extends FragmentActivity implements
     DropZoneRemoveShortcut.Owner<LauncherItem>,
     DropZoneCategory.Owner<LauncherItem>,
     DropZoneNewCategory.Owner<LauncherItem>,
-    NewCategoryDialog.Listener,
     RenameCategoryDialog.Listener {
 
     public static final int INSTALL_SHORTCUT_REQUEST = 2143;
@@ -862,7 +861,6 @@ public class MainActivity extends FragmentActivity implements
     // LauncherItem dragging
     private View draggedView = null;
     private LauncherItem draggedItem = null;
-    private LauncherItem newCategoryDroppedItem = null;
 
     @Override
     public void setDragItem(@NonNull final View draggedView, @NonNull final LauncherItem draggedItem) {
@@ -943,15 +941,13 @@ public class MainActivity extends FragmentActivity implements
 
     @Override
     public void onDraggedItemNewCategory() {
-        newCategoryDroppedItem = draggedItem;
-        NewCategoryDialog dialog = new NewCategoryDialog(this, getString(R.string.new_category), getString(R.string.create));
+        final LauncherItem draggedItem = this.draggedItem;
+        final NewCategoryDialog dialog = new NewCategoryDialog(
+            newCategoryName -> launcher.moveItem(draggedItem, newCategoryName, true),
+            getString(R.string.new_category),
+            getString(R.string.create)
+        );
         dialog.show(getSupportFragmentManager(), "NewCategoryDialog");
-    }
-
-    @Override
-    public void onNewCategoryDialogSuccess(String newCategoryName) {
-        launcher.moveItem(newCategoryDroppedItem, newCategoryName, true);
-        newCategoryDroppedItem = null;
     }
 
     @Override
