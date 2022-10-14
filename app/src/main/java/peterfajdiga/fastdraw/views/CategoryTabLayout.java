@@ -115,7 +115,7 @@ public class CategoryTabLayout extends TabLayout {
         });
 
         tabView.setOnDragListener(new DropZone(
-            (view, draggedItem) -> onDropListener.onDrop(draggedItem, categoryName),
+            (draggedItem) -> onDropListener.onDrop(draggedItem, categoryName),
             false
         ));
     }

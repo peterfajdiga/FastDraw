@@ -401,7 +401,7 @@ public class MainActivity extends FragmentActivity implements
         tabContainer.setOnDropListener((draggedItem, category) -> launcher.moveItem(draggedItem, category, true));
 
         findViewById(R.id.drop_zone_new_category).setOnDragListener(new DropZone(
-            (view, draggedItem) -> {
+            (draggedItem) -> {
                 final NewCategoryDialog dialog = new NewCategoryDialog(
                     newCategoryName -> launcher.moveItem(draggedItem, newCategoryName, true),
                     getString(R.string.new_category),
@@ -413,7 +413,7 @@ public class MainActivity extends FragmentActivity implements
         ));
 
         findViewById(R.id.drop_zone_app_info).setOnDragListener(new DropZone(
-            (view, draggedItem) -> {
+            (draggedItem) -> {
                 final AppItem appItem = (AppItem)draggedItem;
                 appItem.openAppDetails(this);
             },
@@ -421,7 +421,7 @@ public class MainActivity extends FragmentActivity implements
         ));
 
         findViewById(R.id.drop_zone_remove_shortcut).setOnDragListener(new DropZone(
-            (view, draggedItem) -> {
+            (draggedItem) -> {
                 final ShortcutItem shortcutItem = (ShortcutItem)draggedItem;
                 launcher.removeItem(shortcutItem, true);
                 ShortcutItemManager.deleteShortcut(this, shortcutItem);

@@ -33,7 +33,7 @@ public class DropZone implements View.OnDragListener {
             }
             case DragEvent.ACTION_DROP: {
                 view.setBackground(defaultBg);
-                listener.onDrop(view, (LauncherItem)event.getLocalState());
+                listener.onDrop((LauncherItem)event.getLocalState());
                 break;
             }
             case DragEvent.ACTION_DRAG_ENDED: {
@@ -45,6 +45,6 @@ public class DropZone implements View.OnDragListener {
     }
 
     public interface Listener {
-        void onDrop(View view, LauncherItem draggedItem);
+        void onDrop(LauncherItem draggedItem);
     }
 }
