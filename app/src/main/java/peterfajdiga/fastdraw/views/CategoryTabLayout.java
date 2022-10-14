@@ -80,7 +80,6 @@ public class CategoryTabLayout extends TabLayout {
             // this tab has already been setup
             return;
         }
-        //assert getContext() instanceof Activity;
         final FragmentActivity activity = (FragmentActivity)getContext();
         final String categoryName = tab.getText().toString();
         final Drawable icon = Common.getCategoryIcon(getContext(), categoryName);
