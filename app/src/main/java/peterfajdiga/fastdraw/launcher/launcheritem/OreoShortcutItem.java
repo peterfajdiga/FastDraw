@@ -33,7 +33,7 @@ public class OreoShortcutItem implements ShortcutItem {
 
     @NonNull
     @Override
-    public String getID() {
+    public String getId() {
         return TYPE_KEY + "\0" + uuid;
     }
 
@@ -55,7 +55,7 @@ public class OreoShortcutItem implements ShortcutItem {
         final CharSequence label = OreoShortcuts.getLabel(info);
         final Drawable icon = OreoShortcuts.getIcon(context, info);
         final Launchable launchable = new OreoShortcutLaunchable(info);
-        this.displayItem = new DisplayItem(getID(), label, icon, this, launchable);
+        this.displayItem = new DisplayItem(getId(), label, icon, this, launchable);
         return displayItem;
     }
 

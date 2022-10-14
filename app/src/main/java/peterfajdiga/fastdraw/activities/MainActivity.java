@@ -738,7 +738,7 @@ public class MainActivity extends FragmentActivity implements
      */
     private void addAppToHome(@NonNull final AppItem appItem) {
         final PrefMap categoriesMap = new PrefMap(this, "categories");
-        categoriesMap.putString(appItem.getID(), Launcher.HOME_CATEGORY_NAME);
+        categoriesMap.putString(appItem.getId(), Launcher.HOME_CATEGORY_NAME);
     }
 
     /**

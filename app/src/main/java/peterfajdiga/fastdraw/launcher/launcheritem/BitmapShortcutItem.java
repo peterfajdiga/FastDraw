@@ -37,12 +37,12 @@ public class BitmapShortcutItem implements ShortcutItem {
         this.label = label;
         this.icon = icon;
         final Launchable launchable = new IntentLaunchable(intent);
-        this.displayItem = new DisplayItem(getID(), label, icon, this, launchable);
+        this.displayItem = new DisplayItem(getId(), label, icon, this, launchable);
     }
 
     @NonNull
     @Override
-    public String getID() {
+    public String getId() {
         return TYPE_KEY + "\0" + uuid;
     }
 

@@ -45,7 +45,7 @@ public class ResShortcutItem implements ShortcutItem {
 
     @Override
     @NonNull
-    public String getID() {
+    public String getId() {
         return TYPE_KEY + "\0" + uuid;
     }
 
@@ -64,7 +64,7 @@ public class ResShortcutItem implements ShortcutItem {
 
         final Drawable icon = loadIcon(context);
         final Launchable launchable = new IntentLaunchable(intent);
-        displayItem = new DisplayItem(getID(), label, icon, this, launchable);
+        displayItem = new DisplayItem(getId(), label, icon, this, launchable);
         return displayItem;
     }
 

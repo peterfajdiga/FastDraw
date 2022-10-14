@@ -6,7 +6,6 @@ import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.net.Uri;
 import android.provider.Settings;
-import android.util.Log;
 
 import androidx.annotation.NonNull;
 
@@ -65,11 +64,11 @@ public class AppItemManager {
         final Stream<AppItem> updatedAppItemsStream,
         final String defaultCategoryName
     ) {
-        final Map<String, AppItem> updatedAppItems = updatedAppItemsStream.collect(Collectors.toMap(AppItem::getID, Function.identity()));
+        final Map<String, AppItem> updatedAppItems = updatedAppItemsStream.collect(Collectors.toMap(AppItem::getId, Function.identity()));
 
         for (final LauncherItem existingItem : launcher.getItems()) {
             if (existingItem instanceof AppItem && packageName.equals(existingItem.getPackageName())) {
-                final AppItem updatedAppItem = updatedAppItems.remove(existingItem.getID());
+                final AppItem updatedAppItem = updatedAppItems.remove(existingItem.getId());
                 if (updatedAppItem == null) {
                     launcher.removeItem(existingItem, true);
                 } else {

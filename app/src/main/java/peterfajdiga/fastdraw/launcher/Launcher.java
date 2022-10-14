@@ -246,7 +246,7 @@ public class Launcher {
             return true;
         } else {
             // remove item from category
-            category.removeItem(item.getID());
+            category.removeItem(item.getId());
             return false;
         }
     }
@@ -254,7 +254,7 @@ public class Launcher {
     public void updateItem(@NonNull final LauncherItem existingItem, @NonNull final LauncherItem updatedItem) {
         final String categoryName = getItemCategory(existingItem);
         final Category category = adapter.categories.get(categoryName);
-        category.updateItem(existingItem.getID(), updatedItem.getDisplayItem(pager.getContext()));
+        category.updateItem(existingItem.getId(), updatedItem.getDisplayItem(pager.getContext()));
     }
 
     public void moveItem(@NonNull final LauncherItem item, @NonNull final String categoryName, final boolean followItem) {
@@ -274,7 +274,7 @@ public class Launcher {
 
     @Nullable
     private String getItemCategory(@NonNull final LauncherItem item) {
-        return itemCategoryMap.getString(item.getID(), null);
+        return itemCategoryMap.getString(item.getId(), null);
     }
 
     @NonNull
@@ -288,11 +288,11 @@ public class Launcher {
     }
 
     private void setItemCategory(@NonNull final LauncherItem item, @NonNull final String categoryName) {
-        itemCategoryMap.putString(item.getID(), categoryName);
+        itemCategoryMap.putString(item.getId(), categoryName);
     }
 
     private void removeItemCategory(@NonNull final LauncherItem item) {
-        itemCategoryMap.remove(item.getID());
+        itemCategoryMap.remove(item.getId());
     }
 
     public interface ItemDragListener {

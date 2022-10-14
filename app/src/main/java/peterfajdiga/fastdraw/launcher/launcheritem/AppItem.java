@@ -26,7 +26,7 @@ public class AppItem implements LauncherItem {
 
     @Override
     @NonNull
-    public String getID() {
+    public String getId() {
         return TYPE_KEY + "\0" + info.packageName + "\0" + info.name;
     }
 
@@ -56,7 +56,7 @@ public class AppItem implements LauncherItem {
         final Drawable icon = info.loadIcon(packageManager);
 
         final Launchable launchable = new IntentLaunchable(getIntent());
-        displayItem = new DisplayItem(getID(), label, icon, this, launchable);
+        displayItem = new DisplayItem(getId(), label, icon, this, launchable);
         return displayItem;
     }
 
