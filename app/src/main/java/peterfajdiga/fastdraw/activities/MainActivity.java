@@ -9,6 +9,7 @@ import android.app.WallpaperColors;
 import android.app.WallpaperManager;
 import android.appwidget.AppWidgetHostView;
 import android.appwidget.AppWidgetManager;
+import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
@@ -56,6 +57,7 @@ import com.google.android.material.tabs.TabLayout;
 import java.lang.ref.WeakReference;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.function.Supplier;
 import java.util.stream.Stream;
 
 import peterfajdiga.fastdraw.PrefMap;
@@ -66,10 +68,7 @@ import peterfajdiga.fastdraw.WallpaperColorUtils;
 import peterfajdiga.fastdraw.dialogs.ActionsSheet;
 import peterfajdiga.fastdraw.dialogs.NewCategoryDialog;
 import peterfajdiga.fastdraw.dialogs.RenameCategoryDialog;
-import peterfajdiga.fastdraw.dragdrop.DropZoneAppInfo;
-import peterfajdiga.fastdraw.dragdrop.DropZoneCategory;
-import peterfajdiga.fastdraw.dragdrop.DropZoneNewCategory;
-import peterfajdiga.fastdraw.dragdrop.DropZoneRemoveShortcut;
+import peterfajdiga.fastdraw.dragdrop.DropZone;
 import peterfajdiga.fastdraw.launcher.AppItemManager;
 import peterfajdiga.fastdraw.launcher.LaunchManager;
 import peterfajdiga.fastdraw.launcher.Launcher;
@@ -94,9 +93,6 @@ import peterfajdiga.fastdraw.widgets.WidgetManager;
 public class MainActivity extends FragmentActivity implements
     Launcher.ItemDragListener,
     InstallAppReceiver.Owner,
-    DropZoneRemoveShortcut.Owner<LauncherItem>,
-    DropZoneCategory.Owner<LauncherItem>,
-    DropZoneNewCategory.Owner<LauncherItem>,
     RenameCategoryDialog.Listener {
 
     public static final int INSTALL_SHORTCUT_REQUEST = 2143;
@@ -331,7 +327,7 @@ public class MainActivity extends FragmentActivity implements
             findViewById(R.id.header_separator).setVisibility(View.VISIBLE);
         }
 
-        setupDropZones();
+        setupDropZones(tabContainer);
     }
 
     /**
@@ -406,10 +402,50 @@ public class MainActivity extends FragmentActivity implements
         setupSystemBarsScrim(contentView);
     }
 
-    private void setupDropZones() {
-        findViewById(R.id.drop_zone_new_category).setOnDragListener(new DropZoneNewCategory());
-        findViewById(R.id.drop_zone_app_info).setOnDragListener(new DropZoneAppInfo());
-        findViewById(R.id.drop_zone_remove_shortcut).setOnDragListener(new DropZoneRemoveShortcut());
+    private void setupDropZones(final CategoryTabLayout tabContainer) {
+        final Supplier<Boolean> draggedItemNotNull = () -> draggedItem != null;
+
+        tabContainer.setDropZone(new DropZone(
+            view -> {
+                final String newCategoryName = (String)view.getTag();
+                launcher.moveItem(draggedItem, newCategoryName, true);
+            },
+            draggedItemNotNull,
+            false
+        ));
+
+        findViewById(R.id.drop_zone_new_category).setOnDragListener(new DropZone(
+            view -> {
+                final LauncherItem draggedItem = this.draggedItem;
+                final NewCategoryDialog dialog = new NewCategoryDialog(
+                    newCategoryName -> launcher.moveItem(draggedItem, newCategoryName, true),
+                    getString(R.string.new_category),
+                    getString(R.string.create)
+                );
+                dialog.show(getSupportFragmentManager(), "NewCategoryDialog");
+            },
+            draggedItemNotNull,
+            false
+        ));
+
+        findViewById(R.id.drop_zone_app_info).setOnDragListener(new DropZone(
+            view -> {
+                final AppItem appItem = (AppItem)draggedItem;
+                appItem.openAppDetails(this);
+            },
+            draggedItemNotNull,
+            false
+        ));
+
+        findViewById(R.id.drop_zone_remove_shortcut).setOnDragListener(new DropZone(
+            view -> {
+                final ShortcutItem shortcutItem = (ShortcutItem)draggedItem;
+                launcher.removeItem(shortcutItem, true);
+                ShortcutItemManager.deleteShortcut(this, shortcutItem);
+            },
+            draggedItemNotNull,
+            true
+        ));
 
         // immediate reaction to drag end
         findViewById(android.R.id.content).setOnDragListener((v, event) -> {
@@ -920,34 +956,6 @@ public class MainActivity extends FragmentActivity implements
             draggedView.setLayerType(View.LAYER_TYPE_NONE, null);
             draggedView = null;
         }
-    }
-
-    @Override
-    public LauncherItem getDraggedItem() {
-        return draggedItem;
-    }
-
-    @Override
-    public void onDraggedItemRemove() {
-        ShortcutItem shortcutItem = (ShortcutItem)draggedItem;
-        launcher.removeItem(shortcutItem, true);
-        ShortcutItemManager.deleteShortcut(this, shortcutItem);
-    }
-
-    @Override
-    public void onDraggedItemChangeCategory(String newCategoryName) {
-        launcher.moveItem(draggedItem, newCategoryName, true);
-    }
-
-    @Override
-    public void onDraggedItemNewCategory() {
-        final LauncherItem draggedItem = this.draggedItem;
-        final NewCategoryDialog dialog = new NewCategoryDialog(
-            newCategoryName -> launcher.moveItem(draggedItem, newCategoryName, true),
-            getString(R.string.new_category),
-            getString(R.string.create)
-        );
-        dialog.show(getSupportFragmentManager(), "NewCategoryDialog");
     }
 
     @Override

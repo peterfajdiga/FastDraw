@@ -1,21 +1,28 @@
 package peterfajdiga.fastdraw.dragdrop;
 
-import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.view.DragEvent;
 import android.view.View;
 
-abstract class DropZone implements View.OnDragListener {
+import java.util.function.Supplier;
 
-    protected int hoverColor = 0x40FFFFFF;
+public class DropZone implements View.OnDragListener {
+    private final Listener listener;
+    final Supplier<Boolean> activationCondition;
+    private final int hoverColor;
     private Drawable defaultBg = null;
+
+    public DropZone(final Listener listener, final Supplier<Boolean> activationCondition, final boolean red) {
+        this.listener = listener;
+        this.activationCondition = activationCondition;
+        this.hoverColor = red ? 0x60f44336 : 0x40FFFFFF;
+    }
 
     @Override
     public boolean onDrag(final View view, final DragEvent event) {
-
         switch (event.getAction()) {
             case DragEvent.ACTION_DRAG_STARTED: {
-                return castToOwner(view.getContext()).getDraggedItem() != null;
+                return activationCondition.get();
             }
             case DragEvent.ACTION_DRAG_ENTERED: {
                 defaultBg = view.getBackground();
@@ -28,7 +35,7 @@ abstract class DropZone implements View.OnDragListener {
             }
             case DragEvent.ACTION_DROP: {
                 view.setBackground(defaultBg);
-                onDrop(view);
+                listener.onDrop(view);
                 break;
             }
             case DragEvent.ACTION_DRAG_ENDED: {
@@ -39,18 +46,7 @@ abstract class DropZone implements View.OnDragListener {
         return true;
     }
 
-    protected abstract void onDrop(View view);
-
-    protected Owner castToOwner(final Context context) {
-        if (context instanceof Owner) {
-            return (Owner)context;
-        } else {
-            throw new RuntimeException(context.toString()
-                + " must implement DropZone.Owner");
-        }
-    }
-
-    public interface Owner<T> {
-        T getDraggedItem();
+    public interface Listener {
+        void onDrop(View view);
     }
 }

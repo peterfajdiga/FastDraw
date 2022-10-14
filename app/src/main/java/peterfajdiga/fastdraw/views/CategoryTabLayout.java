@@ -22,9 +22,10 @@ import peterfajdiga.fastdraw.Preferences;
 import peterfajdiga.fastdraw.R;
 import peterfajdiga.fastdraw.ShadowDrawable;
 import peterfajdiga.fastdraw.dialogs.RenameCategoryDialog;
-import peterfajdiga.fastdraw.dragdrop.DropZoneCategory;
+import peterfajdiga.fastdraw.dragdrop.DropZone;
 
 public class CategoryTabLayout extends TabLayout {
+    private DropZone dropZone;
     @ColorInt private int shadowColor;
 
     public CategoryTabLayout(Context context) {
@@ -40,6 +41,10 @@ public class CategoryTabLayout extends TabLayout {
     public CategoryTabLayout(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         initColors();
+    }
+
+    public void setDropZone(final DropZone dropZone) {
+        this.dropZone = dropZone;
     }
 
     private void initColors() {
@@ -109,6 +114,6 @@ public class CategoryTabLayout extends TabLayout {
             return false;
         });
         tabView.setTag(categoryName);
-        tabView.setOnDragListener(new DropZoneCategory());
+        tabView.setOnDragListener(dropZone);
     }
 }
