@@ -429,7 +429,6 @@ public class MainActivity extends FragmentActivity implements
             true
         ));
 
-        // immediate reaction to drag end
         findViewById(android.R.id.content).setOnDragListener((v, event) -> {
             switch (event.getAction()) {
                 case DragEvent.ACTION_DRAG_STARTED: {
@@ -439,18 +438,16 @@ public class MainActivity extends FragmentActivity implements
                     }
                     return false;
                 }
-                case DragEvent.ACTION_DROP: {
-                    // reset drag pager immediately, without waiting for ACTION_DRAG_ENDED, which fires after the
-                    // drag shadow animation (the dragged item returning to its position) finishes
-                    resetDragPager();
+                case DragEvent.ACTION_DROP: { // fires immediately, but not always
+                    endDrag(); // end drag immediately, without waiting for ACTION_DRAG_ENDED
                     return false;
                 }
-                case DragEvent.ACTION_DRAG_ENDED: {
-                    resetDragPager();
+                case DragEvent.ACTION_DRAG_ENDED: { // fires always, but only after the drag shadow animation (the dragged item returning to its position) finishes
+                    endDrag(); // end drag definitely
                     return true;
                 }
                 default: {
-                    return true;
+                    return false;
                 }
             }
         });
@@ -900,7 +897,7 @@ public class MainActivity extends FragmentActivity implements
         }
     }
 
-    public void resetDragPager() {
+    public void endDrag() {
         // hide drop zones
         findViewById(R.id.apps_pager).animate().alpha(1.0f);
         findViewById(R.id.widget_container).animate().alpha(1.0f);
