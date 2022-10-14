@@ -23,9 +23,10 @@ import peterfajdiga.fastdraw.R;
 import peterfajdiga.fastdraw.ShadowDrawable;
 import peterfajdiga.fastdraw.dialogs.RenameCategoryDialog;
 import peterfajdiga.fastdraw.dragdrop.DropZone;
+import peterfajdiga.fastdraw.launcher.launcheritem.LauncherItem;
 
 public class CategoryTabLayout extends TabLayout {
-    private DropZone dropZone;
+    private OnDropListener onDropListener;
     @ColorInt private int shadowColor;
 
     public CategoryTabLayout(Context context) {
@@ -43,8 +44,8 @@ public class CategoryTabLayout extends TabLayout {
         initColors();
     }
 
-    public void setDropZone(final DropZone dropZone) {
-        this.dropZone = dropZone;
+    public void setOnDropListener(final OnDropListener onDropListener) {
+        this.onDropListener = onDropListener;
     }
 
     private void initColors() {
@@ -112,7 +113,14 @@ public class CategoryTabLayout extends TabLayout {
             dialog.show(activity.getSupportFragmentManager(), "RenameCategoryDialog");
             return false;
         });
-        tabView.setTag(categoryName);
-        tabView.setOnDragListener(dropZone);
+
+        tabView.setOnDragListener(new DropZone(
+            (view, draggedItem) -> onDropListener.onDrop(draggedItem, categoryName),
+            false
+        ));
+    }
+
+    public interface OnDropListener {
+        void onDrop(final LauncherItem draggedItem, final String category);
     }
 }

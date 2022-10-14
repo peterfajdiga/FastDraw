@@ -398,13 +398,7 @@ public class MainActivity extends FragmentActivity implements
     }
 
     private void setupDropZones(final CategoryTabLayout tabContainer) {
-        tabContainer.setDropZone(new DropZone(
-            (view, draggedItem) -> {
-                final String newCategoryName = (String)view.getTag();
-                launcher.moveItem(draggedItem, newCategoryName, true);
-            },
-            false
-        ));
+        tabContainer.setOnDropListener((draggedItem, category) -> launcher.moveItem(draggedItem, category, true));
 
         findViewById(R.id.drop_zone_new_category).setOnDragListener(new DropZone(
             (view, draggedItem) -> {
