@@ -56,7 +56,6 @@ import com.google.android.material.tabs.TabLayout;
 import java.lang.ref.WeakReference;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.function.Supplier;
 import java.util.stream.Stream;
 
 import peterfajdiga.fastdraw.PrefMap;
@@ -228,7 +227,6 @@ public class MainActivity extends FragmentActivity implements
             launchManager,
             (draggedView, draggedItem) -> {
                 this.draggedView = draggedView;
-                this.draggedItem = draggedItem;
             },
             longPressListener,
             appsPager
@@ -409,20 +407,16 @@ public class MainActivity extends FragmentActivity implements
     }
 
     private void setupDropZones(final CategoryTabLayout tabContainer) {
-        final Supplier<Boolean> draggedItemNotNull = () -> draggedItem != null;
-
         tabContainer.setDropZone(new DropZone(
-            view -> {
+            (view, draggedItem) -> {
                 final String newCategoryName = (String)view.getTag();
                 launcher.moveItem(draggedItem, newCategoryName, true);
             },
-            draggedItemNotNull,
             false
         ));
 
         findViewById(R.id.drop_zone_new_category).setOnDragListener(new DropZone(
-            view -> {
-                final LauncherItem draggedItem = this.draggedItem;
+            (view, draggedItem) -> {
                 final NewCategoryDialog dialog = new NewCategoryDialog(
                     newCategoryName -> launcher.moveItem(draggedItem, newCategoryName, true),
                     getString(R.string.new_category),
@@ -430,26 +424,23 @@ public class MainActivity extends FragmentActivity implements
                 );
                 dialog.show(getSupportFragmentManager(), "NewCategoryDialog");
             },
-            draggedItemNotNull,
             false
         ));
 
         findViewById(R.id.drop_zone_app_info).setOnDragListener(new DropZone(
-            view -> {
+            (view, draggedItem) -> {
                 final AppItem appItem = (AppItem)draggedItem;
                 appItem.openAppDetails(this);
             },
-            draggedItemNotNull,
             false
         ));
 
         findViewById(R.id.drop_zone_remove_shortcut).setOnDragListener(new DropZone(
-            view -> {
+            (view, draggedItem) -> {
                 final ShortcutItem shortcutItem = (ShortcutItem)draggedItem;
                 launcher.removeItem(shortcutItem, true);
                 ShortcutItemManager.deleteShortcut(this, shortcutItem);
             },
-            draggedItemNotNull,
             true
         ));
 
@@ -457,7 +448,11 @@ public class MainActivity extends FragmentActivity implements
         findViewById(android.R.id.content).setOnDragListener((v, event) -> {
             switch (event.getAction()) {
                 case DragEvent.ACTION_DRAG_STARTED: {
-                    return startDrag();
+                    if (event.getLocalState() instanceof LauncherItem) {
+                        startDrag((LauncherItem)event.getLocalState());
+                        return true;
+                    }
+                    return false;
                 }
                 case DragEvent.ACTION_DROP: {
                     // reset drag pager immediately, without waiting for ACTION_DRAG_ENDED, which fires after the
@@ -904,13 +899,8 @@ public class MainActivity extends FragmentActivity implements
 
     // LauncherItem dragging
     private View draggedView = null;
-    private LauncherItem draggedItem = null;
 
-    private boolean startDrag() {
-        if (draggedItem == null) {
-            return false;
-        }
-
+    private void startDrag(final LauncherItem draggedItem) {
         final Paint silhouettePaint = new Paint();
         silhouettePaint.setColorFilter(new LightingColorFilter(Color.BLACK, Color.BLACK));
         draggedView.setLayerType(View.LAYER_TYPE_SOFTWARE, silhouettePaint);
@@ -931,19 +921,16 @@ public class MainActivity extends FragmentActivity implements
             final TransitionDrawable backgroundTransition = (TransitionDrawable)background;
             backgroundTransition.startTransition(DROPZONE_TRANSITION_DURATION);
         }
-
-        return true;
     }
 
     public void resetDragPager() {
-        if (draggedItem != null) {
-            // hide drop zones
-            findViewById(R.id.apps_pager).animate().alpha(1.0f);
-            findViewById(R.id.widget_container).animate().alpha(1.0f);
-            findViewById(R.id.category_drop_zone_container).setVisibility(View.GONE);
-            draggedItem = null;
+        // hide drop zones
+        findViewById(R.id.apps_pager).animate().alpha(1.0f);
+        findViewById(R.id.widget_container).animate().alpha(1.0f);
+        findViewById(R.id.category_drop_zone_container).setVisibility(View.GONE);
 
-            // reset header background
+        // reset header background
+        if (dragHeaderElevationAnimator.getAnimatedFraction() > 0.0f) {
             dragHeaderElevationAnimator.reverse();
             final Drawable background = findViewById(R.id.header).getBackground();
             if (background instanceof TransitionDrawable) {

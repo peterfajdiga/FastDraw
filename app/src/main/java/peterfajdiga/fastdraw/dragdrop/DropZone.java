@@ -4,17 +4,15 @@ import android.graphics.drawable.Drawable;
 import android.view.DragEvent;
 import android.view.View;
 
-import java.util.function.Supplier;
+import peterfajdiga.fastdraw.launcher.launcheritem.LauncherItem;
 
 public class DropZone implements View.OnDragListener {
     private final Listener listener;
-    final Supplier<Boolean> activationCondition;
     private final int hoverColor;
     private Drawable defaultBg = null;
 
-    public DropZone(final Listener listener, final Supplier<Boolean> activationCondition, final boolean red) {
+    public DropZone(final Listener listener, final boolean red) {
         this.listener = listener;
-        this.activationCondition = activationCondition;
         this.hoverColor = red ? 0x60f44336 : 0x40FFFFFF;
     }
 
@@ -22,7 +20,7 @@ public class DropZone implements View.OnDragListener {
     public boolean onDrag(final View view, final DragEvent event) {
         switch (event.getAction()) {
             case DragEvent.ACTION_DRAG_STARTED: {
-                return activationCondition.get();
+                return event.getLocalState() instanceof LauncherItem;
             }
             case DragEvent.ACTION_DRAG_ENTERED: {
                 defaultBg = view.getBackground();
@@ -35,7 +33,7 @@ public class DropZone implements View.OnDragListener {
             }
             case DragEvent.ACTION_DROP: {
                 view.setBackground(defaultBg);
-                listener.onDrop(view);
+                listener.onDrop(view, (LauncherItem)event.getLocalState());
                 break;
             }
             case DragEvent.ACTION_DRAG_ENDED: {
@@ -47,6 +45,6 @@ public class DropZone implements View.OnDragListener {
     }
 
     public interface Listener {
-        void onDrop(View view);
+        void onDrop(View view, LauncherItem draggedItem);
     }
 }
