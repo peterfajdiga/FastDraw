@@ -460,6 +460,8 @@ public class MainActivity extends FragmentActivity implements
                     return startDrag();
                 }
                 case DragEvent.ACTION_DROP: {
+                    // reset drag pager immediately, without waiting for ACTION_DRAG_ENDED, which fires after the
+                    // drag shadow animation (the dragged item returning to its position) finishes
                     resetDragPager();
                     return false;
                 }
