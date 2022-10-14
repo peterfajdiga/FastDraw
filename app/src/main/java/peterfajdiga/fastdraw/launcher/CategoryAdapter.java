@@ -138,7 +138,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ItemVi
                 // start drag
                 final View.DragShadowBuilder shadow = new OffsetDragShadowBuilder(view, x, y);
                 view.startDragAndDrop(null, shadow, null, 0);
-                itemDragListener.onDragStarted(view, item.source);
+                itemDragListener.setDragItem(view, item.source);
 
                 return false;
             });

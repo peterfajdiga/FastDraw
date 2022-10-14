@@ -416,15 +416,15 @@ public class MainActivity extends FragmentActivity implements
         findViewById(android.R.id.content).setOnDragListener((v, event) -> {
             switch (event.getAction()) {
                 case DragEvent.ACTION_DRAG_STARTED: {
-                    return draggedItem != null;
+                    return startDrag();
                 }
                 case DragEvent.ACTION_DROP: {
-                    onDragEnded1();
+                    resetDragPager();
                     return false;
                 }
                 case DragEvent.ACTION_DRAG_ENDED: {
-                    onDragEnded1();
-                    onDragEnded2();
+                    resetDragPager();
+                    resetDragItem();
                     return true;
                 }
                 default: {
@@ -865,13 +865,19 @@ public class MainActivity extends FragmentActivity implements
     private LauncherItem newCategoryDroppedItem = null;
 
     @Override
-    public void onDragStarted(@NonNull final View draggedView, @NonNull final LauncherItem draggedItem) {
+    public void setDragItem(@NonNull final View draggedView, @NonNull final LauncherItem draggedItem) {
+        this.draggedView = draggedView;
+        this.draggedItem = draggedItem;
+    }
+
+    private boolean startDrag() {
+        if (draggedItem == null) {
+            return false;
+        }
+
         final Paint silhouettePaint = new Paint();
         silhouettePaint.setColorFilter(new LightingColorFilter(Color.BLACK, Color.BLACK));
         draggedView.setLayerType(View.LAYER_TYPE_SOFTWARE, silhouettePaint);
-
-        this.draggedView = draggedView;
-        this.draggedItem = draggedItem;
 
         // show drop zones
         findViewById(R.id.apps_pager).animate().alpha(0.2f);
@@ -889,9 +895,11 @@ public class MainActivity extends FragmentActivity implements
             final TransitionDrawable backgroundTransition = (TransitionDrawable)background;
             backgroundTransition.startTransition(DROPZONE_TRANSITION_DURATION);
         }
+
+        return true;
     }
 
-    public void onDragEnded1() {
+    public void resetDragPager() {
         if (draggedItem != null) {
             // hide drop zones
             findViewById(R.id.apps_pager).animate().alpha(1.0f);
@@ -909,7 +917,7 @@ public class MainActivity extends FragmentActivity implements
         }
     }
 
-    public void onDragEnded2() {
+    public void resetDragItem() {
         if (draggedView != null) {
             draggedView.setLayerType(View.LAYER_TYPE_NONE, null);
             draggedView = null;

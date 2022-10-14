@@ -296,6 +296,6 @@ public class Launcher {
     }
 
     public interface ItemDragListener {
-        void onDragStarted(@NonNull View draggedView, @NonNull LauncherItem draggedItem);
+        void setDragItem(@NonNull View draggedView, @NonNull LauncherItem draggedItem);
     }
 }
