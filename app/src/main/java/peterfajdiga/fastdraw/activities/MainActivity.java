@@ -9,7 +9,6 @@ import android.app.WallpaperColors;
 import android.app.WallpaperManager;
 import android.appwidget.AppWidgetHostView;
 import android.appwidget.AppWidgetManager;
-import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
@@ -91,7 +90,6 @@ import peterfajdiga.fastdraw.views.gestures.Swipe;
 import peterfajdiga.fastdraw.widgets.WidgetManager;
 
 public class MainActivity extends FragmentActivity implements
-    Launcher.ItemDragListener,
     InstallAppReceiver.Owner,
     RenameCategoryDialog.Listener {
 
@@ -226,7 +224,15 @@ public class MainActivity extends FragmentActivity implements
     @SuppressLint("ClickableViewAccessibility")
     private void setupAppsPager(final NestedScrollParent scrollParent, final View.OnTouchListener longPressListener) {
         final ViewPager appsPager = findViewById(R.id.apps_pager);
-        launcher = new Launcher(launchManager, this, longPressListener, appsPager);
+        launcher = new Launcher(
+            launchManager,
+            (draggedView, draggedItem) -> {
+                this.draggedView = draggedView;
+                this.draggedItem = draggedItem;
+            },
+            longPressListener,
+            appsPager
+        );
 
         setupWallpaperParallax(appsPager);
         setupHeader(appsPager);
@@ -897,12 +903,6 @@ public class MainActivity extends FragmentActivity implements
     // LauncherItem dragging
     private View draggedView = null;
     private LauncherItem draggedItem = null;
-
-    @Override
-    public void setDragItem(@NonNull final View draggedView, @NonNull final LauncherItem draggedItem) {
-        this.draggedView = draggedView;
-        this.draggedItem = draggedItem;
-    }
 
     private boolean startDrag() {
         if (draggedItem == null) {
