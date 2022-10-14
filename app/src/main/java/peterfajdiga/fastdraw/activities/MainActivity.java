@@ -18,8 +18,6 @@ import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.content.res.Resources;
 import android.graphics.Color;
-import android.graphics.LightingColorFilter;
-import android.graphics.Paint;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.TransitionDrawable;
 import android.net.Uri;
@@ -223,14 +221,7 @@ public class MainActivity extends FragmentActivity implements
     @SuppressLint("ClickableViewAccessibility")
     private void setupAppsPager(final NestedScrollParent scrollParent, final View.OnTouchListener longPressListener) {
         final ViewPager appsPager = findViewById(R.id.apps_pager);
-        launcher = new Launcher(
-            launchManager,
-            (draggedView, draggedItem) -> {
-                this.draggedView = draggedView;
-            },
-            longPressListener,
-            appsPager
-        );
+        launcher = new Launcher(launchManager, longPressListener, appsPager);
 
         setupWallpaperParallax(appsPager);
         setupHeader(appsPager);
@@ -462,7 +453,6 @@ public class MainActivity extends FragmentActivity implements
                 }
                 case DragEvent.ACTION_DRAG_ENDED: {
                     resetDragPager();
-                    resetDragItem();
                     return true;
                 }
                 default: {
@@ -897,14 +887,7 @@ public class MainActivity extends FragmentActivity implements
         launcher.addItems(getString(R.string.default_shortcut_category), newShortcut);
     }
 
-    // LauncherItem dragging
-    private View draggedView = null;
-
     private void startDrag(final LauncherItem draggedItem) {
-        final Paint silhouettePaint = new Paint();
-        silhouettePaint.setColorFilter(new LightingColorFilter(Color.BLACK, Color.BLACK));
-        draggedView.setLayerType(View.LAYER_TYPE_SOFTWARE, silhouettePaint);
-
         // show drop zones
         findViewById(R.id.apps_pager).animate().alpha(0.2f);
         findViewById(R.id.widget_container).animate().alpha(0.2f);
@@ -937,13 +920,6 @@ public class MainActivity extends FragmentActivity implements
                 final TransitionDrawable backgroundTransition = (TransitionDrawable)background;
                 backgroundTransition.reverseTransition(DROPZONE_TRANSITION_DURATION);
             }
-        }
-    }
-
-    public void resetDragItem() {
-        if (draggedView != null) {
-            draggedView.setLayerType(View.LAYER_TYPE_NONE, null);
-            draggedView = null;
         }
     }
 

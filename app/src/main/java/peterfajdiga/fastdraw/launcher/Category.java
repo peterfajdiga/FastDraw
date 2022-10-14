@@ -26,11 +26,10 @@ public class Category {
 
     public Category(
         final Context context,
-        final Launcher.ItemDragListener itemDragListener,
         final View.OnTouchListener backgroundTouchListener,
         final LaunchManager launchManager
     ) {
-        this.adapter = new CategoryAdapter(itemDragListener, launchManager);
+        this.adapter = new CategoryAdapter(launchManager);
         view = createView(context, backgroundTouchListener, adapter, nestedScrollChildManager);
     }
 

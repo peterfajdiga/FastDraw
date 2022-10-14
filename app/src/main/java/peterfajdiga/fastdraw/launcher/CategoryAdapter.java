@@ -3,8 +3,12 @@ package peterfajdiga.fastdraw.launcher;
 import android.annotation.SuppressLint;
 import android.app.ActivityOptions;
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.LightingColorFilter;
+import android.graphics.Paint;
 import android.graphics.PointF;
 import android.util.Log;
+import android.view.DragEvent;
 import android.view.HapticFeedbackConstants;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,12 +26,10 @@ import peterfajdiga.fastdraw.R;
 import peterfajdiga.fastdraw.launcher.displayitem.DisplayItem;
 
 public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ItemViewHolder> {
-    private final Launcher.ItemDragListener itemDragListener;
     private final LaunchManager launchManager;
     private final SortedList<DisplayItem> items;
 
-    public CategoryAdapter(@NonNull final Launcher.ItemDragListener itemDragListener, @NonNull final LaunchManager launchManager) {
-        this.itemDragListener = itemDragListener;
+    public CategoryAdapter(@NonNull final LaunchManager launchManager) {
         this.launchManager = launchManager;
         this.items = new SortedList<>(DisplayItem.class, new SortedList.Callback<DisplayItem>() {
             @Override
@@ -85,7 +87,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ItemVi
     @SuppressLint("ClickableViewAccessibility")
     @Override
     public void onBindViewHolder(@NonNull final ItemViewHolder holder, final int position) {
-        holder.bind(items.get(position), launchManager, itemDragListener);
+        holder.bind(items.get(position), launchManager);
     }
 
     @Override
@@ -106,7 +108,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ItemVi
         }
 
         @SuppressLint("ClickableViewAccessibility")
-        void bind(final DisplayItem item, final LaunchManager launchManager, final Launcher.ItemDragListener itemDragListener) {
+        void bind(final DisplayItem item, final LaunchManager launchManager) {
             icon.setImageDrawable(item.icon);
             label.setText(item.label);
 
@@ -138,9 +140,27 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ItemVi
                 // start drag
                 final View.DragShadowBuilder shadow = new OffsetDragShadowBuilder(view, x, y);
                 view.startDragAndDrop(null, shadow, item.source, 0);
-                itemDragListener.setDragItem(view, item.source);
+
+                final Paint silhouettePaint = new Paint();
+                silhouettePaint.setColorFilter(new LightingColorFilter(Color.BLACK, Color.BLACK));
+                view.setLayerType(View.LAYER_TYPE_SOFTWARE, silhouettePaint);
 
                 return false;
+            });
+
+            view.setOnDragListener((view, event) -> {
+                switch (event.getAction()) {
+                    case DragEvent.ACTION_DRAG_STARTED: {
+                        return event.getLocalState() == item.source;
+                    }
+                    case DragEvent.ACTION_DRAG_ENDED: {
+                        view.setLayerType(View.LAYER_TYPE_NONE, null);
+                        return true;
+                    }
+                    default: {
+                        return false;
+                    }
+                }
             });
         }
     }

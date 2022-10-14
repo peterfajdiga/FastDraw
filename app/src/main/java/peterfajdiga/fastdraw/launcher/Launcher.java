@@ -32,14 +32,12 @@ public class Launcher {
     private final PrefMap itemCategoryMap;
     private final PrefMap categoriesOrderMap;
     private final LaunchManager launchManager;
-    private final ItemDragListener itemDragListener;
     private final View.OnTouchListener backgroundTouchListener;
     private final ViewPager pager;
     private final LauncherPagerAdapter adapter;
 
     public Launcher(
         @NonNull final LaunchManager launchManager,
-        @NonNull final ItemDragListener itemDragListener,
         @NonNull final View.OnTouchListener backgroundTouchListener,
         @NonNull final ViewPager pager
     ) {
@@ -47,7 +45,6 @@ public class Launcher {
         this.itemCategoryMap = new PrefMap(context, "categories"); // TODO: pass from outside
         this.categoriesOrderMap = new PrefMap(context, "categoryorder"); // TODO: pass from outside
         this.launchManager = launchManager;
-        this.itemDragListener = itemDragListener;
         this.backgroundTouchListener = backgroundTouchListener;
         this.pager = pager;
         this.adapter = new LauncherPagerAdapter(context);
@@ -162,7 +159,7 @@ public class Launcher {
         Category category = adapter.categories.get(categoryName);
         if (category == null) {
             final Context context = pager.getContext();
-            category = new Category(context, itemDragListener, backgroundTouchListener, launchManager);
+            category = new Category(context, backgroundTouchListener, launchManager);
             categoriesOrderMap.getIntCreate(categoryName, CategoryComparator.UNORDERED); // make sure the new category is added to the categoryorder prefs
             adapter.categories.put(categoryName, category);
             adapter.notifyDataSetChanged();
@@ -214,7 +211,7 @@ public class Launcher {
             if (adapter.categories.containsKey(categoryName)) {
                 continue;
             }
-            final Category category = new Category(pager.getContext(), itemDragListener, backgroundTouchListener, launchManager);
+            final Category category = new Category(pager.getContext(), backgroundTouchListener, launchManager);
             adapter.categories.put(categoryName, category);
         }
         adapter.notifyDataSetChanged();
@@ -293,9 +290,5 @@ public class Launcher {
 
     private void removeItemCategory(@NonNull final LauncherItem item) {
         itemCategoryMap.remove(item.getId());
-    }
-
-    public interface ItemDragListener {
-        void setDragItem(@NonNull View draggedView, @NonNull LauncherItem draggedItem);
     }
 }
