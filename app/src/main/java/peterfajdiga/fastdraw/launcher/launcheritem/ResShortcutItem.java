@@ -92,7 +92,11 @@ public class ResShortcutItem implements ShortcutItem {
         }
     }
 
-    private static Drawable iconFromResource(final Context context, final String packageName, final String resourceName) throws PackageManager.NameNotFoundException, Resources.NotFoundException {
+    private static Drawable iconFromResource(
+        final Context context,
+        final String packageName,
+        final String resourceName
+    ) throws PackageManager.NameNotFoundException, Resources.NotFoundException {
         final Resources resources = context.getPackageManager().getResourcesForApplication(packageName);
         final int id = resources.getIdentifier(resourceName, null, null);
         return ResourcesCompat.getDrawable(resources, id, context.getTheme());
