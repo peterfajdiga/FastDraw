@@ -147,6 +147,17 @@ public class MainActivity extends FragmentActivity {
                 setupSystemBarsScrim(contentView);
             }
         });
+        contentView.addOnLayoutChangeListener((v, left, top, right, bottom, oldLeft, oldTop, oldRight, oldBottom) -> {
+            // this fixes the bug with missing top padding after exiting split screen mode
+            if (bottom != oldBottom) {
+                contentView.post(() -> {
+                    if (contentView.isAttachedToWindow()) {
+                        setupSystemBarsPadding(contentView);
+                        setupSystemBarsScrim(contentView);
+                    }
+                });
+            }
+        });
 
         final Intent intent = getIntent();
         if (intent != null) {
