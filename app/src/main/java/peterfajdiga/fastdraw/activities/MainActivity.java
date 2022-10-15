@@ -87,7 +87,6 @@ import peterfajdiga.fastdraw.views.gestures.Swipe;
 import peterfajdiga.fastdraw.widgets.WidgetManager;
 
 public class MainActivity extends FragmentActivity implements
-    InstallAppReceiver.Owner,
     RenameCategoryDialog.Listener {
 
     public static final int INSTALL_SHORTCUT_REQUEST = 2143;
@@ -500,8 +499,26 @@ public class MainActivity extends FragmentActivity implements
     }
 
     private void setupInstallAppReceiver() {
-        installAppReceiver = new InstallAppReceiver(this);
-        IntentFilter appChangeFilter = new IntentFilter(Intent.ACTION_PACKAGE_ADDED);
+        installAppReceiver = new InstallAppReceiver(new InstallAppReceiver.Owner() {
+            @Override
+            public void onAppInstall(final String packageName) {
+                final AppItem[] appItems = AppItemManager.getAppItems(getPackageManager(), packageName).toArray(AppItem[]::new);
+                launcher.addItems(getString(R.string.default_category), appItems);
+            }
+
+            @Override
+            public void onAppChange(final String packageName) {
+                final Stream<AppItem> updatedAppItems = AppItemManager.getAppItems(getPackageManager(), packageName);
+                AppItemManager.updatePackageItems(launcher, packageName, updatedAppItems, getString(R.string.default_category));
+            }
+
+            @Override
+            public void onAppRemove(final String packageName) {
+                AppItemManager.removePackageItems(MainActivity.this, launcher, packageName, false);
+            }
+        });
+
+        final IntentFilter appChangeFilter = new IntentFilter(Intent.ACTION_PACKAGE_ADDED);
         appChangeFilter.addAction(Intent.ACTION_PACKAGE_REMOVED);
         appChangeFilter.addAction(Intent.ACTION_PACKAGE_CHANGED);
         appChangeFilter.addDataScheme("package");
@@ -853,25 +870,6 @@ public class MainActivity extends FragmentActivity implements
             e.printStackTrace();
             Toast.makeText(this, R.string.error_expand_notifications_panel, Toast.LENGTH_LONG).show();
         }
-    }
-
-    // app management
-
-    @Override
-    public void onAppInstall(String packageName) {
-        final AppItem[] appItems = AppItemManager.getAppItems(getPackageManager(), packageName).toArray(AppItem[]::new);
-        launcher.addItems(getString(R.string.default_category), appItems);
-    }
-
-    @Override
-    public void onAppChange(String packageName) {
-        final Stream<AppItem> updatedAppItems = AppItemManager.getAppItems(getPackageManager(), packageName);
-        AppItemManager.updatePackageItems(launcher, packageName, updatedAppItems, getString(R.string.default_category));
-    }
-
-    @Override
-    public void onAppRemove(String packageName) {
-        AppItemManager.removePackageItems(this, launcher, packageName, false);
     }
 
     public void onShortcutReceived(final ShortcutItem newShortcut) {
