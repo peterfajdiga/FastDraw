@@ -27,6 +27,7 @@ import peterfajdiga.fastdraw.launcher.launcheritem.LauncherItem;
 
 public class CategoryTabLayout extends TabLayout {
     private OnDropListener onDropListener;
+    private RenameCategoryDialog.Listener renameCategoryDialogListener;
     @ColorInt private int shadowColor;
 
     public CategoryTabLayout(Context context) {
@@ -46,6 +47,10 @@ public class CategoryTabLayout extends TabLayout {
 
     public void setOnDropListener(final OnDropListener onDropListener) {
         this.onDropListener = onDropListener;
+    }
+
+    public void setRenameCategoryDialogListener(final RenameCategoryDialog.Listener renameCategoryDialogListener) {
+        this.renameCategoryDialogListener = renameCategoryDialogListener;
     }
 
     private void initColors() {
@@ -105,7 +110,7 @@ public class CategoryTabLayout extends TabLayout {
         tabView.setOnLongClickListener(view -> {
             view.performHapticFeedback(HapticFeedbackConstants.LONG_PRESS);
             RenameCategoryDialog dialog = new RenameCategoryDialog(
-                (RenameCategoryDialog.Listener)activity, // TODO: pass listener from outside
+                renameCategoryDialogListener,
                 categoryName,
                 getContext().getString(R.string.rename_category),
                 getContext().getString(R.string.rename)

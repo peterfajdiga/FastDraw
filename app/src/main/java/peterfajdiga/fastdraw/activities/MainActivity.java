@@ -86,9 +86,7 @@ import peterfajdiga.fastdraw.views.gestures.OnTouchListenerMux;
 import peterfajdiga.fastdraw.views.gestures.Swipe;
 import peterfajdiga.fastdraw.widgets.WidgetManager;
 
-public class MainActivity extends FragmentActivity implements
-    RenameCategoryDialog.Listener {
-
+public class MainActivity extends FragmentActivity {
     public static final int INSTALL_SHORTCUT_REQUEST = 2143;
     public static final int PICK_WIDGET_REQUEST = 2144;
     public static final int CREATE_WIDGET_REQUEST = 2145;
@@ -106,6 +104,12 @@ public class MainActivity extends FragmentActivity implements
     private final LaunchManager launchManager = new LaunchManager(this);
     private Launcher launcher;
     private WidgetManager widgetManager;
+    private final RenameCategoryDialog.Listener renameCategoryDialogListener = (oldCategoryName, newCategoryName) -> {
+        boolean followItem = oldCategoryName.equals(launcher.getCurrentCategoryName());
+        for (LauncherItem item : launcher.getItems(oldCategoryName)) {
+            launcher.moveItem(item, newCategoryName, followItem);
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -293,6 +297,7 @@ public class MainActivity extends FragmentActivity implements
     private void setupHeader(final ViewPager appsPager) {
         final CategoryTabLayout tabContainer = findViewById(R.id.tab_container);
         tabContainer.setupWithViewPager(appsPager);
+        tabContainer.setRenameCategoryDialogListener(renameCategoryDialogListener);
 
         final ViewGroup header = findViewById(R.id.header);
 
@@ -847,7 +852,7 @@ public class MainActivity extends FragmentActivity implements
 
     public void renameCurrentCategory() {
         final RenameCategoryDialog dialog = new RenameCategoryDialog(
-            this,
+            renameCategoryDialogListener,
             launcher.getCurrentCategoryName(),
             getString(R.string.rename_category),
             getString(R.string.rename)
@@ -909,15 +914,6 @@ public class MainActivity extends FragmentActivity implements
                 final TransitionDrawable backgroundTransition = (TransitionDrawable)background;
                 backgroundTransition.reverseTransition(DROPZONE_TRANSITION_DURATION);
             }
-        }
-    }
-
-    @Override
-    public void onRenameCategoryDialogSuccess(String oldCategoryName, String newCategoryName) {
-        final Launcher pager = launcher;
-        boolean followItem = oldCategoryName.equals(pager.getCurrentCategoryName());
-        for (LauncherItem item : pager.getItems(oldCategoryName)) {
-            pager.moveItem(item, newCategoryName, followItem);
         }
     }
 }
