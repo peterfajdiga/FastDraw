@@ -22,8 +22,8 @@ import java.util.concurrent.Executors;
 import peterfajdiga.fastdraw.PrefMap;
 import peterfajdiga.fastdraw.Preferences;
 import peterfajdiga.fastdraw.categoryorder.CategoryComparator;
-import peterfajdiga.fastdraw.launcher.launcheritem.LauncherItem;
 import peterfajdiga.fastdraw.launcher.displayitem.DisplayItem;
+import peterfajdiga.fastdraw.launcher.launcheritem.LauncherItem;
 import peterfajdiga.fastdraw.views.NestedScrollChildManager;
 
 public class Launcher {

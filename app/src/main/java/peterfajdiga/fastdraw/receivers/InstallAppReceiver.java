@@ -3,7 +3,6 @@ package peterfajdiga.fastdraw.receivers;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
 
 public class InstallAppReceiver extends BroadcastReceiver {
     private final Owner owner;
