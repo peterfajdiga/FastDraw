@@ -139,11 +139,11 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ItemVi
 
                 // start drag
                 final View.DragShadowBuilder shadow = new OffsetDragShadowBuilder(view, x, y);
-                view.startDragAndDrop(null, shadow, item.source, 0);
-
-                final Paint silhouettePaint = new Paint();
-                silhouettePaint.setColorFilter(new LightingColorFilter(Color.BLACK, Color.BLACK));
-                view.setLayerType(View.LAYER_TYPE_SOFTWARE, silhouettePaint);
+                if (view.startDragAndDrop(null, shadow, item.source, 0)) {
+                    final Paint silhouettePaint = new Paint();
+                    silhouettePaint.setColorFilter(new LightingColorFilter(Color.BLACK, Color.BLACK));
+                    view.setLayerType(View.LAYER_TYPE_SOFTWARE, silhouettePaint);
+                }
 
                 return false;
             });
