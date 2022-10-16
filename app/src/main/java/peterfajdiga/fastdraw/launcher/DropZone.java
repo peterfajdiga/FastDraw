@@ -1,4 +1,4 @@
-package peterfajdiga.fastdraw.dragdrop;
+package peterfajdiga.fastdraw.launcher;
 
 import android.graphics.drawable.Drawable;
 import android.view.DragEvent;

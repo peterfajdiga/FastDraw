@@ -22,7 +22,7 @@ import peterfajdiga.fastdraw.Preferences;
 import peterfajdiga.fastdraw.R;
 import peterfajdiga.fastdraw.ShadowDrawable;
 import peterfajdiga.fastdraw.dialogs.RenameCategoryDialog;
-import peterfajdiga.fastdraw.dragdrop.DropZone;
+import peterfajdiga.fastdraw.launcher.DropZone;
 import peterfajdiga.fastdraw.launcher.launcheritem.LauncherItem;
 
 public class CategoryTabLayout extends TabLayout {
