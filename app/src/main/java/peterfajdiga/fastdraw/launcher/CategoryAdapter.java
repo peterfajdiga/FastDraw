@@ -8,7 +8,6 @@ import android.graphics.LightingColorFilter;
 import android.graphics.Paint;
 import android.graphics.PointF;
 import android.util.Log;
-import android.view.DragEvent;
 import android.view.HapticFeedbackConstants;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -27,10 +26,12 @@ import peterfajdiga.fastdraw.launcher.displayitem.DisplayItem;
 
 public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ItemViewHolder> {
     private final LaunchManager launchManager;
+    private final DragEndService dragEndService;
     private final SortedList<DisplayItem> items;
 
-    public CategoryAdapter(@NonNull final LaunchManager launchManager) {
+    public CategoryAdapter(@NonNull final LaunchManager launchManager, final DragEndService dragEndService) {
         this.launchManager = launchManager;
+        this.dragEndService = dragEndService;
         this.items = new SortedList<>(DisplayItem.class, new SortedList.Callback<DisplayItem>() {
             @Override
             public int compare(final DisplayItem o1, final DisplayItem o2) {
@@ -87,7 +88,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ItemVi
     @SuppressLint("ClickableViewAccessibility")
     @Override
     public void onBindViewHolder(@NonNull final ItemViewHolder holder, final int position) {
-        holder.bind(items.get(position), launchManager);
+        holder.bind(items.get(position), launchManager, dragEndService);
     }
 
     @Override
@@ -108,7 +109,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ItemVi
         }
 
         @SuppressLint("ClickableViewAccessibility")
-        void bind(final DisplayItem item, final LaunchManager launchManager) {
+        void bind(final DisplayItem item, final LaunchManager launchManager, final DragEndService dragEndService) {
             icon.setImageDrawable(item.icon);
             label.setText(item.label);
 
@@ -145,23 +146,14 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ItemVi
                     view.setLayerType(View.LAYER_TYPE_SOFTWARE, silhouettePaint);
                 }
 
+                dragEndService.post(()-> view.setLayerType(View.LAYER_TYPE_NONE, null)); // avoid creating an OnDragListener to prevent stealing ACTION_DROP from android.R.id.content
+
                 return false;
             });
-
-            view.setOnDragListener((view, event) -> {
-                switch (event.getAction()) {
-                    case DragEvent.ACTION_DRAG_STARTED: {
-                        return event.getLocalState() == item.source;
-                    }
-                    case DragEvent.ACTION_DRAG_ENDED: {
-                        view.setLayerType(View.LAYER_TYPE_NONE, null);
-                        return true;
-                    }
-                    default: {
-                        return false;
-                    }
-                }
-            });
         }
+    }
+
+    public interface DragEndService {
+        void post(Runnable f);
     }
 }
