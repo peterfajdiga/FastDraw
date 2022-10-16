@@ -896,14 +896,14 @@ public class MainActivity extends FragmentActivity {
     }
 
     private void startDrag(final LauncherItem draggedItem) {
+        // show type specific drop zones
+        findViewById(R.id.drop_zone_app_info).setVisibility(draggedItem instanceof AppItem ? View.VISIBLE : View.GONE);
+        findViewById(R.id.drop_zone_remove_shortcut).setVisibility(draggedItem instanceof ShortcutItem ? View.VISIBLE : View.GONE);
+
         // show drop zones
         findViewById(R.id.apps_pager).animate().alpha(0.2f);
         findViewById(R.id.widget_container).animate().alpha(0.2f);
         findViewById(R.id.category_drop_zone_container).setVisibility(View.VISIBLE);
-
-        // show type specific drop zones
-        findViewById(R.id.drop_zone_app_info).setVisibility(draggedItem instanceof AppItem ? View.VISIBLE : View.GONE);
-        findViewById(R.id.drop_zone_remove_shortcut).setVisibility(draggedItem instanceof ShortcutItem ? View.VISIBLE : View.GONE);
 
         // set header background
         dragHeaderElevationAnimator.start();
