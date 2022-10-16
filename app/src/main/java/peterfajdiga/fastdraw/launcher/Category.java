@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.SortedList;
 
 import java.util.Arrays;
 
+import peterfajdiga.fastdraw.Postable;
 import peterfajdiga.fastdraw.Preferences;
 import peterfajdiga.fastdraw.R;
 import peterfajdiga.fastdraw.launcher.displayitem.DisplayItem;
@@ -27,7 +28,7 @@ public class Category {
     public Category(
         final Context context,
         final LaunchManager launchManager,
-        final CategoryAdapter.DragEndService dragEndService,
+        final Postable dragEndService,
         final View.OnTouchListener backgroundTouchListener
     ) {
         this.adapter = new CategoryAdapter(launchManager, dragEndService);

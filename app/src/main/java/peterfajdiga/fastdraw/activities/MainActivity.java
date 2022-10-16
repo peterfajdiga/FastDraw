@@ -59,12 +59,12 @@ import java.util.stream.Stream;
 import peterfajdiga.fastdraw.PrefMap;
 import peterfajdiga.fastdraw.Preferences;
 import peterfajdiga.fastdraw.R;
+import peterfajdiga.fastdraw.RunnableQueue;
 import peterfajdiga.fastdraw.SettableBoolean;
 import peterfajdiga.fastdraw.WallpaperColorUtils;
 import peterfajdiga.fastdraw.dialogs.ActionsSheet;
 import peterfajdiga.fastdraw.dialogs.NewCategoryDialog;
 import peterfajdiga.fastdraw.dialogs.RenameCategoryDialog;
-import peterfajdiga.fastdraw.dragdrop.DragEndQueue;
 import peterfajdiga.fastdraw.dragdrop.DropZone;
 import peterfajdiga.fastdraw.launcher.AppItemManager;
 import peterfajdiga.fastdraw.launcher.LaunchManager;
@@ -103,7 +103,7 @@ public class MainActivity extends FragmentActivity {
 
     private static WeakReference<MainActivity> instance;
     private final LaunchManager launchManager = new LaunchManager(this);
-    private final DragEndQueue dragEndQueue = new DragEndQueue();
+    private final RunnableQueue dragEndService = new RunnableQueue();
     private Launcher launcher;
     private WidgetManager widgetManager;
     private final RenameCategoryDialog.Listener renameCategoryDialogListener = (oldCategoryName, newCategoryName) -> {
@@ -237,7 +237,7 @@ public class MainActivity extends FragmentActivity {
     @SuppressLint("ClickableViewAccessibility")
     private void setupAppsPager(final NestedScrollParent scrollParent, final View.OnTouchListener longPressListener) {
         final ViewPager appsPager = findViewById(R.id.apps_pager);
-        launcher = new Launcher(launchManager, dragEndQueue, longPressListener, appsPager);
+        launcher = new Launcher(launchManager, dragEndService, longPressListener, appsPager);
 
         setupWallpaperParallax(appsPager);
         setupHeader(appsPager);
@@ -461,7 +461,7 @@ public class MainActivity extends FragmentActivity {
                 }
                 case DragEvent.ACTION_DRAG_ENDED: { // fires always, but only after the drag shadow animation (the dragged item returning to its position) finishes
                     endDrag(); // end drag definitely
-                    dragEndQueue.onDragEnd();
+                    dragEndService.runAll();
                     return true;
                 }
                 default: {

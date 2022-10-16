@@ -19,6 +19,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.Executors;
 
+import peterfajdiga.fastdraw.Postable;
 import peterfajdiga.fastdraw.PrefMap;
 import peterfajdiga.fastdraw.Preferences;
 import peterfajdiga.fastdraw.categoryorder.CategoryComparator;
@@ -32,14 +33,14 @@ public class Launcher {
     private final PrefMap itemCategoryMap;
     private final PrefMap categoriesOrderMap;
     private final LaunchManager launchManager;
-    private final CategoryAdapter.DragEndService dragEndService;
+    private final Postable dragEndService;
     private final View.OnTouchListener backgroundTouchListener;
     private final ViewPager pager;
     private final LauncherPagerAdapter adapter;
 
     public Launcher(
         @NonNull final LaunchManager launchManager,
-        @NonNull final CategoryAdapter.DragEndService dragEndService,
+        @NonNull final Postable dragEndService,
         @NonNull final View.OnTouchListener backgroundTouchListener,
         @NonNull final ViewPager pager
     ) {

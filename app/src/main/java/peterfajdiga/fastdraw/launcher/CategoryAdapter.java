@@ -20,16 +20,17 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.SortedList;
 
+import peterfajdiga.fastdraw.Postable;
 import peterfajdiga.fastdraw.Preferences;
 import peterfajdiga.fastdraw.R;
 import peterfajdiga.fastdraw.launcher.displayitem.DisplayItem;
 
 public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ItemViewHolder> {
     private final LaunchManager launchManager;
-    private final DragEndService dragEndService;
+    private final Postable dragEndService;
     private final SortedList<DisplayItem> items;
 
-    public CategoryAdapter(@NonNull final LaunchManager launchManager, final DragEndService dragEndService) {
+    public CategoryAdapter(@NonNull final LaunchManager launchManager, final Postable dragEndService) {
         this.launchManager = launchManager;
         this.dragEndService = dragEndService;
         this.items = new SortedList<>(DisplayItem.class, new SortedList.Callback<DisplayItem>() {
@@ -109,7 +110,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ItemVi
         }
 
         @SuppressLint("ClickableViewAccessibility")
-        void bind(final DisplayItem item, final LaunchManager launchManager, final DragEndService dragEndService) {
+        void bind(final DisplayItem item, final LaunchManager launchManager, final Postable dragEndService) {
             icon.setImageDrawable(item.icon);
             label.setText(item.label);
 
@@ -151,9 +152,5 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ItemVi
                 return false;
             });
         }
-    }
-
-    public interface DragEndService {
-        void post(Runnable f);
     }
 }
