@@ -13,7 +13,6 @@
     <string name="action_shortcut">Add a shortcut</string>
     <string name="action_widget">Change widget</string>
     <string name="action_remove_widget">Remove widget</string>
-    <string name="action_rename_category">Rename current category</string>
     <string name="action_settings">Open preferences</string>
     <string name="action_notifications">Open notifications drawer</string>
 

@@ -37,12 +37,6 @@
             android:drawableStart="@drawable/ic_action_widget" />
 
         <TextView
-            android:id="@+id/action_rename_category"
-            style="@style/SheetItem"
-            android:text="@string/action_rename_category"
-            android:drawableStart="@drawable/ic_action_rename_category" />
-
-        <TextView
             android:id="@+id/action_settings"
             style="@style/SheetItem"
             android:text="@string/action_settings"

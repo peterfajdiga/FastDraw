@@ -64,7 +64,6 @@ import peterfajdiga.fastdraw.SettableBoolean;
 import peterfajdiga.fastdraw.WallpaperColorUtils;
 import peterfajdiga.fastdraw.dialogs.ActionsSheet;
 import peterfajdiga.fastdraw.dialogs.NewCategoryDialog;
-import peterfajdiga.fastdraw.dialogs.RenameCategoryDialog;
 import peterfajdiga.fastdraw.launcher.AppItemManager;
 import peterfajdiga.fastdraw.launcher.DropZone;
 import peterfajdiga.fastdraw.launcher.LaunchManager;
@@ -106,12 +105,6 @@ public class MainActivity extends FragmentActivity {
     private final RunnableQueue dragEndService = new RunnableQueue();
     private Launcher launcher;
     private WidgetManager widgetManager;
-    private final RenameCategoryDialog.Listener renameCategoryDialogListener = (oldCategoryName, newCategoryName) -> {
-        boolean followItem = oldCategoryName.equals(launcher.getCurrentCategoryName());
-        for (LauncherItem item : launcher.getItems(oldCategoryName)) {
-            launcher.moveItem(item, newCategoryName, followItem);
-        }
-    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -311,7 +304,12 @@ public class MainActivity extends FragmentActivity {
     private void setupHeader(final ViewPager appsPager) {
         final CategoryTabLayout tabContainer = findViewById(R.id.tab_container);
         tabContainer.setupWithViewPager(appsPager);
-        tabContainer.setRenameCategoryDialogListener(renameCategoryDialogListener);
+        tabContainer.setRenameCategoryDialogListener((oldCategoryName, newCategoryName) -> {
+            boolean followItem = oldCategoryName.equals(launcher.getCurrentCategoryName());
+            for (LauncherItem item : launcher.getItems(oldCategoryName)) {
+                launcher.moveItem(item, newCategoryName, followItem);
+            }
+        });
 
         final ViewGroup header = findViewById(R.id.header);
 
@@ -862,15 +860,6 @@ public class MainActivity extends FragmentActivity {
 
     public void showCreateWidgetDialog() {
         widgetManager.pickWidget();
-    }
-
-    public void renameCurrentCategory() {
-        final RenameCategoryDialog dialog = new RenameCategoryDialog(
-            renameCategoryDialogListener,
-            launcher.getCurrentCategoryName(),
-            getString(R.string.change_category_icon)
-        );
-        dialog.show(getSupportFragmentManager(), "RenameCategoryDialog");
     }
 
     public void openSettings() {
