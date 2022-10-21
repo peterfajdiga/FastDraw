@@ -879,7 +879,7 @@ public class MainActivity extends FragmentActivity {
         startActivity(settingsIntent);
     }
 
-    public void expandNotificationsPanel() {
+    private void expandNotificationsPanel() {
         @SuppressLint("WrongConstant") final Object statusBarService = getSystemService("statusbar");
         try {
             final Class<?> statusBarManager = Class.forName("android.app.StatusBarManager");
@@ -914,7 +914,7 @@ public class MainActivity extends FragmentActivity {
         }
     }
 
-    public void endDrag() {
+    private void endDrag() {
         // hide drop zones
         findViewById(R.id.apps_pager).animate().alpha(1.0f);
         findViewById(R.id.widget_container).animate().alpha(1.0f);
