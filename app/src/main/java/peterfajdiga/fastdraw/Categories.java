@@ -1,9 +1,23 @@
 package peterfajdiga.fastdraw;
 
+import android.content.Context;
+import android.graphics.drawable.Drawable;
+
+import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
+
 import java.util.Map;
 
 public class Categories {
     private Categories() {}
+
+    public static Drawable getIconDrawable(final Context context, @NonNull final String categoryName) {
+        final Integer categoryIconResId = MAP.get(categoryName);
+        if (categoryIconResId == null) {
+            return null;
+        }
+        return ContextCompat.getDrawable(context, categoryIconResId);
+    }
 
     public static final Map<String, Integer> MAP = Map.ofEntries(
         Map.entry("misc",          R.drawable.ic_category_apps),

@@ -17,7 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.Arrays;
 import java.util.Set;
 
-import peterfajdiga.fastdraw.Common;
+import peterfajdiga.fastdraw.Categories;
 import peterfajdiga.fastdraw.PrefMap;
 import peterfajdiga.fastdraw.R;
 import peterfajdiga.fastdraw.activities.MainActivity;
@@ -95,7 +95,7 @@ public class CategoryOrderAdapter extends RecyclerView.Adapter<CategoryOrderAdap
 
         void bind(final String categoryName) {
             this.label.setText(categoryName);
-            this.icon.setImageDrawable(Common.getCategoryIcon(this.icon.getContext(), categoryName));
+            this.icon.setImageDrawable(Categories.getIconDrawable(this.icon.getContext(), categoryName));
         }
     }
 
