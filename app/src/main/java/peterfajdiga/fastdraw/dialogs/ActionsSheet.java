@@ -42,12 +42,6 @@ public class ActionsSheet extends BottomSheetDialogFragment {
             activity.removeWidget();
         });
 
-        final View actionRenameCategoryView = dialogView.findViewById(R.id.action_rename_category);
-        actionRenameCategoryView.setOnClickListener(v -> {
-            dialog.cancel();
-            activity.renameCurrentCategory();
-        });
-
         final View actionSettingsView = dialogView.findViewById(R.id.action_settings);
         actionSettingsView.setOnClickListener(v -> {
             dialog.cancel();
