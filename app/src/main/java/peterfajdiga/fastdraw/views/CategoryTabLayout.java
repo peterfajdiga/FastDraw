@@ -17,7 +17,7 @@ import androidx.fragment.app.FragmentActivity;
 import com.google.android.material.color.MaterialColors;
 import com.google.android.material.tabs.TabLayout;
 
-import peterfajdiga.fastdraw.Common;
+import peterfajdiga.fastdraw.Categories;
 import peterfajdiga.fastdraw.Preferences;
 import peterfajdiga.fastdraw.R;
 import peterfajdiga.fastdraw.ShadowDrawable;
@@ -88,7 +88,7 @@ public class CategoryTabLayout extends TabLayout {
         }
         final FragmentActivity activity = (FragmentActivity)getContext();
         final String categoryName = tab.getText().toString();
-        final Drawable icon = Common.getCategoryIcon(getContext(), categoryName);
+        final Drawable icon = Categories.getIconDrawable(getContext(), categoryName);
 
         if (Preferences.showIcons) {
             if (icon != null) {
