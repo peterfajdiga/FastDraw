@@ -112,8 +112,7 @@ public class CategoryTabLayout extends TabLayout {
             RenameCategoryDialog dialog = new RenameCategoryDialog(
                 renameCategoryDialogListener,
                 categoryName,
-                getContext().getString(R.string.rename_category),
-                getContext().getString(R.string.rename)
+                getContext().getString(R.string.change_category_icon)
             );
             dialog.show(activity.getSupportFragmentManager(), "RenameCategoryDialog");
             return false;
