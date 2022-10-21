@@ -421,8 +421,7 @@ public class MainActivity extends FragmentActivity {
             (draggedItem) -> {
                 final NewCategoryDialog dialog = new NewCategoryDialog(
                     newCategoryName -> launcher.moveItem(draggedItem, newCategoryName, true),
-                    getString(R.string.new_category),
-                    getString(R.string.create)
+                    getString(R.string.new_category)
                 );
                 dialog.show(getSupportFragmentManager(), "NewCategoryDialog");
             },
@@ -868,8 +867,7 @@ public class MainActivity extends FragmentActivity {
         final RenameCategoryDialog dialog = new RenameCategoryDialog(
             renameCategoryDialogListener,
             launcher.getCurrentCategoryName(),
-            getString(R.string.rename_category),
-            getString(R.string.rename)
+            getString(R.string.change_category_icon)
         );
         dialog.show(getSupportFragmentManager(), "RenameCategoryDialog");
     }
