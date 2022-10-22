@@ -951,7 +951,6 @@ public class MainActivity extends FragmentActivity {
             case "PHONE":       return "phone";
             case "PHOTOS":      return "photos";
             case "CAMERA":      return "camera";
-            case "TRAVEL":      return "travel";
             case "CHAT":
             case "CHATTING":
             case "COMMUNICATION":

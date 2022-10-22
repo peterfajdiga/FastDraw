@@ -29,7 +29,6 @@ public class Categories {
         Map.entry("phone",         R.drawable.ic_category_phone),
         Map.entry("photos",        R.drawable.ic_category_camera_alt),
         Map.entry("camera",        R.drawable.ic_category_camera),
-        Map.entry("travel",        R.drawable.ic_category_travel),
         Map.entry("communication", R.drawable.ic_category_chat),
         Map.entry("cloud",         R.drawable.ic_category_cloud),
         Map.entry("computer",      R.drawable.ic_category_computer),
