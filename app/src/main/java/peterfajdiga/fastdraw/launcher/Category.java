@@ -63,7 +63,7 @@ public class Category {
         }
     }
 
-    private static int findItemIndex(SortedList<DisplayItem> items, final String id) {
+    private static int findItemIndex(final SortedList<DisplayItem> items, final String id) {
         for (int i = 0; i < items.size(); i++) {
             if (items.get(i).id.equals(id)) {
                 return i;
