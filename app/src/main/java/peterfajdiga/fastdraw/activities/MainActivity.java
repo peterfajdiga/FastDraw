@@ -56,8 +56,6 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.stream.Stream;
 
-import peterfajdiga.fastdraw.prefs.PrefMap;
-import peterfajdiga.fastdraw.prefs.Preferences;
 import peterfajdiga.fastdraw.R;
 import peterfajdiga.fastdraw.RunnableQueue;
 import peterfajdiga.fastdraw.SettableBoolean;
@@ -75,6 +73,8 @@ import peterfajdiga.fastdraw.launcher.launcheritem.LauncherItem;
 import peterfajdiga.fastdraw.launcher.launcheritem.OreoShortcutItem;
 import peterfajdiga.fastdraw.launcher.launcheritem.ResShortcutItem;
 import peterfajdiga.fastdraw.launcher.launcheritem.ShortcutItem;
+import peterfajdiga.fastdraw.prefs.PrefMap;
+import peterfajdiga.fastdraw.prefs.Preferences;
 import peterfajdiga.fastdraw.receivers.InstallAppReceiver;
 import peterfajdiga.fastdraw.views.CategoryTabLayout;
 import peterfajdiga.fastdraw.views.Drawables;
@@ -305,10 +305,7 @@ public class MainActivity extends FragmentActivity {
         final CategoryTabLayout tabContainer = findViewById(R.id.tab_container);
         tabContainer.setupWithViewPager(appsPager);
         tabContainer.setRenameCategoryDialogListener((oldCategoryName, newCategoryName) -> {
-            boolean followItem = oldCategoryName.equals(launcher.getCurrentCategoryName());
-            for (LauncherItem item : launcher.getItems(oldCategoryName)) {
-                launcher.moveItem(item, newCategoryName, followItem);
-            }
+            launcher.moveItems(newCategoryName, launcher.getItems(oldCategoryName));
         });
 
         final ViewGroup header = findViewById(R.id.header);
@@ -414,12 +411,12 @@ public class MainActivity extends FragmentActivity {
     }
 
     private void setupDropZones(final CategoryTabLayout tabContainer) {
-        tabContainer.setOnDropListener((draggedItem, category) -> launcher.moveItem(draggedItem, category, true));
+        tabContainer.setOnDropListener((draggedItem, category) -> launcher.moveItems(category, draggedItem));
 
         findViewById(R.id.drop_zone_new_category).setOnDragListener(new DropZone(
             (draggedItem) -> {
                 final NewCategoryDialog dialog = new NewCategoryDialog(
-                    newCategoryName -> launcher.moveItem(draggedItem, newCategoryName, true),
+                    newCategoryName -> launcher.moveItems(newCategoryName, draggedItem),
                     getString(R.string.new_category)
                 );
                 dialog.show(getSupportFragmentManager(), "NewCategoryDialog");
@@ -657,13 +654,13 @@ public class MainActivity extends FragmentActivity {
 
     private void addShortcut(@NonNull final ShortcutItem shortcutItem, @NonNull final String categoryName) {
         ShortcutItemManager.saveShortcut(this, shortcutItem);
-        launcher.moveItem(shortcutItem, categoryName, false);
+        launcher.moveItems(categoryName, shortcutItem);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     private void addOreoShortcut(@NonNull final OreoShortcutItem shortcutItem, @NonNull final String categoryName) {
         ShortcutItemManager.saveShortcut(this, shortcutItem);
-        launcher.moveItem(shortcutItem, categoryName, false);
+        launcher.moveItems(categoryName, shortcutItem);
     }
 
     private void setWidget(@NonNull AppWidgetHostView widgetView) {

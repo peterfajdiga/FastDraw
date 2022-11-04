@@ -20,11 +20,11 @@ import java.util.Set;
 import java.util.concurrent.Executors;
 
 import peterfajdiga.fastdraw.Postable;
-import peterfajdiga.fastdraw.prefs.PrefMap;
-import peterfajdiga.fastdraw.prefs.Preferences;
 import peterfajdiga.fastdraw.categoryorder.CategoryComparator;
 import peterfajdiga.fastdraw.launcher.displayitem.DisplayItem;
 import peterfajdiga.fastdraw.launcher.launcheritem.LauncherItem;
+import peterfajdiga.fastdraw.prefs.PrefMap;
+import peterfajdiga.fastdraw.prefs.Preferences;
 import peterfajdiga.fastdraw.views.NestedScrollChildManager;
 
 public class Launcher {
@@ -258,17 +258,22 @@ public class Launcher {
         category.updateItem(existingItem.getId(), updatedItem.getDisplayItem(pager.getContext()));
     }
 
-    public void moveItem(@NonNull final LauncherItem item, @NonNull final String categoryName, final boolean followItem) {
-        final String oldCategoryName = getItemCategory(item);
+    public void moveItems(@NonNull final String categoryName, @NonNull final LauncherItem... items) {
+        final String currentCategoryName = getCurrentCategoryName();
+        boolean followItem = false;
 
-        boolean lastRemoved = false;
-        if (oldCategoryName != null) {
-            lastRemoved = removeItem(item, false);
+        for (final LauncherItem item : items) {
+            final String oldCategoryName = getItemCategory(item);
+            if (oldCategoryName != null) {
+                final boolean lastItemRemoved = removeItem(item, false);
+                followItem |= lastItemRemoved && oldCategoryName.equals(currentCategoryName);
+            }
+
+            setItemCategory(item, categoryName);
         }
 
-        setItemCategory(item, categoryName);
-        addItemsToCategory(categoryName, false, item);
-        if (followItem && lastRemoved) {
+        addItemsToCategory(categoryName, false, items);
+        if (followItem) {
             showCategory(categoryName);
         }
     }
