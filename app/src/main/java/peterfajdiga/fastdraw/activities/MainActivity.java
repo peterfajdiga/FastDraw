@@ -818,7 +818,10 @@ public class MainActivity extends FragmentActivity {
 
     public static void forceFinish() {
         if (instance != null) {
-            instance.get().finish();
+            final MainActivity activity = instance.get();
+            if (activity != null) {
+                activity.finish();
+            }
             instance = null;
         }
     }
