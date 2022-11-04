@@ -304,9 +304,7 @@ public class MainActivity extends FragmentActivity {
     private void setupHeader(final ViewPager appsPager) {
         final CategoryTabLayout tabContainer = findViewById(R.id.tab_container);
         tabContainer.setupWithViewPager(appsPager);
-        tabContainer.setRenameCategoryDialogListener((oldCategoryName, newCategoryName) -> {
-            launcher.moveItems(newCategoryName, launcher.getItems(oldCategoryName));
-        });
+        tabContainer.setRenameCategoryDialogListener((oldCategoryName, newCategoryName) -> launcher.moveCategory(oldCategoryName, newCategoryName));
 
         final ViewGroup header = findViewById(R.id.header);
 

@@ -278,6 +278,23 @@ public class Launcher {
         }
     }
 
+    public void moveCategory(@NonNull final String oldCategoryName, @NonNull final String newCategoryName) {
+        final boolean follow = oldCategoryName.equals(getCurrentCategoryName());
+        final LauncherItem[] items = getItems(oldCategoryName);
+
+        adapter.categories.remove(oldCategoryName);
+        adapter.notifyDataSetChanged();
+
+        for (final LauncherItem item : items) {
+            setItemCategory(item, newCategoryName);
+        }
+
+        addItemsToCategory(newCategoryName, false, items);
+        if (follow) {
+            showCategory(newCategoryName);
+        }
+    }
+
     @Nullable
     private String getItemCategory(@NonNull final LauncherItem item) {
         return itemCategoryMap.getString(item.getId(), null);
