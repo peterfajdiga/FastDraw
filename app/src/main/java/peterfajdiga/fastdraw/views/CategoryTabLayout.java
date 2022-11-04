@@ -18,7 +18,7 @@ import com.google.android.material.color.MaterialColors;
 import com.google.android.material.tabs.TabLayout;
 
 import peterfajdiga.fastdraw.Categories;
-import peterfajdiga.fastdraw.Preferences;
+import peterfajdiga.fastdraw.prefs.Preferences;
 import peterfajdiga.fastdraw.R;
 import peterfajdiga.fastdraw.ShadowDrawable;
 import peterfajdiga.fastdraw.dialogs.RenameCategoryDialog;

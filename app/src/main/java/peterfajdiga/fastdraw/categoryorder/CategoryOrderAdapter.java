@@ -18,7 +18,7 @@ import java.util.Arrays;
 import java.util.Set;
 
 import peterfajdiga.fastdraw.Categories;
-import peterfajdiga.fastdraw.PrefMap;
+import peterfajdiga.fastdraw.prefs.PrefMap;
 import peterfajdiga.fastdraw.R;
 import peterfajdiga.fastdraw.activities.MainActivity;
 

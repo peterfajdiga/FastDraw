@@ -2,7 +2,7 @@ package peterfajdiga.fastdraw.categoryorder;
 
 import java.util.Comparator;
 
-import peterfajdiga.fastdraw.PrefMap;
+import peterfajdiga.fastdraw.prefs.PrefMap;
 
 public class CategoryComparator implements Comparator<String> {
     public static final int UNORDERED = Integer.MAX_VALUE;
