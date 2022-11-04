@@ -56,8 +56,8 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.stream.Stream;
 
-import peterfajdiga.fastdraw.PrefMap;
-import peterfajdiga.fastdraw.Preferences;
+import peterfajdiga.fastdraw.prefs.PrefMap;
+import peterfajdiga.fastdraw.prefs.Preferences;
 import peterfajdiga.fastdraw.R;
 import peterfajdiga.fastdraw.RunnableQueue;
 import peterfajdiga.fastdraw.SettableBoolean;

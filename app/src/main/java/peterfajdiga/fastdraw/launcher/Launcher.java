@@ -20,8 +20,8 @@ import java.util.Set;
 import java.util.concurrent.Executors;
 
 import peterfajdiga.fastdraw.Postable;
-import peterfajdiga.fastdraw.PrefMap;
-import peterfajdiga.fastdraw.Preferences;
+import peterfajdiga.fastdraw.prefs.PrefMap;
+import peterfajdiga.fastdraw.prefs.Preferences;
 import peterfajdiga.fastdraw.categoryorder.CategoryComparator;
 import peterfajdiga.fastdraw.launcher.displayitem.DisplayItem;
 import peterfajdiga.fastdraw.launcher.launcheritem.LauncherItem;

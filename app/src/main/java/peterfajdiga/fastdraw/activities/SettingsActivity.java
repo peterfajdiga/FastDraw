@@ -27,7 +27,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
 
-import peterfajdiga.fastdraw.PrefMap;
+import peterfajdiga.fastdraw.prefs.PrefMap;
 import peterfajdiga.fastdraw.R;
 import peterfajdiga.fastdraw.categoryorder.CategoryOrderAdapter;
 import peterfajdiga.fastdraw.categoryorder.ReorderHelperCallback;

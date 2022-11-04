@@ -13,7 +13,7 @@ import androidx.recyclerview.widget.SortedList;
 import java.util.Arrays;
 
 import peterfajdiga.fastdraw.Postable;
-import peterfajdiga.fastdraw.Preferences;
+import peterfajdiga.fastdraw.prefs.Preferences;
 import peterfajdiga.fastdraw.R;
 import peterfajdiga.fastdraw.launcher.displayitem.DisplayItem;
 import peterfajdiga.fastdraw.launcher.launcheritem.LauncherItem;

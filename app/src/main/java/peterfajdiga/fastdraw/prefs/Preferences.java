@@ -1,9 +1,11 @@
-package peterfajdiga.fastdraw;
+package peterfajdiga.fastdraw.prefs;
 
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.preference.PreferenceManager;
+
+import peterfajdiga.fastdraw.R;
 
 public final class Preferences {
     public static boolean allowOrientation;

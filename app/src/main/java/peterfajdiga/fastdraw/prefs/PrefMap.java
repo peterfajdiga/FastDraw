@@ -1,4 +1,4 @@
-package peterfajdiga.fastdraw;
+package peterfajdiga.fastdraw.prefs;
 
 import android.content.Context;
 import android.content.SharedPreferences;
