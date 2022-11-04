@@ -33,7 +33,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ItemVi
     public CategoryAdapter(@NonNull final LaunchManager launchManager, final Postable dragEndService) {
         this.launchManager = launchManager;
         this.dragEndService = dragEndService;
-        this.items = new SortedList<>(DisplayItem.class, new SortedList.Callback<DisplayItem>() {
+        this.items = new SortedList<>(DisplayItem.class, new SortedList.Callback<>() {
             @Override
             public int compare(final DisplayItem o1, final DisplayItem o2) {
                 return o1.compareTo(o2);
