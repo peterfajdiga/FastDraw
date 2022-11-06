@@ -32,6 +32,7 @@ public class Launcher {
 
     private final PrefMap itemCategoryMap;
     private final PrefMap categoriesOrderMap;
+    private final Map<String, LauncherItem> itemsById = new HashMap<>();
     private final LaunchManager launchManager;
     private final Postable dragEndService;
     private final View.OnTouchListener backgroundTouchListener;
@@ -167,6 +168,10 @@ public class Launcher {
             categoriesOrderMap.getIntCreate(categoryName, CategoryComparator.UNORDERED); // make sure the new category is added to the categoryorder prefs
             adapter.categories.put(categoryName, category);
             adapter.notifyDataSetChanged();
+        }
+
+        for (final LauncherItem item : items) {
+            itemsById.put(item.getId(), item);
         }
 
         loadAndAddItems(category, immediate, items);
