@@ -10,13 +10,15 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.SortedList;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import peterfajdiga.fastdraw.Postable;
-import peterfajdiga.fastdraw.prefs.Preferences;
 import peterfajdiga.fastdraw.R;
 import peterfajdiga.fastdraw.launcher.displayitem.DisplayItem;
 import peterfajdiga.fastdraw.launcher.launcheritem.LauncherItem;
+import peterfajdiga.fastdraw.prefs.Preferences;
 import peterfajdiga.fastdraw.views.AutoGridLayoutManager;
 import peterfajdiga.fastdraw.views.NestedScrollChildManager;
 
@@ -73,10 +75,11 @@ public class Category {
     }
 
     @NonNull
-    public LauncherItem[] getItems() {
-        final LauncherItem[] items = new LauncherItem[getItemCount()];
-        for (int i = 0; i < items.length; i++) {
-            items[i] = adapter.getItems().get(i).source;
+    public List<LauncherItem> getItems() {
+        final int n = getItemCount();
+        final List<LauncherItem> items = new ArrayList<>(n);
+        for (int i = 0; i < n; i++) {
+            items.add(adapter.getItems().get(i).source);
         }
         return items;
     }

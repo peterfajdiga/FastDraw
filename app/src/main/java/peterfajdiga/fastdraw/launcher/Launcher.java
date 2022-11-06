@@ -12,7 +12,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -122,7 +121,7 @@ public class Launcher {
         return retval;
     }
 
-    public LauncherItem[] getItems(@NonNull final String categoryName) {
+    public List<LauncherItem> getItems(@NonNull final String categoryName) {
         final Category category = adapter.categories.get(categoryName);
         return category.getItems();
     }
@@ -130,7 +129,7 @@ public class Launcher {
     public List<LauncherItem> getItems() {
         final List<LauncherItem> launcherItems = new ArrayList<>();
         for (final Category category : adapter.categories.values()) {
-            launcherItems.addAll(Arrays.asList(category.getItems()));
+            launcherItems.addAll(category.getItems());
         }
         return launcherItems;
     }
@@ -285,7 +284,7 @@ public class Launcher {
 
     public void moveCategory(@NonNull final String oldCategoryName, @NonNull final String newCategoryName) {
         final boolean follow = oldCategoryName.equals(getCurrentCategoryName());
-        final LauncherItem[] items = getItems(oldCategoryName);
+        final List<LauncherItem> items = getItems(oldCategoryName);
 
         adapter.categories.remove(oldCategoryName);
         adapter.notifyDataSetChanged();
@@ -294,7 +293,7 @@ public class Launcher {
             setItemCategory(item, newCategoryName);
         }
 
-        addItemsToCategory(newCategoryName, false, items);
+        addItemsToCategory(newCategoryName, false, items.toArray(new LauncherItem[0]));
         if (follow) {
             showCategory(newCategoryName);
         }
