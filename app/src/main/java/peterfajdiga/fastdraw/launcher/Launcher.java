@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -126,12 +127,8 @@ public class Launcher {
         return category.getItems();
     }
 
-    public List<LauncherItem> getItems() {
-        final List<LauncherItem> launcherItems = new ArrayList<>();
-        for (final Category category : adapter.categories.values()) {
-            launcherItems.addAll(category.getItems());
-        }
-        return launcherItems;
+    public Collection<LauncherItem> getItems() {
+        return itemsById.values();
     }
 
     public void addItems(@NonNull final String defaultCategory, @NonNull final LauncherItem... items) {
