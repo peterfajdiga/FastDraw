@@ -56,6 +56,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.stream.Stream;
 
+import peterfajdiga.fastdraw.Categories;
 import peterfajdiga.fastdraw.R;
 import peterfajdiga.fastdraw.RunnableQueue;
 import peterfajdiga.fastdraw.SettableBoolean;
@@ -956,136 +957,10 @@ public class MainActivity extends FragmentActivity implements CategorySelectionD
         final PrefMap itemCategoryMap = new PrefMap(this, "categories");
         for (final String key : itemCategoryMap.getKeys()) {
             final String currentCategoryName = itemCategoryMap.getString(key, "");
-            final String newCategoryName = oldToNewCategoryName(currentCategoryName);
+            final String newCategoryName = Categories.oldToNewCategoryName(currentCategoryName);
             if (!newCategoryName.equals(currentCategoryName)) {
                 itemCategoryMap.putString(key, newCategoryName);
             }
-        }
-    }
-
-    private String oldToNewCategoryName(final String oldCategoryName) {
-        switch (oldCategoryName) {
-            case "MISC":        return "misc";
-            case "SHORTCUTS":   return "shortcuts";
-            case "ANDROID":
-            case "AOSP":
-            case "DEVEL":
-            case "DEVELOPMENT":
-            case "SYSTEM":      return "android";
-            case "CASH":
-            case "FINANCE":
-            case "FINANCES":
-            case "MONEY":       return "money";
-            case "BOOKS":
-            case "LITERATURE":
-            case "READ":
-            case "READING":     return "literature";
-            case "TOOLS":       return "tools";
-            case "PHONE":       return "phone";
-            case "PHOTOS":      return "photos";
-            case "CAMERA":      return "camera";
-            case "CHAT":
-            case "CHATTING":
-            case "COMMUNICATION":
-            case "MESSAGING":
-            case "SMS":         return "communication";
-            case "CLOUD":       return "cloud";
-            case "COMPUTER":
-            case "PC":          return "computer";
-            case "GARBAGE":
-            case "JUNK":
-            case "RUBBISH":
-            case "TRASH":       return "trash";
-            case "BUS":
-            case "TRANSPORT":   return "bus";
-            case "AUTO":
-            case "CAR":
-            case "CARS":        return "auto";
-            case "COMPASS":
-            case "EXPLORE":
-            case "EXPLORATION":
-            case "MAPS":
-            case "NAVIGATE":
-            case "NAVIGATION":  return "navigation";
-            case "ADDONS":
-            case "ADD-ONS":
-            case "EXTENSIONS":
-            case "PLUGINS":
-            case "PLUG-INS":    return "plugins";
-            case "<3":
-            case "FAVES":
-            case "FAVORITE":
-            case "FAVORITES":
-            case "FAVOURITE":
-            case "FAVOURITES":
-            case "HEART":       return "heart";
-            case "FLIGHT":
-            case "PLANE":
-            case "PLANES":      return "flight";
-            case "TRAFFIC":     return "traffic";
-            case "BAR":
-            case "DRINK":       return "drink";
-            case "FOOD":        return "food";
-            case "COFFEE":      return "coffee";
-            case "FILES":
-            case "FILESYSTEM":  return "filesystem";
-            case "GAMES":       return "games";
-            case "CONTACTS":
-            case "PEOPLE":
-            case "SOCIAL":      return "social";
-            case "HOME":
-            case "HOUSE":       return "home";
-            case "INFO":
-            case "INFORMATION": return "info";
-            case "EARTH":
-            case "GLOBAL":
-            case "GLOBE":
-            case "INTERNET":
-            case "NET":
-            case "WEB":
-            case "WORLD":       return "internet";
-            case "BLOCK":
-            case "BLOCKED":
-            case "LOCK":
-            case "LOCKED":
-            case "PROHIBITED":  return "locked";
-            case "NOTE":
-            case "NOTES":
-            case "WRITE":
-            case "WRITING":     return "notes";
-            case "MOVIES":
-            case "VIDEO":       return "video";
-            case "AUDIO":
-            case "MUSIC":
-            case "SOUND":       return "audio";
-            case "IMAGES":      return "images";
-            case "MEDIA":       return "media";
-            case "EDU":
-            case "EDUCATION":
-            case "KNOWLEDGE":
-            case "LEARN":
-            case "LEARNING":
-            case "SCHOOL":      return "education";
-            case "SEARCH":
-            case "SEARCHING":   return "search";
-            case "SECURITY":    return "security";
-            case "CONF":
-            case "CONFIG":
-            case "CONFIGURATION":
-            case "SETTINGS":    return "configuration";
-            case "SHOP":
-            case "SHOPPING":
-            case "STORE":       return "shopping";
-            case "DEVICE":
-            case "SMARTPHONE":  return "smartphone";
-            case "*":
-            case "STAR":
-            case "STARRED":     return "starred";
-            case "CALENDAR":
-            case "PLANNING":    return "calendar";
-            case "BUSINESS":
-            case "WORK":        return "work";
-            default: return oldCategoryName;
         }
     }
 }
