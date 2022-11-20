@@ -240,6 +240,7 @@ public class Launcher {
 
         if (permanent) {
             removeItemCategory(item);
+            itemsById.remove(item.getId());
         }
         if (category.getItemCount() == 1) {
             // remove category from pager, no need to remove the item from category
