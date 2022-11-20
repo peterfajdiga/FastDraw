@@ -6,13 +6,11 @@ import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.style.AbsoluteSizeSpan;
 import android.util.AttributeSet;
-import android.view.HapticFeedbackConstants;
 import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.ColorInt;
 import androidx.annotation.NonNull;
-import androidx.fragment.app.FragmentActivity;
 
 import com.google.android.material.color.MaterialColors;
 import com.google.android.material.tabs.TabLayout;
@@ -20,13 +18,13 @@ import com.google.android.material.tabs.TabLayout;
 import peterfajdiga.fastdraw.Categories;
 import peterfajdiga.fastdraw.R;
 import peterfajdiga.fastdraw.ShadowDrawable;
-import peterfajdiga.fastdraw.dialogs.RenameCategoryDialog;
 import peterfajdiga.fastdraw.launcher.DropZone;
 import peterfajdiga.fastdraw.launcher.launcheritem.LauncherItem;
 import peterfajdiga.fastdraw.prefs.Preferences;
 
 public class CategoryTabLayout extends TabLayout {
     private OnDropListener onDropListener;
+    private OnTabLongClickListener onTabLongClickListener;
     @ColorInt private int shadowColor;
 
     public CategoryTabLayout(Context context) {
@@ -46,6 +44,10 @@ public class CategoryTabLayout extends TabLayout {
 
     public void setOnDropListener(final OnDropListener onDropListener) {
         this.onDropListener = onDropListener;
+    }
+
+    public void setOnTabLongClickListener(final OnTabLongClickListener onTabLongClickListener) {
+        this.onTabLongClickListener = onTabLongClickListener;
     }
 
     private void initColors() {
@@ -81,7 +83,6 @@ public class CategoryTabLayout extends TabLayout {
             // this tab has already been setup
             return;
         }
-        final FragmentActivity activity = (FragmentActivity)getContext();
         final String categoryName = tab.getText().toString();
         final Drawable icon = Categories.getIconDrawable(getContext(), categoryName);
 
@@ -102,15 +103,7 @@ public class CategoryTabLayout extends TabLayout {
         final ViewGroup tabContainer = (ViewGroup)getChildAt(0);
         final View tabView = tabContainer.getChildAt(tab.getPosition());
 
-        tabView.setOnLongClickListener(view -> {
-            view.performHapticFeedback(HapticFeedbackConstants.LONG_PRESS);
-            final RenameCategoryDialog dialog = RenameCategoryDialog.newInstance(
-                categoryName,
-                getContext().getString(R.string.change_category_icon)
-            );
-            dialog.show(activity.getSupportFragmentManager(), "RenameCategoryDialog");
-            return false;
-        });
+        tabView.setOnLongClickListener(view -> onTabLongClickListener.onLongClick(categoryName));
 
         tabView.setOnDragListener(new DropZone(
             (draggedItem) -> onDropListener.onDrop(draggedItem, categoryName),
@@ -119,6 +112,10 @@ public class CategoryTabLayout extends TabLayout {
     }
 
     public interface OnDropListener {
-        void onDrop(final LauncherItem draggedItem, final String category);
+        void onDrop(final LauncherItem draggedItem, final String categoryName);
+    }
+
+    public interface OnTabLongClickListener {
+        boolean onLongClick(final String categoryName);
     }
 }

@@ -428,7 +428,15 @@ public class MainActivity extends FragmentActivity implements
     }
 
     private void setupDropZones(final CategoryTabLayout tabContainer) {
-        tabContainer.setOnDropListener((draggedItem, category) -> launcher.moveItems(category, draggedItem));
+        tabContainer.setOnDropListener((draggedItem, categoryName) -> launcher.moveItems(categoryName, draggedItem));
+        tabContainer.setOnTabLongClickListener(categoryName -> {
+            final RenameCategoryDialog dialog = RenameCategoryDialog.newInstance(
+                categoryName,
+                getString(R.string.change_category_icon)
+            );
+            dialog.show(getSupportFragmentManager(), "RenameCategoryDialog");
+            return true;
+        });
 
         findViewById(R.id.drop_zone_new_category).setOnDragListener(new DropZone(
             (draggedItem) -> {
