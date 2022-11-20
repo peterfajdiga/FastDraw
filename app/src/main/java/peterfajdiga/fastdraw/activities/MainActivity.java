@@ -100,6 +100,7 @@ public class MainActivity extends FragmentActivity implements
     private static final String PREFS_WIDGETS = "widgets";
     private static final String PREF_KEY_WIDGET_ID = "widget_id";
     private static final String LAUNCHER_ITEM_ID_KEY = "launcherItemId";
+    private static final String INITIAL_CATEGORY_NAME_KEY = "categoryName";
 
     private static final int DROPZONE_TRANSITION_DURATION = 200;
 
@@ -423,17 +424,21 @@ public class MainActivity extends FragmentActivity implements
     }
 
     @Override
-    public void onRenameCategoryDialogSuccess(final CategorySelectionDialog dialog, final String oldCategoryName, final String newCategoryName) {
-        launcher.moveCategory(oldCategoryName, newCategoryName);
+    public void onRenameCategoryDialogSuccess(
+        final CategorySelectionDialog dialog,
+        final String newCategoryName
+    ) {
+        launcher.moveCategory(
+            dialog.requireArguments().getString(INITIAL_CATEGORY_NAME_KEY),
+            newCategoryName
+        );
     }
 
     private void setupDropZones(final CategoryTabLayout tabContainer) {
         tabContainer.setOnDropListener((draggedItem, categoryName) -> launcher.moveItems(categoryName, draggedItem));
         tabContainer.setOnTabLongClickListener(categoryName -> {
-            final RenameCategoryDialog dialog = RenameCategoryDialog.newInstance(
-                categoryName,
-                getString(R.string.change_category_icon)
-            );
+            final RenameCategoryDialog dialog = RenameCategoryDialog.newInstance(getString(R.string.change_category_icon));
+            DialogUtils.modifyArguments(dialog, args -> args.putString(INITIAL_CATEGORY_NAME_KEY, categoryName));
             dialog.show(getSupportFragmentManager(), "RenameCategoryDialog");
             return true;
         });
