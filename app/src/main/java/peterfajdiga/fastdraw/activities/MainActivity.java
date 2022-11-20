@@ -63,8 +63,6 @@ import peterfajdiga.fastdraw.WallpaperColorUtils;
 import peterfajdiga.fastdraw.dialogs.ActionsSheet;
 import peterfajdiga.fastdraw.dialogs.CategorySelectionDialog;
 import peterfajdiga.fastdraw.dialogs.DialogUtils;
-import peterfajdiga.fastdraw.dialogs.NewCategoryDialog;
-import peterfajdiga.fastdraw.dialogs.RenameCategoryDialog;
 import peterfajdiga.fastdraw.launcher.AppItemManager;
 import peterfajdiga.fastdraw.launcher.DropZone;
 import peterfajdiga.fastdraw.launcher.LaunchManager;
@@ -89,16 +87,17 @@ import peterfajdiga.fastdraw.views.gestures.OnTouchListenerMux;
 import peterfajdiga.fastdraw.views.gestures.Swipe;
 import peterfajdiga.fastdraw.widgets.WidgetManager;
 
-public class MainActivity extends FragmentActivity implements
-    NewCategoryDialog.Listener,
-    RenameCategoryDialog.Listener
-{
+public class MainActivity extends FragmentActivity implements CategorySelectionDialog.OnCategorySelectedListener {
     public static final int INSTALL_SHORTCUT_REQUEST = 2143;
     public static final int PICK_WIDGET_REQUEST = 2144;
     public static final int CREATE_WIDGET_REQUEST = 2145;
 
     private static final String PREFS_WIDGETS = "widgets";
     private static final String PREF_KEY_WIDGET_ID = "widget_id";
+
+    private static final String CATEGORY_DIALOG_ACTION_KEY = "categoryDialogAction";
+    private static final int CATEGORY_DIALOG_ACTION_NEW = 0;
+    private static final int CATEGORY_DIALOG_ACTION_RENAME = 1;
     private static final String LAUNCHER_ITEM_ID_KEY = "launcherItemId";
     private static final String INITIAL_CATEGORY_NAME_KEY = "categoryName";
 
@@ -416,37 +415,43 @@ public class MainActivity extends FragmentActivity implements
     }
 
     @Override
-    public void onNewCategoryDialogSuccess(final NewCategoryDialog dialog, final String newCategoryName) {
-        launcher.moveItem(
-            newCategoryName,
-            dialog.requireArguments().getString(LAUNCHER_ITEM_ID_KEY)
-        );
-    }
-
-    @Override
-    public void onRenameCategoryDialogSuccess(
-        final CategorySelectionDialog dialog,
-        final String newCategoryName
-    ) {
-        launcher.moveCategory(
-            dialog.requireArguments().getString(INITIAL_CATEGORY_NAME_KEY),
-            newCategoryName
-        );
+    public void onCategorySelected(final CategorySelectionDialog dialog, final String categoryName) {
+        final Bundle args = dialog.requireArguments();
+        final int action = args.getInt(CATEGORY_DIALOG_ACTION_KEY, -1);
+        switch (args.getInt(CATEGORY_DIALOG_ACTION_KEY)) {
+            case CATEGORY_DIALOG_ACTION_NEW: {
+                launcher.moveItem(categoryName, args.getString(LAUNCHER_ITEM_ID_KEY));
+                break;
+            }
+            case CATEGORY_DIALOG_ACTION_RENAME: {
+                launcher.moveCategory(args.getString(INITIAL_CATEGORY_NAME_KEY), categoryName);
+                break;
+            }
+            default: {
+                throw new RuntimeException("Invalid category dialog action: " + action);
+            }
+        }
     }
 
     private void setupDropZones(final CategoryTabLayout tabContainer) {
         tabContainer.setOnDropListener((draggedItem, categoryName) -> launcher.moveItems(categoryName, draggedItem));
         tabContainer.setOnTabLongClickListener(categoryName -> {
-            final RenameCategoryDialog dialog = RenameCategoryDialog.newInstance(getString(R.string.change_category_icon));
-            DialogUtils.modifyArguments(dialog, args -> args.putString(INITIAL_CATEGORY_NAME_KEY, categoryName));
+            final CategorySelectionDialog dialog = CategorySelectionDialog.newInstance(getString(R.string.change_category_icon));
+            DialogUtils.modifyArguments(dialog, args -> {
+                args.putInt(CATEGORY_DIALOG_ACTION_KEY, CATEGORY_DIALOG_ACTION_RENAME);
+                args.putString(INITIAL_CATEGORY_NAME_KEY, categoryName);
+            });
             dialog.show(getSupportFragmentManager(), "RenameCategoryDialog");
             return true;
         });
 
         findViewById(R.id.drop_zone_new_category).setOnDragListener(new DropZone(
             (draggedItem) -> {
-                final NewCategoryDialog dialog = NewCategoryDialog.newInstance(getString(R.string.new_category));
-                DialogUtils.modifyArguments(dialog, args -> args.putString(LAUNCHER_ITEM_ID_KEY, draggedItem.getId()));
+                final CategorySelectionDialog dialog = CategorySelectionDialog.newInstance(getString(R.string.new_category));
+                DialogUtils.modifyArguments(dialog, args -> {
+                    args.putInt(CATEGORY_DIALOG_ACTION_KEY, CATEGORY_DIALOG_ACTION_NEW);
+                    args.putString(LAUNCHER_ITEM_ID_KEY, draggedItem.getId());
+                });
                 dialog.show(getSupportFragmentManager(), "NewCategoryDialog");
             },
             false

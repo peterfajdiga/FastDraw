@@ -1,5 +1,6 @@
 package peterfajdiga.fastdraw.dialogs;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
@@ -24,12 +25,19 @@ import java.util.Map;
 import peterfajdiga.fastdraw.Categories;
 import peterfajdiga.fastdraw.views.AutoGridLayoutManager;
 
-public abstract class CategorySelectionDialog extends DialogFragment {
+public class CategorySelectionDialog extends DialogFragment {
     private static final String TITLE_KEY = "title";
     private static final float CATEGORY_ITEM_WIDTH_DP = 24;
     private static final float CATEGORY_ITEM_PADDING_DP = 12;
 
-    public abstract void onCategorySelected(@NonNull String categoryName);
+    public static CategorySelectionDialog newInstance(@NonNull final String title) {
+        final Bundle args = new Bundle();
+        args.putString(TITLE_KEY, title);
+
+        final CategorySelectionDialog dialog = new CategorySelectionDialog();
+        dialog.setArguments(args);
+        return dialog;
+    }
 
     @Override
     @NonNull
@@ -57,18 +65,21 @@ public abstract class CategorySelectionDialog extends DialogFragment {
         builder.setNegativeButton(android.R.string.cancel, null);
 
         final Dialog d = builder.create();
-        categoriesView.setAdapter(new CategoryItemAdapter(newCategoryName -> {
-            onCategorySelected(newCategoryName);
+        categoriesView.setAdapter(new CategoryItemAdapter(categoryName -> {
+            onCategorySelected(categoryName);
             d.dismiss();
         }));
         d.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
         return d;
     }
 
-    protected void setup(@NonNull final String title) {
-        final Bundle args = new Bundle();
-        args.putString(TITLE_KEY, title);
-        this.setArguments(args);
+    private void onCategorySelected(final String categoryName) {
+        final Activity activity = requireActivity();
+        if (activity instanceof OnCategorySelectedListener) {
+            ((OnCategorySelectedListener)activity).onCategorySelected(this, categoryName);
+        } else {
+            throw new RuntimeException(activity.getLocalClassName() + " must implement CategorySelectionDialog.Listener");
+        }
     }
 
     private static class CategoryItemAdapter extends RecyclerView.Adapter<CategoryItemAdapter.ItemViewHolder> {
@@ -123,5 +134,9 @@ public abstract class CategorySelectionDialog extends DialogFragment {
         private interface OnCategoryItemClickedListener {
             void OnCategoryItemClicked(String categoryName);
         }
+    }
+
+    public interface OnCategorySelectedListener {
+        void onCategorySelected(CategorySelectionDialog dialog, String categoryName);
     }
 }
