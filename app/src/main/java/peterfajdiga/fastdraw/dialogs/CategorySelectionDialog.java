@@ -25,12 +25,11 @@ import peterfajdiga.fastdraw.Categories;
 import peterfajdiga.fastdraw.views.AutoGridLayoutManager;
 
 public abstract class CategorySelectionDialog extends DialogFragment {
-    private static final String INITIAL_CATEGORY_NAME_KEY = "categoryName";
     private static final String TITLE_KEY = "title";
     private static final float CATEGORY_ITEM_WIDTH_DP = 24;
     private static final float CATEGORY_ITEM_PADDING_DP = 12;
 
-    public abstract void onCategorySelected(@NonNull String initialCategoryName, @NonNull String inputtedCategoryName);
+    public abstract void onCategorySelected(@NonNull String categoryName);
 
     @Override
     @NonNull
@@ -41,7 +40,6 @@ public abstract class CategorySelectionDialog extends DialogFragment {
 
         final Bundle arguments = getArguments();
         assert arguments != null;
-        final String initialCategoryName = arguments.getString(INITIAL_CATEGORY_NAME_KEY);
         final String title = arguments.getString(TITLE_KEY);
 
         final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
@@ -60,16 +58,15 @@ public abstract class CategorySelectionDialog extends DialogFragment {
 
         final Dialog d = builder.create();
         categoriesView.setAdapter(new CategoryItemAdapter(newCategoryName -> {
-            onCategorySelected(initialCategoryName, newCategoryName);
+            onCategorySelected(newCategoryName);
             d.dismiss();
         }));
         d.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
         return d;
     }
 
-    protected void setup(@NonNull final String initialCategoryName, @NonNull final String title) {
+    protected void setup(@NonNull final String title) {
         final Bundle args = new Bundle();
-        args.putString(INITIAL_CATEGORY_NAME_KEY, initialCategoryName);
         args.putString(TITLE_KEY, title);
         this.setArguments(args);
     }
