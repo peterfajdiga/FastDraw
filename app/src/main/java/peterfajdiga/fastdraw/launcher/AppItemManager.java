@@ -42,18 +42,10 @@ public class AppItemManager {
         return getAppItems(packageManager, launcherIntent);
     }
 
-    public static void removePackageItems(
-        final Context context,
-        final Launcher launcher,
-        final String packageName,
-        final boolean permanent
-    ) {
+    public static void removePackageItems(final Launcher launcher, final String packageName) {
         for (final LauncherItem item : launcher.getItems()) {
-            if (packageName.equals(item.getPackageName()) && (permanent || !(item instanceof ShortcutItem))) {
-                launcher.removeItem(item, permanent);
-                if (item instanceof ShortcutItem) {
-                    ShortcutItemManager.deleteShortcut(context, (ShortcutItem)item);
-                }
+            if (packageName.equals(item.getPackageName()) && !(item instanceof ShortcutItem)) {
+                launcher.removeItem(item, false);
             }
         }
     }

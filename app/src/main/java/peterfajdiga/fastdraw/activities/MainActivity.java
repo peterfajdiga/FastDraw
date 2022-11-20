@@ -526,7 +526,7 @@ public class MainActivity extends FragmentActivity {
 
             @Override
             public void onAppRemove(final String packageName) {
-                AppItemManager.removePackageItems(MainActivity.this, launcher, packageName, false);
+                AppItemManager.removePackageItems(launcher, packageName);
             }
         });
 
