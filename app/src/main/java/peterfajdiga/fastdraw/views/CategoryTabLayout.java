@@ -2,9 +2,6 @@ package peterfajdiga.fastdraw.views;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
-import android.text.Spannable;
-import android.text.SpannableString;
-import android.text.style.AbsoluteSizeSpan;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,7 +17,6 @@ import peterfajdiga.fastdraw.R;
 import peterfajdiga.fastdraw.ShadowDrawable;
 import peterfajdiga.fastdraw.launcher.DropZone;
 import peterfajdiga.fastdraw.launcher.launcheritem.LauncherItem;
-import peterfajdiga.fastdraw.prefs.Preferences;
 
 public class CategoryTabLayout extends TabLayout {
     private OnDropListener onDropListener;
@@ -86,16 +82,10 @@ public class CategoryTabLayout extends TabLayout {
         final String categoryName = tab.getText().toString();
         final Drawable icon = Categories.getIconDrawable(getContext(), categoryName);
 
-        if (Preferences.showIcons) {
-            if (icon != null) {
-                final ShadowDrawable iconWithShadow = new ShadowDrawable(icon, shadowColor);
-                tab.setIcon(iconWithShadow);
-                tab.setText("");
-            } else if (categoryName.length() == 1 && Preferences.largeSingle) {
-                SpannableString tabString = new SpannableString(categoryName);
-                tabString.setSpan(new AbsoluteSizeSpan(19, true), 0, 1, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-                tab.setText(tabString);
-            }
+        if (icon != null) {
+            final ShadowDrawable iconWithShadow = new ShadowDrawable(icon, shadowColor);
+            tab.setIcon(iconWithShadow);
+            tab.setText("");
         }
         tab.setTag(Boolean.TRUE); // mark as done
 

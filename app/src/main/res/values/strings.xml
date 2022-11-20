@@ -47,10 +47,6 @@
     <string name="pref_header_appearance">Appearance</string>
     <string name="pref_title_wallpaperParallax">Wallpaper parallax</string>
     <string name="pref_description_wallpaperParallax">Move wallpaper when switching categories</string>
-    <string name="pref_title_showIcons">Show icons</string>
-    <string name="pref_description_showIcons">Replace certain category names with icons</string>
-    <string name="pref_title_largeSingle">Enlarge single letters</string>
-    <string name="pref_description_largeSingle">Enlarge single-letter category names</string>
     <string name="pref_title_headerSeparator">Show tabs separator</string>
     <string name="pref_description_headerSeparator">Display a white line between the tabs and the apps</string>
     <string name="pref_title_scrimColorFromWallpaper">Background scrim color from wallpaper</string>

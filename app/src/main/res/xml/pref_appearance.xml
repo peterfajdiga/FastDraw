@@ -8,19 +8,6 @@
         android:summary="@string/pref_description_wallpaperParallax" />
 
     <SwitchPreference
-        android:defaultValue="@bool/default_showIcons"
-        android:key="showIcons"
-        android:title="@string/pref_title_showIcons"
-        android:summary="@string/pref_description_showIcons" />
-
-    <SwitchPreference
-        android:defaultValue="@bool/default_largeSingle"
-        android:key="largeSingle"
-        android:dependency="showIcons"
-        android:title="@string/pref_title_largeSingle"
-        android:summary="@string/pref_description_largeSingle" />
-
-    <SwitchPreference
         android:defaultValue="@bool/default_headerSeparator"
         android:key="headerSeparator"
         android:title="@string/pref_title_headerSeparator"
