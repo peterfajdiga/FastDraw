@@ -6,8 +6,6 @@
     <bool name="default_scrollableTabs">false</bool>
     <bool name="default_hideHidden">false</bool>
     <bool name="default_wallpaperParallax">true</bool>
-    <bool name="default_showIcons">true</bool>
-    <bool name="default_largeSingle">false</bool>
     <bool name="default_headerSeparator">true</bool>
     <bool name="default_scrimColorFromWallpaper">false</bool>
     <integer name="default_scrimOpacity">96</integer>
