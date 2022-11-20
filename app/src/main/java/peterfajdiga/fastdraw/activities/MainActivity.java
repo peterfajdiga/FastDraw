@@ -61,7 +61,10 @@ import peterfajdiga.fastdraw.RunnableQueue;
 import peterfajdiga.fastdraw.SettableBoolean;
 import peterfajdiga.fastdraw.WallpaperColorUtils;
 import peterfajdiga.fastdraw.dialogs.ActionsSheet;
+import peterfajdiga.fastdraw.dialogs.CategorySelectionDialog;
+import peterfajdiga.fastdraw.dialogs.DialogUtils;
 import peterfajdiga.fastdraw.dialogs.NewCategoryDialog;
+import peterfajdiga.fastdraw.dialogs.RenameCategoryDialog;
 import peterfajdiga.fastdraw.launcher.AppItemManager;
 import peterfajdiga.fastdraw.launcher.DropZone;
 import peterfajdiga.fastdraw.launcher.LaunchManager;
@@ -86,13 +89,17 @@ import peterfajdiga.fastdraw.views.gestures.OnTouchListenerMux;
 import peterfajdiga.fastdraw.views.gestures.Swipe;
 import peterfajdiga.fastdraw.widgets.WidgetManager;
 
-public class MainActivity extends FragmentActivity {
+public class MainActivity extends FragmentActivity implements
+    NewCategoryDialog.Listener,
+    RenameCategoryDialog.Listener
+{
     public static final int INSTALL_SHORTCUT_REQUEST = 2143;
     public static final int PICK_WIDGET_REQUEST = 2144;
     public static final int CREATE_WIDGET_REQUEST = 2145;
 
     private static final String PREFS_WIDGETS = "widgets";
     private static final String PREF_KEY_WIDGET_ID = "widget_id";
+    private static final String LAUNCHER_ITEM_ID_KEY = "launcherItemId";
 
     private static final int DROPZONE_TRANSITION_DURATION = 200;
 
@@ -304,7 +311,6 @@ public class MainActivity extends FragmentActivity {
     private void setupHeader(final ViewPager appsPager) {
         final CategoryTabLayout tabContainer = findViewById(R.id.tab_container);
         tabContainer.setupWithViewPager(appsPager);
-        tabContainer.setRenameCategoryDialogListener((oldCategoryName, newCategoryName) -> launcher.moveCategory(oldCategoryName, newCategoryName));
 
         final ViewGroup header = findViewById(R.id.header);
 
@@ -408,15 +414,26 @@ public class MainActivity extends FragmentActivity {
         setupSystemBarsScrim(contentView);
     }
 
+    @Override
+    public void onNewCategoryDialogSuccess(final NewCategoryDialog dialog, final String newCategoryName) {
+        launcher.moveItem(
+            newCategoryName,
+            dialog.requireArguments().getString(LAUNCHER_ITEM_ID_KEY)
+        );
+    }
+
+    @Override
+    public void onRenameCategoryDialogSuccess(final CategorySelectionDialog dialog, final String oldCategoryName, final String newCategoryName) {
+        launcher.moveCategory(oldCategoryName, newCategoryName);
+    }
+
     private void setupDropZones(final CategoryTabLayout tabContainer) {
         tabContainer.setOnDropListener((draggedItem, category) -> launcher.moveItems(category, draggedItem));
 
         findViewById(R.id.drop_zone_new_category).setOnDragListener(new DropZone(
             (draggedItem) -> {
-                final NewCategoryDialog dialog = new NewCategoryDialog(
-                    newCategoryName -> launcher.moveItems(newCategoryName, draggedItem),
-                    getString(R.string.new_category)
-                );
+                final NewCategoryDialog dialog = NewCategoryDialog.newInstance(getString(R.string.new_category));
+                DialogUtils.modifyArguments(dialog, args -> args.putString(LAUNCHER_ITEM_ID_KEY, draggedItem.getId()));
                 dialog.show(getSupportFragmentManager(), "NewCategoryDialog");
             },
             false

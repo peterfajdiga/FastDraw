@@ -18,16 +18,15 @@ import com.google.android.material.color.MaterialColors;
 import com.google.android.material.tabs.TabLayout;
 
 import peterfajdiga.fastdraw.Categories;
-import peterfajdiga.fastdraw.prefs.Preferences;
 import peterfajdiga.fastdraw.R;
 import peterfajdiga.fastdraw.ShadowDrawable;
 import peterfajdiga.fastdraw.dialogs.RenameCategoryDialog;
 import peterfajdiga.fastdraw.launcher.DropZone;
 import peterfajdiga.fastdraw.launcher.launcheritem.LauncherItem;
+import peterfajdiga.fastdraw.prefs.Preferences;
 
 public class CategoryTabLayout extends TabLayout {
     private OnDropListener onDropListener;
-    private RenameCategoryDialog.Listener renameCategoryDialogListener;
     @ColorInt private int shadowColor;
 
     public CategoryTabLayout(Context context) {
@@ -47,10 +46,6 @@ public class CategoryTabLayout extends TabLayout {
 
     public void setOnDropListener(final OnDropListener onDropListener) {
         this.onDropListener = onDropListener;
-    }
-
-    public void setRenameCategoryDialogListener(final RenameCategoryDialog.Listener renameCategoryDialogListener) {
-        this.renameCategoryDialogListener = renameCategoryDialogListener;
     }
 
     private void initColors() {
@@ -109,8 +104,7 @@ public class CategoryTabLayout extends TabLayout {
 
         tabView.setOnLongClickListener(view -> {
             view.performHapticFeedback(HapticFeedbackConstants.LONG_PRESS);
-            RenameCategoryDialog dialog = new RenameCategoryDialog(
-                renameCategoryDialogListener,
+            final RenameCategoryDialog dialog = RenameCategoryDialog.newInstance(
                 categoryName,
                 getContext().getString(R.string.change_category_icon)
             );

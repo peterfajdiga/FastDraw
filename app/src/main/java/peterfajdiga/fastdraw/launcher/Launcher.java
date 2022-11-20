@@ -260,6 +260,10 @@ public class Launcher {
         category.updateItem(existingItem.getId(), updatedItem.getDisplayItem(pager.getContext()));
     }
 
+    public void moveItem(@NonNull final String categoryName, @NonNull final String itemId) {
+        moveItems(categoryName, itemsById.get(itemId));
+    }
+
     public void moveItems(@NonNull final String categoryName, @NonNull final LauncherItem... items) {
         final String currentCategoryName = getCurrentCategoryName();
         boolean followItem = false;
