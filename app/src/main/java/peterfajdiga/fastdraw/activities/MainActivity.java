@@ -150,16 +150,16 @@ public class MainActivity extends FragmentActivity implements CategorySelectionD
                 setupSystemBarsScrim(contentView);
             }
         });
-        contentView.addOnLayoutChangeListener((v, left, top, right, bottom, oldLeft, oldTop, oldRight, oldBottom) -> {
+        contentView.setOnApplyWindowInsetsListener((v, insets) -> {
             // this fixes the bug with missing top padding after exiting split screen mode
-            if (bottom != oldBottom) {
-                contentView.post(() -> {
-                    if (contentView.isAttachedToWindow()) {
-                        setupSystemBarsPadding(contentView);
-                        setupSystemBarsScrim(contentView);
-                    }
-                });
-            }
+            // this fixes the bug with scroll_parent's height being limited after starting Fast Draw with the keyboard open
+            contentView.post(() -> {
+                if (contentView.isAttachedToWindow()) {
+                    setupSystemBarsPadding(contentView);
+                    setupSystemBarsScrim(contentView);
+                }
+            });
+            return insets;
         });
 
         final Intent intent = getIntent();
