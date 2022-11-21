@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">Fast Draw</string>
-    <string name="default_category">MISC</string>
-    <string name="default_shortcut_category">SHORTCUTS</string>
+    <string name="default_category">misc</string>
+    <string name="default_shortcut_category">shortcuts</string>
     <string name="new_category">New category</string>
     <string name="change_category_icon">Change category icon</string>
     <string name="app_info">App info</string>
