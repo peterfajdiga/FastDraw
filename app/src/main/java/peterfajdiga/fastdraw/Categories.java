@@ -68,7 +68,8 @@ public class Categories {
 
     public static String oldToNewCategoryName(final String oldCategoryName) {
         switch (oldCategoryName) {
-            case "MISC":        return "misc";
+            case "MISC":
+            case "UNMOVED":     return "misc";
             case "SHORTCUTS":   return "shortcuts";
             case "ANDROID":
             case "AOSP":
