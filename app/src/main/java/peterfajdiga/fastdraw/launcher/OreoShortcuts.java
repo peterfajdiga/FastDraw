@@ -54,11 +54,11 @@ public class OreoShortcuts {
         try {
             shortcuts = launcherApps.getShortcuts(query, user);
         } catch (final IllegalStateException e) {
-            Log.e("OreoShortcuts", "User is locked or not running (IllegalStateException)");
+            Log.e("OreoShortcuts", "User is locked or not running (IllegalStateException)", e);
             Toast.makeText(context, R.string.error_oreo_user_handle, Toast.LENGTH_LONG).show();
             return null;
         } catch (final SecurityException e) {
-            Log.e("OreoShortcuts", "Can't get shortcuts (SecurityException)");
+            Log.e("OreoShortcuts", "Can't get shortcuts (SecurityException)", e);
             Toast.makeText(context, R.string.error_oreo_get_shortcuts, Toast.LENGTH_LONG).show();
             return null;
         }
