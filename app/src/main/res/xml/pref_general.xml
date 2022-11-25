@@ -35,10 +35,4 @@
         android:title="@string/pref_title_scrollableTabs"
         android:summary="@string/pref_description_scrollableTabs" />
 
-    <SwitchPreference
-        android:defaultValue="@bool/default_hideHidden"
-        android:key="hideHidden"
-        android:title="@string/pref_title_hideHidden"
-        android:summary="@string/pref_description_hideHidden" />
-
 </PreferenceScreen>
