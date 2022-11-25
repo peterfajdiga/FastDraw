@@ -8,6 +8,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
 import peterfajdiga.fastdraw.R;
 import peterfajdiga.fastdraw.activities.MainActivity;
+import peterfajdiga.fastdraw.prefs.Preferences;
 
 public class ActionsSheet extends BottomSheetDialogFragment {
 
@@ -41,6 +42,27 @@ public class ActionsSheet extends BottomSheetDialogFragment {
             dialog.cancel();
             activity.removeWidget();
         });
+
+        final View actionHiddenShow = dialogView.findViewById(R.id.action_hidden_show);
+        actionHiddenShow.setOnClickListener(v -> {
+            dialog.cancel();
+            activity.setHiddenVisibility(true);
+        });
+
+        final View actionHiddenHide = dialogView.findViewById(R.id.action_hidden_hide);
+        actionHiddenHide.setOnClickListener(v -> {
+            dialog.cancel();
+            activity.setHiddenVisibility(false);
+        });
+
+        // TODO: don't display either when there are no hidden items
+        if (Preferences.hideHidden) {
+            actionHiddenShow.setVisibility(View.VISIBLE);
+            actionHiddenHide.setVisibility(View.GONE);
+        } else {
+            actionHiddenShow.setVisibility(View.GONE);
+            actionHiddenHide.setVisibility(View.VISIBLE);
+        }
 
         final View actionSettingsView = dialogView.findViewById(R.id.action_settings);
         actionSettingsView.setOnClickListener(v -> {

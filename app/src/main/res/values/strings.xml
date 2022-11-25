@@ -12,6 +12,8 @@
     <string name="action_shortcut">Add a shortcut</string>
     <string name="action_widget">Change widget</string>
     <string name="action_remove_widget">Remove widget</string>
+    <string name="action_hidden_show">Show hidden apps</string>
+    <string name="action_hidden_hide">Hide hidden apps</string>
     <string name="action_settings">Open preferences</string>
     <string name="action_notifications">Open notifications drawer</string>
 
@@ -40,8 +42,6 @@
     <string name="pref_description_headerbtm">Place category tabs on the bottom of the screen instead of on the top</string>
     <string name="pref_title_scrollableTabs">Scrollable tabs</string>
     <string name="pref_description_scrollableTabs">If you have a lot of categories (experimental)</string>
-    <string name="pref_title_hideHidden">Hide HIDDEN</string>
-    <string name="pref_description_hideHidden">If there\'s a category called HIDDEN, hide it</string>
 
     <string name="pref_header_appearance">Appearance</string>
     <string name="pref_title_wallpaperParallax">Wallpaper parallax</string>

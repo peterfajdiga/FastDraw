@@ -899,6 +899,12 @@ public class MainActivity extends FragmentActivity implements CategorySelectionD
         widgetManager.pickWidget();
     }
 
+    public void setHiddenVisibility(final boolean visible) {
+        // TODO: refactor
+        PreferenceManager.getDefaultSharedPreferences(this).edit().putBoolean("hideHidden", !visible).apply();
+        recreate();
+    }
+
     public void openSettings() {
         final Intent settingsIntent = new Intent(this, SettingsActivity.class);
         startActivity(settingsIntent);

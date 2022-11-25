@@ -37,6 +37,18 @@
             android:drawableStart="@drawable/ic_action_widget" />
 
         <TextView
+            android:id="@+id/action_hidden_show"
+            style="@style/SheetItem"
+            android:text="@string/action_hidden_show"
+            android:drawableStart="@drawable/ic_action_hidden_show" />
+
+        <TextView
+            android:id="@+id/action_hidden_hide"
+            style="@style/SheetItem"
+            android:text="@string/action_hidden_hide"
+            android:drawableStart="@drawable/ic_action_hidden_hide" />
+
+        <TextView
             android:id="@+id/action_settings"
             style="@style/SheetItem"
             android:text="@string/action_settings"
