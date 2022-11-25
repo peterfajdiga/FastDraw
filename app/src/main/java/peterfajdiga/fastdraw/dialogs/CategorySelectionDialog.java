@@ -24,6 +24,7 @@ import java.util.Map;
 
 import peterfajdiga.fastdraw.Categories;
 import peterfajdiga.fastdraw.views.AutoGridLayoutManager;
+import peterfajdiga.fastdraw.views.ResourceUtils;
 
 public class CategorySelectionDialog extends DialogFragment {
     private static final String TITLE_KEY = "title";
@@ -96,6 +97,7 @@ public class CategorySelectionDialog extends DialogFragment {
             final Context context = parent.getContext();
             final DisplayMetrics dm = context.getResources().getDisplayMetrics();
             final ImageView view = new ImageView(context);
+            view.setBackgroundResource(ResourceUtils.resolveResourceId(context.getTheme(), android.R.attr.selectableItemBackground));
             final int padding = Math.round(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, CATEGORY_ITEM_PADDING_DP, dm));
             view.setPadding(padding, padding, padding, padding);
             return new ItemViewHolder(view, itemClickListener);
