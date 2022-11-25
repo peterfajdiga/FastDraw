@@ -66,6 +66,11 @@
                 style="@style/DropZone"/>
 
             <TextView
+                android:id="@+id/drop_zone_hide"
+                android:text="@string/hide"
+                style="@style/DropZone"/>
+
+            <TextView
                 android:id="@+id/drop_zone_app_info"
                 android:text="@string/app_info"
                 style="@style/DropZone"/>

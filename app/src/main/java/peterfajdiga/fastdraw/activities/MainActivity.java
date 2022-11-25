@@ -454,6 +454,13 @@ public class MainActivity extends FragmentActivity implements CategorySelectionD
             false
         ));
 
+        findViewById(R.id.drop_zone_hide).setOnDragListener(new DropZone(
+            (draggedItem) -> {
+                launcher.moveItems("HIDDEN", draggedItem);
+            },
+            false
+        ));
+
         findViewById(R.id.drop_zone_app_info).setOnDragListener(new DropZone(
             (draggedItem) -> {
                 final AppItem appItem = (AppItem)draggedItem;
@@ -916,6 +923,7 @@ public class MainActivity extends FragmentActivity implements CategorySelectionD
     private void startDrag(final LauncherItem draggedItem) {
         // show type specific drop zones
         findViewById(R.id.drop_zone_app_info).setVisibility(draggedItem instanceof AppItem ? View.VISIBLE : View.GONE);
+        findViewById(R.id.drop_zone_hide).setVisibility(draggedItem instanceof AppItem ? View.VISIBLE : View.GONE);
         findViewById(R.id.drop_zone_remove_shortcut).setVisibility(draggedItem instanceof ShortcutItem ? View.VISIBLE : View.GONE);
 
         // show drop zones
