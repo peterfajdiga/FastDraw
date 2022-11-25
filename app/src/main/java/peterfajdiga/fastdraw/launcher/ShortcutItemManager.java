@@ -132,6 +132,9 @@ public class ShortcutItemManager {
     public static OreoShortcutItem oreoShortcutFromIntent(final Context context, @NonNull final Intent intent) {
         @NonNull final LauncherApps launcherApps = (LauncherApps)context.getSystemService(Context.LAUNCHER_APPS_SERVICE);
         final LauncherApps.PinItemRequest pinItemRequest = launcherApps.getPinItemRequest(intent);
+        if (!pinItemRequest.isValid()) {
+            return null;
+        }
         if (!pinItemRequest.accept()) {
             return null;
         }
