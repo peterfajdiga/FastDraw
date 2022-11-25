@@ -19,6 +19,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.Executors;
 
+import peterfajdiga.fastdraw.Categories;
 import peterfajdiga.fastdraw.Postable;
 import peterfajdiga.fastdraw.categoryorder.CategoryComparator;
 import peterfajdiga.fastdraw.launcher.displayitem.DisplayItem;
@@ -153,7 +154,7 @@ public class Launcher {
     }
 
     private void addItemsToCategory(@NonNull final String categoryName, final boolean immediate, @NonNull final LauncherItem... items) {
-        if (Preferences.hideHidden && categoryName.equals("HIDDEN")) {
+        if (Preferences.hideHidden && categoryName.equals(Categories.hiddenCategory)) {
             return;
         }
 
@@ -197,7 +198,7 @@ public class Launcher {
         final Map<String, List<LauncherItem>> itemsByCategory = new HashMap<>();
         for (final LauncherItem item : items) {
             final String categoryName = getItemCategory(item, defaultCategory);
-            if (Preferences.hideHidden && categoryName.equals("HIDDEN")) {
+            if (Preferences.hideHidden && categoryName.equals(Categories.hiddenCategory)) {
                 continue;
             }
 
