@@ -3,72 +3,102 @@ package peterfajdiga.fastdraw;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 
+import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
-public class Categories {
+public class Category {
     public static final String defaultCategory = "misc";
     public static final String shortcutsCategory = "shortcuts";
     public static final String hiddenCategory = "hidden";
 
-    private Categories() {}
+    public final String name;
+    @DrawableRes
+    public final int iconResourceId;
 
-    public static Drawable getIconDrawable(final Context context, @NonNull final String categoryName) {
-        final Integer categoryIconResId = MAP.get(categoryName);
+    private Category(final String name, @DrawableRes final int iconResourceId) {
+        this.name = name;
+        this.iconResourceId = iconResourceId;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    @DrawableRes
+    public int getIconResourceId() {
+        return iconResourceId;
+    }
+
+    @NonNull
+    public Drawable getIconDrawable(@NonNull final Context context) {
+        final Drawable drawable = ContextCompat.getDrawable(context, iconResourceId);
+        assert drawable != null;
+        return drawable;
+    }
+
+    @Nullable
+    public static Drawable getIconDrawable(@NonNull final Context context, @NonNull final String categoryName) {
+        final Integer categoryIconResId = ICON_RES_MAP.get(categoryName);
         if (categoryIconResId == null) {
             return null;
         }
         return ContextCompat.getDrawable(context, categoryIconResId);
     }
 
-    public static final Map<String, Integer> MAP = Map.ofEntries(
-        Map.entry(defaultCategory,   R.drawable.ic_category_apps),
-        Map.entry(shortcutsCategory, R.drawable.ic_category_link),
-        Map.entry("android",         R.drawable.ic_category_android),
-        Map.entry("money",           R.drawable.ic_category_money),
-        Map.entry("literature",      R.drawable.ic_category_book),
-        Map.entry("tools",           R.drawable.ic_category_build),
-        Map.entry("phone",           R.drawable.ic_category_phone),
-        Map.entry("photos",          R.drawable.ic_category_camera_alt),
-        Map.entry("camera",          R.drawable.ic_category_camera),
-        Map.entry("communication",   R.drawable.ic_category_chat),
-        Map.entry("cloud",           R.drawable.ic_category_cloud),
-        Map.entry("computer",        R.drawable.ic_category_computer),
-        Map.entry("trash",           R.drawable.ic_category_delete),
-        Map.entry("bus",             R.drawable.ic_category_bus),
-        Map.entry("auto",            R.drawable.ic_category_car),
-        Map.entry("navigation",      R.drawable.ic_category_explore),
-        Map.entry("plugins",         R.drawable.ic_category_extension),
-        Map.entry("heart",           R.drawable.ic_category_heart),
-        Map.entry("flight",          R.drawable.ic_category_flight),
-        Map.entry("traffic",         R.drawable.ic_category_traffic),
-        Map.entry("drink",           R.drawable.ic_category_bar),
-        Map.entry("food",            R.drawable.ic_category_food),
-        Map.entry("coffee",          R.drawable.ic_category_cafe),
-        Map.entry("filesystem",      R.drawable.ic_category_folder),
-        Map.entry("games",           R.drawable.ic_category_games),
-        Map.entry("social",          R.drawable.ic_category_group),
-        Map.entry("home",            R.drawable.ic_category_home),
-        Map.entry("info",            R.drawable.ic_category_info),
-        Map.entry("internet",        R.drawable.ic_category_language),
-        Map.entry("locked",          R.drawable.ic_category_lock),
-        Map.entry("notes",           R.drawable.ic_category_edit),
-        Map.entry("video",           R.drawable.ic_category_movie),
-        Map.entry("audio",           R.drawable.ic_category_music),
-        Map.entry("images",          R.drawable.ic_category_photo),
-        Map.entry("media",           R.drawable.ic_category_play),
-        Map.entry("education",       R.drawable.ic_category_school),
-        Map.entry("search",          R.drawable.ic_category_search),
-        Map.entry("security",        R.drawable.ic_category_security),
-        Map.entry("configuration",   R.drawable.ic_category_settings),
-        Map.entry("shopping",        R.drawable.ic_category_shopping),
-        Map.entry("smartphone",      R.drawable.ic_category_smartphone),
-        Map.entry("starred",         R.drawable.ic_category_star),
-        Map.entry("calendar",        R.drawable.ic_category_calendar),
-        Map.entry("work",            R.drawable.ic_category_work)
+    public static final List<Category> LIST = List.of(
+        new Category(defaultCategory,   R.drawable.ic_category_apps),
+        new Category(shortcutsCategory, R.drawable.ic_category_link),
+        new Category("android",         R.drawable.ic_category_android),
+        new Category("money",           R.drawable.ic_category_money),
+        new Category("literature",      R.drawable.ic_category_book),
+        new Category("tools",           R.drawable.ic_category_build),
+        new Category("phone",           R.drawable.ic_category_phone),
+        new Category("photos",          R.drawable.ic_category_camera_alt),
+        new Category("camera",          R.drawable.ic_category_camera),
+        new Category("communication",   R.drawable.ic_category_chat),
+        new Category("cloud",           R.drawable.ic_category_cloud),
+        new Category("computer",        R.drawable.ic_category_computer),
+        new Category("trash",           R.drawable.ic_category_delete),
+        new Category("bus",             R.drawable.ic_category_bus),
+        new Category("auto",            R.drawable.ic_category_car),
+        new Category("navigation",      R.drawable.ic_category_explore),
+        new Category("plugins",         R.drawable.ic_category_extension),
+        new Category("heart",           R.drawable.ic_category_heart),
+        new Category("flight",          R.drawable.ic_category_flight),
+        new Category("traffic",         R.drawable.ic_category_traffic),
+        new Category("drink",           R.drawable.ic_category_bar),
+        new Category("food",            R.drawable.ic_category_food),
+        new Category("coffee",          R.drawable.ic_category_cafe),
+        new Category("filesystem",      R.drawable.ic_category_folder),
+        new Category("games",           R.drawable.ic_category_games),
+        new Category("social",          R.drawable.ic_category_group),
+        new Category("home",            R.drawable.ic_category_home),
+        new Category("info",            R.drawable.ic_category_info),
+        new Category("internet",        R.drawable.ic_category_language),
+        new Category("locked",          R.drawable.ic_category_lock),
+        new Category("notes",           R.drawable.ic_category_edit),
+        new Category("video",           R.drawable.ic_category_movie),
+        new Category("audio",           R.drawable.ic_category_music),
+        new Category("images",          R.drawable.ic_category_photo),
+        new Category("media",           R.drawable.ic_category_play),
+        new Category("education",       R.drawable.ic_category_school),
+        new Category("search",          R.drawable.ic_category_search),
+        new Category("security",        R.drawable.ic_category_security),
+        new Category("configuration",   R.drawable.ic_category_settings),
+        new Category("shopping",        R.drawable.ic_category_shopping),
+        new Category("smartphone",      R.drawable.ic_category_smartphone),
+        new Category("starred",         R.drawable.ic_category_star),
+        new Category("calendar",        R.drawable.ic_category_calendar),
+        new Category("work",            R.drawable.ic_category_work)
     );
+
+    private static final Map<String, Integer> ICON_RES_MAP = LIST.stream().collect(Collectors.toMap(Category::getName, Category::getIconResourceId));
 
     public static String oldToNewCategoryName(final String oldCategoryName) {
         switch (oldCategoryName) {

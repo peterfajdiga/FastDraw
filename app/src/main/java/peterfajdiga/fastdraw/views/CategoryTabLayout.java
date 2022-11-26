@@ -12,7 +12,7 @@ import androidx.annotation.NonNull;
 import com.google.android.material.color.MaterialColors;
 import com.google.android.material.tabs.TabLayout;
 
-import peterfajdiga.fastdraw.Categories;
+import peterfajdiga.fastdraw.Category;
 import peterfajdiga.fastdraw.R;
 import peterfajdiga.fastdraw.ShadowDrawable;
 import peterfajdiga.fastdraw.launcher.DropZone;
@@ -80,7 +80,7 @@ public class CategoryTabLayout extends TabLayout {
             return;
         }
         final String categoryName = tab.getText().toString();
-        final Drawable icon = Categories.getIconDrawable(getContext(), categoryName);
+        final Drawable icon = Category.getIconDrawable(getContext(), categoryName);
 
         if (icon != null) {
             final ShadowDrawable iconWithShadow = new ShadowDrawable(icon, shadowColor);

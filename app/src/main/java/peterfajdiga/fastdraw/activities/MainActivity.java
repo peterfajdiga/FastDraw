@@ -56,7 +56,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.stream.Stream;
 
-import peterfajdiga.fastdraw.Categories;
+import peterfajdiga.fastdraw.Category;
 import peterfajdiga.fastdraw.R;
 import peterfajdiga.fastdraw.RunnableQueue;
 import peterfajdiga.fastdraw.SettableBoolean;
@@ -168,7 +168,7 @@ public class MainActivity extends FragmentActivity implements CategorySelectionD
             if (action != null && action.equals(LauncherApps.ACTION_CONFIRM_PIN_SHORTCUT) && android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
                 final OreoShortcutItem newShortcut = ShortcutItemManager.oreoShortcutFromIntent(this, intent);
                 if (newShortcut != null) {
-                    final String shortcutCategoryName = Categories.shortcutsCategory;
+                    final String shortcutCategoryName = Category.shortcutsCategory;
                     addOreoShortcut(newShortcut, shortcutCategoryName);
                     launcher.showCategory(shortcutCategoryName);
                 }
@@ -456,7 +456,7 @@ public class MainActivity extends FragmentActivity implements CategorySelectionD
 
         findViewById(R.id.drop_zone_hide).setOnDragListener(new DropZone(
             (draggedItem) -> {
-                launcher.moveItems(Categories.hiddenCategory, draggedItem);
+                launcher.moveItems(Category.hiddenCategory, draggedItem);
             },
             false
         ));
@@ -554,13 +554,13 @@ public class MainActivity extends FragmentActivity implements CategorySelectionD
             @Override
             public void onAppInstall(final String packageName) {
                 final AppItem[] appItems = AppItemManager.getAppItems(getPackageManager(), packageName).toArray(AppItem[]::new);
-                launcher.addItems(Categories.defaultCategory, appItems);
+                launcher.addItems(Category.defaultCategory, appItems);
             }
 
             @Override
             public void onAppChange(final String packageName) {
                 final Stream<AppItem> updatedAppItems = AppItemManager.getAppItems(getPackageManager(), packageName);
-                AppItemManager.updatePackageItems(launcher, packageName, updatedAppItems, Categories.defaultCategory);
+                AppItemManager.updatePackageItems(launcher, packageName, updatedAppItems, Category.defaultCategory);
             }
 
             @Override
@@ -767,7 +767,7 @@ public class MainActivity extends FragmentActivity implements CategorySelectionD
             ShortcutItemManager.getShortcutItems(this)
         ).toArray(LauncherItem[]::new);
 
-        launcher.addItemsStartup(Categories.defaultCategory, items);
+        launcher.addItemsStartup(Category.defaultCategory, items);
     }
 
     /**
@@ -923,7 +923,7 @@ public class MainActivity extends FragmentActivity implements CategorySelectionD
     }
 
     public void onShortcutReceived(final ShortcutItem newShortcut) {
-        launcher.addItems(Categories.shortcutsCategory, newShortcut);
+        launcher.addItems(Category.shortcutsCategory, newShortcut);
     }
 
     private void startDrag(final LauncherItem draggedItem) {
@@ -967,7 +967,7 @@ public class MainActivity extends FragmentActivity implements CategorySelectionD
         final PrefMap itemCategoryMap = new PrefMap(this, "categories");
         for (final String key : itemCategoryMap.getKeys()) {
             final String currentCategoryName = itemCategoryMap.getString(key, "");
-            final String newCategoryName = Categories.oldToNewCategoryName(currentCategoryName);
+            final String newCategoryName = Category.oldToNewCategoryName(currentCategoryName);
             if (!newCategoryName.equals(currentCategoryName)) {
                 itemCategoryMap.putString(key, newCategoryName);
             }

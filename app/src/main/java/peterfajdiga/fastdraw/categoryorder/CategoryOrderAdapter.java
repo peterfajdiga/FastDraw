@@ -17,10 +17,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.Arrays;
 import java.util.Set;
 
-import peterfajdiga.fastdraw.Categories;
-import peterfajdiga.fastdraw.prefs.PrefMap;
+import peterfajdiga.fastdraw.Category;
 import peterfajdiga.fastdraw.R;
 import peterfajdiga.fastdraw.activities.MainActivity;
+import peterfajdiga.fastdraw.prefs.PrefMap;
 
 public class CategoryOrderAdapter extends RecyclerView.Adapter<CategoryOrderAdapter.CategoryViewHolder> implements ReorderHelperListener {
     private String[] categories;
@@ -95,7 +95,7 @@ public class CategoryOrderAdapter extends RecyclerView.Adapter<CategoryOrderAdap
 
         void bind(final String categoryName) {
             this.label.setText(categoryName);
-            this.icon.setImageDrawable(Categories.getIconDrawable(this.icon.getContext(), categoryName));
+            this.icon.setImageDrawable(Category.getIconDrawable(this.icon.getContext(), categoryName));
         }
     }
 

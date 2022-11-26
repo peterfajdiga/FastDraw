@@ -13,16 +13,11 @@ import android.view.WindowManager;
 import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
-import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.DialogFragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-
-import peterfajdiga.fastdraw.Categories;
+import peterfajdiga.fastdraw.Category;
 import peterfajdiga.fastdraw.views.AutoGridLayoutManager;
 import peterfajdiga.fastdraw.views.ResourceUtils;
 
@@ -84,7 +79,6 @@ public class CategorySelectionDialog extends DialogFragment {
     }
 
     private static class CategoryItemAdapter extends RecyclerView.Adapter<CategoryItemAdapter.ItemViewHolder> {
-        private static final List<Map.Entry<String, Integer>> CATEGORY_ICONS = new ArrayList<>(Categories.MAP.entrySet());
         private final OnCategoryItemClickedListener itemClickListener;
 
         public CategoryItemAdapter(final OnCategoryItemClickedListener itemClickListener) {
@@ -105,16 +99,16 @@ public class CategorySelectionDialog extends DialogFragment {
 
         @Override
         public void onBindViewHolder(@NonNull final ItemViewHolder holder, final int position) {
-            final Map.Entry<String, Integer> categoryEntry = CATEGORY_ICONS.get(position);
-            final String categoryName = categoryEntry.getKey();
-            final Context context = holder.view.getContext();
-            final Drawable drawable = ResourcesCompat.getDrawable(context.getResources(), categoryEntry.getValue(), context.getTheme());
-            holder.bind(categoryName, drawable);
+            final Category categoryEntry = Category.LIST.get(position);
+            holder.bind(
+                categoryEntry.name,
+                categoryEntry.getIconDrawable(holder.view.getContext())
+            );
         }
 
         @Override
         public int getItemCount() {
-            return CATEGORY_ICONS.size();
+            return Category.LIST.size();
         }
 
         private static class ItemViewHolder extends RecyclerView.ViewHolder {
