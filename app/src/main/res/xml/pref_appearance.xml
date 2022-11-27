@@ -14,17 +14,17 @@
         android:summary="@string/pref_description_headerSeparator" />
 
     <SwitchPreference
-        android:defaultValue="@bool/default_scrimColorFromWallpaper"
-        android:key="scrimColorFromWallpaper"
+        android:defaultValue="@bool/default_bgGradientColorFromWallpaper"
+        android:key="bgGradientColorFromWallpaper"
         android:disableDependentsState="true"
-        android:title="@string/pref_title_scrimColorFromWallpaper"
-        android:summary="@string/pref_description_scrimColorFromWallpaper" />
+        android:title="@string/pref_title_bgGradientColorFromWallpaper"
+        android:summary="@string/pref_description_bgGradientColorFromWallpaper" />
 
     <SeekBarPreference
-        android:defaultValue="@integer/default_scrimOpacity"
+        android:defaultValue="@integer/default_bgGradientOpacity"
         app:min="0"
         android:max="255"
-        android:key="scrimOpacity"
-        android:title="@string/pref_title_scrimOpacity" />
+        android:key="bgGradientOpacity"
+        android:title="@string/pref_title_bgGradientOpacity" />
 
 </PreferenceScreen>

@@ -48,9 +48,9 @@
     <string name="pref_description_wallpaperParallax">Move wallpaper when switching categories</string>
     <string name="pref_title_headerSeparator">Show tabs separator</string>
     <string name="pref_description_headerSeparator">Display a white line between the tabs and the apps</string>
-    <string name="pref_title_scrimColorFromWallpaper">Background shadow color from wallpaper</string>
-    <string name="pref_description_scrimColorFromWallpaper">Color the background shadow based on the color of your wallpaper (requires Android Oreo or newer)</string>
-    <string name="pref_title_scrimOpacity">Background shadow opacity</string>
+    <string name="pref_title_bgGradientColorFromWallpaper">Background shadow color from wallpaper</string>
+    <string name="pref_description_bgGradientColorFromWallpaper">Color the background shadow based on the color of your wallpaper (requires Android Oreo or newer)</string>
+    <string name="pref_title_bgGradientOpacity">Background shadow opacity</string>
 
     <string name="pref_header_categoryorder">Order of categories</string>
     <string name="pref_title_orderreset">Order alphabetically</string>

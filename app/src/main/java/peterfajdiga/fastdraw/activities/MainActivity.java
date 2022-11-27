@@ -147,7 +147,7 @@ public class MainActivity extends FragmentActivity implements CategorySelectionD
         contentView.post(() -> {
             if (contentView.isAttachedToWindow()) {
                 setupSystemBarsPadding(contentView);
-                setupSystemBarsScrim(contentView);
+                setupSystemBarsBgGradient(contentView);
             }
         });
         contentView.setOnApplyWindowInsetsListener((v, insets) -> {
@@ -156,7 +156,7 @@ public class MainActivity extends FragmentActivity implements CategorySelectionD
             contentView.post(() -> {
                 if (contentView.isAttachedToWindow()) {
                     setupSystemBarsPadding(contentView);
-                    setupSystemBarsScrim(contentView);
+                    setupSystemBarsBgGradient(contentView);
                 }
             });
             return insets;
@@ -360,40 +360,40 @@ public class MainActivity extends FragmentActivity implements CategorySelectionD
     }
 
     @ColorInt
-    private int applyScrimOpacity(@ColorInt final int color) {
-        return color & ((Preferences.scrimOpacity << 24) | 0xffffff);
+    private int applyBgGradientOpacity(@ColorInt final int color) {
+        return color & ((Preferences.bgGradientOpacity << 24) | 0xffffff);
     }
 
-    private void setupSystemBarsScrim(final View contentView) {
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O_MR1 && Preferences.scrimColorFromWallpaper) {
+    private void setupSystemBarsBgGradient(final View contentView) {
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O_MR1 && Preferences.bgGradientColorFromWallpaper) {
             final WallpaperManager wallpaperManager = (WallpaperManager)getSystemService(WALLPAPER_SERVICE);
             final WallpaperColors wallpaperColors = wallpaperManager.getWallpaperColors(WallpaperManager.FLAG_SYSTEM);
-            updateSystemBarsScrimColor(contentView, applyScrimOpacity(WallpaperColorUtils.getDarkColor(wallpaperColors)));
+            updateSystemBarsBgGradientColor(contentView, applyBgGradientOpacity(WallpaperColorUtils.getDarkColor(wallpaperColors)));
         } else {
-            updateSystemBarsScrimColor(contentView, applyScrimOpacity(getScrimColor()));
+            updateSystemBarsBgGradientColor(contentView, applyBgGradientOpacity(getBgGradientColor()));
         }
     }
 
     @ColorInt
-    private int getScrimColor() {
-        return MaterialColors.getColor(this, R.attr.scrimColor, Color.GRAY);
+    private int getBgGradientColor() {
+        return MaterialColors.getColor(this, R.attr.bgGradientColor, Color.GRAY);
     }
 
-    private void updateSystemBarsScrimColor(final View contentView, @ColorInt final int color) {
+    private void updateSystemBarsBgGradientColor(final View contentView, @ColorInt final int color) {
         final Resources res = getResources();
-        final int scrimHeight = Math.round(res.getDimension(R.dimen.system_bar_scrim_height));
+        final int bgGradientHeight = Math.round(res.getDimension(R.dimen.system_bar_bg_gradient_height));
 
         final boolean hasNavigationBar = Build.VERSION.SDK_INT < Build.VERSION_CODES.Q || hasNavigationBar();
-        final int scrimHeightBottom = hasNavigationBar ? (
-            Preferences.headerOnBottom ? Math.round(res.getDimension(R.dimen.system_bar_scrim_height_large)) : scrimHeight
+        final int bgGradientHeightBottom = hasNavigationBar ? (
+            Preferences.headerOnBottom ? Math.round(res.getDimension(R.dimen.system_bar_bg_gradient_height_large)) : bgGradientHeight
         ) : (
-            Preferences.headerOnBottom ? scrimHeight : 0
+            Preferences.headerOnBottom ? bgGradientHeight : 0
         );
 
-        contentView.setBackground(Drawables.createScrimBackground(
+        contentView.setBackground(Drawables.createBgGradientDrawable(
             color,
-            scrimHeight,
-            scrimHeightBottom
+            bgGradientHeight,
+            bgGradientHeightBottom
         ));
     }
 
@@ -411,7 +411,7 @@ public class MainActivity extends FragmentActivity implements CategorySelectionD
         super.onAttachedToWindow();
         final View contentView = findViewById(android.R.id.content);
         setupSystemBarsPadding(contentView);
-        setupSystemBarsScrim(contentView);
+        setupSystemBarsBgGradient(contentView);
     }
 
     @Override
@@ -507,17 +507,17 @@ public class MainActivity extends FragmentActivity implements CategorySelectionD
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O_MR1) {
             final WallpaperManager wallpaperManager = (WallpaperManager)getSystemService(WALLPAPER_SERVICE);
             final WallpaperColors wallpaperColors = wallpaperManager.getWallpaperColors(WallpaperManager.FLAG_SYSTEM);
-            @ColorInt final int scrimColor = applyScrimOpacity(
-                Preferences.scrimColorFromWallpaper ?
+            @ColorInt final int bgGradientColor = applyBgGradientOpacity(
+                Preferences.bgGradientColorFromWallpaper ?
                 WallpaperColorUtils.getDarkColor(wallpaperColors) :
-                getScrimColor()
+                getBgGradientColor()
             );
             @ColorInt final int expandedHeaderColor = WallpaperColorUtils.getDarkAccentColor(wallpaperColors);
-            updateHeaderColor(header, scrimColor, expandedHeaderColor);
+            updateHeaderColor(header, bgGradientColor, expandedHeaderColor);
             setupWallpaperColorListener(header, wallpaperManager);
         } else {
-            @ColorInt final int scrimColor = getScrimColor();
-            updateHeaderColor(header, scrimColor, scrimColor); // TODO: constant
+            @ColorInt final int bgGradientColor = getBgGradientColor();
+            updateHeaderColor(header, bgGradientColor, bgGradientColor);
         }
     }
 
@@ -525,24 +525,24 @@ public class MainActivity extends FragmentActivity implements CategorySelectionD
     private void setupWallpaperColorListener(@NonNull final View header, @NonNull final WallpaperManager wallpaperManager) {
         wallpaperManager.addOnColorsChangedListener((colors, which) -> {
             if ((which & WallpaperManager.FLAG_SYSTEM) != 0) {
-                @ColorInt final int scrimColor = applyScrimOpacity(
-                    Preferences.scrimColorFromWallpaper ?
+                @ColorInt final int bgGradientColor = applyBgGradientOpacity(
+                    Preferences.bgGradientColorFromWallpaper ?
                     WallpaperColorUtils.getDarkColor(colors) :
-                    getScrimColor()
+                    getBgGradientColor()
                 );
                 @ColorInt final int expandedHeaderColor = WallpaperColorUtils.getDarkAccentColor(colors);
-                updateHeaderColor(header, scrimColor, expandedHeaderColor);
+                updateHeaderColor(header, bgGradientColor, expandedHeaderColor);
                 if (header.isAttachedToWindow()) {
-                    updateSystemBarsScrimColor(findViewById(android.R.id.content), scrimColor);
+                    updateSystemBarsBgGradientColor(findViewById(android.R.id.content), bgGradientColor);
                 }
             }
         }, null);
     }
 
-    private void updateHeaderColor(@NonNull final View header, @ColorInt final int scrimColor, @ColorInt final int expandedColor) {
+    private void updateHeaderColor(@NonNull final View header, @ColorInt final int bgGradientColor, @ColorInt final int expandedColor) {
         header.setBackground(Drawables.createHeaderBackground(
             getResources(),
-            scrimColor,
+            bgGradientColor,
             expandedColor,
             !Preferences.headerOnBottom,
             Preferences.headerSeparator

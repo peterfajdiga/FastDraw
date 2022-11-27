@@ -20,11 +20,11 @@ public class Drawables {
         @NonNull final Resources res,
         @ColorInt final int collapsedColor,
         @ColorInt final int expandedColor,
-        final boolean scrim,
+        final boolean bgGradient,
         final boolean separators
     ) {
         final TransitionDrawable transitionDrawable = new TransitionDrawable(new Drawable[]{
-            createHeaderBackgroundCollapsed(res, collapsedColor, scrim),
+            createHeaderBackgroundCollapsed(res, collapsedColor, bgGradient),
             createHeaderBackgroundExpanded(res, expandedColor, separators),
         });
         transitionDrawable.setCrossFadeEnabled(true);
@@ -34,9 +34,9 @@ public class Drawables {
     public static Drawable createHeaderBackgroundCollapsed(
         @NonNull final Resources res,
         @ColorInt final int color,
-        final boolean scrim
+        final boolean bgGradient
     ) {
-        if (scrim) {
+        if (bgGradient) {
             return new GradientDrawable(GradientDrawable.Orientation.TOP_BOTTOM, new int[]{
                 Color.TRANSPARENT,
                 color,
@@ -68,7 +68,7 @@ public class Drawables {
         }
     }
 
-    public static Drawable createScrimBackground(
+    public static Drawable createBgGradientDrawable(
         @ColorInt final int color,
         final int heightTop,
         final int heightBottom
