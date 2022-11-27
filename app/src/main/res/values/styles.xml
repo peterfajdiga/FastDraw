@@ -14,7 +14,7 @@
         <item name="android:colorEdgeEffect">@android:color/white</item>
         <item name="android:textColorPrimary">@android:color/white</item>
         <item name="textColorPrimaryInactive">#80FFFFFF</item>
-        <item name="scrimColor">@android:color/black</item>
+        <item name="bgGradientColor">@android:color/black</item>
         <item name="softShadowColor">@android:color/black</item>
         <item name="hardShadowColor">#80000000</item>
     </style>

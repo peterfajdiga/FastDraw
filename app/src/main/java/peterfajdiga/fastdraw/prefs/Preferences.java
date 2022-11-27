@@ -17,8 +17,8 @@ public final class Preferences {
 
     public static boolean wallpaperParallax;
     public static boolean headerSeparator;
-    public static boolean scrimColorFromWallpaper;
-    public static int scrimOpacity;
+    public static boolean bgGradientColorFromWallpaper;
+    public static int bgGradientOpacity;
 
     public static void loadPreferences(final Context context) {
         final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
@@ -29,14 +29,14 @@ public final class Preferences {
             case "0": appsLinearList = false; break;
             case "1": appsLinearList = true; break;
         }
-        allowOrientation                   = prefs.getBoolean("allowOrientation",        res.getBoolean(R.bool.default_allowOrientation));
-        widgetHeight                       = prefs.getInt("widgetHeight",                res.getInteger(R.integer.default_widgetHeight));
-        headerOnBottom                     = prefs.getBoolean("headerbtm",               res.getBoolean(R.bool.default_headerbtm));
-        scrollableTabs                     = prefs.getBoolean("scrollableTabs",          res.getBoolean(R.bool.default_scrollableTabs));
-        hideHidden                         = prefs.getBoolean("hideHidden",              res.getBoolean(R.bool.default_hideHidden));
-        wallpaperParallax                  = prefs.getBoolean("wallpaperParallax",       res.getBoolean(R.bool.default_wallpaperParallax));
-        headerSeparator                    = prefs.getBoolean("headerSeparator",         res.getBoolean(R.bool.default_headerSeparator));
-        scrimColorFromWallpaper            = prefs.getBoolean("scrimColorFromWallpaper", res.getBoolean(R.bool.default_scrimColorFromWallpaper));
-        scrimOpacity                       = prefs.getInt("scrimOpacity",                res.getInteger(R.integer.default_scrimOpacity));
+        allowOrientation             = prefs.getBoolean("allowOrientation",             res.getBoolean(R.bool.default_allowOrientation));
+        widgetHeight                 = prefs.getInt("widgetHeight",                     res.getInteger(R.integer.default_widgetHeight));
+        headerOnBottom               = prefs.getBoolean("headerbtm",                    res.getBoolean(R.bool.default_headerbtm));
+        scrollableTabs               = prefs.getBoolean("scrollableTabs",               res.getBoolean(R.bool.default_scrollableTabs));
+        hideHidden                   = prefs.getBoolean("hideHidden",                   res.getBoolean(R.bool.default_hideHidden));
+        wallpaperParallax            = prefs.getBoolean("wallpaperParallax",            res.getBoolean(R.bool.default_wallpaperParallax));
+        headerSeparator              = prefs.getBoolean("headerSeparator",              res.getBoolean(R.bool.default_headerSeparator));
+        bgGradientColorFromWallpaper = prefs.getBoolean("bgGradientColorFromWallpaper", res.getBoolean(R.bool.default_bgGradientColorFromWallpaper));
+        bgGradientOpacity            = prefs.getInt("bgGradientOpacity",                res.getInteger(R.integer.default_bgGradientOpacity));
     }
 }

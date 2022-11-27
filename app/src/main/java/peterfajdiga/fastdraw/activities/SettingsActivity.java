@@ -27,10 +27,10 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
 
-import peterfajdiga.fastdraw.prefs.PrefMap;
 import peterfajdiga.fastdraw.R;
 import peterfajdiga.fastdraw.categoryorder.CategoryOrderAdapter;
 import peterfajdiga.fastdraw.categoryorder.ReorderHelperCallback;
+import peterfajdiga.fastdraw.prefs.PrefMap;
 
 /**
  * A {@link PreferenceActivity} that presents a set of application settings. On
@@ -183,7 +183,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
         private void removeUnsupportedPreferences() {
             if (android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.O_MR1) {
-                findPreference("scrimColorFromWallpaper").setEnabled(false);
+                findPreference("bgGradientColorFromWallpaper").setEnabled(false);
             }
         }
     }
