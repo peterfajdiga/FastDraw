@@ -1,0 +1,18 @@
+<preference-headers xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <header
+        android:fragment="peterfajdiga.fastdraw.activities.SettingsActivity$GeneralPreferenceFragment"
+        android:icon="@drawable/ic_pref_general"
+        android:title="@string/pref_header_general" />
+
+    <header
+        android:fragment="peterfajdiga.fastdraw.activities.SettingsActivity$AppearancePreferenceFragment"
+        android:icon="@drawable/ic_pref_appearance"
+        android:title="@string/pref_header_appearance" />
+
+    <header
+        android:fragment="peterfajdiga.fastdraw.activities.SettingsActivity$CategoryOrderPreferenceFragment"
+        android:icon="@drawable/ic_pref_categoryorder"
+        android:title="@string/pref_header_categoryorder" />
+
+</preference-headers>

@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <peterfajdiga.fastdraw.views.NestedScrollParent
+        android:id="@+id/scroll_parent"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="@dimen/pager_header_height"
+        android:scrollbars="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <peterfajdiga.fastdraw.views.GestureInterceptor
+                android:id="@+id/widget_container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <FrameLayout
+                android:id="@+id/scroll_expand"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1">
+
+                <androidx.viewpager.widget.ViewPager
+                    android:id="@+id/apps_pager"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+
+            </FrameLayout>
+
+        </LinearLayout>
+
+    </peterfajdiga.fastdraw.views.NestedScrollParent>
+
+    <LinearLayout
+        android:id="@+id/header"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_gravity="bottom"
+        android:background="@android:color/white">
+
+        <View
+            android:id="@+id/header_separator"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@android:color/white"
+            android:visibility="gone" />
+
+        <LinearLayout
+            android:id="@+id/category_drop_zone_container"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/pager_header_extra_height"
+            android:visibility="gone"
+            android:orientation="horizontal"
+            android:gravity="top">
+
+            <TextView
+                android:id="@+id/drop_zone_new_category"
+                android:text="@string/new_category"
+                style="@style/DropZone"/>
+
+            <TextView
+                android:id="@+id/drop_zone_app_info"
+                android:text="@string/app_info"
+                style="@style/DropZone"/>
+
+            <TextView
+                android:id="@+id/drop_zone_remove_shortcut"
+                android:text="@string/remove_shortcut"
+                style="@style/DropZone"/>
+        </LinearLayout>
+
+        <peterfajdiga.fastdraw.views.CategoryTabLayout
+            android:id="@+id/tab_container"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/pager_header_height"
+            style="@style/AppsTabLayout" />
+
+    </LinearLayout>
+
+</FrameLayout>

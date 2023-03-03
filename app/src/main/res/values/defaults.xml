@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <bool name="default_allowOrientation">false</bool>
+    <string name="default_appItemResource">0</string>
+    <bool name="default_headerbtm">false</bool>
+    <bool name="default_scrollableTabs">false</bool>
+    <bool name="default_hideHidden">false</bool>
+    <bool name="default_wallpaperParallax">true</bool>
+    <bool name="default_showIcons">true</bool>
+    <bool name="default_largeSingle">false</bool>
+    <bool name="default_headerSeparator">true</bool>
+    <bool name="default_scrimColorFromWallpaper">false</bool>
+    <integer name="default_scrimOpacity">96</integer>
+    <integer name="default_widgetHeight">260</integer>
+</resources>

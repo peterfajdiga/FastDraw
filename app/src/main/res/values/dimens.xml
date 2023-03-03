@@ -1,0 +1,27 @@
+<resources>
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <!--<dimen name="activity_horizontal_margin">16dp</dimen>-->
+    <!--<dimen name="activity_vertical_margin">16dp</dimen>-->
+
+    <dimen name="pager_header_height">56dp</dimen>
+    <dimen name="pager_header_extra_height">72dp</dimen>
+    <dimen name="pager_header_expanded_elevation">24dp</dimen>
+
+    <dimen name="system_bar_scrim_height">56dp</dimen>
+    <dimen name="system_bar_scrim_height_large">128dp</dimen>
+
+    <dimen name="app_item_grid_padding_vertical">16dp</dimen>
+    <dimen name="app_item_grid_padding_below_label">3dp</dimen><!--app_item_padding_vertical - app_label_text_size-->
+    <dimen name="app_item_grid_icon_padding">16dp</dimen>
+    <dimen name="app_item_grid_icon_size">48dp</dimen>
+    <dimen name="app_item_grid_label_text_size">13sp</dimen>
+    <dimen name="app_item_grid_container_padding">12dp</dimen>
+
+    <dimen name="app_item_list_padding_horizontal">16dp</dimen>
+    <dimen name="app_item_list_padding_vertical">8dp</dimen>
+    <dimen name="app_item_list_icon_padding_end">16dp</dimen>
+    <dimen name="app_item_list_icon_size">40dp</dimen>
+    <dimen name="app_item_list_label_text_size">16sp</dimen>
+
+    <dimen name="widget_margin">@dimen/app_item_grid_container_padding</dimen>
+</resources>

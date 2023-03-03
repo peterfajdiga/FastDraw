@@ -1,0 +1,44 @@
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <SwitchPreference
+        android:defaultValue="@bool/default_allowOrientation"
+        android:key="allowOrientation"
+        android:title="@string/pref_title_allowOrientation"
+        android:summary="@string/pref_description_allowOrientation" />
+
+    <ListPreference
+        android:defaultValue="@string/default_appItemResource"
+        android:entries="@array/pref_appItemResource_titles"
+        android:entryValues="@array/pref_appItemResource_values"
+        android:key="appItemResource"
+        android:negativeButtonText="@null"
+        android:positiveButtonText="@null"
+        android:title="@string/pref_title_appItemResource" />
+
+    <SeekBarPreference
+        android:defaultValue="@integer/default_widgetHeight"
+        app:min="80"
+        android:max="560"
+        android:key="widgetHeight"
+        android:title="@string/pref_title_widgetHeight" />
+
+    <SwitchPreference
+        android:defaultValue="@bool/default_headerbtm"
+        android:key="headerbtm"
+        android:title="@string/pref_title_headerbtm"
+        android:summary="@string/pref_description_headerbtm" />
+
+    <SwitchPreference
+        android:defaultValue="@bool/default_scrollableTabs"
+        android:key="scrollableTabs"
+        android:title="@string/pref_title_scrollableTabs"
+        android:summary="@string/pref_description_scrollableTabs" />
+
+    <SwitchPreference
+        android:defaultValue="@bool/default_hideHidden"
+        android:key="hideHidden"
+        android:title="@string/pref_title_hideHidden"
+        android:summary="@string/pref_description_hideHidden" />
+
+</PreferenceScreen>

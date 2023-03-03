@@ -1,0 +1,73 @@
+<resources>
+    <string name="app_name">Fast Draw</string>
+    <string name="default_category">MISC</string>
+    <string name="default_shortcut_category">SHORTCUTS</string>
+    <string name="new_category">New category</string>
+    <string name="create">Create</string>
+    <string name="rename_category">Rename category</string>
+    <string name="rename">Rename</string>
+    <string name="app_info">App info</string>
+    <string name="select_wallpaper">Change wallpaper</string>
+    <string name="add_shortcut">Add a shortcut</string>
+    <string name="remove_shortcut">Remove shortcut</string>
+
+    <string name="action_wallpaper">Change wallpaper</string>
+    <string name="action_shortcut">Add a shortcut</string>
+    <string name="action_widget">Change widget</string>
+    <string name="action_remove_widget">Remove widget</string>
+    <string name="action_rename_category">Rename current category</string>
+    <string name="action_settings">Open preferences</string>
+    <string name="action_notifications">Open notifications drawer</string>
+
+    <string name="no_app">App not installed</string>
+    <string name="no_permission">You did not give Fast Draw permission to call. You can change that in Fast Draw\'s app info.</string>
+    <string name="no_intent">Fast Draw is not able to launch this app or shortcut :( Please report this problem :)</string>
+
+
+    <!-- Strings related to Settings -->
+    <string name="title_activity_settings">Fast Draw Preferences</string>
+
+    <string name="pref_header_general">General</string>
+    <string-array name="pref_appItemResource_titles">
+        <item>Grid</item>
+        <item>Vertical list</item>
+    </string-array>
+    <string-array name="pref_appItemResource_values">
+        <item>0</item>
+        <item>1</item>
+    </string-array>
+    <string name="pref_title_allowOrientation">Allow rotation</string>
+    <string name="pref_description_allowOrientation">Allow changing orientation between portrait and landscape</string>
+    <string name="pref_title_appItemResource">App list layout</string>
+    <string name="pref_title_widgetHeight">Widget height</string>
+    <string name="pref_title_headerbtm">Place tabs on bottom</string>
+    <string name="pref_description_headerbtm">Place category tabs on the bottom of the screen instead of on the top</string>
+    <string name="pref_title_scrollableTabs">Scrollable tabs</string>
+    <string name="pref_description_scrollableTabs">If you have a lot of categories (experimental)</string>
+    <string name="pref_title_hideHidden">Hide HIDDEN</string>
+    <string name="pref_description_hideHidden">If there\'s a category called HIDDEN, hide it</string>
+
+    <string name="pref_header_appearance">Appearance</string>
+    <string name="pref_title_wallpaperParallax">Wallpaper parallax</string>
+    <string name="pref_description_wallpaperParallax">Move wallpaper when switching categories</string>
+    <string name="pref_title_showIcons">Show icons</string>
+    <string name="pref_description_showIcons">Replace certain category names with icons</string>
+    <string name="pref_title_largeSingle">Enlarge single letters</string>
+    <string name="pref_description_largeSingle">Enlarge single-letter category names</string>
+    <string name="pref_title_headerSeparator">Show tabs separator</string>
+    <string name="pref_description_headerSeparator">Display a white line between the tabs and the apps</string>
+    <string name="pref_title_scrimColorFromWallpaper">Background scrim color from wallpaper</string>
+    <string name="pref_description_scrimColorFromWallpaper">Color the background scrim based on the primary wallpaper color (requires Android Oreo or newer)</string>
+    <string name="pref_title_scrimOpacity">Background scrim opacity</string>
+
+    <string name="pref_header_categoryorder">Order of categories</string>
+    <string name="pref_title_orderreset">Order alphabetically</string>
+
+    <string name="error_oreo_user_handle">User is locked or not running</string>
+    <string name="error_oreo_activity_not_found">Activity does not exist</string>
+    <string name="error_oreo_get_shortcuts">Can\'t load shortcut because Fast Draw is not the default launcher</string>
+    <string name="error_oreo_shortcut_host_permission">Fast Draw doesn\'t have shortcut host permission. Make sure Fast Draw is the default launcher.</string>
+
+    <string name="error_launch_exception">Can\'t launch item due to an unknown error. Please report this issue.</string>
+    <string name="error_expand_notifications_panel">Can\'t open the notifications panel. Perhaps your Android version doesn\'t support this for third party launchers.</string>
+</resources>
