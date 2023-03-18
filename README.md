@@ -14,3 +14,7 @@ That's about it.
 <img src="https://user-images.githubusercontent.com/22796326/196039370-c0a91fae-b594-4abd-ba67-b938ea18f176.png" height="480">
 <img src="https://user-images.githubusercontent.com/22796326/196039373-101b668c-4505-4365-a5fd-69455cf07f5e.png" height="480">
 </p>
+
+This project is licensed as described in files inside the LICENSES directory.
+
+This project uses Material Design icons by Google. See the LICENSES directory.
