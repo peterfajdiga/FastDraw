@@ -2,7 +2,7 @@ package peterfajdiga.fastdraw.launcher.launcheritem;
 
 import androidx.annotation.NonNull;
 
-public interface FiledShortcutItem extends LauncherItem, Saveable {
+public interface FiledShortcutItem extends ShortcutItem, Saveable {
     @NonNull String getTypeKey();
     @NonNull String getUUID();
 

@@ -14,7 +14,7 @@ import peterfajdiga.fastdraw.launcher.launchable.Launchable;
 import peterfajdiga.fastdraw.launcher.launchable.OreoShortcutLaunchable;
 
 @RequiresApi(api = Build.VERSION_CODES.O)
-public class OreoShortcutItem implements LauncherItem {
+public class OreoShortcutItem implements ShortcutItem {
     public static final String TYPE_KEY = "oreo";
 
     private final ShortcutInfo info;

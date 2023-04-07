@@ -22,9 +22,8 @@ import java.util.concurrent.Executors;
 import peterfajdiga.fastdraw.Postable;
 import peterfajdiga.fastdraw.categoryorder.CategoryComparator;
 import peterfajdiga.fastdraw.launcher.displayitem.DisplayItem;
-import peterfajdiga.fastdraw.launcher.launcheritem.FiledShortcutItem;
 import peterfajdiga.fastdraw.launcher.launcheritem.LauncherItem;
-import peterfajdiga.fastdraw.launcher.launcheritem.OreoShortcutItem;
+import peterfajdiga.fastdraw.launcher.launcheritem.ShortcutItem;
 import peterfajdiga.fastdraw.prefs.PrefMap;
 import peterfajdiga.fastdraw.prefs.Preferences;
 import peterfajdiga.fastdraw.views.NestedScrollChildManager;
@@ -328,7 +327,7 @@ public class Launcher {
     }
 
     private static String getDefaultCategory(@NonNull final LauncherItem item) {
-        if (item instanceof FiledShortcutItem || item instanceof OreoShortcutItem) {
+        if (item instanceof ShortcutItem) {
             return peterfajdiga.fastdraw.Category.shortcutsCategory;
         } else {
             return peterfajdiga.fastdraw.Category.defaultCategory;

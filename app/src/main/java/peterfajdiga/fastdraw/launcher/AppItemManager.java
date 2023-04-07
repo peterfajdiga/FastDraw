@@ -16,8 +16,8 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import peterfajdiga.fastdraw.launcher.launcheritem.AppItem;
-import peterfajdiga.fastdraw.launcher.launcheritem.FiledShortcutItem;
 import peterfajdiga.fastdraw.launcher.launcheritem.LauncherItem;
+import peterfajdiga.fastdraw.launcher.launcheritem.ShortcutItem;
 
 public class AppItemManager {
     private AppItemManager() {}
@@ -44,7 +44,7 @@ public class AppItemManager {
 
     public static void removePackageItems(final Launcher launcher, final String packageName) {
         for (final LauncherItem item : launcher.getItems()) {
-            if (packageName.equals(item.getPackageName()) && !(item instanceof FiledShortcutItem)) {
+            if (packageName.equals(item.getPackageName()) && !(item instanceof ShortcutItem)) {
                 launcher.removeItem(item, false);
             }
         }
