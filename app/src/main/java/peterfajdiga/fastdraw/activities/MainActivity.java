@@ -75,6 +75,7 @@ import peterfajdiga.fastdraw.launcher.launcheritem.FiledShortcutItem;
 import peterfajdiga.fastdraw.launcher.launcheritem.LauncherItem;
 import peterfajdiga.fastdraw.launcher.launcheritem.OreoShortcutItem;
 import peterfajdiga.fastdraw.launcher.launcheritem.ResShortcutItem;
+import peterfajdiga.fastdraw.launcher.launcheritem.ShortcutItem;
 import peterfajdiga.fastdraw.prefs.PrefMap;
 import peterfajdiga.fastdraw.prefs.Preferences;
 import peterfajdiga.fastdraw.receivers.InstallAppReceiver;
@@ -471,9 +472,11 @@ public class MainActivity extends FragmentActivity implements CategorySelectionD
 
         findViewById(R.id.drop_zone_remove_shortcut).setOnDragListener(new DropZone(
             (draggedItem) -> {
-                final FiledShortcutItem shortcutItem = (FiledShortcutItem)draggedItem;
+                final ShortcutItem shortcutItem = (ShortcutItem)draggedItem;
                 launcher.removeItem(shortcutItem, true);
-                ShortcutItemManager.deleteShortcut(this, shortcutItem);
+                if (shortcutItem instanceof FiledShortcutItem) {
+                    ShortcutItemManager.deleteShortcut(this, (FiledShortcutItem)shortcutItem);
+                }
             },
             true
         ));
@@ -929,7 +932,7 @@ public class MainActivity extends FragmentActivity implements CategorySelectionD
         // show type specific drop zones
         findViewById(R.id.drop_zone_app_info).setVisibility(draggedItem instanceof AppItem ? View.VISIBLE : View.GONE);
         findViewById(R.id.drop_zone_hide).setVisibility(draggedItem instanceof AppItem ? View.VISIBLE : View.GONE);
-        findViewById(R.id.drop_zone_remove_shortcut).setVisibility(draggedItem instanceof FiledShortcutItem ? View.VISIBLE : View.GONE);
+        findViewById(R.id.drop_zone_remove_shortcut).setVisibility(draggedItem instanceof ShortcutItem ? View.VISIBLE : View.GONE);
 
         // show drop zones
         findViewById(R.id.apps_pager).animate().alpha(0.2f);
