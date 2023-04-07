@@ -3,6 +3,7 @@ package peterfajdiga.fastdraw.launcher;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.LauncherApps;
+import android.content.pm.ShortcutInfo;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Build;
@@ -18,6 +19,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 import java.util.stream.Stream;
@@ -33,6 +35,17 @@ public class ShortcutItemManager {
 
     @NonNull
     public static Stream<ShortcutItem> getShortcutItems(@NonNull final Context context) {
+        final Stream<ShortcutItem> filedShortcuts = getFiledShortcutItems(context);
+
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
+            return filedShortcuts;
+        }
+
+        final Stream<ShortcutItem> oreoShortcuts = getOreoShortcutItems(context);
+        return Stream.concat(filedShortcuts, oreoShortcuts);
+    }
+
+    private static Stream<ShortcutItem> getFiledShortcutItems(@NonNull final Context context) {
         final File shortcutsDir = getShortcutsDir(context);
         shortcutsDir.mkdir();
         return Arrays.stream(shortcutsDir.listFiles()).map(file -> {
@@ -46,6 +59,17 @@ public class ShortcutItemManager {
             }
             return null;
         }).filter(Objects::nonNull);
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    @NonNull
+    private static Stream<ShortcutItem> getOreoShortcutItems(@NonNull final Context context) {
+        final List<ShortcutInfo> shortcuts = OreoShortcuts.getPinnedShortcuts(context);
+        if (shortcuts == null) {
+            return Stream.empty();
+        }
+
+        return shortcuts.stream().map(shortcutInfo -> new OreoShortcutItem(generateUUID(), shortcutInfo));
     }
 
     @Nullable
