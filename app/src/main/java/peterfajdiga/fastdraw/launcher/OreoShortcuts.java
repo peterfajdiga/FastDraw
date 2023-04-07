@@ -1,7 +1,5 @@
 package peterfajdiga.fastdraw.launcher;
 
-import static android.content.pm.LauncherApps.ShortcutQuery.FLAG_MATCH_DYNAMIC;
-import static android.content.pm.LauncherApps.ShortcutQuery.FLAG_MATCH_MANIFEST;
 import static android.content.pm.LauncherApps.ShortcutQuery.FLAG_MATCH_PINNED;
 
 import android.content.Context;
@@ -19,11 +17,9 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 
-import java.util.Collections;
 import java.util.List;
 
 import peterfajdiga.fastdraw.R;
-import peterfajdiga.fastdraw.launcher.launcheritem.Saveable;
 
 public class OreoShortcuts {
     private OreoShortcuts() {}
@@ -34,27 +30,6 @@ public class OreoShortcuts {
         final LauncherApps.ShortcutQuery query = new LauncherApps.ShortcutQuery();
         query.setQueryFlags(FLAG_MATCH_PINNED);
         return getShortcuts(context, query);
-    }
-
-    @RequiresApi(api = Build.VERSION_CODES.O)
-    @Nullable
-    public static ShortcutInfo getShortcutInfo(
-        @NonNull final Context context,
-        @NonNull final String packageName,
-        @NonNull final String oreoShortcutId
-    ) throws Saveable.LeftoverException {
-        final LauncherApps.ShortcutQuery query = new LauncherApps.ShortcutQuery();
-        query.setPackage(packageName);
-        query.setShortcutIds(Collections.singletonList(oreoShortcutId));
-        query.setQueryFlags(FLAG_MATCH_DYNAMIC | FLAG_MATCH_MANIFEST | FLAG_MATCH_PINNED);
-
-        final List<ShortcutInfo> shortcuts = getShortcuts(context, query);
-        if (shortcuts == null || shortcuts.isEmpty()) {
-            Log.e("OreoShortcuts", "No shortcuts found");
-            throw new Saveable.LeftoverException();
-        }
-
-        return shortcuts.get(0);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
