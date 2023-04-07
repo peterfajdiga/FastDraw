@@ -21,10 +21,10 @@ import java.util.List;
 
 import peterfajdiga.fastdraw.R;
 
+@RequiresApi(api = Build.VERSION_CODES.O)
 public class OreoShortcuts {
     private OreoShortcuts() {}
 
-    @RequiresApi(api = Build.VERSION_CODES.O)
     @Nullable
     public static List<ShortcutInfo> getPinnedShortcuts(@NonNull final Context context) {
         final LauncherApps.ShortcutQuery query = new LauncherApps.ShortcutQuery();
@@ -32,7 +32,6 @@ public class OreoShortcuts {
         return getShortcuts(context, query);
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.O)
     @Nullable
     private static List<ShortcutInfo> getShortcuts(
         @NonNull final Context context,
@@ -64,7 +63,6 @@ public class OreoShortcuts {
         return shortcuts;
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.O)
     @Nullable
     public static UserHandle getRunningUserHandle(@NonNull final LauncherApps launcherApps, @NonNull final UserManager userManager) {
         for (final UserHandle user : launcherApps.getProfiles()) {
@@ -75,7 +73,6 @@ public class OreoShortcuts {
         return null;
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.N_MR1)
     public static CharSequence getLabel(@NonNull final ShortcutInfo shortcutInfo) {
         final CharSequence shortLabel = shortcutInfo.getShortLabel();
         if (!TextUtils.isEmpty(shortLabel)) {
@@ -85,7 +82,6 @@ public class OreoShortcuts {
         return shortcutInfo.getLongLabel();
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.N_MR1)
     public static Drawable getIcon(@NonNull final Context context, @NonNull ShortcutInfo shortcutInfo) {
         @NonNull final LauncherApps launcherApps = (LauncherApps)context.getSystemService(Context.LAUNCHER_APPS_SERVICE);
         return launcherApps.getShortcutIconDrawable(shortcutInfo, 0);
