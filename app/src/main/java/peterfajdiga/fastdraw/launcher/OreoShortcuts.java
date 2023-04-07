@@ -40,6 +40,21 @@ public class OreoShortcuts {
         query.setShortcutIds(Collections.singletonList(oreoShortcutId));
         query.setQueryFlags(FLAG_MATCH_DYNAMIC | FLAG_MATCH_MANIFEST | FLAG_MATCH_PINNED);
 
+        final List<ShortcutInfo> shortcuts = getShortcuts(context, query);
+        if (shortcuts == null || shortcuts.isEmpty()) {
+            Log.e("OreoShortcuts", "No shortcuts found");
+            throw new Saveable.LeftoverException();
+        }
+
+        return shortcuts.get(0);
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    @Nullable
+    private static List<ShortcutInfo> getShortcuts(
+        @NonNull final Context context,
+        @NonNull final LauncherApps.ShortcutQuery query
+    ) {
         @NonNull final LauncherApps launcherApps = (LauncherApps)context.getSystemService(Context.LAUNCHER_APPS_SERVICE);
         @NonNull final UserManager userManager = (UserManager)context.getSystemService(Context.USER_SERVICE);
 
@@ -63,12 +78,7 @@ public class OreoShortcuts {
             return null;
         }
 
-        if (shortcuts.isEmpty()) {
-            Log.e("OreoShortcuts", "No shortcuts found");
-            throw new Saveable.LeftoverException();
-        }
-
-        return shortcuts.get(0);
+        return shortcuts;
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
