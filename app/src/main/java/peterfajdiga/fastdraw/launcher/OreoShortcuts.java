@@ -30,6 +30,14 @@ public class OreoShortcuts {
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Nullable
+    public static List<ShortcutInfo> getPinnedShortcuts(@NonNull final Context context) {
+        final LauncherApps.ShortcutQuery query = new LauncherApps.ShortcutQuery();
+        query.setQueryFlags(FLAG_MATCH_PINNED);
+        return getShortcuts(context, query);
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    @Nullable
     public static ShortcutInfo getShortcutInfo(
         @NonNull final Context context,
         @NonNull final String packageName,
