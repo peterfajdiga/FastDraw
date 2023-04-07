@@ -22,7 +22,9 @@ import java.util.concurrent.Executors;
 import peterfajdiga.fastdraw.Postable;
 import peterfajdiga.fastdraw.categoryorder.CategoryComparator;
 import peterfajdiga.fastdraw.launcher.displayitem.DisplayItem;
+import peterfajdiga.fastdraw.launcher.launcheritem.FiledShortcutItem;
 import peterfajdiga.fastdraw.launcher.launcheritem.LauncherItem;
+import peterfajdiga.fastdraw.launcher.launcheritem.OreoShortcutItem;
 import peterfajdiga.fastdraw.prefs.PrefMap;
 import peterfajdiga.fastdraw.prefs.Preferences;
 import peterfajdiga.fastdraw.views.NestedScrollChildManager;
@@ -131,15 +133,15 @@ public class Launcher {
         return itemsById.values();
     }
 
-    public void addItems(@NonNull final String defaultCategory, @NonNull final LauncherItem... items) {
-        final Map<String, List<LauncherItem>> itemsByCategory = categorizeItems(defaultCategory, items);
+    public void addItems(@NonNull final LauncherItem... items) {
+        final Map<String, List<LauncherItem>> itemsByCategory = categorizeItems(items);
         for (final Map.Entry<String, List<LauncherItem>> entry : itemsByCategory.entrySet()) {
             addItemsToCategory(entry.getKey(), false, entry.getValue().toArray(new LauncherItem[0]));
         }
     }
 
-    public void addItemsStartup(@NonNull final String defaultCategory, @NonNull final LauncherItem... items) {
-        final Map<String, List<LauncherItem>> itemsByCategory = categorizeItems(defaultCategory, items);
+    public void addItemsStartup(@NonNull final LauncherItem... items) {
+        final Map<String, List<LauncherItem>> itemsByCategory = categorizeItems(items);
         createCategories(itemsByCategory.keySet());
         final String initialCategoryName = getInitialCategory();
         for (final Map.Entry<String, List<LauncherItem>> entry : itemsByCategory.entrySet()) {
@@ -193,10 +195,10 @@ public class Launcher {
         return displayItems;
     }
 
-    private Map<String, List<LauncherItem>> categorizeItems(@NonNull final String defaultCategory, @NonNull final LauncherItem... items) {
+    private Map<String, List<LauncherItem>> categorizeItems(@NonNull final LauncherItem... items) {
         final Map<String, List<LauncherItem>> itemsByCategory = new HashMap<>();
         for (final LauncherItem item : items) {
-            final String categoryName = getItemCategory(item, defaultCategory);
+            final String categoryName = getNewItemCategory(item);
             if (Preferences.hideHidden && categoryName.equals(peterfajdiga.fastdraw.Category.hiddenCategory)) {
                 continue;
             }
@@ -307,9 +309,10 @@ public class Launcher {
     }
 
     @NonNull
-    private String getItemCategory(@NonNull final LauncherItem item, @NonNull final String defaultCategory) {
+    private String getNewItemCategory(@NonNull final LauncherItem item) {
         final String storedCategory = getItemCategory(item);
         if (storedCategory == null) {
+            final String defaultCategory = getDefaultCategory(item);
             setItemCategory(item, defaultCategory);
             return defaultCategory;
         }
@@ -322,5 +325,13 @@ public class Launcher {
 
     private void removeItemCategory(@NonNull final LauncherItem item) {
         itemCategoryMap.remove(item.getId());
+    }
+
+    private static String getDefaultCategory(@NonNull final LauncherItem item) {
+        if (item instanceof FiledShortcutItem || item instanceof OreoShortcutItem) {
+            return peterfajdiga.fastdraw.Category.shortcutsCategory;
+        } else {
+            return peterfajdiga.fastdraw.Category.defaultCategory;
+        }
     }
 }

@@ -53,8 +53,7 @@ public class AppItemManager {
     public static void updatePackageItems(
         final Launcher launcher,
         final String packageName,
-        final Stream<AppItem> updatedAppItemsStream,
-        final String defaultCategoryName
+        final Stream<AppItem> updatedAppItemsStream
     ) {
         final Map<String, AppItem> updatedAppItems = updatedAppItemsStream.collect(Collectors.toMap(AppItem::getId, Function.identity()));
 
@@ -69,7 +68,7 @@ public class AppItemManager {
             }
         }
 
-        launcher.addItems(defaultCategoryName, updatedAppItems.values().toArray(new AppItem[0]));
+        launcher.addItems(updatedAppItems.values().toArray(new AppItem[0]));
     }
 
     public static void showPackageDetails(final Context context, final String packageName) {

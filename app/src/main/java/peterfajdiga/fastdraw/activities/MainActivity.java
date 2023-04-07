@@ -554,13 +554,13 @@ public class MainActivity extends FragmentActivity implements CategorySelectionD
             @Override
             public void onAppInstall(final String packageName) {
                 final AppItem[] appItems = AppItemManager.getAppItems(getPackageManager(), packageName).toArray(AppItem[]::new);
-                launcher.addItems(Category.defaultCategory, appItems);
+                launcher.addItems(appItems);
             }
 
             @Override
             public void onAppChange(final String packageName) {
                 final Stream<AppItem> updatedAppItems = AppItemManager.getAppItems(getPackageManager(), packageName);
-                AppItemManager.updatePackageItems(launcher, packageName, updatedAppItems, Category.defaultCategory);
+                AppItemManager.updatePackageItems(launcher, packageName, updatedAppItems);
             }
 
             @Override
@@ -766,7 +766,7 @@ public class MainActivity extends FragmentActivity implements CategorySelectionD
             ShortcutItemManager.getShortcutItems(this)
         ).toArray(LauncherItem[]::new);
 
-        launcher.addItemsStartup(Category.defaultCategory, items);
+        launcher.addItemsStartup(items);
     }
 
     /**
@@ -922,7 +922,7 @@ public class MainActivity extends FragmentActivity implements CategorySelectionD
     }
 
     public void onShortcutReceived(final FiledShortcutItem newShortcut) {
-        launcher.addItems(Category.shortcutsCategory, newShortcut);
+        launcher.addItems(newShortcut);
     }
 
     private void startDrag(final LauncherItem draggedItem) {
