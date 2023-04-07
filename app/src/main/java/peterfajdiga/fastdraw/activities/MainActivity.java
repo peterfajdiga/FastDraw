@@ -71,10 +71,10 @@ import peterfajdiga.fastdraw.launcher.Launcher;
 import peterfajdiga.fastdraw.launcher.ShortcutItemManager;
 import peterfajdiga.fastdraw.launcher.launcheritem.AppItem;
 import peterfajdiga.fastdraw.launcher.launcheritem.BitmapShortcutItem;
+import peterfajdiga.fastdraw.launcher.launcheritem.FiledShortcutItem;
 import peterfajdiga.fastdraw.launcher.launcheritem.LauncherItem;
 import peterfajdiga.fastdraw.launcher.launcheritem.OreoShortcutItem;
 import peterfajdiga.fastdraw.launcher.launcheritem.ResShortcutItem;
-import peterfajdiga.fastdraw.launcher.launcheritem.ShortcutItem;
 import peterfajdiga.fastdraw.prefs.PrefMap;
 import peterfajdiga.fastdraw.prefs.Preferences;
 import peterfajdiga.fastdraw.receivers.InstallAppReceiver;
@@ -471,7 +471,7 @@ public class MainActivity extends FragmentActivity implements CategorySelectionD
 
         findViewById(R.id.drop_zone_remove_shortcut).setOnDragListener(new DropZone(
             (draggedItem) -> {
-                final ShortcutItem shortcutItem = (ShortcutItem)draggedItem;
+                final FiledShortcutItem shortcutItem = (FiledShortcutItem)draggedItem;
                 launcher.removeItem(shortcutItem, true);
                 ShortcutItemManager.deleteShortcut(this, shortcutItem);
             },
@@ -643,7 +643,7 @@ public class MainActivity extends FragmentActivity implements CategorySelectionD
         switch (requestCode) {
             case INSTALL_SHORTCUT_REQUEST: {
                 if (resultCode == RESULT_OK) {
-                    final ShortcutItem newShortcut = ShortcutItemManager.shortcutFromIntent(this, data);
+                    final FiledShortcutItem newShortcut = ShortcutItemManager.shortcutFromIntent(this, data);
                     addShortcut(newShortcut, launcher.getCurrentCategoryName());
                 }
                 return;
@@ -689,7 +689,7 @@ public class MainActivity extends FragmentActivity implements CategorySelectionD
         }
     }
 
-    private void addShortcut(@NonNull final ShortcutItem shortcutItem, @NonNull final String categoryName) {
+    private void addShortcut(@NonNull final FiledShortcutItem shortcutItem, @NonNull final String categoryName) {
         ShortcutItemManager.saveShortcut(this, shortcutItem);
         launcher.moveItems(categoryName, shortcutItem);
     }
@@ -921,7 +921,7 @@ public class MainActivity extends FragmentActivity implements CategorySelectionD
         }
     }
 
-    public void onShortcutReceived(final ShortcutItem newShortcut) {
+    public void onShortcutReceived(final FiledShortcutItem newShortcut) {
         launcher.addItems(Category.shortcutsCategory, newShortcut);
     }
 
@@ -929,7 +929,7 @@ public class MainActivity extends FragmentActivity implements CategorySelectionD
         // show type specific drop zones
         findViewById(R.id.drop_zone_app_info).setVisibility(draggedItem instanceof AppItem ? View.VISIBLE : View.GONE);
         findViewById(R.id.drop_zone_hide).setVisibility(draggedItem instanceof AppItem ? View.VISIBLE : View.GONE);
-        findViewById(R.id.drop_zone_remove_shortcut).setVisibility(draggedItem instanceof ShortcutItem ? View.VISIBLE : View.GONE);
+        findViewById(R.id.drop_zone_remove_shortcut).setVisibility(draggedItem instanceof FiledShortcutItem ? View.VISIBLE : View.GONE);
 
         // show drop zones
         findViewById(R.id.apps_pager).animate().alpha(0.2f);

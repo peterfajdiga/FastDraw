@@ -25,11 +25,11 @@ import java.util.UUID;
 import java.util.stream.Stream;
 
 import peterfajdiga.fastdraw.launcher.launcheritem.BitmapShortcutItem;
+import peterfajdiga.fastdraw.launcher.launcheritem.FiledShortcutItem;
 import peterfajdiga.fastdraw.launcher.launcheritem.LauncherItem;
 import peterfajdiga.fastdraw.launcher.launcheritem.OreoShortcutItem;
 import peterfajdiga.fastdraw.launcher.launcheritem.ResShortcutItem;
 import peterfajdiga.fastdraw.launcher.launcheritem.Saveable;
-import peterfajdiga.fastdraw.launcher.launcheritem.ShortcutItem;
 
 public class ShortcutItemManager {
     private ShortcutItemManager() {}
@@ -74,7 +74,7 @@ public class ShortcutItemManager {
     }
 
     @Nullable
-    private static ShortcutItem readShortcutItem(
+    private static FiledShortcutItem readShortcutItem(
         @NonNull final Context context,
         @NonNull final File file
     ) throws IOException, URISyntaxException, Saveable.LeftoverException {
@@ -91,7 +91,7 @@ public class ShortcutItemManager {
         }
     }
 
-    @Nullable private static ShortcutItem readShortcutItem(
+    @Nullable private static FiledShortcutItem readShortcutItem(
         @NonNull final Context context,
         @NonNull final FileInputStream in,
         @NonNull final String typeKey,
@@ -110,8 +110,8 @@ public class ShortcutItemManager {
         }
     }
 
-    public static void saveShortcut(@NonNull final Context context, @NonNull final ShortcutItem item) {
-        final String filename = ShortcutItem.getFilename(item);
+    public static void saveShortcut(@NonNull final Context context, @NonNull final FiledShortcutItem item) {
+        final String filename = FiledShortcutItem.getFilename(item);
         try {
             final File file = new File(getShortcutsDir(context), filename);
             try (final FileOutputStream out = new FileOutputStream(file)) {
@@ -122,8 +122,8 @@ public class ShortcutItemManager {
         }
     }
 
-    public static void deleteShortcut(@NonNull final Context context, @NonNull final ShortcutItem item) {
-        final String filename = ShortcutItem.getFilename(item);
+    public static void deleteShortcut(@NonNull final Context context, @NonNull final FiledShortcutItem item) {
+        final String filename = FiledShortcutItem.getFilename(item);
         final File file = new File(getShortcutsDir(context), filename);
         file.delete();
     }
@@ -134,7 +134,7 @@ public class ShortcutItemManager {
     }
 
     @NonNull
-    public static ShortcutItem shortcutFromIntent(@NonNull final Context context, @NonNull final Intent intent) {
+    public static FiledShortcutItem shortcutFromIntent(@NonNull final Context context, @NonNull final Intent intent) {
         final Intent launchIntent = intent.getParcelableExtra(Intent.EXTRA_SHORTCUT_INTENT);
         final String name = intent.getStringExtra(Intent.EXTRA_SHORTCUT_NAME);
         final Bitmap bmp = intent.getParcelableExtra(Intent.EXTRA_SHORTCUT_ICON);

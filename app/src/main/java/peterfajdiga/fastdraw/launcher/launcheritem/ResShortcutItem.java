@@ -19,7 +19,7 @@ import peterfajdiga.fastdraw.launcher.displayitem.DisplayItem;
 import peterfajdiga.fastdraw.launcher.launchable.IntentLaunchable;
 import peterfajdiga.fastdraw.launcher.launchable.Launchable;
 
-public class ResShortcutItem implements ShortcutItem {
+public class ResShortcutItem implements FiledShortcutItem {
     public static final String TYPE_KEY = "res";
 
     private final String uuid;
