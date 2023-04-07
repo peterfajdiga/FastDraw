@@ -10,8 +10,8 @@ import androidx.viewpager.widget.PagerAdapter;
 import java.util.SortedMap;
 import java.util.concurrent.ConcurrentSkipListMap;
 
-import peterfajdiga.fastdraw.prefs.PrefMapCached;
 import peterfajdiga.fastdraw.categoryorder.CategoryComparator;
+import peterfajdiga.fastdraw.prefs.PrefMapCached;
 
 class LauncherPagerAdapter extends PagerAdapter {
     final SortedMap<String, Category> categories;
