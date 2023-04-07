@@ -25,6 +25,7 @@ import java.util.UUID;
 import java.util.stream.Stream;
 
 import peterfajdiga.fastdraw.launcher.launcheritem.BitmapShortcutItem;
+import peterfajdiga.fastdraw.launcher.launcheritem.LauncherItem;
 import peterfajdiga.fastdraw.launcher.launcheritem.OreoShortcutItem;
 import peterfajdiga.fastdraw.launcher.launcheritem.ResShortcutItem;
 import peterfajdiga.fastdraw.launcher.launcheritem.Saveable;
@@ -34,23 +35,23 @@ public class ShortcutItemManager {
     private ShortcutItemManager() {}
 
     @NonNull
-    public static Stream<ShortcutItem> getShortcutItems(@NonNull final Context context) {
-        final Stream<ShortcutItem> filedShortcuts = getFiledShortcutItems(context);
+    public static Stream<LauncherItem> getShortcutItems(@NonNull final Context context) {
+        final Stream<LauncherItem> filedShortcuts = getFiledShortcutItems(context);
 
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
             return filedShortcuts;
         }
 
-        final Stream<ShortcutItem> oreoShortcuts = getOreoShortcutItems(context);
+        final Stream<LauncherItem> oreoShortcuts = getOreoShortcutItems(context);
         return Stream.concat(filedShortcuts, oreoShortcuts);
     }
 
-    private static Stream<ShortcutItem> getFiledShortcutItems(@NonNull final Context context) {
+    private static Stream<LauncherItem> getFiledShortcutItems(@NonNull final Context context) {
         final File shortcutsDir = getShortcutsDir(context);
         shortcutsDir.mkdir();
         return Arrays.stream(shortcutsDir.listFiles()).map(file -> {
             try {
-                return readShortcutItem(context, file);
+                return (LauncherItem)readShortcutItem(context, file);
             } catch (final IOException | URISyntaxException e) {
                 Log.e("ShortcutItemManager", "Failed to read shortcut " + file.getName(), e);
             } catch (final Saveable.LeftoverException e) {
@@ -63,13 +64,13 @@ public class ShortcutItemManager {
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     @NonNull
-    private static Stream<ShortcutItem> getOreoShortcutItems(@NonNull final Context context) {
+    private static Stream<LauncherItem> getOreoShortcutItems(@NonNull final Context context) {
         final List<ShortcutInfo> shortcuts = OreoShortcuts.getPinnedShortcuts(context);
         if (shortcuts == null) {
             return Stream.empty();
         }
 
-        return shortcuts.stream().map(shortcutInfo -> new OreoShortcutItem(generateUUID(), shortcutInfo));
+        return shortcuts.stream().map(OreoShortcutItem::new);
     }
 
     @Nullable
@@ -102,11 +103,7 @@ public class ShortcutItemManager {
             case ResShortcutItem.TYPE_KEY:
                 return ResShortcutItem.fromFile(context, in, uuid);
             case OreoShortcutItem.TYPE_KEY:
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                    return OreoShortcutItem.fromFile(context, in, uuid);
-                } else {
-                    return null;
-                }
+                throw new Saveable.LeftoverException();
             default:
                 Log.w("ShortcutItemManager", "Unknown file type key: " + typeKey);
                 return null;
@@ -162,7 +159,7 @@ public class ShortcutItemManager {
         if (!pinItemRequest.accept()) {
             return null;
         }
-        return new OreoShortcutItem(generateUUID(), pinItemRequest.getShortcutInfo());
+        return new OreoShortcutItem(pinItemRequest.getShortcutInfo());
     }
 
     @NonNull

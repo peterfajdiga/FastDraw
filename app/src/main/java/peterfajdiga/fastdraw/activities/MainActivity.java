@@ -696,7 +696,6 @@ public class MainActivity extends FragmentActivity implements CategorySelectionD
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     private void addOreoShortcut(@NonNull final OreoShortcutItem shortcutItem, @NonNull final String categoryName) {
-        ShortcutItemManager.saveShortcut(this, shortcutItem);
         launcher.moveItems(categoryName, shortcutItem);
     }
 
