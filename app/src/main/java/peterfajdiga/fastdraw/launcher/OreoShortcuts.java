@@ -52,16 +52,9 @@ public class OreoShortcuts {
         @NonNull final LauncherApps launcherApps = (LauncherApps)context.getSystemService(Context.LAUNCHER_APPS_SERVICE);
         @NonNull final UserManager userManager = (UserManager)context.getSystemService(Context.USER_SERVICE);
 
-        final UserHandle user = getRunningUserHandle(launcherApps, userManager);
-        if (user == null) {
-            Log.e("OreoShortcuts", "User is locked or not running");
-            Toast.makeText(context, R.string.error_oreo_user_handle, Toast.LENGTH_LONG).show();
-            return null;
-        }
-
-        final List<ShortcutInfo> shortcuts;
         try {
-            shortcuts = launcherApps.getShortcuts(query, user);
+            final UserHandle user = getRunningUserHandle(launcherApps, userManager);
+            return launcherApps.getShortcuts(query, user);
         } catch (final IllegalStateException e) {
             Log.e("OreoShortcuts", "User is locked or not running (IllegalStateException)", e);
             Toast.makeText(context, R.string.error_oreo_user_handle, Toast.LENGTH_LONG).show();
@@ -71,8 +64,6 @@ public class OreoShortcuts {
             Toast.makeText(context, R.string.error_oreo_get_shortcuts, Toast.LENGTH_LONG).show();
             return null;
         }
-
-        return shortcuts;
     }
 
     public static void unpinShortcut(
@@ -93,14 +84,9 @@ public class OreoShortcuts {
 
         @NonNull final LauncherApps launcherApps = (LauncherApps)context.getSystemService(Context.LAUNCHER_APPS_SERVICE);
         @NonNull final UserManager userManager = (UserManager)context.getSystemService(Context.USER_SERVICE);
-        final UserHandle user = getRunningUserHandle(launcherApps, userManager);
-        if (user == null) {
-            Log.e("OreoShortcuts", "User is locked or not running");
-            Toast.makeText(context, R.string.error_oreo_user_handle, Toast.LENGTH_LONG).show();
-            return;
-        }
 
         try {
+            final UserHandle user = getRunningUserHandle(launcherApps, userManager);
             launcherApps.pinShortcuts(shortcutPackage, newPinnedShortcutIds, user);
         } catch (final IllegalStateException e) {
             Log.e("OreoShortcuts", "User is locked or not running (IllegalStateException)", e);
@@ -111,14 +97,17 @@ public class OreoShortcuts {
         }
     }
 
-    @Nullable
-    public static UserHandle getRunningUserHandle(@NonNull final LauncherApps launcherApps, @NonNull final UserManager userManager) {
+    @NonNull
+    public static UserHandle getRunningUserHandle(
+        @NonNull final LauncherApps launcherApps,
+        @NonNull final UserManager userManager
+    ) throws IllegalStateException {
         for (final UserHandle user : launcherApps.getProfiles()) {
             if (userManager.isUserRunning(user) && userManager.isUserUnlocked(user)) {
                 return user;
             }
         }
-        return null;
+        throw new IllegalStateException("no unlocked running user");
     }
 
     public static CharSequence getLabel(@NonNull final ShortcutInfo shortcutInfo) {
