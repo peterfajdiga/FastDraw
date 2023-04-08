@@ -17,7 +17,7 @@ import peterfajdiga.fastdraw.launcher.displayitem.DisplayItem;
 import peterfajdiga.fastdraw.launcher.launchable.IntentLaunchable;
 import peterfajdiga.fastdraw.launcher.launchable.Launchable;
 
-public class BitmapShortcutItem implements FiledShortcutItem {
+public class BitmapShortcutItem extends FiledShortcutItem {
     public static final String TYPE_KEY = "bitmap";
 
     private final String uuid;

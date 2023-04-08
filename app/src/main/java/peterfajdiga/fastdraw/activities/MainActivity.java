@@ -474,13 +474,7 @@ public class MainActivity extends FragmentActivity implements CategorySelectionD
             (draggedItem) -> {
                 final ShortcutItem shortcutItem = (ShortcutItem)draggedItem;
                 launcher.removeItem(shortcutItem, true);
-                if (shortcutItem instanceof FiledShortcutItem) {
-                    ShortcutItemManager.deleteShortcut(this, (FiledShortcutItem)shortcutItem);
-                } else if (shortcutItem instanceof OreoShortcutItem) {
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                        ((OreoShortcutItem)shortcutItem).delete(this);
-                    }
-                }
+                shortcutItem.delete(this);
             },
             true
         ));

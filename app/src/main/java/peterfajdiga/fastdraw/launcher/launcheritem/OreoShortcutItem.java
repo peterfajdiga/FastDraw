@@ -56,6 +56,7 @@ public class OreoShortcutItem implements ShortcutItem {
         return displayItem;
     }
 
+    @Override
     public void delete(final Context context) {
         OreoShortcuts.unpinShortcut(context, info.getPackage(), info.getId());
     }
