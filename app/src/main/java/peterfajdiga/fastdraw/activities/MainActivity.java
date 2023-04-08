@@ -456,9 +456,7 @@ public class MainActivity extends FragmentActivity implements CategorySelectionD
         ));
 
         findViewById(R.id.drop_zone_hide).setOnDragListener(new DropZone(
-            (draggedItem) -> {
-                launcher.moveItems(Category.hiddenCategory, draggedItem);
-            },
+            (draggedItem) -> launcher.moveItems(Category.hiddenCategory, draggedItem),
             false
         ));
 
