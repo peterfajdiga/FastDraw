@@ -18,6 +18,7 @@ import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import peterfajdiga.fastdraw.R;
 
@@ -29,6 +30,17 @@ public class OreoShortcuts {
     public static List<ShortcutInfo> getPinnedShortcuts(@NonNull final Context context) {
         final LauncherApps.ShortcutQuery query = new LauncherApps.ShortcutQuery();
         query.setQueryFlags(FLAG_MATCH_PINNED);
+        return getShortcuts(context, query);
+    }
+
+    @Nullable
+    public static List<ShortcutInfo> getPinnedShortcuts(
+        @NonNull final Context context,
+        @NonNull final String packageName
+    ) {
+        final LauncherApps.ShortcutQuery query = new LauncherApps.ShortcutQuery();
+        query.setQueryFlags(FLAG_MATCH_PINNED);
+        query.setPackage(packageName);
         return getShortcuts(context, query);
     }
 
@@ -61,6 +73,34 @@ public class OreoShortcuts {
         }
 
         return shortcuts;
+    }
+
+    public static void unpinShortcut(
+        @NonNull final Context context,
+        @NonNull final String shortcutPackage,
+        @NonNull final String shortcutId
+    ) {
+        final List<ShortcutInfo> pinnedShortcuts = getPinnedShortcuts(context, shortcutPackage);
+        if (pinnedShortcuts == null) {
+            Log.w("OreoShortcuts", String.format("Shortcut %s of package %s is not pinned", shortcutId, shortcutPackage));
+            return;
+        }
+
+        final List<String> newPinnedShortcutIds = pinnedShortcuts.stream().
+            map(ShortcutInfo::getId).
+            filter(s -> !s.equals(shortcutId)).
+            collect(Collectors.toList());
+
+        @NonNull final LauncherApps launcherApps = (LauncherApps)context.getSystemService(Context.LAUNCHER_APPS_SERVICE);
+        @NonNull final UserManager userManager = (UserManager)context.getSystemService(Context.USER_SERVICE);
+        final UserHandle user = getRunningUserHandle(launcherApps, userManager);
+        if (user == null) {
+            Log.e("OreoShortcuts", "User is locked or not running");
+            Toast.makeText(context, R.string.error_oreo_user_handle, Toast.LENGTH_LONG).show();
+            return;
+        }
+
+        launcherApps.pinShortcuts(shortcutPackage, newPinnedShortcutIds, user);
     }
 
     @Nullable

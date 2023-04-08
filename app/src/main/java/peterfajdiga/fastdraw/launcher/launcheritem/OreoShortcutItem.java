@@ -55,4 +55,8 @@ public class OreoShortcutItem implements ShortcutItem {
         this.displayItem = new DisplayItem(getId(), label, icon, this, launchable);
         return displayItem;
     }
+
+    public void delete(final Context context) {
+        OreoShortcuts.unpinShortcut(context, info.getPackage(), info.getId());
+    }
 }
