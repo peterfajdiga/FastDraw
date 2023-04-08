@@ -48,14 +48,11 @@ public class OreoShortcuts {
             final UserHandle userHandle = getRunningUserHandle(launcherApps, userManager);
             return getPinnedShortcuts(launcherApps, userHandle);
         } catch (final IllegalStateException e) {
-            Log.e("OreoShortcuts", "User is locked or not running (IllegalStateException)", e);
-            Toast.makeText(context, R.string.error_oreo_user_handle, Toast.LENGTH_LONG).show();
-            return null;
+            handleLauncherAppsException(context, e);
         } catch (final SecurityException e) {
-            Log.e("OreoShortcuts", "Can't access shortcuts (SecurityException)", e);
-            Toast.makeText(context, R.string.error_oreo_shortcuts_security, Toast.LENGTH_LONG).show();
-            return null;
+            handleLauncherAppsException(context, e);
         }
+        return null;
     }
 
     public static void unpinShortcut(
@@ -69,11 +66,9 @@ public class OreoShortcuts {
             final UserHandle userHandle = getRunningUserHandle(launcherApps, userManager);
             unpinShortcut(launcherApps, userHandle, shortcutPackage, shortcutId);
         } catch (final IllegalStateException e) {
-            Log.e("OreoShortcuts", "User is locked or not running (IllegalStateException)", e);
-            Toast.makeText(context, R.string.error_oreo_user_handle, Toast.LENGTH_LONG).show();
+            handleLauncherAppsException(context, e);
         } catch (final SecurityException e) {
-            Log.e("OreoShortcuts", "Can't access shortcuts (SecurityException)", e);
-            Toast.makeText(context, R.string.error_oreo_shortcuts_security, Toast.LENGTH_LONG).show();
+            handleLauncherAppsException(context, e);
         }
     }
 
@@ -130,5 +125,21 @@ public class OreoShortcuts {
             }
         }
         throw new IllegalStateException("no unlocked running user");
+    }
+
+    private static void handleLauncherAppsException(
+        @NonNull final Context context,
+        @NonNull final IllegalStateException e
+    ) {
+        Log.e("OreoShortcuts", "User is locked or not running (IllegalStateException)", e);
+        Toast.makeText(context, R.string.error_oreo_user_handle, Toast.LENGTH_LONG).show();
+    }
+
+    private static void handleLauncherAppsException(
+        @NonNull final Context context,
+        @NonNull final SecurityException e
+    ) {
+        Log.e("OreoShortcuts", "Can't access shortcuts (SecurityException)", e);
+        Toast.makeText(context, R.string.error_oreo_shortcuts_security, Toast.LENGTH_LONG).show();
     }
 }
