@@ -111,7 +111,7 @@ public class ShortcutItemManager {
     }
 
     public static void saveShortcut(@NonNull final Context context, @NonNull final FiledShortcutItem item) {
-        final String filename = FiledShortcutItem.getFilename(item);
+        final String filename = item.getFilename();
         try {
             final File file = new File(getShortcutsDir(context), filename);
             try (final FileOutputStream out = new FileOutputStream(file)) {
@@ -123,7 +123,7 @@ public class ShortcutItemManager {
     }
 
     public static void deleteShortcut(@NonNull final Context context, @NonNull final FiledShortcutItem item) {
-        final String filename = FiledShortcutItem.getFilename(item);
+        final String filename = item.getFilename();
         final File file = new File(getShortcutsDir(context), filename);
         file.delete();
     }

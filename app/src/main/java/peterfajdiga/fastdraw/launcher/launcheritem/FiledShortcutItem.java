@@ -10,8 +10,8 @@ public abstract class FiledShortcutItem implements ShortcutItem, Saveable {
     @NonNull abstract String getTypeKey();
     @NonNull abstract String getUUID();
 
-    public static String getFilename(@NonNull FiledShortcutItem item) {
-        return item.getTypeKey() + "_" + item.getUUID();
+    public String getFilename() {
+        return getTypeKey() + "_" + getUUID();
     }
 
     @Override
