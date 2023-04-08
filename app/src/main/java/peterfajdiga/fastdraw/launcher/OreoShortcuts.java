@@ -100,7 +100,15 @@ public class OreoShortcuts {
             return;
         }
 
-        launcherApps.pinShortcuts(shortcutPackage, newPinnedShortcutIds, user);
+        try {
+            launcherApps.pinShortcuts(shortcutPackage, newPinnedShortcutIds, user);
+        } catch (final IllegalStateException e) {
+            Log.e("OreoShortcuts", "User is locked or not running (IllegalStateException)", e);
+            Toast.makeText(context, R.string.error_oreo_user_handle, Toast.LENGTH_LONG).show();
+        } catch (final SecurityException e) {
+            Log.e("OreoShortcuts", "Can't unpin shortcut (SecurityException)", e);
+            Toast.makeText(context, R.string.error_oreo_get_shortcuts, Toast.LENGTH_LONG).show();
+        }
     }
 
     @Nullable
