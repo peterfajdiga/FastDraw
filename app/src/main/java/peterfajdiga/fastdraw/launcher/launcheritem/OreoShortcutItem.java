@@ -42,7 +42,6 @@ public class OreoShortcutItem implements ShortcutItem {
         return info.getPackage();
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.O)
     @NonNull
     @Override
     public DisplayItem getDisplayItem(final Context context) {
