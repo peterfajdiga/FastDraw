@@ -57,7 +57,7 @@
 
     <string name="error_oreo_user_handle">User is locked or not running</string>
     <string name="error_oreo_activity_not_found">Activity does not exist</string>
-    <string name="error_oreo_get_shortcuts">Can\'t load shortcut because Fast Draw is not the default launcher</string>
+    <string name="error_oreo_shortcuts_security">Can\'t load shortcut because Fast Draw is not the default launcher</string>
     <string name="error_oreo_shortcut_host_permission">Fast Draw doesn\'t have shortcut host permission. Make sure Fast Draw is the default launcher.</string>
 
     <string name="error_launch_exception">Can\'t launch item due to an unknown error. Please report this issue.</string>
