@@ -1,0 +1,1 @@
+A simple Android launcher with categories

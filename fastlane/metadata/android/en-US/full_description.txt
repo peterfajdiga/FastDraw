@@ -1,0 +1,4 @@
+A simple Android launcher that prioritizes access to apps at the cost of space for widgets (still supports adding a single widget).
+You can add shortcuts.
+Your apps and shortcuts can be arranged into categories.
+That's about it.
