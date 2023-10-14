@@ -515,8 +515,9 @@ public class MainActivity extends FragmentActivity implements CategorySelectionD
             updateHeaderColor(header, bgGradientColor, expandedHeaderColor);
             setupWallpaperColorListener(header, wallpaperManager);
         } else {
-            @ColorInt final int bgGradientColor = getBgGradientColor();
-            updateHeaderColor(header, bgGradientColor, bgGradientColor);
+            @ColorInt final int expandedHeaderColor = getBgGradientColor();
+            @ColorInt final int bgGradientColor = applyBgGradientOpacity(expandedHeaderColor);
+            updateHeaderColor(header, bgGradientColor, expandedHeaderColor);
         }
     }
 
