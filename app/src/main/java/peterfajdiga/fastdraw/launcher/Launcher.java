@@ -19,6 +19,7 @@ import java.util.Set;
 import java.util.concurrent.Executors;
 import java.util.function.Function;
 import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 import peterfajdiga.fastdraw.Postable;
 import peterfajdiga.fastdraw.categoryorder.CategoryComparator;
@@ -150,7 +151,7 @@ public class Launcher {
         }
     }
 
-    private void addItemsToCategory(@NonNull final String categoryName, final boolean immediate, @NonNull final LauncherItem... items) {
+    private synchronized void addItemsToCategory(@NonNull final String categoryName, final boolean immediate, @NonNull final LauncherItem... items) {
         if (Preferences.hideHidden && categoryName.equals(peterfajdiga.fastdraw.Category.hiddenCategory)) {
             return;
         }
@@ -232,7 +233,7 @@ public class Launcher {
     /**
      * @return true if the category's last item was removed
      */
-    public boolean removeItem(@NonNull final LauncherItem item, final boolean permanent) {
+    public synchronized boolean removeItem(@NonNull final LauncherItem item, final boolean permanent) {
         final String categoryName = getItemCategory(item); // TODO: handle null categoryName
         final Category category = adapter.categories.get(categoryName);
 
@@ -258,31 +259,33 @@ public class Launcher {
         category.updateItem(existingItem.getId(), updatedItem.getDisplayItem(pager.getContext()));
     }
 
-    public void removeItems(@NonNull final Predicate<LauncherItem> condition) {
-        for (final LauncherItem item : this.itemsById.values()) {
-            if (condition.test(item)) {
-                removeItem(item, false);
-            }
+    public synchronized void removeItems(@NonNull final Predicate<LauncherItem> condition) {
+        final List<LauncherItem> itemsToRemove = findItems(condition); // prevents removing items while iterating through them
+        for (final LauncherItem item : itemsToRemove) {
+            removeItem(item, false);
         }
     }
 
-    public void updateItems(
+    public synchronized void updateItems(
         @NonNull final Predicate<LauncherItem> condition,
         @NonNull final Function<LauncherItem, LauncherItem> transformer
     ) {
-        for (final LauncherItem item : this.itemsById.values()) {
-            if (condition.test(item)) {
-                final LauncherItem updatedItem = transformer.apply(item);
-                if (updatedItem == null) {
-                    removeItem(item, true);
-                } else {
-                    updateItem(item, updatedItem);
-                }
+        final List<LauncherItem> itemsToUpdate = findItems(condition); // prevents removing items while iterating through them
+        for (final LauncherItem item : itemsToUpdate) {
+            final LauncherItem updatedItem = transformer.apply(item);
+            if (updatedItem == null) {
+                removeItem(item, true);
+            } else {
+                updateItem(item, updatedItem);
             }
         }
     }
 
-    public void moveItem(@NonNull final String categoryName, @NonNull final String itemId) {
+    private synchronized List<LauncherItem> findItems(@NonNull final Predicate<LauncherItem> condition) {
+        return this.itemsById.values().stream().filter(condition).collect(Collectors.toList());
+    }
+
+    public synchronized void moveItem(@NonNull final String categoryName, @NonNull final String itemId) {
         moveItems(categoryName, itemsById.get(itemId));
     }
 
