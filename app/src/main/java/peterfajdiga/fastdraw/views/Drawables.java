@@ -77,7 +77,7 @@ public class Drawables {
             color,
         };
 
-        final LayerDrawable layers = new LayerDrawable(new Drawable[2]);
+        final LayerDrawable layers = new LayerDrawable(new Drawable[0]);
 
         if (heightTop > 0) {
             final int index = layers.getNumberOfLayers();
