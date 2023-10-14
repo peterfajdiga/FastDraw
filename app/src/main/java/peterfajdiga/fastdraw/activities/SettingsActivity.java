@@ -171,20 +171,12 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
      * This fragment shows notification preferences only. It is used when the
      * activity is showing a two-pane settings UI.
      */
-    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     public static class AppearancePreferenceFragment extends PreferenceFragment {
         @Override
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
             addPreferencesFromResource(R.xml.pref_appearance);
             setHasOptionsMenu(false);
-            removeUnsupportedPreferences();
-        }
-
-        private void removeUnsupportedPreferences() {
-            if (android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.O_MR1) {
-                findPreference("bgGradientColorFromWallpaper").setEnabled(false);
-            }
         }
     }
 

@@ -166,7 +166,7 @@ public class MainActivity extends FragmentActivity implements CategorySelectionD
         final Intent intent = getIntent();
         if (intent != null) {
             final String action = intent.getAction();
-            if (action != null && action.equals(LauncherApps.ACTION_CONFIRM_PIN_SHORTCUT) && android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+            if (action != null && action.equals(LauncherApps.ACTION_CONFIRM_PIN_SHORTCUT)) {
                 final OreoShortcutItem newShortcut = ShortcutItemManager.oreoShortcutFromIntent(this, intent);
                 if (newShortcut != null) {
                     final String shortcutCategoryName = Category.shortcutsCategory;
@@ -366,7 +366,7 @@ public class MainActivity extends FragmentActivity implements CategorySelectionD
     }
 
     private void setupSystemBarsBgGradient(final View contentView) {
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O_MR1 && Preferences.bgGradientColorFromWallpaper) {
+        if (Preferences.bgGradientColorFromWallpaper) {
             final WallpaperManager wallpaperManager = (WallpaperManager)getSystemService(WALLPAPER_SERVICE);
             final WallpaperColors wallpaperColors = wallpaperManager.getWallpaperColors(WallpaperManager.FLAG_SYSTEM);
             updateSystemBarsBgGradientColor(contentView, applyBgGradientOpacity(WallpaperColorUtils.getDarkColor(wallpaperColors)));
@@ -503,25 +503,18 @@ public class MainActivity extends FragmentActivity implements CategorySelectionD
     }
 
     private void setupHeaderBackground(@NonNull final View header) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O_MR1) {
-            final WallpaperManager wallpaperManager = (WallpaperManager)getSystemService(WALLPAPER_SERVICE);
-            final WallpaperColors wallpaperColors = wallpaperManager.getWallpaperColors(WallpaperManager.FLAG_SYSTEM);
-            @ColorInt final int bgGradientColor = applyBgGradientOpacity(
-                Preferences.bgGradientColorFromWallpaper ?
-                WallpaperColorUtils.getDarkColor(wallpaperColors) :
-                getBgGradientColor()
-            );
-            @ColorInt final int expandedHeaderColor = WallpaperColorUtils.getDarkAccentColor(wallpaperColors);
-            updateHeaderColor(header, bgGradientColor, expandedHeaderColor);
-            setupWallpaperColorListener(header, wallpaperManager);
-        } else {
-            @ColorInt final int expandedHeaderColor = getBgGradientColor();
-            @ColorInt final int bgGradientColor = applyBgGradientOpacity(expandedHeaderColor);
-            updateHeaderColor(header, bgGradientColor, expandedHeaderColor);
-        }
+        final WallpaperManager wallpaperManager = (WallpaperManager)getSystemService(WALLPAPER_SERVICE);
+        final WallpaperColors wallpaperColors = wallpaperManager.getWallpaperColors(WallpaperManager.FLAG_SYSTEM);
+        @ColorInt final int bgGradientColor = applyBgGradientOpacity(
+            Preferences.bgGradientColorFromWallpaper ?
+            WallpaperColorUtils.getDarkColor(wallpaperColors) :
+            getBgGradientColor()
+        );
+        @ColorInt final int expandedHeaderColor = WallpaperColorUtils.getDarkAccentColor(wallpaperColors);
+        updateHeaderColor(header, bgGradientColor, expandedHeaderColor);
+        setupWallpaperColorListener(header, wallpaperManager);
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.O_MR1)
     private void setupWallpaperColorListener(@NonNull final View header, @NonNull final WallpaperManager wallpaperManager) {
         wallpaperManager.addOnColorsChangedListener((colors, which) -> {
             if ((which & WallpaperManager.FLAG_SYSTEM) != 0) {
@@ -694,7 +687,6 @@ public class MainActivity extends FragmentActivity implements CategorySelectionD
         launcher.moveItems(categoryName, shortcutItem);
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.O)
     private void addOreoShortcut(@NonNull final OreoShortcutItem shortcutItem, @NonNull final String categoryName) {
         launcher.moveItems(categoryName, shortcutItem);
     }

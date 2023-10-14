@@ -6,12 +6,10 @@ import android.content.pm.LauncherApps;
 import android.content.pm.ShortcutInfo;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
-import android.os.Build;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.annotation.RequiresApi;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -37,11 +35,6 @@ public class ShortcutItemManager {
     @NonNull
     public static Stream<LauncherItem> getShortcutItems(@NonNull final Context context) {
         final Stream<LauncherItem> filedShortcuts = getFiledShortcutItems(context);
-
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
-            return filedShortcuts;
-        }
-
         final Stream<LauncherItem> oreoShortcuts = getOreoShortcutItems(context);
         return Stream.concat(filedShortcuts, oreoShortcuts);
     }
@@ -62,7 +55,6 @@ public class ShortcutItemManager {
         }).filter(Objects::nonNull);
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.O)
     @NonNull
     private static Stream<LauncherItem> getOreoShortcutItems(@NonNull final Context context) {
         final List<ShortcutInfo> shortcuts = OreoShortcuts.getPinnedShortcuts(context);
@@ -148,7 +140,6 @@ public class ShortcutItemManager {
         }
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.O)
     @Nullable
     public static OreoShortcutItem oreoShortcutFromIntent(final Context context, @NonNull final Intent intent) {
         @NonNull final LauncherApps launcherApps = (LauncherApps)context.getSystemService(Context.LAUNCHER_APPS_SERVICE);

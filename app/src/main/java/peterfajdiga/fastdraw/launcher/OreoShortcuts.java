@@ -6,7 +6,6 @@ import android.content.Context;
 import android.content.pm.LauncherApps;
 import android.content.pm.ShortcutInfo;
 import android.graphics.drawable.Drawable;
-import android.os.Build;
 import android.os.UserHandle;
 import android.os.UserManager;
 import android.text.TextUtils;
@@ -15,14 +14,12 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.annotation.RequiresApi;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 import peterfajdiga.fastdraw.R;
 
-@RequiresApi(api = Build.VERSION_CODES.O)
 public class OreoShortcuts {
     private OreoShortcuts() {}
 

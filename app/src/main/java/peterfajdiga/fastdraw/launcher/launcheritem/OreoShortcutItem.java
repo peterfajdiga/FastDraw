@@ -3,24 +3,20 @@ package peterfajdiga.fastdraw.launcher.launcheritem;
 import android.content.Context;
 import android.content.pm.ShortcutInfo;
 import android.graphics.drawable.Drawable;
-import android.os.Build;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
 
 import peterfajdiga.fastdraw.launcher.OreoShortcuts;
 import peterfajdiga.fastdraw.launcher.displayitem.DisplayItem;
 import peterfajdiga.fastdraw.launcher.launchable.Launchable;
 import peterfajdiga.fastdraw.launcher.launchable.OreoShortcutLaunchable;
 
-@RequiresApi(api = Build.VERSION_CODES.O)
 public class OreoShortcutItem implements ShortcutItem {
     public static final String TYPE_KEY = "oreo";
 
     private final ShortcutInfo info;
     private DisplayItem displayItem = null;
 
-    @RequiresApi(api = Build.VERSION_CODES.O)
     public OreoShortcutItem(@NonNull final ShortcutInfo info) {
         this.info = info;
     }

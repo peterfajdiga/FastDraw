@@ -5,18 +5,15 @@ import android.content.Context;
 import android.content.pm.LauncherApps;
 import android.content.pm.ShortcutInfo;
 import android.graphics.Rect;
-import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
 
 import peterfajdiga.fastdraw.R;
 import peterfajdiga.fastdraw.launcher.LaunchManager;
 
-@RequiresApi(api = Build.VERSION_CODES.O)
 public class OreoShortcutLaunchable implements Launchable {
     private final ShortcutInfo info;
 

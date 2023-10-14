@@ -2,13 +2,10 @@ package peterfajdiga.fastdraw;
 
 import android.app.WallpaperColors;
 import android.graphics.Color;
-import android.os.Build;
 
 import androidx.annotation.ColorInt;
 import androidx.annotation.Nullable;
-import androidx.annotation.RequiresApi;
 
-@RequiresApi(api = Build.VERSION_CODES.O_MR1)
 public class WallpaperColorUtils {
     private WallpaperColorUtils() {}
 
