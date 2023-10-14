@@ -24,7 +24,7 @@ public class Drawables {
         final boolean separators
     ) {
         final TransitionDrawable transitionDrawable = new TransitionDrawable(new Drawable[]{
-            createHeaderBackgroundCollapsed(res, collapsedColor, bgGradient),
+            createHeaderBackgroundCollapsed(collapsedColor, bgGradient),
             createHeaderBackgroundExpanded(res, expandedColor, separators),
         });
         transitionDrawable.setCrossFadeEnabled(true);
@@ -32,7 +32,6 @@ public class Drawables {
     }
 
     public static Drawable createHeaderBackgroundCollapsed(
-        @NonNull final Resources res,
         @ColorInt final int color,
         final boolean bgGradient
     ) {
