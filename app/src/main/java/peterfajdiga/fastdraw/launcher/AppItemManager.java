@@ -16,7 +16,6 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import peterfajdiga.fastdraw.launcher.launcheritem.AppItem;
-import peterfajdiga.fastdraw.launcher.launcheritem.LauncherItem;
 
 public class AppItemManager {
     private AppItemManager() {}
@@ -42,11 +41,7 @@ public class AppItemManager {
     }
 
     public static void removePackageItems(final Launcher launcher, final String packageName) {
-        for (final LauncherItem item : launcher.getItems()) {
-            if (packageName.equals(item.getPackageName()) && item instanceof AppItem) {
-                launcher.removeItem(item, false);
-            }
-        }
+        launcher.removeItems(item -> item instanceof AppItem && item.getPackageName().equals(packageName));
     }
 
     public static void updatePackageItems(
@@ -55,18 +50,10 @@ public class AppItemManager {
         final Stream<AppItem> updatedAppItemsStream
     ) {
         final Map<String, AppItem> updatedAppItems = updatedAppItemsStream.collect(Collectors.toMap(AppItem::getId, Function.identity()));
-
-        for (final LauncherItem existingItem : launcher.getItems()) {
-            if (existingItem instanceof AppItem && packageName.equals(existingItem.getPackageName())) {
-                final AppItem updatedAppItem = updatedAppItems.remove(existingItem.getId());
-                if (updatedAppItem == null) {
-                    launcher.removeItem(existingItem, true);
-                } else {
-                    launcher.updateItem(existingItem, updatedAppItem);
-                }
-            }
-        }
-
+        launcher.updateItems(
+            item -> item instanceof AppItem && item.getPackageName().equals(packageName),
+            item -> updatedAppItems.remove(item.getId())
+        );
         launcher.addItems(updatedAppItems.values().toArray(new AppItem[0]));
     }
 

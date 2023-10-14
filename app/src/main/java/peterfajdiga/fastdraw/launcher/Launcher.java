@@ -12,12 +12,13 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.Executors;
+import java.util.function.Function;
+import java.util.function.Predicate;
 
 import peterfajdiga.fastdraw.Postable;
 import peterfajdiga.fastdraw.categoryorder.CategoryComparator;
@@ -126,10 +127,6 @@ public class Launcher {
     public List<LauncherItem> getItems(@NonNull final String categoryName) {
         final Category category = adapter.categories.get(categoryName);
         return category.getItems();
-    }
-
-    public Collection<LauncherItem> getItems() {
-        return itemsById.values();
     }
 
     public void addItems(@NonNull final LauncherItem... items) {
@@ -259,6 +256,30 @@ public class Launcher {
         final String categoryName = getItemCategory(existingItem);
         final Category category = adapter.categories.get(categoryName);
         category.updateItem(existingItem.getId(), updatedItem.getDisplayItem(pager.getContext()));
+    }
+
+    public void removeItems(@NonNull final Predicate<LauncherItem> condition) {
+        for (final LauncherItem item : this.itemsById.values()) {
+            if (condition.test(item)) {
+                removeItem(item, false);
+            }
+        }
+    }
+
+    public void updateItems(
+        @NonNull final Predicate<LauncherItem> condition,
+        @NonNull final Function<LauncherItem, LauncherItem> transformer
+    ) {
+        for (final LauncherItem item : this.itemsById.values()) {
+            if (condition.test(item)) {
+                final LauncherItem updatedItem = transformer.apply(item);
+                if (updatedItem == null) {
+                    removeItem(item, true);
+                } else {
+                    updateItem(item, updatedItem);
+                }
+            }
+        }
     }
 
     public void moveItem(@NonNull final String categoryName, @NonNull final String itemId) {
