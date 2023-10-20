@@ -5,21 +5,22 @@ import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.preference.PreferenceManager;
 
+import androidx.annotation.NonNull;
+
 import peterfajdiga.fastdraw.R;
 
 public final class Preferences {
-    public static boolean allowOrientation;
-    public static int widgetHeight;
-    public static boolean headerOnBottom;
-    public static boolean scrollableTabs;
-    public static boolean hideHidden;
+    public final boolean allowOrientation;
+    public final int widgetHeight;
+    public final boolean headerOnBottom;
+    public final boolean scrollableTabs;
+    public final boolean hideHidden;
+    public final boolean wallpaperParallax;
+    public final boolean headerSeparator;
+    public final boolean bgGradientColorFromWallpaper;
+    public final int bgGradientOpacity;
 
-    public static boolean wallpaperParallax;
-    public static boolean headerSeparator;
-    public static boolean bgGradientColorFromWallpaper;
-    public static int bgGradientOpacity;
-
-    public static void loadPreferences(final Context context) {
+    public Preferences(@NonNull final Context context) {
         final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
         final Resources res = context.getResources();
 

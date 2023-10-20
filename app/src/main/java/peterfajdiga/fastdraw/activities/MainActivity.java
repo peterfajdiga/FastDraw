@@ -111,6 +111,7 @@ public class MainActivity extends FragmentActivity implements CategorySelectionD
     private static WeakReference<MainActivity> instance;
     private final LaunchManager launchManager = new LaunchManager(this);
     private final RunnableQueue dragEndService = new RunnableQueue();
+    private Preferences preferences;
     private Launcher launcher;
     private WidgetManager widgetManager;
 
@@ -118,12 +119,12 @@ public class MainActivity extends FragmentActivity implements CategorySelectionD
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        instance = new WeakReference<>(this);
+        MainActivity.instance = new WeakReference<>(this);
+        this.preferences = new Preferences(this);
         onFirstRun();
-        Preferences.loadPreferences(this);
         migrateCategoryNames();
-        setContentView(Preferences.headerOnBottom ? R.layout.activity_main_headerbtm : R.layout.activity_main_headertop);
-        if (Preferences.allowOrientation) {
+        setContentView(this.preferences.headerOnBottom ? R.layout.activity_main_headerbtm : R.layout.activity_main_headertop);
+        if (this.preferences.allowOrientation) {
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED);
         }
 
@@ -239,7 +240,7 @@ public class MainActivity extends FragmentActivity implements CategorySelectionD
     @SuppressLint("ClickableViewAccessibility")
     private void setupAppsPager(final NestedScrollParent scrollParent, final View.OnTouchListener longPressListener) {
         final ViewPager appsPager = findViewById(R.id.apps_pager);
-        launcher = new Launcher(launchManager, dragEndService, longPressListener, appsPager, Preferences.hideHidden);
+        launcher = new Launcher(launchManager, dragEndService, longPressListener, appsPager, this.preferences.hideHidden);
 
         setupWallpaperParallax(appsPager);
         setupHeader(appsPager);
@@ -284,7 +285,7 @@ public class MainActivity extends FragmentActivity implements CategorySelectionD
     private void setupWallpaperParallax(final ViewPager pager) {
         final WallpaperManager wallpaperManager = WallpaperManager.getInstance(this);
 
-        if (Preferences.wallpaperParallax) {
+        if (this.preferences.wallpaperParallax) {
             pager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
                 @Override
                 public void onPageScrolled(final int position, final float positionOffset, final int positionOffsetPixels) {
@@ -333,10 +334,10 @@ public class MainActivity extends FragmentActivity implements CategorySelectionD
         dragHeaderElevationAnimator.setCurrentPlayTime(0);
 
         // header preferences
-        if (Preferences.scrollableTabs) {
+        if (this.preferences.scrollableTabs) {
             tabContainer.setTabMode(TabLayout.MODE_SCROLLABLE);
         }
-        if (Preferences.headerSeparator) {
+        if (this.preferences.headerSeparator) {
             findViewById(R.id.header_separator).setVisibility(View.VISIBLE);
         }
 
@@ -362,11 +363,11 @@ public class MainActivity extends FragmentActivity implements CategorySelectionD
 
     @ColorInt
     private int applyBgGradientOpacity(@ColorInt final int color) {
-        return color & ((Preferences.bgGradientOpacity << 24) | 0xffffff);
+        return color & ((this.preferences.bgGradientOpacity << 24) | 0xffffff);
     }
 
     private void setupSystemBarsBgGradient(final View contentView) {
-        if (Preferences.bgGradientColorFromWallpaper) {
+        if (this.preferences.bgGradientColorFromWallpaper) {
             final WallpaperManager wallpaperManager = (WallpaperManager)getSystemService(WALLPAPER_SERVICE);
             final WallpaperColors wallpaperColors = wallpaperManager.getWallpaperColors(WallpaperManager.FLAG_SYSTEM);
             updateSystemBarsBgGradientColor(contentView, applyBgGradientOpacity(WallpaperColorUtils.getDarkColor(wallpaperColors)));
@@ -386,9 +387,9 @@ public class MainActivity extends FragmentActivity implements CategorySelectionD
 
         final boolean hasNavigationBar = Build.VERSION.SDK_INT < Build.VERSION_CODES.Q || hasNavigationBar();
         final int bgGradientHeightBottom = hasNavigationBar ? (
-            Preferences.headerOnBottom ? Math.round(res.getDimension(R.dimen.system_bar_bg_gradient_height_large)) : bgGradientHeight
+            this.preferences.headerOnBottom ? Math.round(res.getDimension(R.dimen.system_bar_bg_gradient_height_large)) : bgGradientHeight
         ) : (
-            Preferences.headerOnBottom ? bgGradientHeight : 0
+            this.preferences.headerOnBottom ? bgGradientHeight : 0
         );
 
         contentView.setBackground(Drawables.createBgGradientDrawable(
@@ -506,7 +507,7 @@ public class MainActivity extends FragmentActivity implements CategorySelectionD
         final WallpaperManager wallpaperManager = (WallpaperManager)getSystemService(WALLPAPER_SERVICE);
         final WallpaperColors wallpaperColors = wallpaperManager.getWallpaperColors(WallpaperManager.FLAG_SYSTEM);
         @ColorInt final int bgGradientColor = applyBgGradientOpacity(
-            Preferences.bgGradientColorFromWallpaper ?
+            this.preferences.bgGradientColorFromWallpaper ?
             WallpaperColorUtils.getDarkColor(wallpaperColors) :
             getBgGradientColor()
         );
@@ -519,7 +520,7 @@ public class MainActivity extends FragmentActivity implements CategorySelectionD
         wallpaperManager.addOnColorsChangedListener((colors, which) -> {
             if ((which & WallpaperManager.FLAG_SYSTEM) != 0) {
                 @ColorInt final int bgGradientColor = applyBgGradientOpacity(
-                    Preferences.bgGradientColorFromWallpaper ?
+                    this.preferences.bgGradientColorFromWallpaper ?
                     WallpaperColorUtils.getDarkColor(colors) :
                     getBgGradientColor()
                 );
@@ -537,8 +538,8 @@ public class MainActivity extends FragmentActivity implements CategorySelectionD
             getResources(),
             bgGradientColor,
             expandedColor,
-            !Preferences.headerOnBottom,
-            Preferences.headerSeparator
+            !this.preferences.headerOnBottom,
+            this.preferences.headerSeparator
         ));
     }
 
@@ -712,7 +713,7 @@ public class MainActivity extends FragmentActivity implements CategorySelectionD
         final float height = Math.min(
             TypedValue.applyDimension(
                 TypedValue.COMPLEX_UNIT_DIP,
-                Preferences.widgetHeight,
+                this.preferences.widgetHeight,
                 res.getDisplayMetrics()
             ),
             res.getDisplayMetrics().heightPixels * 0.75f // TODO: handle landscape orientation
@@ -876,7 +877,7 @@ public class MainActivity extends FragmentActivity implements CategorySelectionD
     }
 
     public boolean isHiddenCategoryVisible() {
-        return !Preferences.hideHidden;
+        return !this.preferences.hideHidden;
     }
 
     public void openWallpaperPicker() {
