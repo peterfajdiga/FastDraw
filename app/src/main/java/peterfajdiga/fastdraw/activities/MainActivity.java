@@ -239,7 +239,9 @@ public class MainActivity extends FragmentActivity implements CategorySelectionD
                         resizeWidgetView(event.getRawY() - startHeight);
                         return true;
                     case MotionEvent.ACTION_UP:
-                        // TODO: persist
+                        final float deltaHeight = event.getRawY() - startHeight;
+                        resizeWidgetView(deltaHeight);
+                        persistWidgetHeight(deltaHeight);
                         return true;
                 }
                 return false;
@@ -733,10 +735,12 @@ public class MainActivity extends FragmentActivity implements CategorySelectionD
     }
 
     private float calcWidgetHeight(final float delta) {
+        final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
         final Resources res = getResources();
+
         final float configuredHeight = TypedValue.applyDimension(
             TypedValue.COMPLEX_UNIT_DIP,
-            preferences.widgetHeight,
+            prefs.getInt("widgetHeight", res.getInteger(R.integer.default_widgetHeight)),
             res.getDisplayMetrics()
         );
 
@@ -746,6 +750,13 @@ public class MainActivity extends FragmentActivity implements CategorySelectionD
             displayHeight * 0.25f,
             displayHeight * 0.75f // TODO: handle landscape orientation
         );
+    }
+
+    private void persistWidgetHeight(final float delta) {
+        final float newHeight = calcWidgetHeight(delta);
+        final float newHeightDp = newHeight / getResources().getDisplayMetrics().density;
+        final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        prefs.edit().putInt("widgetHeight", Math.round(newHeightDp)).apply();
     }
 
     private void loadLauncherItems() {
