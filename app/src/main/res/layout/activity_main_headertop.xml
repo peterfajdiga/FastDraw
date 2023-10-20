@@ -12,6 +12,7 @@
         android:orientation="vertical">
 
         <peterfajdiga.fastdraw.widgets.WidgetHolder
+            android:id="@+id/widget_holder"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 

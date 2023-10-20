@@ -31,12 +31,10 @@ import android.util.DisplayMetrics;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.DragEvent;
-import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowInsets;
-import android.widget.FrameLayout;
 import android.widget.Toast;
 
 import androidx.annotation.ColorInt;
@@ -83,12 +81,12 @@ import peterfajdiga.fastdraw.prefs.Preferences;
 import peterfajdiga.fastdraw.receivers.InstallAppReceiver;
 import peterfajdiga.fastdraw.views.CategoryTabLayout;
 import peterfajdiga.fastdraw.views.Drawables;
-import peterfajdiga.fastdraw.views.GestureInterceptor;
 import peterfajdiga.fastdraw.views.NestedScrollParent;
 import peterfajdiga.fastdraw.views.animators.ViewElevationAnimator;
 import peterfajdiga.fastdraw.views.gestures.LongPress;
 import peterfajdiga.fastdraw.views.gestures.OnTouchListenerMux;
 import peterfajdiga.fastdraw.views.gestures.Swipe;
+import peterfajdiga.fastdraw.widgets.WidgetHolder;
 import peterfajdiga.fastdraw.widgets.WidgetManager;
 
 public class MainActivity extends FragmentActivity implements CategorySelectionDialog.OnCategorySelectedListener {
@@ -224,19 +222,8 @@ public class MainActivity extends FragmentActivity implements CategorySelectionD
 
         loadPersistedWidget();
 
-        final GestureInterceptor widgetContainer = findViewById(R.id.widget_container);
-        widgetContainer.addOnLayoutChangeListener((v, left, top, right, bottom, oldLeft, oldTop, oldRight, oldBottom) -> {
-            final AppWidgetHostView widgetView = getCurrentWidgetView(widgetContainer);
-            if (widgetView != null) {
-                final int widthPx = widgetView.getWidth();
-                final int heightPx = widgetView.getHeight();
-                final float dp = getResources().getDisplayMetrics().density;
-                final int widthDp = Math.round(widthPx / dp);
-                final int heightDp = Math.round(heightPx / dp);
-                widgetView.updateAppWidgetSize(null, widthDp, heightDp, widthDp, heightDp);
-            }
-        });
-        widgetContainer.setOnInterceptTouchListener(gesturesListener);
+        final WidgetHolder widgetHolder = findViewById(R.id.widget_holder);
+        widgetHolder.setup(widgetManager, gesturesListener);
 
         final View resizeHandle = findViewById(R.id.widget_resize_handle);
         resizeHandle.setOnTouchListener(new View.OnTouchListener() {
@@ -249,7 +236,7 @@ public class MainActivity extends FragmentActivity implements CategorySelectionD
                         startHeight = event.getRawY();
                         return true;
                     case MotionEvent.ACTION_MOVE:
-                        resizeWidgetView(widgetContainer, event.getRawY() - startHeight);
+                        resizeWidgetView(event.getRawY() - startHeight);
                         return true;
                     case MotionEvent.ACTION_UP:
                         // TODO: persist
@@ -599,8 +586,8 @@ public class MainActivity extends FragmentActivity implements CategorySelectionD
         if (widgetId != -1) {
             final AppWidgetHostView widgetView = widgetManager.createWidgetView(widgetId);
             if (widgetView != null) {
-                final ViewGroup widgetContainer = findViewById(R.id.widget_container);
-                replaceWidgetView(widgetContainer, widgetView);
+                final WidgetHolder widgetHolder = findViewById(R.id.widget_holder);
+                widgetHolder.replaceWidgetView(widgetView);
             }
         }
     }
@@ -716,55 +703,20 @@ public class MainActivity extends FragmentActivity implements CategorySelectionD
     }
 
     private void setWidget(@NonNull AppWidgetHostView widgetView) {
-        final ViewGroup widgetContainer = findViewById(R.id.widget_container);
-        replaceWidgetView(widgetContainer, widgetView);
+        final WidgetHolder widgetHolder = findViewById(R.id.widget_holder);
+        widgetHolder.replaceWidgetView(widgetView);
         final PrefMap widgetPrefs = new PrefMap(this, PREFS_WIDGETS);
         widgetPrefs.putInt(PREF_KEY_WIDGET_ID, widgetView.getAppWidgetId());
     }
 
     public void removeWidget() {
-        final ViewGroup widgetContainer = findViewById(R.id.widget_container);
-        removeWidgetView(widgetContainer);
+        final WidgetHolder widgetHolder = findViewById(R.id.widget_holder);
+        widgetHolder.removeWidgetView();
         final PrefMap widgetPrefs = new PrefMap(this, PREFS_WIDGETS);
         widgetPrefs.remove(PREF_KEY_WIDGET_ID);
     }
 
-    private void replaceWidgetView(@NonNull final ViewGroup widgetContainer, @NonNull final AppWidgetHostView widgetView) {
-        removeWidgetView(widgetContainer);
-
-        final Resources res = getResources();
-        final float height = Math.min(
-            TypedValue.applyDimension(
-                TypedValue.COMPLEX_UNIT_DIP,
-                this.preferences.widgetHeight,
-                res.getDisplayMetrics()
-            ),
-            res.getDisplayMetrics().heightPixels * 0.75f // TODO: handle landscape orientation
-        );
-        final int margin = Math.round(res.getDimension(R.dimen.widget_margin));
-
-        final FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(
-            FrameLayout.LayoutParams.MATCH_PARENT,
-            Math.round(height),
-            Gravity.CENTER
-        );
-        layoutParams.topMargin = margin;
-        layoutParams.bottomMargin = margin;
-        layoutParams.leftMargin = margin;
-        layoutParams.rightMargin = margin;
-
-        widgetContainer.addView(widgetView, layoutParams);
-    }
-
-    private void removeWidgetView(@NonNull final ViewGroup widgetContainer) {
-        final AppWidgetHostView oldWidgetView = getCurrentWidgetView(widgetContainer);
-        if (oldWidgetView != null) {
-            widgetManager.deleteWidget(oldWidgetView.getAppWidgetId());
-            widgetContainer.removeView(oldWidgetView);
-        }
-    }
-
-    private void resizeWidgetView(@NonNull final ViewGroup widgetContainer, final float heightDelta) {
+    private void resizeWidgetView(final float heightDelta) {
         final Resources res = getResources();
         final float configuredHeight = TypedValue.applyDimension(
             TypedValue.COMPLEX_UNIT_DIP,
@@ -779,21 +731,8 @@ public class MainActivity extends FragmentActivity implements CategorySelectionD
             displayHeight * 0.75f // TODO: handle landscape orientation
         );
 
-        final AppWidgetHostView widgetView = getCurrentWidgetView(widgetContainer);
-        widgetView.getLayoutParams().height = Math.round(newHeight);
-        widgetView.setLayoutParams(widgetView.getLayoutParams());
-    }
-
-    @Nullable
-    private static AppWidgetHostView getCurrentWidgetView(final ViewGroup widgetContainer) {
-        final int n = widgetContainer.getChildCount();
-        for (int i = 0; i < n; i++) {
-            final View child = widgetContainer.getChildAt(i);
-            if (child instanceof AppWidgetHostView) {
-                return (AppWidgetHostView)child;
-            }
-        }
-        return null;
+        final WidgetHolder widgetHolder = findViewById(R.id.widget_holder);
+        widgetHolder.setWidgetHeight(Math.round(newHeight));
     }
 
     private void loadLauncherItems() {
