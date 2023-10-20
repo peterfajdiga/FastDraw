@@ -8,7 +8,6 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
 import peterfajdiga.fastdraw.R;
 import peterfajdiga.fastdraw.activities.MainActivity;
-import peterfajdiga.fastdraw.prefs.Preferences;
 
 public class ActionsSheet extends BottomSheetDialogFragment {
 
@@ -56,12 +55,12 @@ public class ActionsSheet extends BottomSheetDialogFragment {
         });
 
         // TODO: don't display either when there are no hidden items
-        if (Preferences.hideHidden) {
-            actionHiddenShow.setVisibility(View.VISIBLE);
-            actionHiddenHide.setVisibility(View.GONE);
-        } else {
+        if (activity.isHiddenCategoryVisible()) {
             actionHiddenShow.setVisibility(View.GONE);
             actionHiddenHide.setVisibility(View.VISIBLE);
+        } else {
+            actionHiddenShow.setVisibility(View.VISIBLE);
+            actionHiddenHide.setVisibility(View.GONE);
         }
 
         final View actionSettingsView = dialogView.findViewById(R.id.action_settings);

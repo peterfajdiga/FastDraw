@@ -875,6 +875,10 @@ public class MainActivity extends FragmentActivity implements CategorySelectionD
         dialog.show(getSupportFragmentManager(), "ActionsSheet");
     }
 
+    public boolean isHiddenCategoryVisible() {
+        return !Preferences.hideHidden;
+    }
+
     public void openWallpaperPicker() {
         final Intent intent = new Intent(Intent.ACTION_SET_WALLPAPER);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_DOCUMENT); // don't keep wallpaper picker in recent apps
