@@ -7,15 +7,6 @@
         android:title="@string/pref_title_allowOrientation"
         android:summary="@string/pref_description_allowOrientation" />
 
-    <ListPreference
-        android:defaultValue="@string/default_appItemResource"
-        android:entries="@array/pref_appItemResource_titles"
-        android:entryValues="@array/pref_appItemResource_values"
-        android:key="appItemResource"
-        android:negativeButtonText="@null"
-        android:positiveButtonText="@null"
-        android:title="@string/pref_title_appItemResource" />
-
     <SeekBarPreference
         android:defaultValue="@integer/default_widgetHeight"
         app:min="80"

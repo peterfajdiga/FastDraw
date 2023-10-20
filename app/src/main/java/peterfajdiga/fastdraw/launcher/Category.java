@@ -6,7 +6,6 @@ import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.SortedList;
 
@@ -18,7 +17,6 @@ import peterfajdiga.fastdraw.Postable;
 import peterfajdiga.fastdraw.R;
 import peterfajdiga.fastdraw.launcher.displayitem.DisplayItem;
 import peterfajdiga.fastdraw.launcher.launcheritem.LauncherItem;
-import peterfajdiga.fastdraw.prefs.Preferences;
 import peterfajdiga.fastdraw.views.AutoGridLayoutManager;
 import peterfajdiga.fastdraw.views.NestedScrollChildManager;
 
@@ -96,26 +94,19 @@ public class Category {
 
         containerView.setOverScrollMode(View.OVER_SCROLL_NEVER);
 
-        if (!Preferences.appsLinearList) {
-            final int spanWidth = context.getResources().getDimensionPixelSize(R.dimen.app_item_grid_icon_size) +
-                context.getResources().getDimensionPixelSize(R.dimen.app_item_grid_icon_padding) * 2;
-            final GridLayoutManager layoutManager = new AutoGridLayoutManager(context, spanWidth, GridLayoutManager.VERTICAL, false);
-            containerView.setLayoutManager(layoutManager);
-            final int padding = Math.round(context.getResources().getDimensionPixelSize(R.dimen.app_item_grid_container_padding));
-            containerView.setPadding(padding, padding, padding, padding);
-            containerView.setClipToPadding(false);
-            containerView.setScrollBarStyle(View.SCROLLBARS_OUTSIDE_OVERLAY);
+        final int spanWidth = context.getResources().getDimensionPixelSize(R.dimen.app_item_grid_icon_size) +
+            context.getResources().getDimensionPixelSize(R.dimen.app_item_grid_icon_padding) * 2;
+        final GridLayoutManager layoutManager = new AutoGridLayoutManager(context, spanWidth, GridLayoutManager.VERTICAL, false);
+        containerView.setLayoutManager(layoutManager);
+        final int padding = Math.round(context.getResources().getDimensionPixelSize(R.dimen.app_item_grid_container_padding));
+        containerView.setPadding(padding, padding, padding, padding);
+        containerView.setClipToPadding(false);
+        containerView.setScrollBarStyle(View.SCROLLBARS_OUTSIDE_OVERLAY);
 
-            nestedScrollChildManager.setup(containerView, () -> {
-                final int lineCount = (int)Math.ceil((double)adapter.getItemCount() / (double)layoutManager.getSpanCount());
-                return lineCount * getItemHeight(layoutManager) + 2 * padding;
-            });
-        } else {
-            final RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false);
-            containerView.setLayoutManager(layoutManager);
-
-            nestedScrollChildManager.setup(containerView, () -> adapter.getItemCount() * getItemHeight(layoutManager));
-        }
+        nestedScrollChildManager.setup(containerView, () -> {
+            final int lineCount = (int)Math.ceil((double)adapter.getItemCount() / (double)layoutManager.getSpanCount());
+            return lineCount * getItemHeight(layoutManager) + 2 * padding;
+        });
 
         containerView.setOnTouchListener(backgroundTouchListener);
         return containerView;

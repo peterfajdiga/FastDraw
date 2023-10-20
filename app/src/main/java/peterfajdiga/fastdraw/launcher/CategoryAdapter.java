@@ -23,7 +23,6 @@ import androidx.recyclerview.widget.SortedList;
 import peterfajdiga.fastdraw.Postable;
 import peterfajdiga.fastdraw.R;
 import peterfajdiga.fastdraw.launcher.displayitem.DisplayItem;
-import peterfajdiga.fastdraw.prefs.Preferences;
 
 public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ItemViewHolder> {
     private final LaunchManager launchManager;
@@ -78,11 +77,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ItemVi
     @Override
     @NonNull
     public ItemViewHolder onCreateViewHolder(@NonNull final ViewGroup parent, final int viewType) {
-        final View view = LayoutInflater.from(parent.getContext()).inflate(
-            Preferences.appsLinearList ? R.layout.app_item_list : R.layout.app_item_grid,
-            parent,
-            false
-        );
+        final View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.app_item_grid, parent, false);
         return new CategoryAdapter.ItemViewHolder(view);
     }
 

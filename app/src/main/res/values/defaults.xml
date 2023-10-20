@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <bool name="default_allowOrientation">false</bool>
-    <string name="default_appItemResource">0</string>
     <bool name="default_headerbtm">false</bool>
     <bool name="default_scrollableTabs">false</bool>
     <bool name="default_hideHidden">true</bool>
