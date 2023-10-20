@@ -27,7 +27,6 @@ import peterfajdiga.fastdraw.launcher.displayitem.DisplayItem;
 import peterfajdiga.fastdraw.launcher.launcheritem.LauncherItem;
 import peterfajdiga.fastdraw.launcher.launcheritem.ShortcutItem;
 import peterfajdiga.fastdraw.prefs.PrefMap;
-import peterfajdiga.fastdraw.prefs.Preferences;
 import peterfajdiga.fastdraw.views.NestedScrollChildManager;
 
 public class Launcher {
@@ -41,12 +40,14 @@ public class Launcher {
     private final View.OnTouchListener backgroundTouchListener;
     private final ViewPager pager;
     private final LauncherPagerAdapter adapter;
+    private final boolean hideHidden;
 
     public Launcher(
         @NonNull final LaunchManager launchManager,
         @NonNull final Postable dragEndService,
         @NonNull final View.OnTouchListener backgroundTouchListener,
-        @NonNull final ViewPager pager
+        @NonNull final ViewPager pager,
+        final boolean hideHidden
     ) {
         final Context context = pager.getContext();
         this.itemCategoryMap = new PrefMap(context, "categories"); // TODO: pass from outside
@@ -56,6 +57,7 @@ public class Launcher {
         this.backgroundTouchListener = backgroundTouchListener;
         this.pager = pager;
         this.adapter = new LauncherPagerAdapter(context);
+        this.hideHidden = hideHidden;
         pager.setAdapter(this.adapter);
     }
 
@@ -152,7 +154,7 @@ public class Launcher {
     }
 
     private synchronized void addItemsToCategory(@NonNull final String categoryName, final boolean immediate, @NonNull final LauncherItem... items) {
-        if (Preferences.hideHidden && categoryName.equals(peterfajdiga.fastdraw.Category.hiddenCategory)) {
+        if (hideHidden && categoryName.equals(peterfajdiga.fastdraw.Category.hiddenCategory)) {
             return;
         }
 
@@ -196,7 +198,7 @@ public class Launcher {
         final Map<String, List<LauncherItem>> itemsByCategory = new HashMap<>();
         for (final LauncherItem item : items) {
             final String categoryName = getNewItemCategory(item);
-            if (Preferences.hideHidden && categoryName.equals(peterfajdiga.fastdraw.Category.hiddenCategory)) {
+            if (hideHidden && categoryName.equals(peterfajdiga.fastdraw.Category.hiddenCategory)) {
                 continue;
             }
 

@@ -239,7 +239,7 @@ public class MainActivity extends FragmentActivity implements CategorySelectionD
     @SuppressLint("ClickableViewAccessibility")
     private void setupAppsPager(final NestedScrollParent scrollParent, final View.OnTouchListener longPressListener) {
         final ViewPager appsPager = findViewById(R.id.apps_pager);
-        launcher = new Launcher(launchManager, dragEndService, longPressListener, appsPager);
+        launcher = new Launcher(launchManager, dragEndService, longPressListener, appsPager, Preferences.hideHidden);
 
         setupWallpaperParallax(appsPager);
         setupHeader(appsPager);
