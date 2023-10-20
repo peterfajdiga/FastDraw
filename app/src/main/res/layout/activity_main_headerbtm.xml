@@ -52,34 +52,7 @@
             android:background="@android:color/white"
             android:visibility="gone" />
 
-        <LinearLayout
-            android:id="@+id/category_drop_zone_container"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/pager_header_extra_height"
-            android:visibility="gone"
-            android:orientation="horizontal"
-            android:gravity="top">
-
-            <TextView
-                android:id="@+id/drop_zone_new_category"
-                android:text="@string/new_category"
-                style="@style/DropZone"/>
-
-            <TextView
-                android:id="@+id/drop_zone_hide"
-                android:text="@string/hide"
-                style="@style/DropZone"/>
-
-            <TextView
-                android:id="@+id/drop_zone_app_info"
-                android:text="@string/app_info"
-                style="@style/DropZone"/>
-
-            <TextView
-                android:id="@+id/drop_zone_remove_shortcut"
-                android:text="@string/remove_shortcut"
-                style="@style/DropZone"/>
-        </LinearLayout>
+        <include layout="@layout/drop_zones" />
 
         <peterfajdiga.fastdraw.views.CategoryTabLayout
             android:id="@+id/tab_container"
