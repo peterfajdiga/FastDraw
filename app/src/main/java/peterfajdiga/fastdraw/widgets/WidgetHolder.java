@@ -17,8 +17,6 @@ import peterfajdiga.fastdraw.R;
 import peterfajdiga.fastdraw.views.GestureInterceptor;
 
 public class WidgetHolder extends FrameLayout {
-    private WidgetManager widgetManager;
-
     public WidgetHolder(@NonNull final Context context) {
         super(context);
         init(context);
@@ -43,12 +41,10 @@ public class WidgetHolder extends FrameLayout {
         inflate(context, R.layout.widget_holder, this);
     }
 
-    public void setup(@NonNull final WidgetManager widgetManager, @NonNull final View.OnTouchListener gesturesListener) {
-        this.widgetManager = widgetManager;
-
+    public void setup(@NonNull final View.OnTouchListener gesturesListener) {
         final GestureInterceptor widgetContainer = findViewById(R.id.widget_container);
         widgetContainer.addOnLayoutChangeListener((v, left, top, right, bottom, oldLeft, oldTop, oldRight, oldBottom) -> {
-            final AppWidgetHostView widgetView = getCurrentWidgetView();
+            final AppWidgetHostView widgetView = getWidgetView();
             if (widgetView != null) {
                 final int widthPx = widgetView.getWidth();
                 final int heightPx = widgetView.getHeight();
@@ -91,21 +87,20 @@ public class WidgetHolder extends FrameLayout {
 
     public void removeWidgetView() {
         final ViewGroup widgetContainer = findViewById(R.id.widget_container);
-        final AppWidgetHostView oldWidgetView = getCurrentWidgetView();
+        final AppWidgetHostView oldWidgetView = getWidgetView();
         if (oldWidgetView != null) {
-            widgetManager.deleteWidget(oldWidgetView.getAppWidgetId());
             widgetContainer.removeView(oldWidgetView);
         }
     }
 
     public void setWidgetHeight(final int newHeight) {
-        final AppWidgetHostView widgetView = getCurrentWidgetView();
+        final AppWidgetHostView widgetView = getWidgetView();
         widgetView.getLayoutParams().height = Math.round(newHeight);
         widgetView.setLayoutParams(widgetView.getLayoutParams());
     }
 
     @Nullable
-    private AppWidgetHostView getCurrentWidgetView() {
+    public AppWidgetHostView getWidgetView() {
         final ViewGroup widgetContainer = findViewById(R.id.widget_container);
         final int n = widgetContainer.getChildCount();
         for (int i = 0; i < n; i++) {

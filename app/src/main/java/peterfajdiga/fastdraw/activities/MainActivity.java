@@ -223,7 +223,7 @@ public class MainActivity extends FragmentActivity implements CategorySelectionD
         loadPersistedWidget();
 
         final WidgetHolder widgetHolder = findViewById(R.id.widget_holder);
-        widgetHolder.setup(widgetManager, gesturesListener);
+        widgetHolder.setup(gesturesListener);
 
         final View resizeHandle = findViewById(R.id.widget_resize_handle);
         resizeHandle.setOnTouchListener(new View.OnTouchListener() {
@@ -586,8 +586,7 @@ public class MainActivity extends FragmentActivity implements CategorySelectionD
         if (widgetId != -1) {
             final AppWidgetHostView widgetView = widgetManager.createWidgetView(widgetId);
             if (widgetView != null) {
-                final WidgetHolder widgetHolder = findViewById(R.id.widget_holder);
-                widgetHolder.replaceWidgetView(widgetView);
+                replaceWidget(widgetView);
             }
         }
     }
@@ -703,17 +702,30 @@ public class MainActivity extends FragmentActivity implements CategorySelectionD
     }
 
     private void setWidget(@NonNull AppWidgetHostView widgetView) {
-        final WidgetHolder widgetHolder = findViewById(R.id.widget_holder);
-        widgetHolder.replaceWidgetView(widgetView);
+        replaceWidget(widgetView);
         final PrefMap widgetPrefs = new PrefMap(this, PREFS_WIDGETS);
         widgetPrefs.putInt(PREF_KEY_WIDGET_ID, widgetView.getAppWidgetId());
     }
 
+    private void replaceWidget(@NonNull final AppWidgetHostView newWidgetView) {
+        final WidgetHolder widgetHolder = findViewById(R.id.widget_holder);
+        deleteWidgetIfExists(widgetHolder);
+        widgetHolder.replaceWidgetView(newWidgetView);
+    }
+
     public void removeWidget() {
         final WidgetHolder widgetHolder = findViewById(R.id.widget_holder);
+        deleteWidgetIfExists(widgetHolder);
         widgetHolder.removeWidgetView();
         final PrefMap widgetPrefs = new PrefMap(this, PREFS_WIDGETS);
         widgetPrefs.remove(PREF_KEY_WIDGET_ID);
+    }
+
+    private void deleteWidgetIfExists(@NonNull final WidgetHolder widgetHolder) {
+        final AppWidgetHostView widgetView = widgetHolder.getWidgetView();
+        if (widgetView != null) {
+            widgetManager.deleteWidget(widgetView.getAppWidgetId());
+        }
     }
 
     private void resizeWidgetView(final float heightDelta) {
