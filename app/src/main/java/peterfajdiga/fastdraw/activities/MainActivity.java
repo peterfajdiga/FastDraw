@@ -709,23 +709,20 @@ public class MainActivity extends FragmentActivity implements CategorySelectionD
 
     private void replaceWidget(@NonNull final AppWidgetHostView newWidgetView) {
         final WidgetHolder widgetHolder = findViewById(R.id.widget_holder);
-        deleteWidgetIfExists(widgetHolder);
-        widgetHolder.replaceWidgetView(newWidgetView);
+        final AppWidgetHostView oldWidgetView = widgetHolder.replaceWidgetView(newWidgetView);
+        if (oldWidgetView != null) {
+            widgetManager.deleteWidget(oldWidgetView.getAppWidgetId());
+        }
     }
 
     public void removeWidget() {
         final WidgetHolder widgetHolder = findViewById(R.id.widget_holder);
-        deleteWidgetIfExists(widgetHolder);
-        widgetHolder.removeWidgetView();
+        final AppWidgetHostView oldWidgetView = widgetHolder.removeWidgetView();
+        if (oldWidgetView != null) {
+            widgetManager.deleteWidget(oldWidgetView.getAppWidgetId());
+        }
         final PrefMap widgetPrefs = new PrefMap(this, PREFS_WIDGETS);
         widgetPrefs.remove(PREF_KEY_WIDGET_ID);
-    }
-
-    private void deleteWidgetIfExists(@NonNull final WidgetHolder widgetHolder) {
-        final AppWidgetHostView widgetView = widgetHolder.getWidgetView();
-        if (widgetView != null) {
-            widgetManager.deleteWidget(widgetView.getAppWidgetId());
-        }
     }
 
     private void resizeWidgetView(final float heightDelta) {

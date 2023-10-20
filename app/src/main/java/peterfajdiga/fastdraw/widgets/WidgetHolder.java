@@ -57,8 +57,13 @@ public class WidgetHolder extends FrameLayout {
         widgetContainer.setOnInterceptTouchListener(gesturesListener);
     }
 
-    public void replaceWidgetView(@NonNull final AppWidgetHostView widgetView) {
-        removeWidgetView();
+    /**
+     * @param newWidgetView the new widget view
+     * @return the old widget view if it was set, otherwise null
+     */
+    @Nullable
+    public AppWidgetHostView replaceWidgetView(@NonNull final AppWidgetHostView newWidgetView) {
+        final AppWidgetHostView oldWidgetView = removeWidgetView();
 
         final Resources res = getResources();
         final float height = Math.min(
@@ -82,15 +87,22 @@ public class WidgetHolder extends FrameLayout {
         layoutParams.rightMargin = margin;
 
         final ViewGroup widgetContainer = findViewById(R.id.widget_container);
-        widgetContainer.addView(widgetView, layoutParams);
+        widgetContainer.addView(newWidgetView, layoutParams);
+
+        return oldWidgetView;
     }
 
-    public void removeWidgetView() {
+    /**
+     * @return the old widget view if it was set, otherwise null
+     */
+    @Nullable
+    public AppWidgetHostView removeWidgetView() {
         final ViewGroup widgetContainer = findViewById(R.id.widget_container);
         final AppWidgetHostView oldWidgetView = getWidgetView();
         if (oldWidgetView != null) {
             widgetContainer.removeView(oldWidgetView);
         }
+        return oldWidgetView;
     }
 
     public void setWidgetHeight(final int newHeight) {
@@ -100,7 +112,7 @@ public class WidgetHolder extends FrameLayout {
     }
 
     @Nullable
-    public AppWidgetHostView getWidgetView() {
+    private AppWidgetHostView getWidgetView() {
         final ViewGroup widgetContainer = findViewById(R.id.widget_container);
         final int n = widgetContainer.getChildCount();
         for (int i = 0; i < n; i++) {
