@@ -32,6 +32,7 @@ import android.util.Log;
 import android.util.TypedValue;
 import android.view.DragEvent;
 import android.view.Gravity;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowInsets;
@@ -60,6 +61,7 @@ import peterfajdiga.fastdraw.Category;
 import peterfajdiga.fastdraw.R;
 import peterfajdiga.fastdraw.RunnableQueue;
 import peterfajdiga.fastdraw.SettableBoolean;
+import peterfajdiga.fastdraw.Utils;
 import peterfajdiga.fastdraw.WallpaperColorUtils;
 import peterfajdiga.fastdraw.dialogs.ActionsSheet;
 import peterfajdiga.fastdraw.dialogs.CategorySelectionDialog;
@@ -235,6 +237,27 @@ public class MainActivity extends FragmentActivity implements CategorySelectionD
             }
         });
         widgetContainer.setOnInterceptTouchListener(gesturesListener);
+
+        final View resizeHandle = findViewById(R.id.widget_resize_handle);
+        resizeHandle.setOnTouchListener(new View.OnTouchListener() {
+            private float startHeight;
+
+            @Override
+            public boolean onTouch(final View v, final MotionEvent event) {
+                switch (event.getAction()) {
+                    case MotionEvent.ACTION_DOWN:
+                        startHeight = event.getRawY();
+                        return true;
+                    case MotionEvent.ACTION_MOVE:
+                        resizeWidgetView(widgetContainer, event.getRawY() - startHeight);
+                        return true;
+                    case MotionEvent.ACTION_UP:
+                        // TODO: persist
+                        return true;
+                }
+                return false;
+            }
+        });
     }
 
     @SuppressLint("ClickableViewAccessibility")
@@ -739,6 +762,26 @@ public class MainActivity extends FragmentActivity implements CategorySelectionD
             widgetManager.deleteWidget(oldWidgetView.getAppWidgetId());
             widgetContainer.removeView(oldWidgetView);
         }
+    }
+
+    private void resizeWidgetView(@NonNull final ViewGroup widgetContainer, final float heightDelta) {
+        final Resources res = getResources();
+        final float configuredHeight = TypedValue.applyDimension(
+            TypedValue.COMPLEX_UNIT_DIP,
+            preferences.widgetHeight,
+            res.getDisplayMetrics()
+        );
+
+        final float displayHeight = res.getDisplayMetrics().heightPixels;
+        final float newHeight = Utils.clamp(
+            configuredHeight + heightDelta,
+            displayHeight * 0.25f,
+            displayHeight * 0.75f // TODO: handle landscape orientation
+        );
+
+        final AppWidgetHostView widgetView = getCurrentWidgetView(widgetContainer);
+        widgetView.getLayoutParams().height = Math.round(newHeight);
+        widgetView.setLayoutParams(widgetView.getLayoutParams());
     }
 
     @Nullable
