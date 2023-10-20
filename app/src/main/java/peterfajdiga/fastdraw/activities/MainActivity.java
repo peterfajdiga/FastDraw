@@ -708,8 +708,9 @@ public class MainActivity extends FragmentActivity implements CategorySelectionD
     }
 
     private void replaceWidget(@NonNull final AppWidgetHostView newWidgetView) {
+        final float height = calcWidgetHeight(0.0f);
         final WidgetHolder widgetHolder = findViewById(R.id.widget_holder);
-        final AppWidgetHostView oldWidgetView = widgetHolder.replaceWidgetView(newWidgetView);
+        final AppWidgetHostView oldWidgetView = widgetHolder.replaceWidgetView(newWidgetView, Math.round(height));
         if (oldWidgetView != null) {
             widgetManager.deleteWidget(oldWidgetView.getAppWidgetId());
         }
@@ -726,6 +727,12 @@ public class MainActivity extends FragmentActivity implements CategorySelectionD
     }
 
     private void resizeWidgetView(final float heightDelta) {
+        final float newHeight = calcWidgetHeight(heightDelta);
+        final WidgetHolder widgetHolder = findViewById(R.id.widget_holder);
+        widgetHolder.setWidgetHeight(Math.round(newHeight));
+    }
+
+    private float calcWidgetHeight(final float delta) {
         final Resources res = getResources();
         final float configuredHeight = TypedValue.applyDimension(
             TypedValue.COMPLEX_UNIT_DIP,
@@ -734,14 +741,11 @@ public class MainActivity extends FragmentActivity implements CategorySelectionD
         );
 
         final float displayHeight = res.getDisplayMetrics().heightPixels;
-        final float newHeight = Utils.clamp(
-            configuredHeight + heightDelta,
+        return Utils.clamp(
+            configuredHeight + delta,
             displayHeight * 0.25f,
             displayHeight * 0.75f // TODO: handle landscape orientation
         );
-
-        final WidgetHolder widgetHolder = findViewById(R.id.widget_holder);
-        widgetHolder.setWidgetHeight(Math.round(newHeight));
     }
 
     private void loadLauncherItems() {

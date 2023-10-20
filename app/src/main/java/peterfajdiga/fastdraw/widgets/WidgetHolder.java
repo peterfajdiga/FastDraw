@@ -4,7 +4,6 @@ import android.appwidget.AppWidgetHostView;
 import android.content.Context;
 import android.content.res.Resources;
 import android.util.AttributeSet;
-import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -62,18 +61,10 @@ public class WidgetHolder extends FrameLayout {
      * @return the old widget view if it was set, otherwise null
      */
     @Nullable
-    public AppWidgetHostView replaceWidgetView(@NonNull final AppWidgetHostView newWidgetView) {
+    public AppWidgetHostView replaceWidgetView(@NonNull final AppWidgetHostView newWidgetView, final int height) {
         final AppWidgetHostView oldWidgetView = removeWidgetView();
 
         final Resources res = getResources();
-        final float height = Math.min(
-            TypedValue.applyDimension(
-                TypedValue.COMPLEX_UNIT_DIP,
-                500, // TODO: read from preferences
-                res.getDisplayMetrics()
-            ),
-            res.getDisplayMetrics().heightPixels * 0.75f // TODO: handle landscape orientation
-        );
         final int margin = Math.round(res.getDimension(R.dimen.widget_margin));
 
         final FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(
