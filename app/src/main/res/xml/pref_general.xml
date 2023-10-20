@@ -1,18 +1,10 @@
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
     <SwitchPreference
         android:defaultValue="@bool/default_allowOrientation"
         android:key="allowOrientation"
         android:title="@string/pref_title_allowOrientation"
         android:summary="@string/pref_description_allowOrientation" />
-
-    <SeekBarPreference
-        android:defaultValue="@integer/default_widgetHeight"
-        app:min="80"
-        android:max="560"
-        android:key="widgetHeight"
-        android:title="@string/pref_title_widgetHeight" />
 
     <SwitchPreference
         android:defaultValue="@bool/default_headerbtm"
