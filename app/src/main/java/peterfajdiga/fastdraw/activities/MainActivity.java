@@ -735,12 +735,11 @@ public class MainActivity extends FragmentActivity implements CategorySelectionD
     }
 
     private float calcWidgetHeight(final float delta) {
-        final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
         final Resources res = getResources();
 
         final float configuredHeight = TypedValue.applyDimension(
             TypedValue.COMPLEX_UNIT_DIP,
-            prefs.getInt("widgetHeight", res.getInteger(R.integer.default_widgetHeight)),
+            this.preferences.getWidgetHeight(),
             res.getDisplayMetrics()
         );
 
@@ -755,8 +754,7 @@ public class MainActivity extends FragmentActivity implements CategorySelectionD
     private void persistWidgetHeight(final float delta) {
         final float newHeight = calcWidgetHeight(delta);
         final float newHeightDp = newHeight / getResources().getDisplayMetrics().density;
-        final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-        prefs.edit().putInt("widgetHeight", Math.round(newHeightDp)).apply();
+        this.preferences.setWidgetHeight(Math.round(newHeightDp));
     }
 
     private void loadLauncherItems() {
