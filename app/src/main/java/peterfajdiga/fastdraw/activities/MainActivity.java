@@ -223,7 +223,7 @@ public class MainActivity extends FragmentActivity implements CategorySelectionD
 
         final WidgetHolder widgetHolder = findViewById(R.id.widget_holder);
         final View editScrim = findViewById(R.id.widget_edit_scrim);
-        widgetHolder.setup(gesturesListener);
+        widgetHolder.setWidgetViewGesturesListener(gesturesListener);
         widgetHolder.setOnEnterEditModeListener(() -> editScrim.setVisibility(View.VISIBLE));
         widgetHolder.setOnExitEditModeListener(() -> editScrim.setVisibility(View.GONE));
         editScrim.setOnClickListener(v -> widgetHolder.exitEditMode());

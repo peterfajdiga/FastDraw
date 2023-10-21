@@ -41,9 +41,7 @@ public class WidgetHolder extends FrameLayout {
 
     private void init(@NonNull final Context context) {
         inflate(context, R.layout.widget_holder, this);
-    }
 
-    public void setup(@NonNull final View.OnTouchListener gesturesListener) {
         final GestureInterceptor widgetContainer = findViewById(R.id.widget_container);
         widgetContainer.addOnLayoutChangeListener((v, left, top, right, bottom, oldLeft, oldTop, oldRight, oldBottom) -> {
             final AppWidgetHostView widgetView = getWidgetView();
@@ -56,6 +54,10 @@ public class WidgetHolder extends FrameLayout {
                 widgetView.updateAppWidgetSize(null, widthDp, heightDp, widthDp, heightDp);
             }
         });
+    }
+
+    public void setWidgetViewGesturesListener(@NonNull final View.OnTouchListener gesturesListener) {
+        final GestureInterceptor widgetContainer = findViewById(R.id.widget_container);
         widgetContainer.setOnInterceptTouchListener(gesturesListener);
     }
 
