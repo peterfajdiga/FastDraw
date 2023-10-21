@@ -57,6 +57,10 @@ public class WidgetHolder extends FrameLayout {
         });
 
         findViewById(R.id.edit_controls).setOnClickListener(v -> this.exitEditMode());
+        findViewById(R.id.action_remove).setOnClickListener(v -> {
+            this.exitEditMode();
+            this.removeWidgetView();
+        });
     }
 
     public void setWidgetViewGesturesListener(@NonNull final View.OnTouchListener gesturesListener) {
