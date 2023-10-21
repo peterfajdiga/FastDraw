@@ -50,10 +50,7 @@ public class WidgetManager {
     public AppWidgetHostView createOrConfigureWidgetView(final int widgetId) {
         final AppWidgetProviderInfo widgetInfo = widgetManager.getAppWidgetInfo(widgetId);
         if (widgetInfo.configure != null) {
-            final Intent intent = new Intent(AppWidgetManager.ACTION_APPWIDGET_CONFIGURE);
-            intent.setComponent(widgetInfo.configure);
-            intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, widgetId);
-            activity.startActivityForResult(intent, widgetCreateRequestCode);
+            widgetHost.startAppWidgetConfigureActivityForResult(activity, widgetId, 0, widgetCreateRequestCode, null);
             return null;
         } else {
             return createWidgetView(widgetId);
