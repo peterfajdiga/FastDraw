@@ -136,8 +136,9 @@ public class MainActivity extends FragmentActivity implements CategorySelectionD
         final NestedScrollParent scrollParent = findViewById(R.id.scroll_parent);
         final DisplayMetrics displayMetrics = getResources().getDisplayMetrics();
 
+        final WidgetHolder widgetHolder = findViewById(R.id.widget_holder);
         setupWidgets(new OnTouchListenerMux(
-            new LongPress(displayMetrics, this::enterWidgetEditMode),
+            new LongPress(displayMetrics, widgetHolder::enterEditMode),
             new Swipe(displayMetrics, Swipe.Direction.DOWN, this::expandNotificationsPanel, () -> scrollParent.getScrollY() == 0)
         ));
         setupAppsPager(scrollParent, new LongPress(displayMetrics, this::openActionsMenu));
@@ -221,7 +222,11 @@ public class MainActivity extends FragmentActivity implements CategorySelectionD
         loadPersistedWidget();
 
         final WidgetHolder widgetHolder = findViewById(R.id.widget_holder);
+        final View editScrim = findViewById(R.id.widget_edit_scrim);
         widgetHolder.setup(gesturesListener);
+        widgetHolder.setOnEnterEditModeListener(() -> editScrim.setVisibility(View.VISIBLE));
+        widgetHolder.setOnExitEditModeListener(() -> editScrim.setVisibility(View.GONE));
+        editScrim.setOnClickListener(v -> widgetHolder.exitEditMode());
 
         final View resizeHandle = findViewById(R.id.widget_resize_handle);
         resizeHandle.setOnTouchListener(new View.OnTouchListener() {
@@ -245,9 +250,6 @@ public class MainActivity extends FragmentActivity implements CategorySelectionD
                 return false;
             }
         });
-
-        final View editScrim = findViewById(R.id.widget_edit_scrim);
-        editScrim.setOnClickListener(v -> this.exitWidgetEditMode());
     }
 
     @SuppressLint("ClickableViewAccessibility")
@@ -750,18 +752,6 @@ public class MainActivity extends FragmentActivity implements CategorySelectionD
             displayHeight * 0.25f,
             displayHeight * 0.75f // TODO: handle landscape orientation
         );
-    }
-
-    private void enterWidgetEditMode() {
-        final WidgetHolder widgetHolder = findViewById(R.id.widget_holder);
-        widgetHolder.enterEditMode();
-        findViewById(R.id.widget_edit_scrim).setVisibility(View.VISIBLE);
-    }
-
-    private void exitWidgetEditMode() {
-        final WidgetHolder widgetHolder = findViewById(R.id.widget_holder);
-        widgetHolder.exitEditMode();
-        findViewById(R.id.widget_edit_scrim).setVisibility(View.GONE);
     }
 
     private void persistWidgetHeight(final float delta) {

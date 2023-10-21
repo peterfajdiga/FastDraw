@@ -16,6 +16,9 @@ import peterfajdiga.fastdraw.R;
 import peterfajdiga.fastdraw.views.GestureInterceptor;
 
 public class WidgetHolder extends FrameLayout {
+    private OnEnterEditModeListener onEnterEditModeListener;
+    private OnExitEditModeListener onExitEditModeListener;
+
     public WidgetHolder(@NonNull final Context context) {
         super(context);
         init(context);
@@ -105,11 +108,17 @@ public class WidgetHolder extends FrameLayout {
     public void enterEditMode() {
         final View editControls = findViewById(R.id.edit_controls);
         editControls.setVisibility(VISIBLE);
+        if (this.onEnterEditModeListener != null) {
+            this.onEnterEditModeListener.onEnterEditMode();
+        }
     }
 
     public void exitEditMode() {
         final View editControls = findViewById(R.id.edit_controls);
         editControls.setVisibility(GONE);
+        if (this.onExitEditModeListener != null) {
+            this.onExitEditModeListener.onExitEditMode();
+        }
     }
 
     @Nullable
@@ -123,5 +132,21 @@ public class WidgetHolder extends FrameLayout {
             }
         }
         return null;
+    }
+
+    public void setOnEnterEditModeListener(@NonNull final OnEnterEditModeListener listener) {
+        this.onEnterEditModeListener = listener;
+    }
+
+    public void setOnExitEditModeListener(@NonNull final OnExitEditModeListener listener) {
+        this.onExitEditModeListener = listener;
+    }
+
+    public interface OnEnterEditModeListener {
+        void onEnterEditMode();
+    }
+
+    public interface OnExitEditModeListener {
+        void onExitEditMode();
     }
 }
