@@ -100,6 +100,13 @@ public class WidgetHolder extends FrameLayout {
 
         final ViewGroup widgetContainer = findViewById(R.id.widget_container);
         widgetContainer.addView(newWidgetView, layoutParams);
+
+        final View configureButton = findViewById(R.id.action_configure);
+        if (WidgetManager.isWidgetReconfigurable(newWidgetView.getAppWidgetInfo())) {
+            configureButton.setVisibility(VISIBLE);
+        } else {
+            configureButton.setVisibility(GONE);
+        }
     }
 
     public void removeWidgetView() {

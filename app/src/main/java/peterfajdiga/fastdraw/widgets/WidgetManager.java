@@ -49,7 +49,7 @@ public class WidgetManager {
     @Nullable
     public AppWidgetHostView createOrConfigureWidgetView(final int widgetId) {
         final AppWidgetProviderInfo widgetInfo = widgetManager.getAppWidgetInfo(widgetId);
-        if (widgetInfo.configure != null) {
+        if (isWidgetConfigurable(widgetInfo)) {
             widgetHost.startAppWidgetConfigureActivityForResult(activity, widgetId, 0, widgetCreateRequestCode, null);
             return null;
         } else {
@@ -71,5 +71,13 @@ public class WidgetManager {
 
     public void deleteWidget(final int widgetId) {
         widgetHost.deleteAppWidgetId(widgetId);
+    }
+
+    public static boolean isWidgetConfigurable(@NonNull final AppWidgetProviderInfo widgetInfo) {
+        return widgetInfo.configure != null;
+    }
+
+    public static boolean isWidgetReconfigurable(@NonNull final AppWidgetProviderInfo widgetInfo) {
+        return isWidgetConfigurable(widgetInfo) && (widgetInfo.widgetFeatures & AppWidgetProviderInfo.WIDGET_FEATURE_RECONFIGURABLE) != 0;
     }
 }
