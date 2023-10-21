@@ -226,6 +226,8 @@ public class MainActivity extends FragmentActivity implements CategorySelectionD
         widgetHolder.setWidgetViewGesturesListener(gesturesListener);
         widgetHolder.setOnEnterEditModeListener(() -> editScrim.setVisibility(View.VISIBLE));
         widgetHolder.setOnExitEditModeListener(() -> editScrim.setVisibility(View.GONE));
+        widgetHolder.setOnActionReplaceListener(this::showCreateWidgetDialog);
+        widgetHolder.setOnActionConfigureListener(widgetView -> this.widgetManager.configureWidget(widgetView.getAppWidgetId()));
         widgetHolder.setOnWidgetRemovedListener(widgetView -> widgetManager.deleteWidget(widgetView.getAppWidgetId()));
         editScrim.setOnClickListener(v -> widgetHolder.exitEditMode());
 
@@ -676,10 +678,10 @@ public class MainActivity extends FragmentActivity implements CategorySelectionD
                 return;
             }
             case CREATE_WIDGET_REQUEST: {
-                final int widgetId = data.getExtras().getInt(AppWidgetManager.EXTRA_APPWIDGET_ID, -1);
-                assert widgetId > -1;
                 switch (resultCode) {
                     case RESULT_OK: {
+                        final int widgetId = data.getExtras().getInt(AppWidgetManager.EXTRA_APPWIDGET_ID, -1);
+                        assert widgetId > -1;
                         final AppWidgetHostView widgetView = widgetManager.createWidgetView(widgetId);
                         if (widgetView != null) {
                             setWidget(widgetView);
@@ -687,6 +689,20 @@ public class MainActivity extends FragmentActivity implements CategorySelectionD
                         break;
                     }
                     case RESULT_CANCELED: {
+                        if (data == null) {
+                            break;
+                        }
+
+                        final Bundle extras = data.getExtras();
+                        if (extras == null) {
+                            break;
+                        }
+
+                        final int widgetId = extras.getInt(AppWidgetManager.EXTRA_APPWIDGET_ID, -1);
+                        if (widgetId == -1) {
+                            break;
+                        }
+
                         widgetManager.deleteWidget(widgetId);
                         break;
                     }

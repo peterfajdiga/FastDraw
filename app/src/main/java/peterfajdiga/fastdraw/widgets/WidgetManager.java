@@ -68,6 +68,10 @@ public class WidgetManager {
         return view;
     }
 
+    public void configureWidget(final int widgetId) {
+        widgetHost.startAppWidgetConfigureActivityForResult(activity, widgetId, 0, 0, null);
+    }
+
     public void deleteWidget(final int widgetId) {
         widgetHost.deleteAppWidgetId(widgetId);
     }

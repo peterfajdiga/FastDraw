@@ -16,6 +16,8 @@ import peterfajdiga.fastdraw.R;
 import peterfajdiga.fastdraw.views.GestureInterceptor;
 
 public class WidgetHolder extends FrameLayout {
+    private OnActionReplaceListener onActionReplaceListener;
+    private OnActionConfigureListener onActionConfigureListener;
     private OnWidgetRemovedListener onWidgetRemovedListener;
     private OnEnterEditModeListener onEnterEditModeListener;
     private OnExitEditModeListener onExitEditModeListener;
@@ -57,6 +59,18 @@ public class WidgetHolder extends FrameLayout {
         });
 
         findViewById(R.id.edit_controls).setOnClickListener(v -> this.exitEditMode());
+        findViewById(R.id.action_replace).setOnClickListener(v -> {
+            this.exitEditMode();
+            if (this.onActionReplaceListener != null) {
+                this.onActionReplaceListener.OnActionReplace();
+            }
+        });
+        findViewById(R.id.action_configure).setOnClickListener(v -> {
+            this.exitEditMode();
+            if (this.onActionConfigureListener != null) {
+                this.onActionConfigureListener.OnActionConfigure(getWidgetView());
+            }
+        });
         findViewById(R.id.action_remove).setOnClickListener(v -> {
             this.exitEditMode();
             this.removeWidgetView();
@@ -134,6 +148,14 @@ public class WidgetHolder extends FrameLayout {
         return null;
     }
 
+    public void setOnActionReplaceListener(@NonNull final OnActionReplaceListener listener) {
+        this.onActionReplaceListener = listener;
+    }
+
+    public void setOnActionConfigureListener(@NonNull final OnActionConfigureListener listener) {
+        this.onActionConfigureListener = listener;
+    }
+
     public void setOnWidgetRemovedListener(@NonNull final OnWidgetRemovedListener listener) {
         this.onWidgetRemovedListener = listener;
     }
@@ -144,6 +166,14 @@ public class WidgetHolder extends FrameLayout {
 
     public void setOnExitEditModeListener(@NonNull final OnExitEditModeListener listener) {
         this.onExitEditModeListener = listener;
+    }
+
+    public interface OnActionReplaceListener {
+        void OnActionReplace();
+    }
+
+    public interface OnActionConfigureListener {
+        void OnActionConfigure(AppWidgetHostView widgetView);
     }
 
     public interface OnWidgetRemovedListener {

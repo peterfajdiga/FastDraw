@@ -21,12 +21,14 @@
             android:layout_gravity="center">
 
             <Button
+                android:id="@+id/action_replace"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:text="Replace" />
 
             <Button
+                android:id="@+id/action_configure"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
