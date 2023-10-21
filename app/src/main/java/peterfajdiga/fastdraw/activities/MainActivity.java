@@ -226,6 +226,7 @@ public class MainActivity extends FragmentActivity implements CategorySelectionD
         widgetHolder.setWidgetViewGesturesListener(gesturesListener);
         widgetHolder.setOnEnterEditModeListener(() -> editScrim.setVisibility(View.VISIBLE));
         widgetHolder.setOnExitEditModeListener(() -> editScrim.setVisibility(View.GONE));
+        widgetHolder.setOnWidgetRemovedListener(widgetView -> widgetManager.deleteWidget(widgetView.getAppWidgetId()));
         editScrim.setOnClickListener(v -> widgetHolder.exitEditMode());
 
         final View resizeHandle = findViewById(R.id.widget_resize_handle);
@@ -715,18 +716,12 @@ public class MainActivity extends FragmentActivity implements CategorySelectionD
     private void replaceWidget(@NonNull final AppWidgetHostView newWidgetView) {
         final float height = calcWidgetHeight(0.0f);
         final WidgetHolder widgetHolder = findViewById(R.id.widget_holder);
-        final AppWidgetHostView oldWidgetView = widgetHolder.replaceWidgetView(newWidgetView, Math.round(height));
-        if (oldWidgetView != null) {
-            widgetManager.deleteWidget(oldWidgetView.getAppWidgetId());
-        }
+        widgetHolder.replaceWidgetView(newWidgetView, Math.round(height));
     }
 
     public void removeWidget() {
         final WidgetHolder widgetHolder = findViewById(R.id.widget_holder);
-        final AppWidgetHostView oldWidgetView = widgetHolder.removeWidgetView();
-        if (oldWidgetView != null) {
-            widgetManager.deleteWidget(oldWidgetView.getAppWidgetId());
-        }
+        widgetHolder.removeWidgetView();
         final PrefMap widgetPrefs = new PrefMap(this, PREFS_WIDGETS);
         widgetPrefs.remove(PREF_KEY_WIDGET_ID);
     }

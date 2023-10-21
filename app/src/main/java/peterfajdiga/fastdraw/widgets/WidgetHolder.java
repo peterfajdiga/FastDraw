@@ -16,6 +16,7 @@ import peterfajdiga.fastdraw.R;
 import peterfajdiga.fastdraw.views.GestureInterceptor;
 
 public class WidgetHolder extends FrameLayout {
+    private OnWidgetRemovedListener onWidgetRemovedListener;
     private OnEnterEditModeListener onEnterEditModeListener;
     private OnExitEditModeListener onExitEditModeListener;
 
@@ -61,13 +62,8 @@ public class WidgetHolder extends FrameLayout {
         widgetContainer.setOnInterceptTouchListener(gesturesListener);
     }
 
-    /**
-     * @param newWidgetView the new widget view
-     * @return the old widget view if it was set, otherwise null
-     */
-    @Nullable
-    public AppWidgetHostView replaceWidgetView(@NonNull final AppWidgetHostView newWidgetView, final int height) {
-        final AppWidgetHostView oldWidgetView = removeWidgetView();
+    public void replaceWidgetView(@NonNull final AppWidgetHostView newWidgetView, final int height) {
+        removeWidgetView();
 
         final Resources res = getResources();
         final int margin = Math.round(res.getDimension(R.dimen.widget_margin));
@@ -84,21 +80,17 @@ public class WidgetHolder extends FrameLayout {
 
         final ViewGroup widgetContainer = findViewById(R.id.widget_container);
         widgetContainer.addView(newWidgetView, layoutParams);
-
-        return oldWidgetView;
     }
 
-    /**
-     * @return the old widget view if it was set, otherwise null
-     */
-    @Nullable
-    public AppWidgetHostView removeWidgetView() {
+    public void removeWidgetView() {
         final ViewGroup widgetContainer = findViewById(R.id.widget_container);
         final AppWidgetHostView oldWidgetView = getWidgetView();
         if (oldWidgetView != null) {
             widgetContainer.removeView(oldWidgetView);
+            if (this.onWidgetRemovedListener != null) {
+                this.onWidgetRemovedListener.onWidgetRemoved(oldWidgetView);
+            }
         }
-        return oldWidgetView;
     }
 
     public void setWidgetHeight(final int newHeight) {
@@ -136,12 +128,20 @@ public class WidgetHolder extends FrameLayout {
         return null;
     }
 
+    public void setOnWidgetRemovedListener(@NonNull final OnWidgetRemovedListener listener) {
+        this.onWidgetRemovedListener = listener;
+    }
+
     public void setOnEnterEditModeListener(@NonNull final OnEnterEditModeListener listener) {
         this.onEnterEditModeListener = listener;
     }
 
     public void setOnExitEditModeListener(@NonNull final OnExitEditModeListener listener) {
         this.onExitEditModeListener = listener;
+    }
+
+    public interface OnWidgetRemovedListener {
+        void onWidgetRemoved(AppWidgetHostView widgetView);
     }
 
     public interface OnEnterEditModeListener {
