@@ -247,6 +247,9 @@ public class MainActivity extends FragmentActivity implements CategorySelectionD
                 return false;
             }
         });
+
+        final View editScrim = findViewById(R.id.widget_edit_scrim);
+        editScrim.setOnClickListener(v -> this.exitWidgetEditMode());
     }
 
     @SuppressLint("ClickableViewAccessibility")
@@ -749,6 +752,18 @@ public class MainActivity extends FragmentActivity implements CategorySelectionD
             displayHeight * 0.25f,
             displayHeight * 0.75f // TODO: handle landscape orientation
         );
+    }
+
+    private void enterWidgetEditMode() {
+        final WidgetHolder widgetHolder = findViewById(R.id.widget_holder);
+        widgetHolder.enterEditMode();
+        findViewById(R.id.widget_edit_scrim).setVisibility(View.VISIBLE);
+    }
+
+    private void exitWidgetEditMode() {
+        final WidgetHolder widgetHolder = findViewById(R.id.widget_holder);
+        widgetHolder.exitEditMode();
+        findViewById(R.id.widget_edit_scrim).setVisibility(View.GONE);
     }
 
     private void persistWidgetHeight(final float delta) {

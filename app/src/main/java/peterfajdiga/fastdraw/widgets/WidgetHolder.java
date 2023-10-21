@@ -102,6 +102,16 @@ public class WidgetHolder extends FrameLayout {
         widgetView.setLayoutParams(widgetView.getLayoutParams());
     }
 
+    public void enterEditMode() {
+        final View editControls = findViewById(R.id.edit_controls);
+        editControls.setVisibility(VISIBLE);
+    }
+
+    public void exitEditMode() {
+        final View editControls = findViewById(R.id.edit_controls);
+        editControls.setVisibility(GONE);
+    }
+
     @Nullable
     private AppWidgetHostView getWidgetView() {
         final ViewGroup widgetContainer = findViewById(R.id.widget_container);

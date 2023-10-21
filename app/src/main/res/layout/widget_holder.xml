@@ -9,36 +9,44 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
-    <LinearLayout
+    <FrameLayout
+        android:id="@+id/edit_controls"
         android:layout_width="match_parent"
-        android:layout_height="56dp"
-        android:layout_gravity="center">
+        android:layout_height="match_parent"
+        android:visibility="gone">
 
-        <Button
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:text="Replace" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:layout_gravity="center">
 
-        <Button
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:text="Configure" />
+            <Button
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:text="Replace" />
 
-        <Button
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:text="Remove" />
+            <Button
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:text="Configure" />
 
-    </LinearLayout>
+            <Button
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:text="Remove" />
 
-    <View
-        android:id="@+id/widget_resize_handle"
-        android:layout_width="wrap_content"
-        android:layout_height="24dp"
-        android:layout_gravity="bottom"
-        android:background="@drawable/widget_resize_handle" />
+        </LinearLayout>
+
+        <View
+            android:id="@+id/widget_resize_handle"
+            android:layout_width="wrap_content"
+            android:layout_height="24dp"
+            android:layout_gravity="bottom"
+            android:background="@drawable/widget_resize_handle" />
+
+    </FrameLayout>
 
 </merge>
