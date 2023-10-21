@@ -135,14 +135,12 @@ public class MainActivity extends FragmentActivity implements CategorySelectionD
 
         final NestedScrollParent scrollParent = findViewById(R.id.scroll_parent);
         final DisplayMetrics displayMetrics = getResources().getDisplayMetrics();
-        final View.OnTouchListener longPressListener = new LongPress(displayMetrics, this::openActionsMenu);
-        final View.OnTouchListener gesturesListener = new OnTouchListenerMux(
-            longPressListener,
-            new Swipe(displayMetrics, Swipe.Direction.DOWN, this::expandNotificationsPanel, () -> scrollParent.getScrollY() == 0)
-        );
 
-        setupWidgets(gesturesListener);
-        setupAppsPager(scrollParent, longPressListener);
+        setupWidgets(new OnTouchListenerMux(
+            new LongPress(displayMetrics, this::enterWidgetEditMode),
+            new Swipe(displayMetrics, Swipe.Direction.DOWN, this::expandNotificationsPanel, () -> scrollParent.getScrollY() == 0)
+        ));
+        setupAppsPager(scrollParent, new LongPress(displayMetrics, this::openActionsMenu));
         setupInstallAppReceiver();
 
         final View contentView = findViewById(android.R.id.content);
