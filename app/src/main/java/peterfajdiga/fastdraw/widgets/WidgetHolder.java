@@ -55,6 +55,8 @@ public class WidgetHolder extends FrameLayout {
                 widgetView.updateAppWidgetSize(null, widthDp, heightDp, widthDp, heightDp);
             }
         });
+
+        findViewById(R.id.edit_controls).setOnClickListener(v -> this.exitEditMode());
     }
 
     public void setWidgetViewGesturesListener(@NonNull final View.OnTouchListener gesturesListener) {
