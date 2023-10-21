@@ -240,11 +240,11 @@ public class MainActivity extends FragmentActivity implements CategorySelectionD
                         startHeight = event.getRawY();
                         return true;
                     case MotionEvent.ACTION_MOVE:
-                        resizeWidgetView(event.getRawY() - startHeight);
+                        resizeWidget(event.getRawY() - startHeight);
                         return true;
                     case MotionEvent.ACTION_UP:
                         final float deltaHeight = event.getRawY() - startHeight;
-                        resizeWidgetView(deltaHeight);
+                        resizeWidget(deltaHeight);
                         persistWidgetHeight(deltaHeight);
                         return true;
                 }
@@ -726,7 +726,7 @@ public class MainActivity extends FragmentActivity implements CategorySelectionD
         widgetPrefs.remove(PREF_KEY_WIDGET_ID);
     }
 
-    private void resizeWidgetView(final float heightDelta) {
+    private void resizeWidget(final float heightDelta) {
         final float newHeight = calcWidgetHeight(heightDelta);
         final WidgetHolder widgetHolder = findViewById(R.id.widget_holder);
         widgetHolder.setWidgetHeight(Math.round(newHeight));
