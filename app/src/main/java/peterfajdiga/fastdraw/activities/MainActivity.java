@@ -236,7 +236,11 @@ public class MainActivity extends FragmentActivity implements CategorySelectionD
         widgetHolder.setOnExitEditModeListener(() -> editScrims.forEach(scrim -> scrim.setVisibility(View.GONE)));
         widgetHolder.setOnActionReplaceListener(this::showCreateWidgetDialog);
         widgetHolder.setOnActionConfigureListener(widgetView -> this.widgetManager.configureWidget(widgetView.getAppWidgetId()));
-        widgetHolder.setOnWidgetRemovedListener(widgetView -> widgetManager.deleteWidget(widgetView.getAppWidgetId()));
+        widgetHolder.setOnWidgetRemovedListener(widgetView -> {
+            widgetManager.deleteWidget(widgetView.getAppWidgetId());
+            final PrefMap widgetPrefs = new PrefMap(this, PREFS_WIDGETS);
+            widgetPrefs.remove(PREF_KEY_WIDGET_ID);
+        });
         editScrims.forEach(scrim -> scrim.setOnClickListener(view -> widgetHolder.exitEditMode()));
 
         final View resizeHandle = findViewById(R.id.widget_resize_handle);
@@ -741,13 +745,6 @@ public class MainActivity extends FragmentActivity implements CategorySelectionD
         final float height = calcWidgetHeight(0.0f);
         final WidgetHolder widgetHolder = findViewById(R.id.widget_holder);
         widgetHolder.replaceWidgetView(newWidgetView, Math.round(height));
-    }
-
-    public void removeWidget() {
-        final WidgetHolder widgetHolder = findViewById(R.id.widget_holder);
-        widgetHolder.removeWidgetView();
-        final PrefMap widgetPrefs = new PrefMap(this, PREFS_WIDGETS);
-        widgetPrefs.remove(PREF_KEY_WIDGET_ID);
     }
 
     private void resizeWidget(final float heightDelta) {
