@@ -69,4 +69,12 @@
 
     </LinearLayout>
 
+    <View
+        android:id="@+id/widget_edit_scrim_2"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/pager_header_height"
+        android:layout_gravity="bottom"
+        android:background="#80000000"
+        android:visibility="gone" />
+
 </FrameLayout>

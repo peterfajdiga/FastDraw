@@ -53,6 +53,10 @@ import com.google.android.material.tabs.TabLayout;
 import java.lang.ref.WeakReference;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import peterfajdiga.fastdraw.Category;
@@ -222,14 +226,18 @@ public class MainActivity extends FragmentActivity implements CategorySelectionD
         loadPersistedWidget();
 
         final WidgetHolder widgetHolder = findViewById(R.id.widget_holder);
-        final View editScrim = findViewById(R.id.widget_edit_scrim);
+        final List<View> editScrims = Arrays.stream((new View[]{
+            findViewById(R.id.widget_edit_scrim),
+            findViewById(R.id.widget_edit_scrim_2)
+        })).filter(Objects::nonNull).collect(Collectors.toList());
+
         widgetHolder.setWidgetViewGesturesListener(gesturesListener);
-        widgetHolder.setOnEnterEditModeListener(() -> editScrim.setVisibility(View.VISIBLE));
-        widgetHolder.setOnExitEditModeListener(() -> editScrim.setVisibility(View.GONE));
+        widgetHolder.setOnEnterEditModeListener(() -> editScrims.forEach(scrim -> scrim.setVisibility(View.VISIBLE)));
+        widgetHolder.setOnExitEditModeListener(() -> editScrims.forEach(scrim -> scrim.setVisibility(View.GONE)));
         widgetHolder.setOnActionReplaceListener(this::showCreateWidgetDialog);
         widgetHolder.setOnActionConfigureListener(widgetView -> this.widgetManager.configureWidget(widgetView.getAppWidgetId()));
         widgetHolder.setOnWidgetRemovedListener(widgetView -> widgetManager.deleteWidget(widgetView.getAppWidgetId()));
-        editScrim.setOnClickListener(v -> widgetHolder.exitEditMode());
+        editScrims.forEach(scrim -> scrim.setOnClickListener(view -> widgetHolder.exitEditMode()));
 
         final View resizeHandle = findViewById(R.id.widget_resize_handle);
         resizeHandle.setOnTouchListener(new View.OnTouchListener() {
