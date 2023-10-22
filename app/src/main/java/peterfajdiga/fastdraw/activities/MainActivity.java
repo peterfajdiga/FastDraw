@@ -765,8 +765,8 @@ public class MainActivity extends FragmentActivity implements CategorySelectionD
         final float displayHeight = res.getDisplayMetrics().heightPixels;
         return Utils.clamp(
             configuredHeight + delta,
-            displayHeight * 0.25f,
-            displayHeight * 0.75f // TODO: handle landscape orientation
+            displayHeight * 0.2f,
+            displayHeight * 0.7f // TODO: handle landscape orientation
         );
     }
 
