@@ -73,11 +73,11 @@ public class WidgetManager {
         widgetHost.deleteAppWidgetId(widgetId);
     }
 
-    public static boolean isWidgetConfigurable(@NonNull final AppWidgetProviderInfo widgetInfo) {
-        return widgetInfo.configure != null;
+    public static boolean isWidgetConfigurable(@Nullable final AppWidgetProviderInfo widgetInfo) {
+        return widgetInfo != null && widgetInfo.configure != null;
     }
 
-    public static boolean isWidgetReconfigurable(@NonNull final AppWidgetProviderInfo widgetInfo) {
+    public static boolean isWidgetReconfigurable(@Nullable final AppWidgetProviderInfo widgetInfo) {
         return isWidgetConfigurable(widgetInfo) && (widgetInfo.widgetFeatures & AppWidgetProviderInfo.WIDGET_FEATURE_RECONFIGURABLE) != 0;
     }
 }
