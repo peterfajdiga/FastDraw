@@ -142,6 +142,10 @@ public class WidgetHolder extends FrameLayout {
         }
     }
 
+    public boolean hasWidgetView() {
+        return getWidgetView() != null;
+    }
+
     @Nullable
     private AppWidgetHostView getWidgetView() {
         final ViewGroup widgetContainer = findViewById(R.id.widget_container);

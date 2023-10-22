@@ -921,6 +921,16 @@ public class MainActivity extends FragmentActivity implements CategorySelectionD
         widgetManager.pickWidget();
     }
 
+    public boolean hasWidget() {
+        final WidgetHolder widgetHolder = findViewById(R.id.widget_holder);
+        return widgetHolder.hasWidgetView();
+    }
+
+    public void editWidget() {
+        final WidgetHolder widgetHolder = findViewById(R.id.widget_holder);
+        widgetHolder.enterEditMode();
+    }
+
     public void setHiddenVisibility(final boolean visible) {
         // TODO: refactor
         PreferenceManager.getDefaultSharedPreferences(this).edit().putBoolean("hideHidden", !visible).apply();

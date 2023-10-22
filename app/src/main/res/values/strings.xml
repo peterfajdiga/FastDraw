@@ -10,8 +10,8 @@
 
     <string name="action_wallpaper">Change wallpaper</string>
     <string name="action_shortcut">Add a shortcut</string>
-    <string name="action_widget">Change widget</string>
-    <string name="action_remove_widget">Remove widget</string>
+    <string name="action_widget_add">Add a widget</string>
+    <string name="action_widget_edit">Edit widget</string>
     <string name="action_hidden_show">Show hidden apps</string>
     <string name="action_hidden_hide">Hide hidden apps</string>
     <string name="action_settings">Open preferences</string>
