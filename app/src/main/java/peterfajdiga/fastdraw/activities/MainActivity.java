@@ -235,7 +235,6 @@ public class MainActivity extends FragmentActivity implements CategorySelectionD
         widgetHolder.setWidgetViewGesturesListener(gesturesListener);
         widgetHolder.setOnEnterEditModeListener(() -> {
             editScrims.forEach(scrim -> scrim.setVisibility(View.VISIBLE));
-            scrollParent.setScrollbarFadingEnabled(false);
         });
         widgetHolder.setOnExitEditModeListener(() -> {
             editScrims.forEach(scrim -> scrim.setVisibility(View.GONE));
@@ -259,6 +258,7 @@ public class MainActivity extends FragmentActivity implements CategorySelectionD
                 switch (event.getAction()) {
                     case MotionEvent.ACTION_DOWN:
                         startHeight = event.getRawY();
+                        scrollParent.setScrollbarFadingEnabled(false);
                         return true;
                     case MotionEvent.ACTION_MOVE:
                         resizeWidget(event.getRawY() - startHeight);
@@ -267,6 +267,7 @@ public class MainActivity extends FragmentActivity implements CategorySelectionD
                         final float deltaHeight = event.getRawY() - startHeight;
                         resizeWidget(deltaHeight);
                         persistWidgetHeight(deltaHeight);
+                        scrollParent.setScrollbarFadingEnabled(true);
                         return true;
                 }
                 return false;
