@@ -225,6 +225,7 @@ public class MainActivity extends FragmentActivity implements CategorySelectionD
 
         loadPersistedWidget();
 
+        final NestedScrollParent scrollParent = findViewById(R.id.scroll_parent);
         final WidgetHolder widgetHolder = findViewById(R.id.widget_holder);
         final List<View> editScrims = Arrays.stream((new View[]{
             findViewById(R.id.widget_edit_scrim),
@@ -232,8 +233,14 @@ public class MainActivity extends FragmentActivity implements CategorySelectionD
         })).filter(Objects::nonNull).collect(Collectors.toList());
 
         widgetHolder.setWidgetViewGesturesListener(gesturesListener);
-        widgetHolder.setOnEnterEditModeListener(() -> editScrims.forEach(scrim -> scrim.setVisibility(View.VISIBLE)));
-        widgetHolder.setOnExitEditModeListener(() -> editScrims.forEach(scrim -> scrim.setVisibility(View.GONE)));
+        widgetHolder.setOnEnterEditModeListener(() -> {
+            editScrims.forEach(scrim -> scrim.setVisibility(View.VISIBLE));
+            scrollParent.setScrollbarFadingEnabled(false);
+        });
+        widgetHolder.setOnExitEditModeListener(() -> {
+            editScrims.forEach(scrim -> scrim.setVisibility(View.GONE));
+            scrollParent.setScrollbarFadingEnabled(true);
+        });
         widgetHolder.setOnActionReplaceListener(this::showCreateWidgetDialog);
         widgetHolder.setOnActionConfigureListener(widgetView -> this.widgetManager.configureWidget(widgetView.getAppWidgetId()));
         widgetHolder.setOnWidgetRemovedListener(widgetView -> {
