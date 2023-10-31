@@ -29,12 +29,12 @@
     <string name="pref_title_allowOrientation">Разрешить вращение</string>
     <string name="pref_description_allowOrientation">Позволяет менять ориентацию между книжной и альбомной</string>
     <string name="pref_title_widgetHeight">Размер виджета</string>
-    <string name="pref_title_headerbtm">Разместите язычки внизу</string>
-    <string name="pref_description_headerbtm">Разместите вкладки категорий в нижней части экрана, а не в верхней</string>
-    <string name="pref_title_scrollableTabs">Прокручиваемые вкладки</string>
+    <string name="pref_title_headerbtm">Разместить вкладки внизу</string>
+    <string name="pref_description_headerbtm">Разместить вкладки категорий в нижней части экрана, а не в верхней</string>
+    <string name="pref_title_scrollableTabs">Прокручивать вкладки</string>
     <string name="pref_description_scrollableTabs">Если у вас много категорий (эксперементально)</string>
 
-    <string name="pref_header_appearance">Внешность</string>
+    <string name="pref_header_appearance">Внешний вид</string>
     <string name="pref_title_wallpaperParallax">Параллакс обоев</string>
     <string name="pref_description_wallpaperParallax">Обои для рабочего стола с фильмами при переключении категорий</string>
     <string name="pref_title_headerSeparator">Показать разделитель вкладок</string>
