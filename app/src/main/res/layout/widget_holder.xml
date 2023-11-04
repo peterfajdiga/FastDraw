@@ -29,7 +29,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:drawableTop="@drawable/ic_action_swap"
-                    android:text="Replace"
+                    android:text="@string/widget_replace"
                     style="?android:attr/buttonBarButtonStyle" />
 
                 <Button
@@ -37,7 +37,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:drawableTop="@drawable/ic_action_settings"
-                    android:text="Configure"
+                    android:text="@string/widget_setup"
                     style="?android:attr/buttonBarButtonStyle" />
 
                 <Button
@@ -45,7 +45,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:drawableTop="@drawable/ic_action_delete"
-                    android:text="Remove"
+                    android:text="@string/widget_remove"
                     style="?android:attr/buttonBarButtonStyle" />
 
             </LinearLayout>
