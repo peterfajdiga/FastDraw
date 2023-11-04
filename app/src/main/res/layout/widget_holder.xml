@@ -15,33 +15,42 @@
         android:layout_height="match_parent"
         android:visibility="gone">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="56dp"
+        <androidx.cardview.widget.CardView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_gravity="center">
 
-            <Button
-                android:id="@+id/action_replace"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:text="Replace" />
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
 
-            <Button
-                android:id="@+id/action_configure"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:text="Configure" />
+                <Button
+                    android:id="@+id/action_replace"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:drawableTop="@drawable/ic_action_swap"
+                    android:text="Replace"
+                    style="?android:attr/buttonBarButtonStyle" />
 
-            <Button
-                android:id="@+id/action_remove"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:text="Remove" />
+                <Button
+                    android:id="@+id/action_configure"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:drawableTop="@drawable/ic_action_settings"
+                    android:text="Configure"
+                    style="?android:attr/buttonBarButtonStyle" />
 
-        </LinearLayout>
+                <Button
+                    android:id="@+id/action_remove"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:drawableTop="@drawable/ic_action_delete"
+                    android:text="Remove"
+                    style="?android:attr/buttonBarButtonStyle" />
+
+            </LinearLayout>
+
+        </androidx.cardview.widget.CardView>
 
         <View
             android:id="@+id/widget_resize_handle"
