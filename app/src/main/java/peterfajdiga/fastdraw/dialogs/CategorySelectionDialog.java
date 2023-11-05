@@ -1,7 +1,6 @@
 package peterfajdiga.fastdraw.dialogs;
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
@@ -16,6 +15,8 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.DialogFragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import peterfajdiga.fastdraw.Category;
 import peterfajdiga.fastdraw.views.AutoGridLayoutManager;
@@ -46,7 +47,7 @@ public class CategorySelectionDialog extends DialogFragment {
         assert arguments != null;
         final String title = arguments.getString(TITLE_KEY);
 
-        final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        final MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(getActivity());
         builder.setTitle(title);
 
         final int spanWidth = Math.round(TypedValue.applyDimension(
