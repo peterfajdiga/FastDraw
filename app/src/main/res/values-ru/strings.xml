@@ -17,6 +17,10 @@
     <string name="action_settings">Открыть настройки</string>
     <string name="action_notifications">Открыть панель уведомлений</string>
 
+    <string name="widget_replace">Заменить</string>
+    <string name="widget_setup">Установить</string>
+    <string name="widget_remove">Удалить</string>
+    
     <string name="no_app">Приложение не установлено</string>
     <string name="no_permission">Вы не предоставили Fast Draw разрешение на звонки. Вы можете изменить это в информации о приложении Fast Draw.</string>
     <string name="no_intent">Fast Draw не может запустить это приложение или ярлык :( Пожалуйста, сделайте репорт :)</string>
