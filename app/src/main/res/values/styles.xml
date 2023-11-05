@@ -1,6 +1,6 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
 
-    <style name="AppTheme.Wallpaper" parent="@style/Theme.AppCompat.NoActionBar">
+    <style name="AppTheme.Wallpaper" parent="@style/Theme.Material3.DynamicColors.Dark">
         <item name="android:windowBackground">@android:color/transparent</item>
         <item name="android:colorBackgroundCacheHint">@null</item>
         <item name="android:windowShowWallpaper">true</item>
@@ -8,9 +8,7 @@
         <item name="android:statusBarColor">@android:color/transparent</item>
         <item name="android:navigationBarColor">@android:color/transparent</item>
         <item name="android:enforceNavigationBarContrast" tools:targetApi="29">false</item>
-    </style>
 
-    <style name="AppTheme.Wallpaper.Dark" parent="AppTheme.Wallpaper">
         <item name="android:colorEdgeEffect">@android:color/white</item>
         <item name="android:textColorPrimary">@android:color/white</item>
         <item name="textColorPrimaryInactive">#80FFFFFF</item>
