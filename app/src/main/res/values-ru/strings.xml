@@ -1,0 +1,60 @@
+<resources>
+    <string name="app_name">Fast Draw</string>
+    <string name="new_category">Новая категория</string>
+    <string name="hide">Скрыть</string>
+    <string name="change_category_icon">Изменить иконку категории</string>
+    <string name="app_info">О приложении</string>
+    <string name="select_wallpaper">Изменить обои</string>
+    <string name="add_shortcut">Добавить ярлык</string>
+    <string name="remove_shortcut">Удалить ярлык</string>
+
+    <string name="action_wallpaper">Изменить обои</string>
+    <string name="action_shortcut">Добавить ярлык</string>
+    <string name="action_widget">Изменить виджет</string>
+    <string name="action_remove_widget">Удалить виджет</string>
+    <string name="action_hidden_show">Показать скрытые приложения</string>
+    <string name="action_hidden_hide">Скрыть скрытые приложения</string>
+    <string name="action_settings">Открыть настройки</string>
+    <string name="action_notifications">Открыть панель уведомлений</string>
+
+    <string name="widget_replace">Заменить</string>
+    <string name="widget_setup">Установить</string>
+    <string name="widget_remove">Удалить</string>
+    
+    <string name="no_app">Приложение не установлено</string>
+    <string name="no_permission">Вы не предоставили Fast Draw разрешение на звонки. Вы можете изменить это в информации о приложении Fast Draw.</string>
+    <string name="no_intent">Fast Draw не может запустить это приложение или ярлык :( Пожалуйста, сделайте репорт :)</string>
+
+
+    <!-- Strings related to Settings -->
+    <string name="title_activity_settings">Настройки Fast Draw</string>
+
+    <string name="pref_header_general">Общие</string>
+    <string name="pref_title_allowOrientation">Разрешить вращение</string>
+    <string name="pref_description_allowOrientation">Позволяет менять ориентацию между книжной и альбомной</string>
+    <string name="pref_title_widgetHeight">Размер виджета</string>
+    <string name="pref_title_headerbtm">Разместить вкладки внизу</string>
+    <string name="pref_description_headerbtm">Разместить вкладки категорий в нижней части экрана, а не в верхней</string>
+    <string name="pref_title_scrollableTabs">Прокручивать вкладки</string>
+    <string name="pref_description_scrollableTabs">Если у вас много категорий (эксперементально)</string>
+
+    <string name="pref_header_appearance">Внешний вид</string>
+    <string name="pref_title_wallpaperParallax">Параллакс обоев</string>
+    <string name="pref_description_wallpaperParallax">Обои для рабочего стола с фильмами при переключении категорий</string>
+    <string name="pref_title_headerSeparator">Показать разделитель вкладок</string>
+    <string name="pref_description_headerSeparator">Отобразите белую линию между вкладками и приложениями</string>
+    <string name="pref_title_bgGradientColorFromWallpaper">Цвет фоновой тени с обоев</string>
+    <string name="pref_description_bgGradientColorFromWallpaper">Раскрасьте фоновую тень в соответствии с цветом ваших обоев (требуется Android Oreo или новее)</string>
+    <string name="pref_title_bgGradientOpacity">Непрозрачность фоновой тени</string>
+
+    <string name="pref_header_categoryorder">Порядок категорий</string>
+    <string name="pref_title_orderreset">Упорядочивать в алфавитном порядке</string>
+
+    <string name="error_oreo_user_handle">Пользователь заблокирован или не запущен</string>
+    <string name="error_oreo_activity_not_found">Активность не существует</string>
+    <string name="error_oreo_shortcuts_security">Не можете загрузить ярлык, потому что Fast Draw не является программой запуска по умолчанию</string>
+    <string name="error_oreo_shortcut_host_permission">У Fast Draw нет разрешения shortcut host. Убедитесь, что по умолчанию используется программа запуска Fast Draw.</string>
+
+    <string name="error_launch_exception">Не удается запустить элемент из-за неизвестной ошибки. Пожалуйста, сообщите об этой проблеме.</string>
+    <string name="error_expand_notifications_panel">Не удается открыть панель уведомлений. Возможно, ваша версия Android не поддерживает это для сторонних лаунчеров.</string>
+</resources>
