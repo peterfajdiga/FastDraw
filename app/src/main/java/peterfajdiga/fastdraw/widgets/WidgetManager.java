@@ -49,11 +49,8 @@ public class WidgetManager {
     @Nullable
     public AppWidgetHostView createOrConfigureWidgetView(final int widgetId) {
         final AppWidgetProviderInfo widgetInfo = widgetManager.getAppWidgetInfo(widgetId);
-        if (widgetInfo.configure != null) {
-            final Intent intent = new Intent(AppWidgetManager.ACTION_APPWIDGET_CONFIGURE);
-            intent.setComponent(widgetInfo.configure);
-            intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, widgetId);
-            activity.startActivityForResult(intent, widgetCreateRequestCode);
+        if (isWidgetConfigurable(widgetInfo)) {
+            widgetHost.startAppWidgetConfigureActivityForResult(activity, widgetId, 0, widgetCreateRequestCode, null);
             return null;
         } else {
             return createWidgetView(widgetId);
@@ -68,7 +65,19 @@ public class WidgetManager {
         return view;
     }
 
+    public void configureWidget(final int widgetId) {
+        widgetHost.startAppWidgetConfigureActivityForResult(activity, widgetId, 0, 0, null);
+    }
+
     public void deleteWidget(final int widgetId) {
         widgetHost.deleteAppWidgetId(widgetId);
+    }
+
+    public static boolean isWidgetConfigurable(@Nullable final AppWidgetProviderInfo widgetInfo) {
+        return widgetInfo != null && widgetInfo.configure != null;
+    }
+
+    public static boolean isWidgetReconfigurable(@Nullable final AppWidgetProviderInfo widgetInfo) {
+        return isWidgetConfigurable(widgetInfo) && (widgetInfo.widgetFeatures & AppWidgetProviderInfo.WIDGET_FEATURE_RECONFIGURABLE) != 0;
     }
 }

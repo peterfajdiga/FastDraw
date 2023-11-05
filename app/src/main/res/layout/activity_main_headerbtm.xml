@@ -15,8 +15,8 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
-            <peterfajdiga.fastdraw.views.GestureInterceptor
-                android:id="@+id/widget_container"
+            <peterfajdiga.fastdraw.widgets.WidgetHolder
+                android:id="@+id/widget_holder"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
 
@@ -30,6 +30,13 @@
                     android:id="@+id/apps_pager"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent" />
+
+                <View
+                    android:id="@+id/widget_edit_scrim"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@color/scrimBackground"
+                    android:visibility="gone" />
 
             </FrameLayout>
 
@@ -61,5 +68,13 @@
             style="@style/AppsTabLayout" />
 
     </LinearLayout>
+
+    <View
+        android:id="@+id/widget_edit_scrim_2"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/pager_header_height"
+        android:layout_gravity="bottom"
+        android:background="#80000000"
+        android:visibility="gone" />
 
 </FrameLayout>

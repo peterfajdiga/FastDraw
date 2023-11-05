@@ -31,11 +31,10 @@ import android.util.DisplayMetrics;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.DragEvent;
-import android.view.Gravity;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowInsets;
-import android.widget.FrameLayout;
 import android.widget.Toast;
 
 import androidx.annotation.ColorInt;
@@ -54,12 +53,17 @@ import com.google.android.material.tabs.TabLayout;
 import java.lang.ref.WeakReference;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import peterfajdiga.fastdraw.Category;
 import peterfajdiga.fastdraw.R;
 import peterfajdiga.fastdraw.RunnableQueue;
 import peterfajdiga.fastdraw.SettableBoolean;
+import peterfajdiga.fastdraw.Utils;
 import peterfajdiga.fastdraw.WallpaperColorUtils;
 import peterfajdiga.fastdraw.dialogs.ActionsSheet;
 import peterfajdiga.fastdraw.dialogs.CategorySelectionDialog;
@@ -81,12 +85,12 @@ import peterfajdiga.fastdraw.prefs.Preferences;
 import peterfajdiga.fastdraw.receivers.InstallAppReceiver;
 import peterfajdiga.fastdraw.views.CategoryTabLayout;
 import peterfajdiga.fastdraw.views.Drawables;
-import peterfajdiga.fastdraw.views.GestureInterceptor;
 import peterfajdiga.fastdraw.views.NestedScrollParent;
 import peterfajdiga.fastdraw.views.animators.ViewElevationAnimator;
 import peterfajdiga.fastdraw.views.gestures.LongPress;
 import peterfajdiga.fastdraw.views.gestures.OnTouchListenerMux;
 import peterfajdiga.fastdraw.views.gestures.Swipe;
+import peterfajdiga.fastdraw.widgets.WidgetHolder;
 import peterfajdiga.fastdraw.widgets.WidgetManager;
 
 public class MainActivity extends FragmentActivity implements CategorySelectionDialog.OnCategorySelectedListener {
@@ -135,14 +139,13 @@ public class MainActivity extends FragmentActivity implements CategorySelectionD
 
         final NestedScrollParent scrollParent = findViewById(R.id.scroll_parent);
         final DisplayMetrics displayMetrics = getResources().getDisplayMetrics();
-        final View.OnTouchListener longPressListener = new LongPress(displayMetrics, this::openActionsMenu);
-        final View.OnTouchListener gesturesListener = new OnTouchListenerMux(
-            longPressListener,
-            new Swipe(displayMetrics, Swipe.Direction.DOWN, this::expandNotificationsPanel, () -> scrollParent.getScrollY() == 0)
-        );
 
-        setupWidgets(gesturesListener);
-        setupAppsPager(scrollParent, longPressListener);
+        final WidgetHolder widgetHolder = findViewById(R.id.widget_holder);
+        setupWidgets(new OnTouchListenerMux(
+            new LongPress(displayMetrics, widgetHolder::enterEditMode),
+            new Swipe(displayMetrics, Swipe.Direction.DOWN, this::expandNotificationsPanel, () -> scrollParent.getScrollY() == 0)
+        ));
+        setupAppsPager(scrollParent, new LongPress(displayMetrics, this::openActionsMenu));
         setupInstallAppReceiver();
 
         final View contentView = findViewById(android.R.id.content);
@@ -222,19 +225,54 @@ public class MainActivity extends FragmentActivity implements CategorySelectionD
 
         loadPersistedWidget();
 
-        final GestureInterceptor widgetContainer = findViewById(R.id.widget_container);
-        widgetContainer.addOnLayoutChangeListener((v, left, top, right, bottom, oldLeft, oldTop, oldRight, oldBottom) -> {
-            final AppWidgetHostView widgetView = getCurrentWidgetView(widgetContainer);
-            if (widgetView != null) {
-                final int widthPx = widgetView.getWidth();
-                final int heightPx = widgetView.getHeight();
-                final float dp = getResources().getDisplayMetrics().density;
-                final int widthDp = Math.round(widthPx / dp);
-                final int heightDp = Math.round(heightPx / dp);
-                widgetView.updateAppWidgetSize(null, widthDp, heightDp, widthDp, heightDp);
+        final NestedScrollParent scrollParent = findViewById(R.id.scroll_parent);
+        final WidgetHolder widgetHolder = findViewById(R.id.widget_holder);
+        final List<View> editScrims = Arrays.stream((new View[]{
+            findViewById(R.id.widget_edit_scrim),
+            findViewById(R.id.widget_edit_scrim_2)
+        })).filter(Objects::nonNull).collect(Collectors.toList());
+
+        widgetHolder.setWidgetViewGesturesListener(gesturesListener);
+        widgetHolder.setOnEnterEditModeListener(() -> {
+            editScrims.forEach(scrim -> scrim.setVisibility(View.VISIBLE));
+        });
+        widgetHolder.setOnExitEditModeListener(() -> {
+            editScrims.forEach(scrim -> scrim.setVisibility(View.GONE));
+            scrollParent.setScrollbarFadingEnabled(true);
+        });
+        widgetHolder.setOnActionReplaceListener(this::showCreateWidgetDialog);
+        widgetHolder.setOnActionConfigureListener(widgetView -> this.widgetManager.configureWidget(widgetView.getAppWidgetId()));
+        widgetHolder.setOnWidgetRemovedListener(widgetView -> {
+            widgetManager.deleteWidget(widgetView.getAppWidgetId());
+            final PrefMap widgetPrefs = new PrefMap(this, PREFS_WIDGETS);
+            widgetPrefs.remove(PREF_KEY_WIDGET_ID);
+        });
+        editScrims.forEach(scrim -> scrim.setOnClickListener(view -> widgetHolder.exitEditMode()));
+
+        final View resizeHandle = findViewById(R.id.widget_resize_handle);
+        resizeHandle.setOnTouchListener(new View.OnTouchListener() {
+            private float startHeight;
+
+            @Override
+            public boolean onTouch(final View v, final MotionEvent event) {
+                switch (event.getAction()) {
+                    case MotionEvent.ACTION_DOWN:
+                        startHeight = event.getRawY();
+                        scrollParent.setScrollbarFadingEnabled(false);
+                        return true;
+                    case MotionEvent.ACTION_MOVE:
+                        resizeWidget(event.getRawY() - startHeight);
+                        return true;
+                    case MotionEvent.ACTION_UP:
+                        final float deltaHeight = event.getRawY() - startHeight;
+                        resizeWidget(deltaHeight);
+                        persistWidgetHeight(deltaHeight);
+                        scrollParent.setScrollbarFadingEnabled(true);
+                        return true;
+                }
+                return false;
             }
         });
-        widgetContainer.setOnInterceptTouchListener(gesturesListener);
     }
 
     @SuppressLint("ClickableViewAccessibility")
@@ -576,8 +614,7 @@ public class MainActivity extends FragmentActivity implements CategorySelectionD
         if (widgetId != -1) {
             final AppWidgetHostView widgetView = widgetManager.createWidgetView(widgetId);
             if (widgetView != null) {
-                final ViewGroup widgetContainer = findViewById(R.id.widget_container);
-                replaceWidgetView(widgetContainer, widgetView);
+                replaceWidget(widgetView);
             }
         }
     }
@@ -661,10 +698,10 @@ public class MainActivity extends FragmentActivity implements CategorySelectionD
                 return;
             }
             case CREATE_WIDGET_REQUEST: {
-                final int widgetId = data.getExtras().getInt(AppWidgetManager.EXTRA_APPWIDGET_ID, -1);
-                assert widgetId > -1;
                 switch (resultCode) {
                     case RESULT_OK: {
+                        final int widgetId = data.getExtras().getInt(AppWidgetManager.EXTRA_APPWIDGET_ID, -1);
+                        assert widgetId > -1;
                         final AppWidgetHostView widgetView = widgetManager.createWidgetView(widgetId);
                         if (widgetView != null) {
                             setWidget(widgetView);
@@ -672,6 +709,20 @@ public class MainActivity extends FragmentActivity implements CategorySelectionD
                         break;
                     }
                     case RESULT_CANCELED: {
+                        if (data == null) {
+                            break;
+                        }
+
+                        final Bundle extras = data.getExtras();
+                        if (extras == null) {
+                            break;
+                        }
+
+                        final int widgetId = extras.getInt(AppWidgetManager.EXTRA_APPWIDGET_ID, -1);
+                        if (widgetId == -1) {
+                            break;
+                        }
+
                         widgetManager.deleteWidget(widgetId);
                         break;
                     }
@@ -693,64 +744,44 @@ public class MainActivity extends FragmentActivity implements CategorySelectionD
     }
 
     private void setWidget(@NonNull AppWidgetHostView widgetView) {
-        final ViewGroup widgetContainer = findViewById(R.id.widget_container);
-        replaceWidgetView(widgetContainer, widgetView);
+        replaceWidget(widgetView);
         final PrefMap widgetPrefs = new PrefMap(this, PREFS_WIDGETS);
         widgetPrefs.putInt(PREF_KEY_WIDGET_ID, widgetView.getAppWidgetId());
     }
 
-    public void removeWidget() {
-        final ViewGroup widgetContainer = findViewById(R.id.widget_container);
-        removeWidgetView(widgetContainer);
-        final PrefMap widgetPrefs = new PrefMap(this, PREFS_WIDGETS);
-        widgetPrefs.remove(PREF_KEY_WIDGET_ID);
+    private void replaceWidget(@NonNull final AppWidgetHostView newWidgetView) {
+        final float height = calcWidgetHeight(0.0f);
+        final WidgetHolder widgetHolder = findViewById(R.id.widget_holder);
+        widgetHolder.replaceWidgetView(newWidgetView, Math.round(height));
     }
 
-    private void replaceWidgetView(@NonNull final ViewGroup widgetContainer, @NonNull final AppWidgetHostView widgetView) {
-        removeWidgetView(widgetContainer);
+    private void resizeWidget(final float heightDelta) {
+        final float newHeight = calcWidgetHeight(heightDelta);
+        final WidgetHolder widgetHolder = findViewById(R.id.widget_holder);
+        widgetHolder.setWidgetHeight(Math.round(newHeight));
+    }
 
+    private float calcWidgetHeight(final float delta) {
         final Resources res = getResources();
-        final float height = Math.min(
-            TypedValue.applyDimension(
-                TypedValue.COMPLEX_UNIT_DIP,
-                this.preferences.widgetHeight,
-                res.getDisplayMetrics()
-            ),
-            res.getDisplayMetrics().heightPixels * 0.75f // TODO: handle landscape orientation
-        );
-        final int margin = Math.round(res.getDimension(R.dimen.widget_margin));
 
-        final FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(
-            FrameLayout.LayoutParams.MATCH_PARENT,
-            Math.round(height),
-            Gravity.CENTER
+        final float configuredHeight = TypedValue.applyDimension(
+            TypedValue.COMPLEX_UNIT_DIP,
+            this.preferences.getWidgetHeight(),
+            res.getDisplayMetrics()
         );
-        layoutParams.topMargin = margin;
-        layoutParams.bottomMargin = margin;
-        layoutParams.leftMargin = margin;
-        layoutParams.rightMargin = margin;
 
-        widgetContainer.addView(widgetView, layoutParams);
+        final float displayHeight = res.getDisplayMetrics().heightPixels;
+        return Utils.clamp(
+            configuredHeight + delta,
+            displayHeight * 0.2f,
+            displayHeight * 0.7f // TODO: handle landscape orientation
+        );
     }
 
-    private void removeWidgetView(@NonNull final ViewGroup widgetContainer) {
-        final AppWidgetHostView oldWidgetView = getCurrentWidgetView(widgetContainer);
-        if (oldWidgetView != null) {
-            widgetManager.deleteWidget(oldWidgetView.getAppWidgetId());
-            widgetContainer.removeView(oldWidgetView);
-        }
-    }
-
-    @Nullable
-    private static AppWidgetHostView getCurrentWidgetView(final ViewGroup widgetContainer) {
-        final int n = widgetContainer.getChildCount();
-        for (int i = 0; i < n; i++) {
-            final View child = widgetContainer.getChildAt(i);
-            if (child instanceof AppWidgetHostView) {
-                return (AppWidgetHostView)child;
-            }
-        }
-        return null;
+    private void persistWidgetHeight(final float delta) {
+        final float newHeight = calcWidgetHeight(delta);
+        final float newHeightDp = newHeight / getResources().getDisplayMetrics().density;
+        this.preferences.setWidgetHeight(Math.round(newHeightDp));
     }
 
     private void loadLauncherItems() {
@@ -895,6 +926,16 @@ public class MainActivity extends FragmentActivity implements CategorySelectionD
         widgetManager.pickWidget();
     }
 
+    public boolean hasWidget() {
+        final WidgetHolder widgetHolder = findViewById(R.id.widget_holder);
+        return widgetHolder.hasWidgetView();
+    }
+
+    public void editWidget() {
+        final WidgetHolder widgetHolder = findViewById(R.id.widget_holder);
+        widgetHolder.enterEditMode();
+    }
+
     public void setHiddenVisibility(final boolean visible) {
         // TODO: refactor
         PreferenceManager.getDefaultSharedPreferences(this).edit().putBoolean("hideHidden", !visible).apply();
@@ -930,7 +971,7 @@ public class MainActivity extends FragmentActivity implements CategorySelectionD
 
         // show drop zones
         findViewById(R.id.apps_pager).animate().alpha(0.2f);
-        findViewById(R.id.widget_container).animate().alpha(0.2f);
+        findViewById(R.id.widget_holder).animate().alpha(0.2f);
         findViewById(R.id.category_drop_zone_container).setVisibility(View.VISIBLE);
 
         // set header background
@@ -945,7 +986,7 @@ public class MainActivity extends FragmentActivity implements CategorySelectionD
     private void endDrag() {
         // hide drop zones
         findViewById(R.id.apps_pager).animate().alpha(1.0f);
-        findViewById(R.id.widget_container).animate().alpha(1.0f);
+        findViewById(R.id.widget_holder).animate().alpha(1.0f);
         findViewById(R.id.category_drop_zone_container).setVisibility(View.GONE);
 
         // reset header background

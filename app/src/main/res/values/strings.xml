@@ -10,12 +10,16 @@
 
     <string name="action_wallpaper">Change wallpaper</string>
     <string name="action_shortcut">Add a shortcut</string>
-    <string name="action_widget">Change widget</string>
-    <string name="action_remove_widget">Remove widget</string>
+    <string name="action_widget_add">Add a widget</string>
+    <string name="action_widget_edit">Edit widget</string>
     <string name="action_hidden_show">Show hidden apps</string>
     <string name="action_hidden_hide">Hide hidden apps</string>
     <string name="action_settings">Open preferences</string>
     <string name="action_notifications">Open notifications drawer</string>
+
+    <string name="widget_replace">Replace</string>
+    <string name="widget_setup">Setup</string>
+    <string name="widget_remove">Remove</string>
 
     <string name="no_app">App not installed</string>
     <string name="no_permission">You did not give Fast Draw permission to call. You can change that in Fast Draw\'s app info.</string>
@@ -28,7 +32,6 @@
     <string name="pref_header_general">General</string>
     <string name="pref_title_allowOrientation">Allow rotation</string>
     <string name="pref_description_allowOrientation">Allow changing orientation between portrait and landscape</string>
-    <string name="pref_title_widgetHeight">Widget height</string>
     <string name="pref_title_headerbtm">Place tabs on bottom</string>
     <string name="pref_description_headerbtm">Place category tabs on the bottom of the screen instead of on the top</string>
     <string name="pref_title_scrollableTabs">Scrollable tabs</string>

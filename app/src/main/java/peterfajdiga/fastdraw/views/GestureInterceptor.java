@@ -36,4 +36,10 @@ public class GestureInterceptor extends FrameLayout {
     public boolean onInterceptTouchEvent(final MotionEvent event) {
         return listener.onTouch(this, event);
     }
+
+    @Override
+    public boolean onTouchEvent(final MotionEvent event) {
+        listener.onTouch(this, event);
+        return true;
+    }
 }

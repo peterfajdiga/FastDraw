@@ -30,17 +30,25 @@ public class ActionsSheet extends BottomSheetDialogFragment {
         });
 
         // TODO: only display the Remove widget button if there is a widget to remove
-        final View actionWidgetView = dialogView.findViewById(R.id.action_widget);
-        actionWidgetView.setOnClickListener(v -> {
+        final View actionWidgetAddView = dialogView.findViewById(R.id.action_widget_add);
+        actionWidgetAddView.setOnClickListener(v -> {
             dialog.cancel();
             activity.showCreateWidgetDialog();
         });
 
-        final View actionRemoveWidgetView = dialogView.findViewById(R.id.action_remove_widget);
-        actionRemoveWidgetView.setOnClickListener(v -> {
+        final View actionWidgetEditView = dialogView.findViewById(R.id.action_widget_edit);
+        actionWidgetEditView.setOnClickListener(v -> {
             dialog.cancel();
-            activity.removeWidget();
+            activity.editWidget();
         });
+
+        if (activity.hasWidget()) {
+            actionWidgetAddView.setVisibility(View.GONE);
+            actionWidgetEditView.setVisibility(View.VISIBLE);
+        } else {
+            actionWidgetAddView.setVisibility(View.VISIBLE);
+            actionWidgetEditView.setVisibility(View.GONE);
+        }
 
         final View actionHiddenShow = dialogView.findViewById(R.id.action_hidden_show);
         actionHiddenShow.setOnClickListener(v -> {

@@ -25,15 +25,15 @@
             android:drawableStart="@drawable/ic_action_shortcut" />
 
         <TextView
-            android:id="@+id/action_widget"
+            android:id="@+id/action_widget_add"
             style="@style/SheetItem"
-            android:text="@string/action_widget"
+            android:text="@string/action_widget_add"
             android:drawableStart="@drawable/ic_action_widget" />
 
         <TextView
-            android:id="@+id/action_remove_widget"
+            android:id="@+id/action_widget_edit"
             style="@style/SheetItem"
-            android:text="@string/action_remove_widget"
+            android:text="@string/action_widget_edit"
             android:drawableStart="@drawable/ic_action_widget" />
 
         <TextView
