@@ -1,9 +1,12 @@
 package peterfajdiga.fastdraw;
 
 import android.app.WallpaperColors;
+import android.content.res.Resources;
 import android.graphics.Color;
+import android.os.Build;
 
 import androidx.annotation.ColorInt;
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 public class WallpaperColorUtils {
@@ -32,7 +35,11 @@ public class WallpaperColorUtils {
     }
 
     @ColorInt
-    public static int getDarkAccentColor(@Nullable final WallpaperColors wallpaperColors) {
+    public static int getDarkAccentColor(@Nullable final WallpaperColors wallpaperColors, @NonNull final Resources resources) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            return resources.getColor(android.R.color.system_accent2_600);
+        }
+
         if (wallpaperColors != null) {
             final Color secondary = wallpaperColors.getSecondaryColor();
             if (isColorDark(secondary)) {

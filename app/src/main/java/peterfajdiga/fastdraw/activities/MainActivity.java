@@ -549,7 +549,7 @@ public class MainActivity extends FragmentActivity implements CategorySelectionD
             WallpaperColorUtils.getDarkColor(wallpaperColors) :
             getBgGradientColor()
         );
-        @ColorInt final int expandedHeaderColor = WallpaperColorUtils.getDarkAccentColor(wallpaperColors);
+        @ColorInt final int expandedHeaderColor = WallpaperColorUtils.getDarkAccentColor(wallpaperColors, getResources());
         updateHeaderColor(header, bgGradientColor, expandedHeaderColor);
         setupWallpaperColorListener(header, wallpaperManager);
     }
@@ -562,7 +562,7 @@ public class MainActivity extends FragmentActivity implements CategorySelectionD
                     WallpaperColorUtils.getDarkColor(colors) :
                     getBgGradientColor()
                 );
-                @ColorInt final int expandedHeaderColor = WallpaperColorUtils.getDarkAccentColor(colors);
+                @ColorInt final int expandedHeaderColor = WallpaperColorUtils.getDarkAccentColor(colors, getResources());
                 updateHeaderColor(header, bgGradientColor, expandedHeaderColor);
                 if (header.isAttachedToWindow()) {
                     updateSystemBarsBgGradientColor(findViewById(android.R.id.content), bgGradientColor);
