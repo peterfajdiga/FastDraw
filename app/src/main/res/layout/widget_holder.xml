@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<merge
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -15,42 +15,46 @@
         android:layout_height="match_parent"
         android:visibility="gone">
 
-        <androidx.cardview.widget.CardView
+        <com.google.android.material.card.MaterialCardView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center">
+            android:layout_gravity="center"
+            android:elevation="4dp">
 
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content">
 
-                <Button
+                <com.google.android.material.button.MaterialButton
                     android:id="@+id/action_replace"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:drawableTop="@drawable/ic_action_swap"
+                    app:icon="@drawable/ic_action_swap"
+                    app:iconGravity="textTop"
                     android:text="@string/widget_replace"
-                    style="?android:attr/buttonBarButtonStyle" />
+                    style="@style/Widget.Material3.Button.TextButton" />
 
-                <Button
+                <com.google.android.material.button.MaterialButton
                     android:id="@+id/action_configure"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:drawableTop="@drawable/ic_action_settings"
+                    app:icon="@drawable/ic_action_settings"
+                    app:iconGravity="textTop"
                     android:text="@string/widget_setup"
-                    style="?android:attr/buttonBarButtonStyle" />
+                    style="@style/Widget.Material3.Button.TextButton" />
 
-                <Button
+                <com.google.android.material.button.MaterialButton
                     android:id="@+id/action_remove"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:drawableTop="@drawable/ic_action_delete"
+                    app:icon="@drawable/ic_action_delete"
+                    app:iconGravity="textTop"
                     android:text="@string/widget_remove"
-                    style="?android:attr/buttonBarButtonStyle" />
+                    style="@style/Widget.Material3.Button.TextButton" />
 
             </LinearLayout>
 
-        </androidx.cardview.widget.CardView>
+        </com.google.android.material.card.MaterialCardView>
 
         <View
             android:id="@+id/widget_resize_handle"
