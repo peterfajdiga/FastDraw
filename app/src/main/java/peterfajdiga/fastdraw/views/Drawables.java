@@ -13,6 +13,8 @@ import android.view.Gravity;
 import androidx.annotation.ColorInt;
 import androidx.annotation.NonNull;
 
+import peterfajdiga.fastdraw.R;
+
 public class Drawables {
     private Drawables() {}
 
@@ -53,8 +55,8 @@ public class Drawables {
         if (separators) {
             final LayerDrawable layers = new LayerDrawable(new Drawable[]{
                 new ColorDrawable(color),
-                new ColorDrawable(Color.WHITE),
-                new ColorDrawable(Color.WHITE),
+                new ColorDrawable(res.getColor(R.color.separatorColor)),
+                new ColorDrawable(res.getColor(R.color.separatorColor)),
             });
             final int separatorHeight = Math.round(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 1.0f, res.getDisplayMetrics()));
             layers.setLayerHeight(1, separatorHeight);
