@@ -52,13 +52,6 @@
         android:layout_gravity="bottom"
         android:background="@android:color/white">
 
-        <View
-            android:id="@+id/header_separator"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/separatorColor"
-            android:visibility="gone" />
-
         <include layout="@layout/drop_zones" />
 
         <peterfajdiga.fastdraw.views.CategoryTabLayout

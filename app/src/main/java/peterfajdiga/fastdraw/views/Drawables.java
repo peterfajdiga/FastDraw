@@ -23,10 +23,11 @@ public class Drawables {
         @ColorInt final int collapsedColor,
         @ColorInt final int expandedColor,
         final boolean bgGradient,
-        final boolean separators
+        final boolean separators,
+        final boolean separatorBottom
     ) {
         final TransitionDrawable transitionDrawable = new TransitionDrawable(new Drawable[]{
-            createHeaderBackgroundCollapsed(collapsedColor, bgGradient),
+            createHeaderBackgroundCollapsed(res, collapsedColor, bgGradient, separators, separatorBottom),
             createHeaderBackgroundExpanded(res, expandedColor, separators),
         });
         transitionDrawable.setCrossFadeEnabled(true);
@@ -34,16 +35,37 @@ public class Drawables {
     }
 
     public static Drawable createHeaderBackgroundCollapsed(
+        @NonNull final Resources res,
         @ColorInt final int color,
-        final boolean bgGradient
+        final boolean bgGradient,
+        final boolean separator,
+        final boolean separatorBottom
     ) {
+        final Drawable gradientDrawable;
         if (bgGradient) {
-            return new GradientDrawable(GradientDrawable.Orientation.TOP_BOTTOM, new int[]{
+            gradientDrawable = new GradientDrawable(GradientDrawable.Orientation.TOP_BOTTOM, new int[]{
                 Color.TRANSPARENT,
                 color,
             });
         } else {
-            return new ColorDrawable(Color.TRANSPARENT);
+            gradientDrawable = new ColorDrawable(Color.TRANSPARENT);
+        }
+
+        if (separator) {
+            final LayerDrawable layers = new LayerDrawable(new Drawable[]{
+                gradientDrawable,
+                new ColorDrawable(res.getColor(R.color.separatorColor)),
+            });
+            final int separatorHeight = Math.round(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 1.0f, res.getDisplayMetrics()));
+            layers.setLayerHeight(1, separatorHeight);
+            if (separatorBottom) {
+                layers.setLayerGravity(1, Gravity.BOTTOM);
+            } else {
+                layers.setLayerGravity(1, Gravity.TOP);
+            }
+            return layers;
+        } else {
+            return gradientDrawable;
         }
     }
 

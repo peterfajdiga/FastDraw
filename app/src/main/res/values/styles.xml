@@ -38,7 +38,7 @@
     <style name="AppsTabLayout" parent="@style/Widget.Design.TabLayout">
         <item name="tabTextAppearance">@style/AppsTabLayoutText</item>
         <item name="tabIndicatorColor">@color/tabSelectionColor</item>
-        <item name="tabIndicatorHeight">3dp</item>
+        <item name="tabIndicatorHeight">2dp</item>
         <item name="tabMode">fixed</item>
         <item name="tabGravity">fill</item>
         <item name="tabMaxWidth">0dp</item>

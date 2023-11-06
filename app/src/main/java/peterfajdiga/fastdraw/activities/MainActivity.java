@@ -375,9 +375,6 @@ public class MainActivity extends FragmentActivity implements CategorySelectionD
         if (this.preferences.scrollableTabs) {
             tabContainer.setTabMode(TabLayout.MODE_SCROLLABLE);
         }
-        if (this.preferences.headerSeparator) {
-            findViewById(R.id.header_separator).setVisibility(View.VISIBLE);
-        }
 
         setupDropZones(tabContainer);
     }
@@ -577,7 +574,8 @@ public class MainActivity extends FragmentActivity implements CategorySelectionD
             bgGradientColor,
             expandedColor,
             !this.preferences.headerOnBottom,
-            this.preferences.headerSeparator
+            this.preferences.headerSeparator,
+            !this.preferences.headerOnBottom
         ));
     }
 
