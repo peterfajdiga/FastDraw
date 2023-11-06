@@ -40,8 +40,8 @@
     <string name="pref_header_appearance">Внешний вид</string>
     <string name="pref_title_wallpaperParallax">Параллакс обоев</string>
     <string name="pref_description_wallpaperParallax">Обои для рабочего стола с фильмами при переключении категорий</string>
-    <string name="pref_title_headerSeparator">Показать разделитель вкладок</string>
-    <string name="pref_description_headerSeparator">Отобразите белую линию между вкладками и приложениями</string>
+    <string name="pref_title_headerDivider">Показать разделитель вкладок</string>
+    <string name="pref_description_headerDivider">Отобразите белую линию между вкладками и приложениями</string>
     <string name="pref_title_bgGradientColorFromWallpaper">Цвет фоновой тени с обоев</string>
     <string name="pref_description_bgGradientColorFromWallpaper">Раскрасьте фоновую тень в соответствии с цветом ваших обоев (требуется Android Oreo или новее)</string>
     <string name="pref_title_bgGradientOpacity">Непрозрачность фоновой тени</string>

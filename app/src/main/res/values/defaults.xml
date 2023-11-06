@@ -5,7 +5,7 @@
     <bool name="default_scrollableTabs">false</bool>
     <bool name="default_hideHidden">true</bool>
     <bool name="default_wallpaperParallax">true</bool>
-    <bool name="default_headerSeparator">true</bool>
+    <bool name="default_headerDivider">true</bool>
     <bool name="default_bgGradientColorFromWallpaper">false</bool>
     <integer name="default_bgGradientOpacity">96</integer>
     <integer name="default_widgetHeight">260</integer>

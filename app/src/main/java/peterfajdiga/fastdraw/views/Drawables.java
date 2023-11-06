@@ -23,12 +23,12 @@ public class Drawables {
         @ColorInt final int collapsedColor,
         @ColorInt final int expandedColor,
         final boolean bgGradient,
-        final boolean separators,
-        final boolean separatorBottom
+        final boolean dividers,
+        final boolean dividerBottom
     ) {
         final TransitionDrawable transitionDrawable = new TransitionDrawable(new Drawable[]{
-            createHeaderBackgroundCollapsed(res, collapsedColor, bgGradient, separators, separatorBottom),
-            createHeaderBackgroundExpanded(res, expandedColor, separators),
+            createHeaderBackgroundCollapsed(res, collapsedColor, bgGradient, dividers, dividerBottom),
+            createHeaderBackgroundExpanded(res, expandedColor, dividers),
         });
         transitionDrawable.setCrossFadeEnabled(true);
         return transitionDrawable;
@@ -38,8 +38,8 @@ public class Drawables {
         @NonNull final Resources res,
         @ColorInt final int color,
         final boolean bgGradient,
-        final boolean separator,
-        final boolean separatorBottom
+        final boolean divider,
+        final boolean dividerBottom
     ) {
         final Drawable gradientDrawable;
         if (bgGradient) {
@@ -51,14 +51,14 @@ public class Drawables {
             gradientDrawable = new ColorDrawable(Color.TRANSPARENT);
         }
 
-        if (separator) {
+        if (divider) {
             final LayerDrawable layers = new LayerDrawable(new Drawable[]{
                 gradientDrawable,
-                new ColorDrawable(res.getColor(R.color.separatorColor)),
+                new ColorDrawable(res.getColor(R.color.headerDividerColor)),
             });
-            final int separatorHeight = Math.round(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 1.0f, res.getDisplayMetrics()));
-            layers.setLayerHeight(1, separatorHeight);
-            if (separatorBottom) {
+            final int dividerHeight = Math.round(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 1.0f, res.getDisplayMetrics()));
+            layers.setLayerHeight(1, dividerHeight);
+            if (dividerBottom) {
                 layers.setLayerGravity(1, Gravity.BOTTOM);
             } else {
                 layers.setLayerGravity(1, Gravity.TOP);
@@ -72,18 +72,18 @@ public class Drawables {
     public static Drawable createHeaderBackgroundExpanded(
         @NonNull final Resources res,
         @ColorInt final int color,
-        final boolean separators
+        final boolean dividers
     ) {
-        if (separators) {
+        if (dividers) {
             final LayerDrawable layers = new LayerDrawable(new Drawable[]{
                 new ColorDrawable(color),
-                new ColorDrawable(res.getColor(R.color.separatorColor)),
-                new ColorDrawable(res.getColor(R.color.separatorColor)),
+                new ColorDrawable(res.getColor(R.color.headerDividerColor)),
+                new ColorDrawable(res.getColor(R.color.headerDividerColor)),
             });
-            final int separatorHeight = Math.round(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 1.0f, res.getDisplayMetrics()));
-            layers.setLayerHeight(1, separatorHeight);
+            final int dividerHeight = Math.round(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 1.0f, res.getDisplayMetrics()));
+            layers.setLayerHeight(1, dividerHeight);
             layers.setLayerGravity(1, Gravity.TOP);
-            layers.setLayerHeight(2, separatorHeight);
+            layers.setLayerHeight(2, dividerHeight);
             layers.setLayerGravity(2, Gravity.BOTTOM);
             return layers;
         } else {

@@ -8,10 +8,10 @@
         android:summary="@string/pref_description_wallpaperParallax" />
 
     <SwitchPreference
-        android:defaultValue="@bool/default_headerSeparator"
-        android:key="headerSeparator"
-        android:title="@string/pref_title_headerSeparator"
-        android:summary="@string/pref_description_headerSeparator" />
+        android:defaultValue="@bool/default_headerDivider"
+        android:key="headerDivider"
+        android:title="@string/pref_title_headerDivider"
+        android:summary="@string/pref_description_headerDivider" />
 
     <SwitchPreference
         android:defaultValue="@bool/default_bgGradientColorFromWallpaper"

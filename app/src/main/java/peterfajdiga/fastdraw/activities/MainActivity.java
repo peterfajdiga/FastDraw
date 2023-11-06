@@ -574,7 +574,7 @@ public class MainActivity extends FragmentActivity implements CategorySelectionD
             bgGradientColor,
             expandedColor,
             !this.preferences.headerOnBottom,
-            this.preferences.headerSeparator,
+            this.preferences.headerDivider,
             !this.preferences.headerOnBottom
         ));
     }

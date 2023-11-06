@@ -15,7 +15,7 @@ public final class Preferences {
     public final boolean scrollableTabs;
     public final boolean hideHidden;
     public final boolean wallpaperParallax;
-    public final boolean headerSeparator;
+    public final boolean headerDivider;
     public final boolean bgGradientColorFromWallpaper;
     public final int bgGradientOpacity;
 
@@ -31,7 +31,7 @@ public final class Preferences {
         scrollableTabs               = this.prefs.getBoolean("scrollableTabs",               this.res.getBoolean(R.bool.default_scrollableTabs));
         hideHidden                   = this.prefs.getBoolean("hideHidden",                   this.res.getBoolean(R.bool.default_hideHidden));
         wallpaperParallax            = this.prefs.getBoolean("wallpaperParallax",            this.res.getBoolean(R.bool.default_wallpaperParallax));
-        headerSeparator              = this.prefs.getBoolean("headerSeparator",              this.res.getBoolean(R.bool.default_headerSeparator));
+        headerDivider                = this.prefs.getBoolean("headerDivider",                this.res.getBoolean(R.bool.default_headerDivider));
         bgGradientColorFromWallpaper = this.prefs.getBoolean("bgGradientColorFromWallpaper", this.res.getBoolean(R.bool.default_bgGradientColorFromWallpaper));
         bgGradientOpacity            = this.prefs.getInt("bgGradientOpacity",                this.res.getInteger(R.integer.default_bgGradientOpacity));
     }

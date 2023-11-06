@@ -5,5 +5,5 @@
     <color name="scrimBackground">#80000000</color>
     <color name="tabColor">#ffffffff</color>
     <color name="tabSelectionColor">@color/tabColor</color>
-    <color name="separatorColor">#ffffffff</color>
+    <color name="headerDividerColor">#ffffffff</color>
 </resources>
