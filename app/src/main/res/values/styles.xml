@@ -37,7 +37,7 @@
 
     <style name="AppsTabLayout" parent="@style/Widget.Design.TabLayout">
         <item name="tabTextAppearance">@style/AppsTabLayoutText</item>
-        <item name="tabIndicatorColor">?android:attr/textColorPrimary</item>
+        <item name="tabIndicatorColor">@color/tabSelectionColor</item>
         <item name="tabIndicatorHeight">3dp</item>
         <item name="tabMode">fixed</item>
         <item name="tabGravity">fill</item>

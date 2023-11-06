@@ -3,5 +3,7 @@
     <color name="textColorPrimary">#DE000000</color>
     <color name="textColorSecondary">#8A000000</color>
     <color name="scrimBackground">#80000000</color>
+    <color name="tabColor">#ffffffff</color>
+    <color name="tabSelectionColor">@color/tabColor</color>
     <color name="separatorColor">#ffffffff</color>
 </resources>
