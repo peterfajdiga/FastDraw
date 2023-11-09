@@ -10,7 +10,7 @@ import android.view.ViewConfiguration;
 
 public class LongPress implements Gesture {
     private static final int LONG_PRESS_TIME = ViewConfiguration.getLongPressTimeout();
-    private static final float MOVE_TOLERANCE_DP = 16f;
+    private static final float MOVE_TOLERANCE_DP = 12f;
 
     private final float moveToleranceSq;
     private final GestureListener listener;
