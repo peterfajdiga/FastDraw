@@ -87,8 +87,8 @@ import peterfajdiga.fastdraw.views.CategoryTabLayout;
 import peterfajdiga.fastdraw.views.Drawables;
 import peterfajdiga.fastdraw.views.NestedScrollParent;
 import peterfajdiga.fastdraw.views.animators.ViewElevationAnimator;
+import peterfajdiga.fastdraw.views.gestures.GestureMux;
 import peterfajdiga.fastdraw.views.gestures.LongPress;
-import peterfajdiga.fastdraw.views.gestures.OnTouchListenerMux;
 import peterfajdiga.fastdraw.views.gestures.Swipe;
 import peterfajdiga.fastdraw.widgets.WidgetHolder;
 import peterfajdiga.fastdraw.widgets.WidgetManager;
@@ -141,7 +141,7 @@ public class MainActivity extends FragmentActivity implements CategorySelectionD
         final DisplayMetrics displayMetrics = getResources().getDisplayMetrics();
 
         final WidgetHolder widgetHolder = findViewById(R.id.widget_holder);
-        setupWidgets(new OnTouchListenerMux(
+        setupWidgets(new GestureMux(
             new LongPress(displayMetrics, widgetHolder::enterEditMode),
             new Swipe(displayMetrics, Swipe.Direction.DOWN, this::expandNotificationsPanel, () -> scrollParent.getScrollY() == 0)
         ));

@@ -8,7 +8,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewConfiguration;
 
-public class LongPress implements View.OnTouchListener {
+public class LongPress implements Gesture {
     private static final int LONG_PRESS_TIME = ViewConfiguration.getLongPressTimeout();
     private static final float MOVE_TOLERANCE_DP = 16f;
 
@@ -52,7 +52,8 @@ public class LongPress implements View.OnTouchListener {
         touchDownPoint.set(event.getX(), event.getY());
     }
 
-    private void cancel() {
+    @Override
+    public void cancel() {
         touchDownTime = Long.MAX_VALUE;
     }
 

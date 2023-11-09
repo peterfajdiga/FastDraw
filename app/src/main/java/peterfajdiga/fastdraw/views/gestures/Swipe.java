@@ -8,7 +8,7 @@ import android.view.View;
 
 import java.util.function.BooleanSupplier;
 
-public class Swipe implements View.OnTouchListener {
+public class Swipe implements Gesture {
     private static final float THRESHOLD_DP = 24;
 
     private final float threshold;
@@ -49,9 +49,6 @@ public class Swipe implements View.OnTouchListener {
                 start(event);
                 return false;
             case MotionEvent.ACTION_MOVE:
-                if (!started) {
-                    start(event);
-                }
                 return false;
             case MotionEvent.ACTION_UP:
             case MotionEvent.ACTION_POINTER_UP:
@@ -67,7 +64,8 @@ public class Swipe implements View.OnTouchListener {
         started = true;
     }
 
-    private void cancel() {
+    @Override
+    public void cancel() {
         started = false;
     }
 
