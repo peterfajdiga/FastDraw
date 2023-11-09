@@ -278,7 +278,10 @@ public class MainActivity extends FragmentActivity implements CategorySelectionD
 
     @SuppressLint("ClickableViewAccessibility")
     private void setupAppsPager(final NestedScrollParent scrollParent) {
-        final Gesture longPressListener = new LongPress(getResources().getDisplayMetrics(), this::openActionsMenu);
+        final Gesture longPressListener = new LongPress(getResources().getDisplayMetrics(), () -> {
+            scrollParent.cancelScroll(); // prevent opening expandNotificationsPanel
+            openActionsMenu();
+        });
 
         final ViewPager appsPager = findViewById(R.id.apps_pager);
         launcher = new Launcher(launchManager, dragEndService, longPressListener, appsPager, this.preferences.hideHidden);

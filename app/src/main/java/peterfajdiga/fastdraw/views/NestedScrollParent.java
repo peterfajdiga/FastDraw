@@ -70,9 +70,13 @@ public class NestedScrollParent extends NestedScrollView {
     @Override
     public boolean onTouchEvent(final MotionEvent ev) {
         if (ev.getAction() == MotionEvent.ACTION_UP) {
-            overScrollUpController.release();
+            cancelScroll();
         }
         return super.onTouchEvent(ev);
+    }
+
+    public void cancelScroll() {
+        overScrollUpController.release();
     }
 
     @Override
