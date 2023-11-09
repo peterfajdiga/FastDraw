@@ -87,6 +87,7 @@ import peterfajdiga.fastdraw.views.CategoryTabLayout;
 import peterfajdiga.fastdraw.views.Drawables;
 import peterfajdiga.fastdraw.views.NestedScrollParent;
 import peterfajdiga.fastdraw.views.animators.ViewElevationAnimator;
+import peterfajdiga.fastdraw.views.gestures.Gesture;
 import peterfajdiga.fastdraw.views.gestures.GestureMux;
 import peterfajdiga.fastdraw.views.gestures.LongPress;
 import peterfajdiga.fastdraw.views.gestures.Swipe;
@@ -145,7 +146,7 @@ public class MainActivity extends FragmentActivity implements CategorySelectionD
             new LongPress(displayMetrics, widgetHolder::enterEditMode),
             new Swipe(displayMetrics, Swipe.Direction.DOWN, this::expandNotificationsPanel, () -> scrollParent.getScrollY() == 0)
         ));
-        setupAppsPager(scrollParent, new LongPress(displayMetrics, this::openActionsMenu));
+        setupAppsPager(scrollParent);
         setupInstallAppReceiver();
 
         final View contentView = findViewById(android.R.id.content);
@@ -276,7 +277,9 @@ public class MainActivity extends FragmentActivity implements CategorySelectionD
     }
 
     @SuppressLint("ClickableViewAccessibility")
-    private void setupAppsPager(final NestedScrollParent scrollParent, final View.OnTouchListener longPressListener) {
+    private void setupAppsPager(final NestedScrollParent scrollParent) {
+        final Gesture longPressListener = new LongPress(getResources().getDisplayMetrics(), this::openActionsMenu);
+
         final ViewPager appsPager = findViewById(R.id.apps_pager);
         launcher = new Launcher(launchManager, dragEndService, longPressListener, appsPager, this.preferences.hideHidden);
 
