@@ -24,7 +24,8 @@
                 android:id="@+id/scroll_expand"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_weight="1">
+                android:layout_weight="1"
+                android:theme="@style/Theme.Material3.DynamicColors.Dark">
 
                 <androidx.viewpager.widget.ViewPager
                     android:id="@+id/apps_pager"
@@ -50,7 +51,8 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:layout_gravity="bottom"
-        android:background="@android:color/white">
+        android:background="@android:color/white"
+        android:theme="@style/Theme.Material3.DynamicColors.Dark">
 
         <include layout="@layout/drop_zones" />
 
