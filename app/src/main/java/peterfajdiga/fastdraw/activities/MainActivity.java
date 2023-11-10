@@ -18,6 +18,7 @@ import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.content.res.Resources;
 import android.graphics.Color;
+import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.TransitionDrawable;
 import android.net.Uri;
@@ -30,6 +31,7 @@ import android.provider.Telephony;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.util.TypedValue;
+import android.view.Display;
 import android.view.DragEvent;
 import android.view.MotionEvent;
 import android.view.View;
@@ -167,6 +169,10 @@ public class MainActivity extends FragmentActivity implements CategorySelectionD
             });
             return insets;
         });
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            final Display display = getWindowManager().getDefaultDisplay();
+            contentView.setSystemGestureExclusionRects(List.of(new Rect(0, 0, display.getWidth(), display.getHeight())));
+        }
 
         final Intent intent = getIntent();
         if (intent != null) {
