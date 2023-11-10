@@ -18,7 +18,7 @@
             android:stateNotNeeded="true"
             android:excludeFromRecents="true"
             android:screenOrientation="nosensor"
-            android:configChanges="orientation|screenSize"
+            android:configChanges=""
             android:theme="@style/AppTheme.Wallpaper"
             android:exported="true">
             <intent-filter>
