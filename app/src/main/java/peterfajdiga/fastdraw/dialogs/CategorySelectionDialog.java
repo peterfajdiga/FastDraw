@@ -3,6 +3,7 @@ package peterfajdiga.fastdraw.dialogs;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.res.ColorStateList;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
@@ -19,6 +20,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import peterfajdiga.fastdraw.Category;
+import peterfajdiga.fastdraw.R;
 import peterfajdiga.fastdraw.views.AutoGridLayoutManager;
 import peterfajdiga.fastdraw.views.ResourceUtils;
 
@@ -92,6 +94,7 @@ public class CategorySelectionDialog extends DialogFragment {
             final Context context = parent.getContext();
             final DisplayMetrics dm = context.getResources().getDisplayMetrics();
             final ImageView view = new ImageView(context);
+            view.setImageTintList(ColorStateList.valueOf(context.getColor(R.color.categoryDialogIconColor)));
             view.setBackgroundResource(ResourceUtils.resolveResourceId(context.getTheme(), android.R.attr.selectableItemBackground));
             final int padding = Math.round(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, CATEGORY_ITEM_PADDING_DP, dm));
             view.setPadding(padding, padding, padding, padding);

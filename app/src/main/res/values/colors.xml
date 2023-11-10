@@ -6,4 +6,5 @@
     <color name="tabColor">#ffffffff</color>
     <color name="tabSelectionColor">@color/tabColor</color>
     <color name="headerDividerColor">#ffffffff</color>
+    <color name="categoryDialogIconColor">@android:color/primary_text_dark</color>
 </resources>

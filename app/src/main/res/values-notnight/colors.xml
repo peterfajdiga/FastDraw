@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="categoryDialogIconColor">@android:color/primary_text_light</color>
+</resources>
