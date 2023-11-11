@@ -83,8 +83,12 @@ public class CategoryTabLayout extends TabLayout {
         final Drawable icon = Category.getIconDrawable(getContext(), categoryName);
 
         if (icon != null) {
-            final ShadowDrawable iconWithShadow = new ShadowDrawable(icon, shadowColor);
-            tab.setIcon(iconWithShadow);
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.Q) {
+                final ShadowDrawable iconWithShadow = new ShadowDrawable(icon, shadowColor);
+                tab.setIcon(iconWithShadow);
+            } else {
+                tab.setIcon(icon);
+            }
             tab.setText("");
         }
         tab.setTag(Boolean.TRUE); // mark as done

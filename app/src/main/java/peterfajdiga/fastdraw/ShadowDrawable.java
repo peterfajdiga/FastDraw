@@ -3,10 +3,13 @@ package peterfajdiga.fastdraw;
 import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.DrawableWrapper;
+import android.os.Build;
 
 import androidx.annotation.ColorInt;
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 
+@RequiresApi(api = Build.VERSION_CODES.Q)
 public class ShadowDrawable extends DrawableWrapper {
     @ColorInt private final int shadowTint;
 
