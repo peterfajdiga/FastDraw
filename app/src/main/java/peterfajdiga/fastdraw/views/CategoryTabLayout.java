@@ -1,6 +1,8 @@
 package peterfajdiga.fastdraw.views;
 
 import android.content.Context;
+import android.content.res.Resources;
+import android.graphics.PointF;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 import android.view.View;
@@ -22,20 +24,21 @@ public class CategoryTabLayout extends TabLayout {
     private OnDropListener onDropListener;
     private OnTabLongClickListener onTabLongClickListener;
     @ColorInt private int shadowColor;
+    private PointF shadowOffset;
 
     public CategoryTabLayout(Context context) {
         this(context, null);
-        initColors();
+        init();
     }
 
     public CategoryTabLayout(Context context, AttributeSet attrs) {
         this(context, attrs, 0);
-        initColors();
+        init();
     }
 
     public CategoryTabLayout(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        initColors();
+        init();
     }
 
     public void setOnDropListener(final OnDropListener onDropListener) {
@@ -46,8 +49,13 @@ public class CategoryTabLayout extends TabLayout {
         this.onTabLongClickListener = onTabLongClickListener;
     }
 
-    private void initColors() {
+    private void init() {
+        final Resources res = getResources();
         shadowColor = MaterialColors.getColor(this, R.attr.hardShadowColor);
+        shadowOffset = new PointF(
+            res.getDimension(R.dimen.tab_icon_shadow_offset_x),
+            res.getDimension(R.dimen.tab_icon_shadow_offset_y)
+        );
     }
 
     @Override
@@ -84,7 +92,7 @@ public class CategoryTabLayout extends TabLayout {
 
         if (icon != null) {
             if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.Q) {
-                final ShadowDrawable iconWithShadow = new ShadowDrawable(icon, shadowColor);
+                final ShadowDrawable iconWithShadow = new ShadowDrawable(icon, shadowColor, shadowOffset);
                 tab.setIcon(iconWithShadow);
             } else {
                 tab.setIcon(icon);

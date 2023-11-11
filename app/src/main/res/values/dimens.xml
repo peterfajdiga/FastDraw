@@ -6,6 +6,8 @@
     <dimen name="pager_header_height">56dp</dimen>
     <dimen name="pager_header_extra_height">72dp</dimen>
     <dimen name="pager_header_expanded_elevation">24dp</dimen>
+    <dimen name="tab_icon_shadow_offset_x">0dp</dimen>
+    <dimen name="tab_icon_shadow_offset_y">1dp</dimen>
 
     <dimen name="system_bar_bg_gradient_height">56dp</dimen>
     <dimen name="system_bar_bg_gradient_height_large">128dp</dimen>
