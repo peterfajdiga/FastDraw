@@ -16,10 +16,24 @@ import peterfajdiga.fastdraw.R;
 import peterfajdiga.fastdraw.activities.MainActivity;
 
 public class ActionsSheet extends BottomSheetDialogFragment {
+    private Context originalContext;
+    private ContextThemeWrapper themedContext;
 
+    @Nullable
     @Override
     public Context getContext() {
-        return new ContextThemeWrapper(super.getContext(), R.style.AppTheme_DayNight);
+        final Context originalContext = super.getContext();
+        if (originalContext == null) {
+            this.originalContext = null;
+            this.themedContext = null;
+            return null;
+        }
+
+        if (originalContext != this.originalContext) {
+            this.originalContext = originalContext;
+            this.themedContext = new ContextThemeWrapper(originalContext, R.style.AppTheme_DayNight);
+        }
+        return this.themedContext;
     }
 
     @Override
