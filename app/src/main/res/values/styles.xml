@@ -1,6 +1,6 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
 
-    <style name="AppTheme.Wallpaper.Dark" parent="@style/Theme.Material3.DynamicColors.Dark">
+    <style name="AppTheme.Wallpaper.Dark" parent="Theme.Material3.DynamicColors.Dark">
         <item name="android:windowBackground">@android:color/transparent</item>
         <item name="android:colorBackgroundCacheHint">@null</item>
         <item name="android:windowShowWallpaper">true</item>
@@ -16,13 +16,13 @@
         <item name="hardShadowColor">#80000000</item>
     </style>
 
-    <style name="AppTheme.DayNight" parent="@style/Theme.Material3.DynamicColors.DayNight">
+    <style name="AppTheme.DayNight" parent="Theme.Material3.DynamicColors.DayNight">
         <item name="android:statusBarColor">@android:color/transparent</item>
         <item name="android:navigationBarColor">@android:color/transparent</item>
         <item name="android:enforceNavigationBarContrast" tools:targetApi="29">false</item>
     </style>
 
-    <style name="AppThemeOverlay.DayNight" parent="@style/ThemeOverlay.Material3.DynamicColors.DayNight" />
+    <style name="AppThemeOverlay.DayNight" parent="ThemeOverlay.Material3.DynamicColors.DayNight" />
 
     <style name="FloatingText" parent="@android:style/TextAppearance.DeviceDefault.Widget">
         <item name="android:shadowColor">?attr/softShadowColor</item>
@@ -42,7 +42,7 @@
         <item name="android:maxLines">1</item>
     </style>
 
-    <style name="AppsTabLayout" parent="@style/Widget.Design.TabLayout">
+    <style name="AppsTabLayout" parent="Widget.Design.TabLayout">
         <item name="tabTextAppearance">@style/AppsTabLayoutText</item>
         <item name="tabIndicatorColor">@color/tabSelectionColor</item>
         <item name="tabIndicatorHeight">4dp</item>
@@ -53,7 +53,7 @@
         <item name="tabPaddingEnd">0dp</item>
     </style>
 
-    <style name="AppsTabLayoutText" parent="@style/TextAppearance.Design.Tab">
+    <style name="AppsTabLayoutText" parent="TextAppearance.Design.Tab">
         <item name="android:textAllCaps">false</item>
         <item name="android:textColor">?android:attr/textColorPrimary</item>
     </style>
