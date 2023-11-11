@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <attr name="textColorPrimaryInactive" format="color" />
     <attr name="bgGradientColor" format="color" />
     <attr name="softShadowColor" format="color" />
     <attr name="hardShadowColor" format="color" />
