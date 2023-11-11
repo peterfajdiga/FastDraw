@@ -14,14 +14,14 @@
         <peterfajdiga.fastdraw.widgets.WidgetHolder
             android:id="@+id/widget_holder"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:theme="@style/AppTheme.DayNight" />
 
         <FrameLayout
             android:id="@+id/scroll_expand"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="1"
-            android:theme="@style/Theme.Material3.DynamicColors.Dark">
+            android:layout_weight="1">
 
             <androidx.viewpager.widget.ViewPager
                 android:id="@+id/apps_pager"

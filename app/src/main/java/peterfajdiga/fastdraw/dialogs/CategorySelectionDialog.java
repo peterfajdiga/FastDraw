@@ -49,7 +49,7 @@ public class CategorySelectionDialog extends DialogFragment {
         assert arguments != null;
         final String title = arguments.getString(TITLE_KEY);
 
-        final MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(getActivity());
+        final MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(getActivity(), R.style.AppThemeOverlay_DayNight);
         builder.setTitle(title);
 
         final int spanWidth = Math.round(TypedValue.applyDimension(
