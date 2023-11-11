@@ -1,11 +1,13 @@
 package peterfajdiga.fastdraw.widgets;
 
 import android.app.Activity;
+import android.app.ActivityOptions;
 import android.appwidget.AppWidgetHost;
 import android.appwidget.AppWidgetHostView;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProviderInfo;
 import android.content.Intent;
+import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -66,7 +68,13 @@ public class WidgetManager {
     }
 
     public void configureWidget(final int widgetId) {
-        widgetHost.startAppWidgetConfigureActivityForResult(activity, widgetId, 0, 0, null);
+        final Bundle options;
+        if (android.os.Build.VERSION.SDK_INT >= 34) {
+            options = ActivityOptions.makeBasic().setPendingIntentBackgroundActivityStartMode(ActivityOptions.MODE_BACKGROUND_ACTIVITY_START_ALLOWED).toBundle();
+        } else {
+            options = null;
+        }
+        widgetHost.startAppWidgetConfigureActivityForResult(activity, widgetId, 0, 0, options);
     }
 
     public void deleteWidget(final int widgetId) {
