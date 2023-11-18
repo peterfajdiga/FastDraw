@@ -3,17 +3,17 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:paddingTop="@dimen/app_item_grid_padding_vertical"
-    android:paddingBottom="@dimen/app_item_grid_padding_below_label"
+    android:paddingTop="@dimen/app_item_padding_vertical"
+    android:paddingBottom="@dimen/app_item_padding_below_label"
     android:background="?android:attr/selectableItemBackground">
 
     <ImageView
         android:id="@+id/app_item_icon"
-        android:layout_width ="@dimen/app_item_grid_icon_size"
-        android:layout_height="@dimen/app_item_grid_icon_size"
+        android:layout_width ="@dimen/app_item_icon_size"
+        android:layout_height="@dimen/app_item_icon_size"
         android:layout_gravity="center"
-        android:layout_marginLeft="@dimen/app_item_grid_icon_padding"
-        android:layout_marginRight="@dimen/app_item_grid_icon_padding" />
+        android:layout_marginLeft="@dimen/app_item_icon_padding"
+        android:layout_marginRight="@dimen/app_item_icon_padding" />
 
     <TextView
         android:id="@+id/app_item_name"
@@ -26,7 +26,7 @@
         android:textAlignment="center"
         android:ellipsize="end"
         android:fontFamily="sans-serif-condensed"
-        android:textSize="@dimen/app_item_grid_label_text_size"
+        android:textSize="@dimen/app_item_label_text_size"
         android:minLines="2"
         android:maxLines="2"
         style="@style/FloatingText" />

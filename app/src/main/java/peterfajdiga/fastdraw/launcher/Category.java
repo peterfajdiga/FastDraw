@@ -94,11 +94,11 @@ public class Category {
 
         containerView.setOverScrollMode(View.OVER_SCROLL_NEVER);
 
-        final int spanWidth = context.getResources().getDimensionPixelSize(R.dimen.app_item_grid_icon_size) +
-            context.getResources().getDimensionPixelSize(R.dimen.app_item_grid_icon_padding) * 2;
+        final int spanWidth = context.getResources().getDimensionPixelSize(R.dimen.app_item_icon_size) +
+            context.getResources().getDimensionPixelSize(R.dimen.app_item_icon_padding) * 2;
         final GridLayoutManager layoutManager = new AutoGridLayoutManager(context, spanWidth, GridLayoutManager.VERTICAL, false);
         containerView.setLayoutManager(layoutManager);
-        final int padding = Math.round(context.getResources().getDimensionPixelSize(R.dimen.app_item_grid_container_padding));
+        final int padding = Math.round(context.getResources().getDimensionPixelSize(R.dimen.app_item_container_padding));
         containerView.setPadding(padding, padding, padding, padding);
         containerView.setClipToPadding(false);
         containerView.setScrollBarStyle(View.SCROLLBARS_OUTSIDE_OVERLAY);
