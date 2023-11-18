@@ -12,7 +12,9 @@
     <dimen name="app_item_padding_below_label">3dp</dimen><!--app_item_padding_vertical - app_label_text_size-->
     <dimen name="app_item_icon_padding">16dp</dimen>
     <dimen name="app_item_icon_size">48dp</dimen>
+    <dimen name="app_item_label_spacing">8dp</dimen>
     <dimen name="app_item_label_text_size">13sp</dimen>
+    <string name="app_item_label_font_family" translatable="false">sans-serif-condensed</string>
     <dimen name="app_item_container_padding">12dp</dimen>
 
     <dimen name="widget_margin">@dimen/app_item_container_padding</dimen>
