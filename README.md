@@ -14,8 +14,6 @@ That's about it.
      alt="Get it on Google Play"
      height="80">](https://play.google.com/store/apps/details?id=peterfajdiga.fastdraw)
 
-Or download the latest APK from the [Releases Section](https://github.com/peterfajdiga/FastDraw/releases/latest).
-
 <p float="left">
 <img src="https://user-images.githubusercontent.com/22796326/196039359-f42b511f-b88e-41e0-9161-3554fd703a53.png" height="480">
 <img src="https://user-images.githubusercontent.com/22796326/196039362-a03c0f04-11c9-404f-8ab8-5b6cfc28c950.png" height="480">
