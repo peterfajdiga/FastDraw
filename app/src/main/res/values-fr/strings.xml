@@ -17,10 +17,11 @@
     <string name="action_settings">Ouvrir</string>
     <string name="action_notifications">Ouvrir le tirroir des notifications</string>
     <string name="widget_replace">Remplacer</string>
+    <string name="widget_setup">Configuration</string>
     <string name="widget_remove">Supprimer</string>
     <string name="no_app">L\'application n\'est pas installée</string>
     <string name="no_permission">Vous n\'avez pas donné à Fast Draw la permission pour appeler. Vous pouvez changer cela dans les paramètres de l\'application Fast Draw</string>
-    <string name="no_intent">Fast Draw n\'arrive pas à lancer cette application ou ce racourci :( S\'il vous plait, reporter ce problème :)</string>
+    <string name="no_intent">Fast Draw n\'arrive pas à lancer cette application ou ce racourci :( S\'il vous plait, signaler ce problème :)</string>
     <string name="title_activity_settings">Préférences de Fast Draw</string>
     <string name="pref_header_general">Général</string>
     <string name="pref_title_allowOrientation">Autoriser la rotation</string>
@@ -42,4 +43,10 @@
     <string name="error_oreo_user_handle">L\'utilisateur est verrouillé ou n\'est pas lancé</string>
     <string name="error_oreo_activity_not_found">L\'activité n\'existe pas</string>
     <string name="error_oreo_shortcuts_security">Impossible de charger le racourcis car Fast Draw n\'est pas votre lanceur par défaut</string>
+    <string name="error_oreo_shortcut_host_permission">Fast Draw n\'a pas l\'autorisation d\'héberger des raccourcis. Assurez-vous que Fast Draw est définit comme lanceur par défaut.</string>
+    <string name="error_oreo_shortcut_host_permission">Fast Draw n\'a pas l\'autorisation d\'héberger des raccourcis. Assurez-vous que Fast Draw est le lanceur par défaut.</string>
+    <string name="error_oreo_shortcut_host_permission">Fast Draw n\'a pas l\'autorisation d\'héberger des raccourcis. Assurez-vous que Fast Draw est définit comme lanceur par défaut.</string>
+    <string name="error_expand_notifications_panel">Impossible d\'ouvrir le panneau des notifications. Votre version d\'Android ne supporte peut-être pas cela avec les lanceurs tiers</string>
+    <string name="error_launch_exception">Impossible lancer l\'élément à cause d\'une erreur inconnue. Veuillez signaler ce problème.</string>
+    <string name="error_expand_notifications_panel">Impossible d\'ouvrir le panneau des notifications. Votre version d\'Android ne supporte peut-être pas cela avec les lanceurs tiers</string>
 </resources>
