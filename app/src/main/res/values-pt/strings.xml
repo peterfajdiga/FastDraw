@@ -1,0 +1,59 @@
+<resources>
+    <string name="app_name">Fast Draw</string>
+    <string name="new_category">Nova categoria</string>
+    <string name="hide">Esconder</string>
+    <string name="change_category_icon">Mudar ícone da categoria</string>
+    <string name="app_info">Sobre app</string>
+    <string name="select_wallpaper">Mudar papel de parede</string>
+    <string name="add_shortcut">Adicionar atalho</string>
+    <string name="remove_shortcut">Remover atalho</string>
+
+    <string name="action_wallpaper">Mudar papel de parede</string>
+    <string name="action_shortcut">Adicionar atalho</string>
+    <string name="action_widget_add">Adicionar widget</string>
+    <string name="action_widget_edit">Editar widget</string>
+    <string name="action_hidden_show">Mostrar apps ocultos</string>
+    <string name="action_hidden_hide">Retirar aba com ocultos</string>
+    <string name="action_settings">Abrir preferências</string>
+    <string name="action_notifications">Abrir aba de notificações</string>
+
+    <string name="widget_replace">Substituir</string>
+    <string name="widget_setup">Configurar</string>
+    <string name="widget_remove">Remover</string>
+
+    <string name="no_app">App não instalado</string>
+    <string name="no_permission">Você não concedeu a permissão ao Fast Draw para fazer ligações. Você pode alterar isso em Sobre app do Fast Draw.</string>
+    <string name="no_intent">Fast Draw não consegue abrir esse app ou atalho :( Por favor, relate esse problema :)</string>
+
+
+    <!-- Strings related to Settings -->
+    <string name="title_activity_settings">Preferências do Fast Draw</string>
+
+    <string name="pref_header_general">Geral</string>
+    <string name="pref_title_allowOrientation">Permitir rotação</string>
+    <string name="pref_description_allowOrientation">Permitir alteração entre retrato e paisagem</string>
+    <string name="pref_title_headerbtm">Posicionar as abas na parte de baixo</string>
+    <string name="pref_description_headerbtm">Posicionar as abas de categorias na parte de baixo e não na parte de cima da tela</string>
+    <string name="pref_title_scrollableTabs">Permitir deslize nas abas</string>
+    <string name="pref_description_scrollableTabs">Se tiver muitas categorias (experimental)</string>
+
+    <string name="pref_header_appearance">Aparência</string>
+    <string name="pref_title_wallpaperParallax">Paralaxe do papel de parede</string>
+    <string name="pref_description_wallpaperParallax">Mover o papel de parede ao deslizar pelas categorias</string>
+    <string name="pref_title_headerDivider">Mostrar divisória entre abas</string>
+    <string name="pref_description_headerDivider">Mostrar uma linha branca entre abas e apps</string>
+    <string name="pref_title_bgGradientColorFromWallpaper">Cor da sombra do plano de fundo do papel de parede</string>
+    <string name="pref_description_bgGradientColorFromWallpaper">Transformar a sombra do plano de fundo baseado na cor do seu papel de parede (exige Android Oreo ou mais recente)</string>
+    <string name="pref_title_bgGradientOpacity">Transparência da sombra de fundo</string>
+
+    <string name="pref_header_categoryorder">Ordem das categorias</string>
+    <string name="pref_title_orderreset">Ordem alfabética</string>
+
+    <string name="error_oreo_user_handle">Usuário bloqueado ou não iniciado</string>
+    <string name="error_oreo_activity_not_found">Atividade não existe</string>
+    <string name="error_oreo_shortcuts_security">Não é possível carregar o atalho porque o Fast Draw não é seu iniciador padrão</string>
+    <string name="error_oreo_shortcut_host_permission">O Fast Draw não tem permissão para gerenciar atalhos. Certifique-se de que o Fast Draw é seu iniciador padrão.</string>
+
+    <string name="error_launch_exception">Não é possível iniciar o item devido a um erro desconhecido. Por favor relate esse problema.</string>
+    <string name="error_expand_notifications_panel">Não é possível abrir o painel de notificações. Talvez sua versão do Android não ofereça suporte para iniciadores de terceiros.</string>
+</resources>
