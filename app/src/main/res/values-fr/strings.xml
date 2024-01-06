@@ -1,4 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Fast Draw</string>
+    <string name="new_category">Nouvelle catégorie</string>
+    <string name="hide">Masquer</string>
+    <string name="change_category_icon">Changer l\'icone de la catégorie</string>
+    <string name="app_info">Infos sur l\'application</string>
+    <string name="select_wallpaper">Modifier le fond d\'écran</string>
+    <string name="add_shortcut">Ajouter un racourci</string>
+    <string name="remove_shortcut">Supprimer un racourci</string>
+    <string name="action_wallpaper">Modifier le fond d\'écran</string>
+    <string name="action_shortcut">Ajouter un racourci</string>
+    <string name="action_widget_add">Ajouter un widget</string>
+    <string name="action_widget_edit">Modifier un widget</string>
+    <string name="action_hidden_show">Afficher les applications masquées</string>
+    <string name="action_hidden_hide">Masquer les applications masquer</string>
+    <string name="action_settings">Ouvrir</string>
+    <string name="action_notifications">Ouvrir le tirroir des notifications</string>
+    <string name="widget_replace">Remplacer</string>
+    <string name="widget_remove">Supprimer</string>
+    <string name="no_app">L\'application n\'est pas installée</string>
+    <string name="no_permission">Vous n\'avez pas donné à Fast Draw la permission pour appeler. Vous pouvez changer cela dans les paramètres de l\'application Fast Draw</string>
+    <string name="no_intent">Fast Draw n\'arrive pas à lancer cette application ou ce racourci :( S\'il vous plait, reporter ce problème :)</string>
+    <string name="title_activity_settings">Préférences de Fast Draw</string>
+    <string name="pref_header_general">Général</string>
+    <string name="pref_title_allowOrientation">Autoriser la rotation</string>
+    <string name="pref_description_allowOrientation">Permet de changer l\'orientation entre portrait et paysage</string>
+    <string name="pref_title_headerbtm">Placer les onglets en bas</string>
+    <string name="pref_description_headerbtm">Placer les onglets des catégories en bas de l\'écran plutôt qu\'en haut</string>
+    <string name="pref_title_scrollableTabs">Onglets défilants</string>
+    <string name="pref_description_scrollableTabs">Si vous avez beaucoup de catégories (expérimental)</string>
+    <string name="pref_header_appearance">Apparence</string>
+    <string name="pref_title_wallpaperParallax">Défilement du fond d\'écran</string>
+    <string name="pref_description_wallpaperParallax">Déplacer le fond d\'écran lors du changement de catégorie</string>
+    <string name="pref_title_headerDivider">Afficher le séparateur d\'onglet</string>
+    <string name="pref_description_headerDivider">Afficher une ligne blanche entre les onglets et les applications</string>
+    <string name="pref_title_bgGradientColorFromWallpaper">Couleur des ombres d\'arrière plan</string>
+    <string name="pref_description_bgGradientColorFromWallpaper">Colorez l\'ombre de l\'arrière-plan en fonction de la couleur du fond d\'écran (nécessite Android Oreo ou une version plus récente).</string>
+    <string name="pref_title_bgGradientOpacity">Opacité de l\'ombre de l\'arrière plan</string>
+    <string name="pref_header_categoryorder">Ordre des catégories</string>
+    <string name="pref_title_orderreset">Ordre alphabétique</string>
+    <string name="error_oreo_user_handle">L\'utilisateur est verrouillé ou n\'est pas lancé</string>
+    <string name="error_oreo_activity_not_found">L\'activité n\'existe pas</string>
+    <string name="error_oreo_shortcuts_security">Impossible de charger le racourcis car Fast Draw n\'est pas votre lanceur par défaut</string>
 </resources>
