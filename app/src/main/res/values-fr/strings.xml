@@ -44,9 +44,6 @@
     <string name="error_oreo_activity_not_found">L\'activité n\'existe pas</string>
     <string name="error_oreo_shortcuts_security">Impossible de charger le raccourcis car Fast Draw n\'est pas votre lanceur par défaut</string>
     <string name="error_oreo_shortcut_host_permission">Fast Draw n\'a pas l\'autorisation d\'héberger des raccourcis. Assurez-vous que Fast Draw est définit comme lanceur par défaut.</string>
-    <string name="error_oreo_shortcut_host_permission">Fast Draw n\'a pas l\'autorisation d\'héberger des raccourcis. Assurez-vous que Fast Draw est le lanceur par défaut.</string>
-    <string name="error_oreo_shortcut_host_permission">Fast Draw n\'a pas l\'autorisation d\'héberger des raccourcis. Assurez-vous que Fast Draw est définit comme lanceur par défaut.</string>
     <string name="error_expand_notifications_panel">Impossible d\'ouvrir le panneau des notifications. Votre version d\'Android ne supporte peut-être pas cela avec les lanceurs tiers</string>
     <string name="error_launch_exception">Impossible lancer l\'élément à cause d\'une erreur inconnue. Veuillez signaler ce problème.</string>
-    <string name="error_expand_notifications_panel">Impossible d\'ouvrir le panneau des notifications. Votre version d\'Android ne supporte peut-être pas cela avec les lanceurs tiers</string>
 </resources>
