@@ -6,6 +6,7 @@ import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -43,7 +44,8 @@ public class LaunchManager {
     private void startActivity(@NonNull final Intent intent, @NonNull final Bundle opts) {
         try {
             activity.startActivity(intent, opts);
-        } catch (ActivityNotFoundException | IllegalArgumentException e) {
+        } catch (final ActivityNotFoundException | IllegalArgumentException e) {
+            Log.e("LaunchManager", "Can't launch shortcut, app missing?", e);
             final Toast toast = Toast.makeText(activity, R.string.no_app, Toast.LENGTH_LONG);
             toast.show();
         }
