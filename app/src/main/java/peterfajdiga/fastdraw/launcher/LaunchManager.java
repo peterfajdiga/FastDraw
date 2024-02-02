@@ -32,15 +32,15 @@ public class LaunchManager {
 
         switch (intent.getAction()) {
             case Intent.ACTION_CALL:
-                launchWithPermission(intent, opts, Manifest.permission.CALL_PHONE);
+                requestCallPermission(intent, opts, Manifest.permission.CALL_PHONE);
                 break;
             default:
-                launchWithoutPermission(intent, opts);
+                startActivity(intent, opts);
                 break;
         }
     }
 
-    private void launchWithoutPermission(@NonNull final Intent intent, @NonNull final Bundle opts) {
+    private void startActivity(@NonNull final Intent intent, @NonNull final Bundle opts) {
         try {
             activity.startActivity(intent, opts);
         } catch (ActivityNotFoundException | IllegalArgumentException e) {
@@ -49,7 +49,7 @@ public class LaunchManager {
         }
     }
 
-    private void launchWithPermission(@NonNull final Intent launchIntent, @NonNull final Bundle opts, @NonNull final String permission) {
+    private void requestCallPermission(@NonNull final Intent launchIntent, @NonNull final Bundle opts, @NonNull final String permission) {
         ActivityCompat.requestPermissions(activity, new String[]{permission}, PERMISSION_REQUEST_CODE);
         delayedLaunch = new DelayedLaunch(launchIntent, opts);
     }
@@ -60,7 +60,7 @@ public class LaunchManager {
         }
 
         if (gotPermission(permissions, grantResults)) {
-            launch(delayedLaunch.launchIntent, delayedLaunch.launchOpts);
+            startActivity(delayedLaunch.launchIntent, delayedLaunch.launchOpts);
         } else {
             final Toast toast = Toast.makeText(activity, R.string.no_permission, Toast.LENGTH_LONG);
             toast.show();
