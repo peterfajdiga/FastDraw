@@ -1,0 +1,59 @@
+<resources>
+    <string name="app_name">Fast Draw</string>
+    <string name="new_category">Nueva categoría</string>
+    <string name="hide">Ocultar</string>
+    <string name="change_category_icon">Cambiar icono de categoría</string>
+    <string name="app_info">Info de la app</string>
+    <string name="select_wallpaper">Cambiar fondo de pantalla</string>
+    <string name="add_shortcut">Añadir acceso directo</string>
+    <string name="remove_shortcut">Eliminar acceso directo</string>
+
+    <string name="action_wallpaper">Cambiar fondo de pantalla</string>
+    <string name="action_shortcut">Añadir acceso directo</string>
+    <string name="action_widget_add">Añadir widget</string>
+    <string name="action_widget_edit">Editar widget</string>
+    <string name="action_hidden_show">Mostrar apps ocultas</string>
+    <string name="action_hidden_hide">Ocultar apps ocultas</string>
+    <string name="action_settings">Abrir preferencias</string>
+    <string name="action_notifications">Abrir cajón de notificaciones</string>
+
+    <string name="widget_replace">Reemplazar</string>
+    <string name="widget_setup">Configurar</string>
+    <string name="widget_remove">Eliminar</string>
+
+    <string name="no_app">App no instalada</string>
+    <string name="no_permission">No has dado permiso a Fast Draw para llamar. Puedes cambiarlo en la información de la app de Fast Draw.</string>
+    <string name="no_intent">Fast Draw no es capaz de iniciar esta aplicación o acceso directo :( Por favor, informe de este problema :)</string>
+
+
+    <!-- Strings related to Settings -->
+    <string name="title_activity_settings">Preferencias de Fast Draw</string>
+
+    <string name="pref_header_general">General</string>
+    <string name="pref_title_allowOrientation">Permitir rotación</string>
+    <string name="pref_description_allowOrientation">Permite cambiar la orientación entre vertical y horizontal</string>
+    <string name="pref_title_headerbtm">Colocar pestañas en parte inferior</string>
+    <string name="pref_description_headerbtm">Coloca las pestañas de categorías en la parte inferior de la pantalla en lugar de en la superior</string>
+    <string name="pref_title_scrollableTabs">Pestañas desplazables</string>
+    <string name="pref_description_scrollableTabs">Si tienes muchas categorías (experimental)</string>
+
+    <string name="pref_header_appearance">Apariencia</string>
+    <string name="pref_title_wallpaperParallax">Fondo de pantalla parallax</string>
+    <string name="pref_description_wallpaperParallax">Mueve el fondo de pantalla al cambiar de categoría</string>
+    <string name="pref_title_headerDivider">Mostrar separador de pestañas</string>
+    <string name="pref_description_headerDivider">Muestra una línea blanca entre las pestañas y las aplicaciones</string>
+    <string name="pref_title_bgGradientColorFromWallpaper">Color de sombra de fondo de pantalla</string>
+    <string name="pref_description_bgGradientColorFromWallpaper">Colorea la sombra de fondo basándose en el color de tu fondo de pantalla (requiere Android Oreo o más reciente)</string>
+    <string name="pref_title_bgGradientOpacity">Opacidad de la sombra de fondo</string>
+
+    <string name="pref_header_categoryorder">Orden de categorías</string>
+    <string name="pref_title_orderreset">Orden alfabético</string>
+
+    <string name="error_oreo_user_handle">El usuario está bloqueado o no se está ejecutando</string>
+    <string name="error_oreo_activity_not_found">La actividad no existe</string>
+    <string name="error_oreo_shortcuts_security">No se puede cargar el acceso directo porque Fast Draw no es el launcher predeterminado</string>
+    <string name="error_oreo_shortcut_host_permission">Fast Draw no tiene permiso para alojar accesos directos. Asegurate de que Fast Draw es el launcher predeterminado.</string>
+
+    <string name="error_launch_exception">No se puede iniciar el elemento debido a un error desconocido. Por favor, informa de este problema.</string>
+    <string name="error_expand_notifications_panel">No se puede abrir el panel de notificaciones. Puede que tu versión de Android no sea compatible con launchers de terceros.</string>
+</resources>
