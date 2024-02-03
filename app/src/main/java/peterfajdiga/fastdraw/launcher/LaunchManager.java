@@ -6,6 +6,7 @@ import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.os.FileUriExposedException;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -47,6 +48,10 @@ public class LaunchManager {
         } catch (final ActivityNotFoundException | IllegalArgumentException e) {
             Log.e("LaunchManager", "Can't launch shortcut, app missing?", e);
             final Toast toast = Toast.makeText(activity, R.string.no_app, Toast.LENGTH_LONG);
+            toast.show();
+        } catch (final FileUriExposedException e) {
+            Log.e("LaunchManager", "Can't launch shortcut, got FileUriExposedException", e);
+            final Toast toast = Toast.makeText(activity, R.string.shortcut_launch_file_uri_exposed, Toast.LENGTH_LONG);
             toast.show();
         }
     }

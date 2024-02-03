@@ -23,6 +23,7 @@
 
     <string name="no_app">App not installed</string>
     <string name="no_permission">You did not give Fast Draw permission to call. You can change that in Fast Draw\'s app info.</string>
+    <string name="shortcut_launch_file_uri_exposed">FileUriExposedException. Shortcut exposes file:// URI. Please contact app developer.</string>
     <string name="no_intent">Fast Draw is not able to launch this app or shortcut :( Please report this problem :)</string>
 
 
