@@ -18,33 +18,36 @@ import java.util.stream.Stream;
 import peterfajdiga.fastdraw.launcher.launcheritem.AppItem;
 
 public class AppItemManager {
-    private AppItemManager() {}
-
-    @NonNull
-    private static Stream<AppItem> getAppItems(@NonNull final PackageManager packageManager, @NonNull final Intent launcherIntent) {
-        launcherIntent.addCategory(Intent.CATEGORY_LAUNCHER);
-        final List<ResolveInfo> appActivities = packageManager.queryIntentActivities(launcherIntent, 0);
-        return appActivities.stream().map(resolveInfo -> new AppItem(resolveInfo.activityInfo));
+    private final StatisticsManager statisticsManager;
+    public AppItemManager( @NonNull final StatisticsManager statisticsManager) {
+        this.statisticsManager = statisticsManager;
     }
 
     @NonNull
-    public static Stream<AppItem> getAppItems(@NonNull final PackageManager packageManager) {
+    private Stream<AppItem> getAppItems(@NonNull final PackageManager packageManager, @NonNull final Intent launcherIntent) {
+        launcherIntent.addCategory(Intent.CATEGORY_LAUNCHER);
+        final List<ResolveInfo> appActivities = packageManager.queryIntentActivities(launcherIntent, 0);
+        return appActivities.stream().map(resolveInfo -> new AppItem(this, statisticsManager, resolveInfo.activityInfo));
+    }
+
+    @NonNull
+    public Stream<AppItem> getAppItems(@NonNull final PackageManager packageManager) {
         final Intent launcherIntent = new Intent(Intent.ACTION_MAIN, null);
         return getAppItems(packageManager, launcherIntent);
     }
 
     @NonNull
-    public static Stream<AppItem> getAppItems(@NonNull final PackageManager packageManager, @NonNull final String packageName) {
+    public Stream<AppItem> getAppItems(@NonNull final PackageManager packageManager, @NonNull final String packageName) {
         final Intent launcherIntent = new Intent(Intent.ACTION_MAIN, null);
         launcherIntent.setPackage(packageName);
         return getAppItems(packageManager, launcherIntent);
     }
 
-    public static void removePackageItems(final Launcher launcher, final String packageName) {
+    public void removePackageItems(final Launcher launcher, final String packageName) {
         launcher.removeItems(item -> item instanceof AppItem && item.getPackageName().equals(packageName));
     }
 
-    public static void updatePackageItems(
+    public void updatePackageItems(
         final Launcher launcher,
         final String packageName,
         final Stream<AppItem> updatedAppItemsStream
@@ -57,7 +60,7 @@ public class AppItemManager {
         launcher.addItems(updatedAppItems.values().toArray(new AppItem[0]));
     }
 
-    public static void showPackageDetails(final Context context, final String packageName) {
+    public void showPackageDetails(final Context context, final String packageName) {
         Intent intent = new Intent(Intent.ACTION_VIEW);
         intent.setAction(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
         Uri uri = Uri.fromParts("package", packageName, null);

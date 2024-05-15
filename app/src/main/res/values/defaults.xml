@@ -9,4 +9,5 @@
     <bool name="default_bgGradientColorFromWallpaper">false</bool>
     <integer name="default_bgGradientOpacity">96</integer>
     <integer name="default_widgetHeight">260</integer>
+    <string name="default_sortMethod">Alphabetical</string>
 </resources>

@@ -56,6 +56,7 @@ import java.lang.ref.WeakReference;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -75,6 +76,7 @@ import peterfajdiga.fastdraw.launcher.DropZone;
 import peterfajdiga.fastdraw.launcher.LaunchManager;
 import peterfajdiga.fastdraw.launcher.Launcher;
 import peterfajdiga.fastdraw.launcher.ShortcutItemManager;
+import peterfajdiga.fastdraw.launcher.StatisticsManager;
 import peterfajdiga.fastdraw.launcher.launcheritem.AppItem;
 import peterfajdiga.fastdraw.launcher.launcheritem.BitmapShortcutItem;
 import peterfajdiga.fastdraw.launcher.launcheritem.FiledShortcutItem;
@@ -118,6 +120,9 @@ public class MainActivity extends FragmentActivity implements CategorySelectionD
     private static WeakReference<MainActivity> instance;
     private final LaunchManager launchManager = new LaunchManager(this);
     private final RunnableQueue dragEndService = new RunnableQueue();
+    private StatisticsManager statisticsManager;
+    public ShortcutItemManager shortcutItemManager;
+    private AppItemManager appItemManager;
     private Preferences preferences;
     private Launcher launcher;
     private WidgetManager widgetManager;
@@ -128,8 +133,16 @@ public class MainActivity extends FragmentActivity implements CategorySelectionD
 
         MainActivity.instance = new WeakReference<>(this);
         this.preferences = new Preferences(this);
+
+        // TODO: Retrieve stored prefs
+        statisticsManager = new StatisticsManager(new HashMap<String, Integer>());
+        shortcutItemManager = new ShortcutItemManager(statisticsManager);
+        appItemManager = new AppItemManager(statisticsManager);
+
         onFirstRun();
         migrateCategoryNames();
+
+
         setContentView(this.preferences.headerOnBottom ? R.layout.activity_main_headerbtm : R.layout.activity_main_headertop);
         if (this.preferences.allowOrientation) {
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED);
@@ -178,7 +191,7 @@ public class MainActivity extends FragmentActivity implements CategorySelectionD
         if (intent != null) {
             final String action = intent.getAction();
             if (action != null && action.equals(LauncherApps.ACTION_CONFIRM_PIN_SHORTCUT)) {
-                final OreoShortcutItem newShortcut = ShortcutItemManager.oreoShortcutFromIntent(this, intent);
+                final OreoShortcutItem newShortcut = shortcutItemManager.oreoShortcutFromIntent(this, intent);
                 if (newShortcut != null) {
                     final String shortcutCategoryName = Category.shortcutsCategory;
                     addOreoShortcut(newShortcut, shortcutCategoryName);
@@ -195,7 +208,7 @@ public class MainActivity extends FragmentActivity implements CategorySelectionD
             final ActivityInfo fastdrawPrefsInfo = new ActivityInfo();
             fastdrawPrefsInfo.packageName = getPackageName();
             fastdrawPrefsInfo.name = SettingsActivity.class.getName();
-            addAppToHome(new AppItem(fastdrawPrefsInfo));
+            addAppToHome(new AppItem(appItemManager, statisticsManager, fastdrawPrefsInfo));
 
             // phone app
             addAppToHome(new Intent(Intent.ACTION_DIAL));
@@ -290,7 +303,7 @@ public class MainActivity extends FragmentActivity implements CategorySelectionD
         });
 
         final ViewPager appsPager = findViewById(R.id.apps_pager);
-        launcher = new Launcher(launchManager, dragEndService, longPressListener, appsPager, this.preferences.hideHidden);
+        launcher = new Launcher(launchManager, statisticsManager, dragEndService, longPressListener, appsPager, this.preferences.hideHidden, this.preferences.sortMethod);
 
         setupWallpaperParallax(appsPager);
         setupHeader(appsPager);
@@ -595,19 +608,19 @@ public class MainActivity extends FragmentActivity implements CategorySelectionD
         installAppReceiver = new InstallAppReceiver(new InstallAppReceiver.Owner() {
             @Override
             public void onAppInstall(final String packageName) {
-                final AppItem[] appItems = AppItemManager.getAppItems(getPackageManager(), packageName).toArray(AppItem[]::new);
+                final AppItem[] appItems = appItemManager.getAppItems(getPackageManager(), packageName).toArray(AppItem[]::new);
                 launcher.addItems(appItems);
             }
 
             @Override
             public void onAppChange(final String packageName) {
-                final Stream<AppItem> updatedAppItems = AppItemManager.getAppItems(getPackageManager(), packageName);
-                AppItemManager.updatePackageItems(launcher, packageName, updatedAppItems);
+                final Stream<AppItem> updatedAppItems = appItemManager.getAppItems(getPackageManager(), packageName);
+                appItemManager.updatePackageItems(launcher, packageName, updatedAppItems);
             }
 
             @Override
             public void onAppRemove(final String packageName) {
-                AppItemManager.removePackageItems(launcher, packageName);
+                appItemManager.removePackageItems(launcher, packageName);
             }
         });
 
@@ -684,7 +697,7 @@ public class MainActivity extends FragmentActivity implements CategorySelectionD
         switch (requestCode) {
             case INSTALL_SHORTCUT_REQUEST: {
                 if (resultCode == RESULT_OK) {
-                    final FiledShortcutItem newShortcut = ShortcutItemManager.shortcutFromIntent(this, data);
+                    final FiledShortcutItem newShortcut = shortcutItemManager.shortcutFromIntent(this, data);
                     addShortcut(newShortcut, launcher.getCurrentCategoryName());
                 }
                 return;
@@ -745,7 +758,7 @@ public class MainActivity extends FragmentActivity implements CategorySelectionD
     }
 
     private void addShortcut(@NonNull final FiledShortcutItem shortcutItem, @NonNull final String categoryName) {
-        ShortcutItemManager.saveShortcut(this, shortcutItem);
+        shortcutItemManager.saveShortcut(this, shortcutItem);
         launcher.moveItems(categoryName, shortcutItem);
     }
 
@@ -796,8 +809,8 @@ public class MainActivity extends FragmentActivity implements CategorySelectionD
 
     private void loadLauncherItems() {
         final LauncherItem[] items = Stream.concat(
-            AppItemManager.getAppItems(getPackageManager()),
-            ShortcutItemManager.getShortcutItems(this)
+            appItemManager.getAppItems(getPackageManager()),
+            shortcutItemManager.getShortcutItems(this)
         ).toArray(LauncherItem[]::new);
 
         launcher.addItemsStartup(items);
@@ -828,7 +841,7 @@ public class MainActivity extends FragmentActivity implements CategorySelectionD
         if (resolveInfo == null) {
             return false;
         }
-        addAppToHome(new AppItem(resolveInfo.activityInfo));
+        addAppToHome(new AppItem(appItemManager, statisticsManager, resolveInfo.activityInfo));
         return true;
     }
 

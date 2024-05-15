@@ -15,6 +15,8 @@ import java.io.InputStream;
 import java.io.OutputStream;
 
 import peterfajdiga.fastdraw.R;
+import peterfajdiga.fastdraw.launcher.ShortcutItemManager;
+import peterfajdiga.fastdraw.launcher.StatisticsManager;
 import peterfajdiga.fastdraw.launcher.displayitem.DisplayItem;
 import peterfajdiga.fastdraw.launcher.launchable.IntentLaunchable;
 import peterfajdiga.fastdraw.launcher.launchable.Launchable;
@@ -28,14 +30,19 @@ public class ResShortcutItem extends FiledShortcutItem {
     private final String iconPackageName;
     private final String iconResourceName;
     private DisplayItem displayItem = null;
+    private final StatisticsManager statisticsManager;
 
     public ResShortcutItem(
+            @NonNull final ShortcutItemManager shortcutManager,
+        @NonNull final StatisticsManager statisticsManager,
         final String uuid,
         final Intent intent,
         final String label,
         final String iconPackageName,
         final String iconResourceName
     ) {
+        super(shortcutManager);
+        this.statisticsManager = statisticsManager;
         this.uuid = uuid;
         this.intent = intent;
         this.label = label;
@@ -63,7 +70,7 @@ public class ResShortcutItem extends FiledShortcutItem {
         }
 
         final Drawable icon = loadIcon(context);
-        final Launchable launchable = new IntentLaunchable(intent);
+        final Launchable launchable = new IntentLaunchable(intent, statisticsManager, getId());
         displayItem = new DisplayItem(getId(), label, icon, this, launchable);
         return displayItem;
     }
@@ -112,6 +119,8 @@ public class ResShortcutItem extends FiledShortcutItem {
     }
 
     public static ResShortcutItem fromFile(
+        @NonNull final ShortcutItemManager shortcutItemManager,
+        @NonNull final StatisticsManager statisticsManager,
         @NonNull final Context context,
         @NonNull final InputStream in,
         @NonNull final String uuid
@@ -120,6 +129,6 @@ public class ResShortcutItem extends FiledShortcutItem {
         final String label = Saveable.readString(in);
         final String iconPackageName = Saveable.readString(in);
         final String iconResourceName = Saveable.readString(in);
-        return new ResShortcutItem(uuid, intent, label, iconPackageName, iconResourceName);
+        return new ResShortcutItem(shortcutItemManager, statisticsManager, uuid, intent, label, iconPackageName, iconResourceName);
     }
 }
