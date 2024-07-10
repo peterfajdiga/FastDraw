@@ -1,12 +1,12 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdk 34
+    compileSdk 35
 
     defaultConfig {
         applicationId "peterfajdiga.fastdraw"
         minSdk 28
-        targetSdk 34
+        targetSdk 35
         versionCode 16
         versionName "2.1.2"
     }
