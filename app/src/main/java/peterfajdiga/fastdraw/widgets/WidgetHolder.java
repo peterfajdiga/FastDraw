@@ -120,6 +120,11 @@ public class WidgetHolder extends FrameLayout {
         }
     }
 
+    public int getMinWidgetHeight() {
+        return findViewById(R.id.edit_controls_toolbar).getHeight() +
+            findViewById(R.id.widget_resize_handle).getHeight();
+    }
+
     public void setWidgetHeight(final int newHeight) {
         final AppWidgetHostView widgetView = getWidgetView();
         widgetView.getLayoutParams().height = Math.round(newHeight);

@@ -272,8 +272,8 @@ public class MainActivity extends FragmentActivity implements CategorySelectionD
                         return true;
                     case MotionEvent.ACTION_UP:
                         final float deltaHeight = event.getRawY() - startHeight;
-                        resizeWidget(deltaHeight);
-                        persistWidgetHeight(deltaHeight);
+                        final int newHeight = resizeWidget(deltaHeight);
+                        persistWidgetHeight(newHeight);
                         scrollParent.setScrollbarFadingEnabled(true);
                         return true;
                 }
@@ -760,18 +760,19 @@ public class MainActivity extends FragmentActivity implements CategorySelectionD
     }
 
     private void replaceWidget(@NonNull final AppWidgetHostView newWidgetView) {
-        final float height = calcWidgetHeight(0.0f);
         final WidgetHolder widgetHolder = findViewById(R.id.widget_holder);
+        final float height = calcWidgetHeight(widgetHolder, 0.0f);
         widgetHolder.replaceWidgetView(newWidgetView, Math.round(height));
     }
 
-    private void resizeWidget(final float heightDelta) {
-        final float newHeight = calcWidgetHeight(heightDelta);
+    private int resizeWidget(final float heightDelta) {
         final WidgetHolder widgetHolder = findViewById(R.id.widget_holder);
-        widgetHolder.setWidgetHeight(Math.round(newHeight));
+        final int newHeight = Math.round(calcWidgetHeight(widgetHolder, heightDelta));
+        widgetHolder.setWidgetHeight(newHeight);
+        return newHeight;
     }
 
-    private float calcWidgetHeight(final float delta) {
+    private float calcWidgetHeight(final WidgetHolder widgetHolder, final float delta) {
         final Resources res = getResources();
 
         final float configuredHeight = TypedValue.applyDimension(
@@ -783,13 +784,12 @@ public class MainActivity extends FragmentActivity implements CategorySelectionD
         final float availableHeight = res.getDisplayMetrics().heightPixels - res.getDimension(R.dimen.pager_header_height);
         return Utils.clamp(
             configuredHeight + delta,
-            availableHeight * 0.2f,
+            widgetHolder.getMinWidgetHeight(),
             availableHeight * 0.7f // TODO: handle landscape orientation
         );
     }
 
-    private void persistWidgetHeight(final float delta) {
-        final float newHeight = calcWidgetHeight(delta);
+    private void persistWidgetHeight(final int newHeight) {
         final float newHeightDp = newHeight / getResources().getDisplayMetrics().density;
         this.preferences.setWidgetHeight(Math.round(newHeightDp));
     }
