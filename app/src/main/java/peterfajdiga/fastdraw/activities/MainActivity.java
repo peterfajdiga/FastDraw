@@ -633,21 +633,19 @@ public class MainActivity extends FragmentActivity implements CategorySelectionD
     protected void onNewIntent(final Intent intent) {
         super.onNewIntent(intent);
 
-        if ((intent.getFlags() & Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT) == 0) {
-            // close actions menu if open
-            final Fragment actionsSheet = getSupportFragmentManager().findFragmentByTag("ActionsSheet");
-            if (actionsSheet != null) {
-                getSupportFragmentManager().beginTransaction().remove(actionsSheet).commit();
-            }
-
-            // show home category
-            launcher.showInitialCategory();
-
-            // scroll to top
-            final NestedScrollParent scrollParent = findViewById(R.id.scroll_parent);
-            scrollParent.smoothScrollTo(0, 0);
-            launcher.smoothScrollUpCurrent();
+        // close actions menu if open
+        final Fragment actionsSheet = getSupportFragmentManager().findFragmentByTag("ActionsSheet");
+        if (actionsSheet != null) {
+            getSupportFragmentManager().beginTransaction().remove(actionsSheet).commit();
         }
+
+        // show home category
+        launcher.showInitialCategory();
+
+        // scroll to top
+        final NestedScrollParent scrollParent = findViewById(R.id.scroll_parent);
+        scrollParent.smoothScrollTo(0, 0);
+        launcher.smoothScrollUpCurrent();
     }
 
     @Override
