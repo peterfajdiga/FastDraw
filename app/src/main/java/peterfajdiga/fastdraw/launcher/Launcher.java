@@ -30,7 +30,7 @@ import peterfajdiga.fastdraw.prefs.PrefMap;
 import peterfajdiga.fastdraw.views.NestedScrollChildManager;
 
 public class Launcher {
-    public static final String HOME_CATEGORY_NAME = "HOME";
+    public static final String HOME_CATEGORY_NAME = "home";
 
     private final PrefMap itemCategoryMap;
     private final PrefMap categoriesOrderMap;
