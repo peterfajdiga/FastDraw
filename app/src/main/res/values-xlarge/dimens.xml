@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <dimen name="app_item_padding_vertical">32dp</dimen>
-    <dimen name="app_item_padding_below_label">19dp</dimen><!--app_item_padding_vertical - app_label_text_size-->
+    <dimen name="app_item_padding_below_label">19dp</dimen><!-- app_item_padding_vertical - app_label_text_size -->
     <dimen name="app_item_icon_padding">48dp</dimen>
     <dimen name="app_item_icon_size">56dp</dimen>
     <dimen name="app_item_label_spacing">16dp</dimen>
