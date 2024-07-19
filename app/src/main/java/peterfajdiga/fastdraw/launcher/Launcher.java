@@ -61,19 +61,23 @@ public class Launcher {
         pager.setAdapter(this.adapter);
     }
 
-    public void showCategory(@NonNull final String categoryName) {
+    private void showCategoryInternal(@NonNull final String categoryName, final boolean animate) {
         final String[] categoryNames = getCategoryNames();
         for (int i = 0; i < categoryNames.length; i++) {
             if (categoryNames[i].equals(categoryName)) {
-                pager.setCurrentItem(i);
+                pager.setCurrentItem(i, animate);
                 return;
             }
         }
         Log.w("Launcher", "Trying to show nonexistent category " + categoryName);
     }
 
+    public void showCategory(@NonNull final String categoryName) {
+        showCategoryInternal(categoryName, true);
+    }
+
     public void showInitialCategory() {
-        showCategory(getInitialCategory());
+        showCategoryInternal(getInitialCategory(), false);
     }
 
     public boolean doesCategoryExist(@NonNull final String categoryName) {
