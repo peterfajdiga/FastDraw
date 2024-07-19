@@ -18,4 +18,5 @@
     <dimen name="app_item_container_padding">12dp</dimen>
 
     <dimen name="widget_margin">@dimen/app_item_container_padding</dimen>
+    <dimen name="widget_min_height">24dp</dimen>
 </resources>

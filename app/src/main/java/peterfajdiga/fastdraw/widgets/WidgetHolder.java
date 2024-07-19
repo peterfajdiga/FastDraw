@@ -17,6 +17,7 @@ import peterfajdiga.fastdraw.views.GestureInterceptor;
 
 public class WidgetHolder extends FrameLayout {
     private int margin;
+    private int minWidgetContainerHeight;
     private OnActionReplaceListener onActionReplaceListener;
     private OnActionConfigureListener onActionConfigureListener;
     private OnWidgetRemovedListener onWidgetRemovedListener;
@@ -44,7 +45,9 @@ public class WidgetHolder extends FrameLayout {
     }
 
     private void init(@NonNull final Context context) {
-        margin = Math.round(getResources().getDimension(R.dimen.widget_margin));
+        final Resources res = getResources();
+        margin = Math.round(res.getDimension(R.dimen.widget_margin));
+        minWidgetContainerHeight = Math.round(res.getDimension(R.dimen.widget_min_height));
 
         inflate(context, R.layout.widget_holder, this);
 
@@ -121,7 +124,7 @@ public class WidgetHolder extends FrameLayout {
     }
 
     public int getMinWidgetHeight() {
-        return Math.max(0,
+        return Math.max(minWidgetContainerHeight,
             findViewById(R.id.edit_controls_toolbar).getHeight() +
             2 * findViewById(R.id.widget_resize_handle).getHeight() -
             2 * margin
