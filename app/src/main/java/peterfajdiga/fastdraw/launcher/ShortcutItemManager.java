@@ -30,16 +30,20 @@ import peterfajdiga.fastdraw.launcher.launcheritem.ResShortcutItem;
 import peterfajdiga.fastdraw.launcher.launcheritem.Saveable;
 
 public class ShortcutItemManager {
-    private ShortcutItemManager() {}
+    private final StatisticsManager statisticsManager;
+
+    public ShortcutItemManager(@NonNull final StatisticsManager statisticsManager) {
+        this.statisticsManager = statisticsManager;
+    }
 
     @NonNull
-    public static Stream<LauncherItem> getShortcutItems(@NonNull final Context context) {
+    public Stream<LauncherItem> getShortcutItems(@NonNull final Context context) {
         final Stream<LauncherItem> filedShortcuts = getFiledShortcutItems(context);
         final Stream<LauncherItem> oreoShortcuts = getOreoShortcutItems(context);
         return Stream.concat(filedShortcuts, oreoShortcuts);
     }
 
-    private static Stream<LauncherItem> getFiledShortcutItems(@NonNull final Context context) {
+    private Stream<LauncherItem> getFiledShortcutItems(@NonNull final Context context) {
         final File shortcutsDir = getShortcutsDir(context);
         shortcutsDir.mkdir();
         return Arrays.stream(shortcutsDir.listFiles()).map(file -> {
@@ -56,7 +60,7 @@ public class ShortcutItemManager {
     }
 
     @NonNull
-    private static Stream<LauncherItem> getOreoShortcutItems(@NonNull final Context context) {
+    private Stream<LauncherItem> getOreoShortcutItems(@NonNull final Context context) {
         final List<ShortcutInfo> shortcuts = OreoShortcuts.getPinnedShortcuts(context);
         if (shortcuts == null) {
             return Stream.empty();
@@ -66,7 +70,7 @@ public class ShortcutItemManager {
     }
 
     @Nullable
-    private static FiledShortcutItem readShortcutItem(
+    private FiledShortcutItem readShortcutItem(
         @NonNull final Context context,
         @NonNull final File file
     ) throws IOException, URISyntaxException, Saveable.LeftoverException {
@@ -83,7 +87,7 @@ public class ShortcutItemManager {
         }
     }
 
-    @Nullable private static FiledShortcutItem readShortcutItem(
+    @Nullable private FiledShortcutItem readShortcutItem(
         @NonNull final Context context,
         @NonNull final FileInputStream in,
         @NonNull final String typeKey,
@@ -91,9 +95,9 @@ public class ShortcutItemManager {
     ) throws IOException, URISyntaxException, Saveable.LeftoverException {
         switch (typeKey) {
             case BitmapShortcutItem.TYPE_KEY:
-                return BitmapShortcutItem.fromFile(context, in, uuid);
+                return BitmapShortcutItem.fromFile(this, statisticsManager, context, in, uuid);
             case ResShortcutItem.TYPE_KEY:
-                return ResShortcutItem.fromFile(context, in, uuid);
+                return ResShortcutItem.fromFile(this, statisticsManager, context, in, uuid);
             case OreoShortcutItem.TYPE_KEY:
                 throw new Saveable.LeftoverException();
             default:
@@ -102,7 +106,7 @@ public class ShortcutItemManager {
         }
     }
 
-    public static void saveShortcut(@NonNull final Context context, @NonNull final FiledShortcutItem item) {
+    public void saveShortcut(@NonNull final Context context, @NonNull final FiledShortcutItem item) {
         final String filename = item.getFilename();
         try {
             final File file = new File(getShortcutsDir(context), filename);
@@ -114,34 +118,34 @@ public class ShortcutItemManager {
         }
     }
 
-    public static void deleteShortcut(@NonNull final Context context, @NonNull final FiledShortcutItem item) {
+    public void deleteShortcut(@NonNull final Context context, @NonNull final FiledShortcutItem item) {
         final String filename = item.getFilename();
         final File file = new File(getShortcutsDir(context), filename);
         file.delete();
     }
 
     @NonNull
-    private static File getShortcutsDir(@NonNull final Context context) {
+    private File getShortcutsDir(@NonNull final Context context) {
         return new File(context.getFilesDir(), "shortcuts");
     }
 
     @NonNull
-    public static FiledShortcutItem shortcutFromIntent(@NonNull final Context context, @NonNull final Intent intent) {
+    public FiledShortcutItem shortcutFromIntent(@NonNull final Context context, @NonNull final Intent intent) {
         final Intent launchIntent = intent.getParcelableExtra(Intent.EXTRA_SHORTCUT_INTENT);
         final String name = intent.getStringExtra(Intent.EXTRA_SHORTCUT_NAME);
         final Bitmap bmp = intent.getParcelableExtra(Intent.EXTRA_SHORTCUT_ICON);
 
         if (bmp != null) {
             final BitmapDrawable icon = new BitmapDrawable(context.getResources(), bmp);
-            return new BitmapShortcutItem(generateUUID(), launchIntent, name, icon);
+            return new BitmapShortcutItem(this, statisticsManager, generateUUID(), launchIntent, name, icon);
         } else {
             final Intent.ShortcutIconResource iconResource = intent.getParcelableExtra(Intent.EXTRA_SHORTCUT_ICON_RESOURCE);
-            return new ResShortcutItem(generateUUID(), launchIntent, name, iconResource.packageName, iconResource.resourceName);
+            return new ResShortcutItem(this, statisticsManager, generateUUID(), launchIntent, name, iconResource.packageName, iconResource.resourceName);
         }
     }
 
     @Nullable
-    public static OreoShortcutItem oreoShortcutFromIntent(final Context context, @NonNull final Intent intent) {
+    public OreoShortcutItem oreoShortcutFromIntent(final Context context, @NonNull final Intent intent) {
         @NonNull final LauncherApps launcherApps = (LauncherApps)context.getSystemService(Context.LAUNCHER_APPS_SERVICE);
         final LauncherApps.PinItemRequest pinItemRequest = launcherApps.getPinItemRequest(intent);
         if (!pinItemRequest.isValid()) {

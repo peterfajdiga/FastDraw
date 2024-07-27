@@ -13,6 +13,8 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 
+import peterfajdiga.fastdraw.launcher.ShortcutItemManager;
+import peterfajdiga.fastdraw.launcher.StatisticsManager;
 import peterfajdiga.fastdraw.launcher.displayitem.DisplayItem;
 import peterfajdiga.fastdraw.launcher.launchable.IntentLaunchable;
 import peterfajdiga.fastdraw.launcher.launchable.Launchable;
@@ -27,16 +29,19 @@ public class BitmapShortcutItem extends FiledShortcutItem {
     private final DisplayItem displayItem;
 
     public BitmapShortcutItem(
+        @NonNull final ShortcutItemManager shortcutItemManager,
+        @NonNull final StatisticsManager statisticsManager,
         final String uuid,
         final Intent intent,
         final String label,
         final BitmapDrawable icon
     ) {
+        super(shortcutItemManager);
         this.uuid = uuid;
         this.intent = intent;
         this.label = label;
         this.icon = icon;
-        final Launchable launchable = new IntentLaunchable(intent);
+        final Launchable launchable = new IntentLaunchable(intent, statisticsManager, getFilename());
         this.displayItem = new DisplayItem(getId(), label, icon, this, launchable);
     }
 
@@ -79,6 +84,8 @@ public class BitmapShortcutItem extends FiledShortcutItem {
     }
 
     public static BitmapShortcutItem fromFile(
+        @NonNull final ShortcutItemManager shortcutItemManager,
+        @NonNull final StatisticsManager statisticsManager,
         @NonNull final Context context,
         @NonNull final FileInputStream in,
         @NonNull final String uuid
@@ -86,6 +93,6 @@ public class BitmapShortcutItem extends FiledShortcutItem {
         final Intent intent = Intent.parseUri(Saveable.readString(in), 0);
         final String label = Saveable.readString(in);
         final BitmapDrawable icon = new BitmapDrawable(context.getResources(), BitmapFactory.decodeFileDescriptor(in.getFD()));
-        return new BitmapShortcutItem(uuid, intent, label, icon);
+        return new BitmapShortcutItem(shortcutItemManager, statisticsManager, uuid, intent, label, icon);
     }
 }

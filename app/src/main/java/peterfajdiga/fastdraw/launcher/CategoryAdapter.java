@@ -23,18 +23,27 @@ import androidx.recyclerview.widget.SortedList;
 import peterfajdiga.fastdraw.Postable;
 import peterfajdiga.fastdraw.R;
 import peterfajdiga.fastdraw.launcher.displayitem.DisplayItem;
+import peterfajdiga.fastdraw.prefs.SortMethod;
 
 public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ItemViewHolder> {
     private final LaunchManager launchManager;
     private final Postable dragEndService;
     private final SortedList<DisplayItem> items;
 
-    public CategoryAdapter(@NonNull final LaunchManager launchManager, final Postable dragEndService) {
+    public CategoryAdapter(
+            @NonNull final LaunchManager launchManager,
+            final Postable dragEndService,
+            @NonNull final StatisticsManager statisticsManager,
+            @NonNull final SortMethod sortMethod
+    ) {
         this.launchManager = launchManager;
         this.dragEndService = dragEndService;
         this.items = new SortedList<>(DisplayItem.class, new SortedList.Callback<>() {
             @Override
             public int compare(final DisplayItem o1, final DisplayItem o2) {
+                if (sortMethod == SortMethod.Usage) {
+                    return statisticsManager.launchCount(o2.id).compareTo(statisticsManager.launchCount(o1.id));
+                }
                 return o1.compareTo(o2);
             }
 

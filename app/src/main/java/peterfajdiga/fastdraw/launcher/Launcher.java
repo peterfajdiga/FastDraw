@@ -27,6 +27,7 @@ import peterfajdiga.fastdraw.launcher.displayitem.DisplayItem;
 import peterfajdiga.fastdraw.launcher.launcheritem.LauncherItem;
 import peterfajdiga.fastdraw.launcher.launcheritem.ShortcutItem;
 import peterfajdiga.fastdraw.prefs.PrefMap;
+import peterfajdiga.fastdraw.prefs.SortMethod;
 import peterfajdiga.fastdraw.views.NestedScrollChildManager;
 
 public class Launcher {
@@ -36,28 +37,34 @@ public class Launcher {
     private final PrefMap categoriesOrderMap;
     private final Map<String, LauncherItem> itemsById = new HashMap<>();
     private final LaunchManager launchManager;
+    private final StatisticsManager statisticsManager;
     private final Postable dragEndService;
     private final View.OnTouchListener backgroundTouchListener;
     private final ViewPager pager;
     private final LauncherPagerAdapter adapter;
     private final boolean hideHidden;
+    private final SortMethod sortMethod;
 
     public Launcher(
         @NonNull final LaunchManager launchManager,
+        @NonNull final StatisticsManager statisticsManager,
         @NonNull final Postable dragEndService,
         @NonNull final View.OnTouchListener backgroundTouchListener,
         @NonNull final ViewPager pager,
-        final boolean hideHidden
+        final boolean hideHidden,
+        @NonNull final SortMethod sortMethod
     ) {
         final Context context = pager.getContext();
         this.itemCategoryMap = new PrefMap(context, "categories"); // TODO: pass from outside
         this.categoriesOrderMap = new PrefMap(context, "categoryorder"); // TODO: pass from outside
         this.launchManager = launchManager;
+        this.statisticsManager = statisticsManager;
         this.dragEndService = dragEndService;
         this.backgroundTouchListener = backgroundTouchListener;
         this.pager = pager;
         this.adapter = new LauncherPagerAdapter(context);
         this.hideHidden = hideHidden;
+        this.sortMethod = sortMethod;
         pager.setAdapter(this.adapter);
     }
 
@@ -165,7 +172,7 @@ public class Launcher {
         Category category = adapter.categories.get(categoryName);
         if (category == null) {
             final Context context = pager.getContext();
-            category = new Category(context, launchManager, dragEndService, backgroundTouchListener);
+            category = new Category(context, launchManager, statisticsManager, sortMethod, dragEndService, backgroundTouchListener);
             categoriesOrderMap.getIntCreate(categoryName, CategoryComparator.UNORDERED); // make sure the new category is added to the categoryorder prefs
             adapter.categories.put(categoryName, category);
             adapter.notifyDataSetChanged();
@@ -221,7 +228,7 @@ public class Launcher {
             if (adapter.categories.containsKey(categoryName)) {
                 continue;
             }
-            final Category category = new Category(pager.getContext(), launchManager, dragEndService, backgroundTouchListener);
+            final Category category = new Category(pager.getContext(), launchManager, statisticsManager, sortMethod, dragEndService, backgroundTouchListener);
             adapter.categories.put(categoryName, category);
         }
         adapter.notifyDataSetChanged();

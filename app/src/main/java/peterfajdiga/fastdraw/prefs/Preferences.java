@@ -18,6 +18,7 @@ public final class Preferences {
     public final boolean headerDivider;
     public final boolean bgGradientColorFromWallpaper;
     public final int bgGradientOpacity;
+    public final SortMethod sortMethod;
 
     private final SharedPreferences prefs;
     private final Resources res;
@@ -34,6 +35,7 @@ public final class Preferences {
         headerDivider                = this.prefs.getBoolean("headerDivider",                this.res.getBoolean(R.bool.default_headerDivider));
         bgGradientColorFromWallpaper = this.prefs.getBoolean("bgGradientColorFromWallpaper", this.res.getBoolean(R.bool.default_bgGradientColorFromWallpaper));
         bgGradientOpacity            = this.prefs.getInt("bgGradientOpacity",                this.res.getInteger(R.integer.default_bgGradientOpacity));
+        sortMethod                   = SortMethod.fromString(this.prefs.getString("sortMethod", this.res.getString(R.string.default_sortMethod)));
     }
 
     public int getWidgetHeight() {

@@ -17,6 +17,7 @@ import peterfajdiga.fastdraw.Postable;
 import peterfajdiga.fastdraw.R;
 import peterfajdiga.fastdraw.launcher.displayitem.DisplayItem;
 import peterfajdiga.fastdraw.launcher.launcheritem.LauncherItem;
+import peterfajdiga.fastdraw.prefs.SortMethod;
 import peterfajdiga.fastdraw.views.AutoGridLayoutManager;
 import peterfajdiga.fastdraw.views.NestedScrollChildManager;
 
@@ -28,10 +29,12 @@ public class Category {
     public Category(
         final Context context,
         final LaunchManager launchManager,
+        final StatisticsManager statisticsManager,
+        final SortMethod sortMethod,
         final Postable dragEndService,
         final View.OnTouchListener backgroundTouchListener
     ) {
-        this.adapter = new CategoryAdapter(launchManager, dragEndService);
+        this.adapter = new CategoryAdapter(launchManager, dragEndService, statisticsManager, sortMethod);
         view = createView(context, backgroundTouchListener, adapter, nestedScrollChildManager);
     }
 

@@ -7,6 +7,11 @@ import androidx.annotation.NonNull;
 import peterfajdiga.fastdraw.launcher.ShortcutItemManager;
 
 public abstract class FiledShortcutItem implements ShortcutItem, Saveable {
+    protected final ShortcutItemManager shortcutItemManager;
+    public FiledShortcutItem(@NonNull final ShortcutItemManager shortcutItemManager) {
+        this.shortcutItemManager = shortcutItemManager;
+    }
+
     @NonNull abstract String getTypeKey();
     @NonNull abstract String getUUID();
 
@@ -16,7 +21,7 @@ public abstract class FiledShortcutItem implements ShortcutItem, Saveable {
 
     @Override
     public void delete(final Context context) {
-        ShortcutItemManager.deleteShortcut(context, this);
+        shortcutItemManager.deleteShortcut(context, this);
     }
 }
 
