@@ -110,7 +110,7 @@ public class MainActivity extends FragmentActivity implements CategorySelectionD
     private static final String INITIAL_CATEGORY_NAME_KEY = "categoryName";
 
     private static final int DROPZONE_TRANSITION_DURATION = 200;
-    private static final float SWIPE_DOWN_GESTURE_THRESHOLD_DP = 24.0f;
+    private static final float SWIPE_DOWN_GESTURE_THRESHOLD_DP = 48.0f;
 
     private InstallAppReceiver installAppReceiver;
 
