@@ -16,6 +16,7 @@ public class Swipe implements Gesture {
 
     private boolean started;
     private final PointF startPoint = new PointF();
+    private final PointF lastPoint = new PointF();
 
     public Swipe(
         final Direction direction,
@@ -47,6 +48,7 @@ public class Swipe implements Gesture {
                 start(event);
                 return false;
             case MotionEvent.ACTION_MOVE:
+                maybeCancel(event);
                 return false;
             case MotionEvent.ACTION_UP:
             case MotionEvent.ACTION_POINTER_UP:
@@ -59,12 +61,25 @@ public class Swipe implements Gesture {
 
     private void start(final MotionEvent event) {
         startPoint.set(event.getX(), event.getY());
+        lastPoint.set(event.getX(), event.getY());
         started = true;
     }
 
     @Override
     public void cancel() {
         started = false;
+    }
+
+    private void maybeCancel(final MotionEvent event) {
+        final boolean correctDirection =
+            direction == Direction.UP    && event.getY() <= lastPoint.y ||
+            direction == Direction.DOWN  && event.getY() >= lastPoint.y ||
+            direction == Direction.LEFT  && event.getX() <= lastPoint.x ||
+            direction == Direction.RIGHT && event.getX() >= lastPoint.x;
+        if (!correctDirection) {
+            startPoint.set(event.getX(), event.getY());
+        }
+        lastPoint.set(event.getX(), event.getY());
     }
 
     private boolean maybeFinish(final MotionEvent event) {
