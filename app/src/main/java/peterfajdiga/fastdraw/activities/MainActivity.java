@@ -110,6 +110,7 @@ public class MainActivity extends FragmentActivity implements CategorySelectionD
     private static final String INITIAL_CATEGORY_NAME_KEY = "categoryName";
 
     private static final int DROPZONE_TRANSITION_DURATION = 200;
+    private static final float SWIPE_DOWN_GESTURE_THRESHOLD_DP = 24.0f;
 
     private InstallAppReceiver installAppReceiver;
 
@@ -143,12 +144,13 @@ public class MainActivity extends FragmentActivity implements CategorySelectionD
         final NestedScrollParent scrollParent = findViewById(R.id.scroll_parent);
         final DisplayMetrics displayMetrics = getResources().getDisplayMetrics();
 
+        final float swipeDownGestureThreshold = SWIPE_DOWN_GESTURE_THRESHOLD_DP * displayMetrics.density;
         final WidgetHolder widgetHolder = findViewById(R.id.widget_holder);
         setupWidgets(new GestureMux(
             new LongPress(displayMetrics, widgetHolder::enterEditMode),
-            new Swipe(displayMetrics, Swipe.Direction.DOWN, this::expandNotificationsPanel, () -> scrollParent.getScrollY() == 0)
+            new Swipe(Swipe.Direction.DOWN, swipeDownGestureThreshold, this::expandNotificationsPanel, () -> scrollParent.getScrollY() == 0)
         ));
-        setupAppsPager(scrollParent);
+        setupAppsPager(scrollParent, swipeDownGestureThreshold);
         setupInstallAppReceiver();
 
         final View contentView = findViewById(android.R.id.content);
@@ -283,7 +285,7 @@ public class MainActivity extends FragmentActivity implements CategorySelectionD
     }
 
     @SuppressLint("ClickableViewAccessibility")
-    private void setupAppsPager(final NestedScrollParent scrollParent) {
+    private void setupAppsPager(final NestedScrollParent scrollParent, final float swipeDownGestureThreshold) {
         final Gesture longPressListener = new LongPress(getResources().getDisplayMetrics(), () -> {
             scrollParent.cancelScroll(); // prevent opening expandNotificationsPanel
             openActionsMenu();
@@ -300,7 +302,7 @@ public class MainActivity extends FragmentActivity implements CategorySelectionD
 
         scrollParent.setScrollChildManager(launcher.getScrollChildManager());
         scrollParent.setOnTouchListener(longPressListener);
-        scrollParent.setOnOverScrollUpListener(this::expandNotificationsPanel);
+        scrollParent.setOnOverScrollUpGesture(this::expandNotificationsPanel, swipeDownGestureThreshold);
 
         final SettableBoolean dirty = new SettableBoolean(false);
         appsPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {

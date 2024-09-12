@@ -35,8 +35,8 @@ public class NestedScrollParent extends NestedScrollView {
         this.onMeasureListener = onMeasureListener;
     }
 
-    public void setOnOverScrollUpListener(@Nullable final OnOverScrollUpListener onOverScrollUpListener) {
-        this.overScrollUpController.setListener(onOverScrollUpListener);
+    public void setOnOverScrollUpGesture(@Nullable final OnOverScrollUpListener onOverScrollUpListener, final float threshold) {
+        this.overScrollUpController.setup(onOverScrollUpListener, threshold);
     }
 
     @Override
@@ -55,11 +55,11 @@ public class NestedScrollParent extends NestedScrollView {
         switch (ev.getAction()) {
             case MotionEvent.ACTION_DOWN:
                 if (getScrollY() == 0) {
-                    overScrollUpController.press();
+                    overScrollUpController.press(ev.getY());
                 }
                 break;
             case MotionEvent.ACTION_UP:
-                overScrollUpController.release();
+                overScrollUpController.release(ev.getY());
                 break;
         }
 
@@ -76,7 +76,7 @@ public class NestedScrollParent extends NestedScrollView {
     }
 
     public void cancelScroll() {
-        overScrollUpController.release();
+        overScrollUpController.cancel();
     }
 
     @Override
@@ -162,9 +162,13 @@ public class NestedScrollParent extends NestedScrollView {
 
     private static class OverScrollUpController {
         private OnOverScrollUpListener listener;
+        private float threshold;
+        private State state = State.INACTIVE;
+        private float pressY = 0.0f;
 
-        public void setListener(final OnOverScrollUpListener listener) {
+        public void setup(final OnOverScrollUpListener listener, final float threshold) {
             this.listener = listener;
+            this.threshold = threshold;
         }
 
         private enum State {
@@ -173,15 +177,14 @@ public class NestedScrollParent extends NestedScrollView {
             OVER_SCROLLED,
         }
 
-        private State state = State.INACTIVE;
-
         void cancel() {
             state = State.INACTIVE;
         }
 
-        void press() {
+        void press(final float y) {
             if (state == State.INACTIVE) {
                 state = State.PRESSED;
+                pressY = y;
             }
         }
 
@@ -191,8 +194,8 @@ public class NestedScrollParent extends NestedScrollView {
             }
         }
 
-        void release() {
-            if (state == State.OVER_SCROLLED && listener != null) {
+        void release(final float y) {
+            if (state == State.OVER_SCROLLED && y - pressY > threshold && listener != null) {
                 listener.onOverScrollUp();
             }
             cancel();

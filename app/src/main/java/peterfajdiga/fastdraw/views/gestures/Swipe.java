@@ -9,8 +9,6 @@ import android.view.View;
 import java.util.function.BooleanSupplier;
 
 public class Swipe implements Gesture {
-    private static final float THRESHOLD_DP = 24;
-
     private final float threshold;
     private final Direction direction;
     private final GestureListener listener;
@@ -20,13 +18,13 @@ public class Swipe implements Gesture {
     private final PointF startPoint = new PointF();
 
     public Swipe(
-        final DisplayMetrics metrics,
         final Direction direction,
+        final float threshold,
         final GestureListener listener,
         final BooleanSupplier condition
     ) {
-        this.threshold = THRESHOLD_DP * metrics.density;
         this.direction = direction;
+        this.threshold = threshold;
         this.listener = listener;
         this.condition = condition;
     }
