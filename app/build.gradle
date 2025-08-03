@@ -6,7 +6,7 @@ android {
     defaultConfig {
         applicationId "peterfajdiga.fastdraw"
         minSdk 28
-        targetSdk 34
+        targetSdk 35
         versionCode 17
         versionName "2.1.3"
     }
