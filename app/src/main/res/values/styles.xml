@@ -79,6 +79,7 @@
         <item name="colorAccent">#fdd835</item>
         <item name="android:textColorPrimary">@color/textColorPrimary</item>
         <item name="android:textColorSecondary">@color/textColorSecondary</item>
+        <item name="android:windowLightStatusBar">true</item>
     </style>
 
 </resources>
