@@ -7,6 +7,12 @@
         android:summary="@string/pref_description_allowOrientation" />
 
     <SwitchPreference
+        android:defaultValue="@bool/default_switchToHome"
+        android:key="switchToHome"
+        android:title="@string/pref_title_switchToHome"
+        android:summary="@string/pref_description_switchToHome" />
+
+    <SwitchPreference
         android:defaultValue="@bool/default_headerbtm"
         android:key="headerbtm"
         android:title="@string/pref_title_headerbtm"

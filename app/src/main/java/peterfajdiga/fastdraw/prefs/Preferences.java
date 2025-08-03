@@ -11,6 +11,7 @@ import peterfajdiga.fastdraw.R;
 
 public final class Preferences {
     public final boolean allowOrientation;
+    public final boolean switchToHome;
     public final boolean headerOnBottom;
     public final boolean scrollableTabs;
     public final boolean hideHidden;
@@ -27,6 +28,7 @@ public final class Preferences {
         this.res = context.getResources();
 
         allowOrientation             = this.prefs.getBoolean("allowOrientation",             this.res.getBoolean(R.bool.default_allowOrientation));
+        switchToHome                 = this.prefs.getBoolean("switchToHome",                 this.res.getBoolean(R.bool.default_switchToHome));
         headerOnBottom               = this.prefs.getBoolean("headerbtm",                    this.res.getBoolean(R.bool.default_headerbtm));
         scrollableTabs               = this.prefs.getBoolean("scrollableTabs",               this.res.getBoolean(R.bool.default_scrollableTabs));
         hideHidden                   = this.prefs.getBoolean("hideHidden",                   this.res.getBoolean(R.bool.default_hideHidden));
