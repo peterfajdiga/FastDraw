@@ -4,25 +4,31 @@
     <uses-permission android:name="android.permission.CALL_PHONE" />
     <uses-permission android:name="android.permission.EXPAND_STATUS_BAR" />
 
+    <queries>
+        <intent>
+            <action android:name="android.intent.action.MAIN" />
+        </intent>
+    </queries>
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true">
-
         <activity
             android:name=".activities.MainActivity"
+            android:clearTaskOnLaunch="true"
+            android:configChanges=""
+            android:excludeFromRecents="true"
+            android:exported="true"
             android:label="@string/app_name"
             android:launchMode="singleInstance"
-            android:clearTaskOnLaunch="true"
-            android:stateNotNeeded="true"
-            android:excludeFromRecents="true"
             android:screenOrientation="nosensor"
-            android:configChanges=""
-            android:theme="@style/AppTheme.Wallpaper.Dark"
-            android:exported="true">
+            android:stateNotNeeded="true"
+            android:theme="@style/AppTheme.Wallpaper.Dark">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.HOME" />
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -34,8 +40,8 @@
 
         <receiver
             android:name=".receivers.InstallShortcutReceiver"
-            android:permission="com.android.launcher.permission.INSTALL_SHORTCUT"
-            android:exported="false">
+            android:exported="false"
+            android:permission="com.android.launcher.permission.INSTALL_SHORTCUT">
             <intent-filter>
                 <action android:name="com.android.launcher.action.INSTALL_SHORTCUT" />
             </intent-filter>
@@ -43,27 +49,22 @@
 
         <activity
             android:name=".activities.SettingsActivity"
-            android:label="@string/title_activity_settings"
-            android:icon="@mipmap/ic_launcher_settings"
             android:clearTaskOnLaunch="true"
-            android:stateNotNeeded="true"
-            android:excludeFromRecents="false"
             android:configChanges="orientation|screenSize"
-            android:theme="@style/AppTheme.Settings"
-            android:exported="true">
+            android:excludeFromRecents="false"
+            android:exported="true"
+            android:icon="@mipmap/ic_launcher_settings"
+            android:label="@string/title_activity_settings"
+            android:stateNotNeeded="true"
+            android:theme="@style/AppTheme.Settings">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <action android:name="android.intent.action.APPLICATION_PREFERENCES" />
+
                 <category android:name="android.intent.category.PREFERENCE" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
     </application>
-
-    <queries>
-        <intent>
-            <action android:name="android.intent.action.MAIN" />
-        </intent>
-    </queries>
 
 </manifest>
