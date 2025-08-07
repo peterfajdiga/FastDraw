@@ -49,6 +49,12 @@
     <string name="pref_description_bgGradientColorFromWallpaper">Color the background shadow based on the color of your wallpaper (requires Android Oreo or newer)</string>
     <string name="pref_title_bgGradientOpacity">Background shadow opacity</string>
 
+    <string name="pref_title_sortMethod">Sort method</string>
+    <string name="pref_description_sortMethod">How to sort the apps</string>
+    <string name="pref_label_sortMethod_alphabetical">Alphabetical</string>
+    <string name="pref_label_sortMethod_usage">Most used</string>
+    
+
     <string name="pref_header_categoryorder">Order of categories</string>
     <string name="pref_title_orderreset">Order alphabetically</string>
 

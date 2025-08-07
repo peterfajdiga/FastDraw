@@ -10,6 +10,7 @@ import android.graphics.drawable.Drawable;
 import androidx.annotation.NonNull;
 
 import peterfajdiga.fastdraw.launcher.AppItemManager;
+import peterfajdiga.fastdraw.launcher.StatisticsManager;
 import peterfajdiga.fastdraw.launcher.displayitem.DisplayItem;
 import peterfajdiga.fastdraw.launcher.launchable.IntentLaunchable;
 import peterfajdiga.fastdraw.launcher.launchable.Launchable;
@@ -19,9 +20,13 @@ public class AppItem implements LauncherItem {
 
     private final ActivityInfo info;
     private DisplayItem displayItem = null;
+    private final StatisticsManager statisticsManager;
+    private final AppItemManager appItemManager;
 
-    public AppItem(@NonNull final ActivityInfo info) {
+    public AppItem(@NonNull final AppItemManager appItemManager, @NonNull final StatisticsManager statisticsManager, @NonNull final ActivityInfo info) {
         this.info = info;
+        this.appItemManager = appItemManager;
+        this.statisticsManager = statisticsManager;
     }
 
     @Override
@@ -55,12 +60,12 @@ public class AppItem implements LauncherItem {
         final CharSequence label = info.loadLabel(packageManager).toString();
         final Drawable icon = info.loadIcon(packageManager);
 
-        final Launchable launchable = new IntentLaunchable(getIntent());
+        final Launchable launchable = new IntentLaunchable(getIntent(), statisticsManager, getId());
         displayItem = new DisplayItem(getId(), label, icon, this, launchable);
         return displayItem;
     }
 
     public void openAppDetails(final Context context) {
-        AppItemManager.showPackageDetails(context, info.packageName);
+        appItemManager.showPackageDetails(context, info.packageName);
     }
 }

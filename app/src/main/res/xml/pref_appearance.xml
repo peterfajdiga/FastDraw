@@ -27,4 +27,11 @@
         android:key="bgGradientOpacity"
         android:title="@string/pref_title_bgGradientOpacity" />
 
+    <ListPreference
+        android:defaultValue="@string/default_sortMethod"
+        android:entries="@array/pref_sortMethod_option_labels"
+        android:entryValues="@array/pref_sortMethod_option_values"
+        android:key="sortMethod"
+        android:summary="@string/pref_description_sortMethod"
+        android:title="@string/pref_title_sortMethod" />
 </PreferenceScreen>

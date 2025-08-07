@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<!-- Label ordering must match values -->
+	<array name="pref_sortMethod_option_labels">
+		<item>@string/pref_label_sortMethod_alphabetical</item>
+		<item>@string/pref_label_sortMethod_usage</item>
+	</array>
+	<array name="pref_sortMethod_option_values">
+		<item>Alphabetical</item>
+		<item>Usage</item>
+	</array>
+</resources>
