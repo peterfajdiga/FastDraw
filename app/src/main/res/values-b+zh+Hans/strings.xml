@@ -1,0 +1,65 @@
+<resources>
+    <string name="app_name">Fast Draw</string>
+    <string name="new_category">新分类</string>
+    <string name="hide">隐藏</string>
+    <string name="change_category_icon">更改分类图标</string>
+    <string name="app_info">应用信息</string>
+    <string name="select_wallpaper">更改壁纸</string>
+    <string name="add_shortcut">添加快捷方式</string>
+    <string name="remove_shortcut">移除快捷方式</string>
+
+    <string name="action_wallpaper">更改壁纸</string>
+    <string name="action_shortcut">添加快捷方式</string>
+    <string name="action_widget_add">添加小部件</string>
+    <string name="action_widget_edit">编辑小部件</string>
+    <string name="action_hidden_show">显示隐藏应用</string>
+    <string name="action_hidden_hide">不显示隐藏应用</string>
+    <string name="action_settings">打开偏好设置</string>
+    <string name="action_notifications">打开通知抽屉</string>
+    <string name="action_dont_show_again">不再显示</string>
+
+    <string name="widget_replace">更换</string>
+    <string name="widget_setup">配置</string>
+    <string name="widget_remove">移除</string>
+
+    <string name="no_app">应用未安装</string>
+    <string name="no_permission">您未授予 Fast Draw 通话权限。您可以在 Fast Draw 的应用信息中更改此设置。</string>
+    <string name="shortcut_launch_file_uri_exposed">错误：FileUriExposedException。快捷方式暴露了 file:// URI。请联系那个应用的开发者。</string>
+    <string name="no_intent">Fast Draw 无法启动此应用或快捷方式 :( 请反馈此问题 :)</string>
+
+
+    <!-- Strings related to Settings -->
+    <string name="title_activity_settings">Fast Draw 偏好设置</string>
+
+    <string name="pref_header_general">通用</string>
+    <string name="pref_title_allowOrientation">允许旋转</string>
+    <string name="pref_description_allowOrientation">允许在横屏和竖屏之间切换</string>
+    <string name="pref_title_switchToHome">切换回首页</string>
+    <string name="pref_description_switchToHome">打开启动器时，切换至 Home 分类</string>
+    <string name="pref_title_headerbtm">将标签栏移至底部</string>
+    <string name="pref_description_headerbtm">将标签栏放到屏幕底部（而不是顶部）</string>
+    <string name="pref_title_scrollableTabs">可滚动标签栏</string>
+    <string name="pref_description_scrollableTabs">如果有很多分类，可以尝试启用（实验性）</string>
+    <string name="pref_title_clearDontShowAgain">恢复忽略的消息</string>
+    <string name="pref_description_clearDontShowAgain">恢复已设置为不再显示的弹出消息。</string>
+
+    <string name="pref_header_appearance">外观</string>
+    <string name="pref_title_wallpaperParallax">壁纸视差效果</string>
+    <string name="pref_description_wallpaperParallax">切换分类时滚动壁纸</string>
+    <string name="pref_title_headerDivider">显示标签栏和应用的分隔线</string>
+    <string name="pref_description_headerDivider">在标签页和应用之间显示一条白线</string>
+    <string name="pref_title_bgGradientColorFromWallpaper">从壁纸获取背景阴影的颜色</string>
+    <string name="pref_description_bgGradientColorFromWallpaper">根据壁纸的颜色为背景渐变阴影着色（需要 Android 8+）</string>
+    <string name="pref_title_bgGradientOpacity">背景阴影透明度</string>
+
+    <string name="pref_header_categoryorder">分类顺序</string>
+    <string name="pref_title_orderreset">按名称排序</string>
+
+    <string name="error_oreo_user_handle">用户处于锁定状态或未运行</string>
+    <string name="error_oreo_activity_not_found">活动不存在</string>
+    <string name="error_oreo_shortcuts_security">Fast Draw 不是默认启动器，无法加载快捷方式</string>
+    <string name="error_oreo_shortcut_host_permission">Fast Draw 没有快捷方式宿主权限。请确保 Fast Draw 是默认启动器。</string>
+
+    <string name="error_launch_exception">由于未知错误，无法启动此项目。请反馈此问题。</string>
+    <string name="error_expand_notifications_panel">无法打开通知面板。可能是您的 Android 版本不支持第三方启动器启用此功能。</string>
+</resources>
